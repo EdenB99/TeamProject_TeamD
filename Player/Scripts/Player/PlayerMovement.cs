@@ -47,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private bool isJumpOff;
 
-    // 대쉬 그라운드 체크용
     private Vector2 newVelocity;
     private Vector2 newForce;
 
@@ -73,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     BoxCollider2D box;
+
     SpriteRenderer spriteRenderer;
     Rigidbody2D rigid;
     Animator Player_ani;
@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.S))
         {
-            isJump = true;  
+            isJump = true;
         }
     }
 
@@ -207,9 +207,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
-            // 점프는 우선 2단점프로 구현 개선점 : 1단구현or점프쿨타임
+
             jumpCount = 2;
             Player_ani.SetBool("Jump", false);
+
         }
         jumpCount = 2;
         Player_ani.SetBool("Jump", false);
