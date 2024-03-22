@@ -1,19 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-// 아이템 한 종류의 정보를 저장하는 스크립터블 오브젝트
-[CreateAssetMenu(fileName = "New Item Data", menuName = "Scriptable Object/Item Data", order = 0)]
-public class WeaponData : ScriptableObject
-{
-    [Header("아이템 기본 정보")]
-    public WeaponCode code;
-    public string itemName = "아이템";
-    public string itemDescription = "설명";
-    public uint weaponDamage = 10;
-    public float weaponSpeed = 1.0f;
-    public Sprite itemIcon;
-    public uint price = 0;
-    public uint maxStackCount = 1;
-    public GameObject modelPrefab;
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e68b55fc31a89be1e5e365a5fe512ceec96cf24fe10f2713d2c1ebba2f821228
+size 677

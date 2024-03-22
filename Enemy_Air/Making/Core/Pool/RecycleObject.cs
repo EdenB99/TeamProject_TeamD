@@ -1,24 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RecycleObject : MonoBehaviour
-{
-    /// <summary>
-    /// 재활용 오브젝트가 비활성화 될 때 실행되는 델리게이트
-    /// </summary>
-    public Action onDisable;
-
-    protected virtual void OnEnable()
-    {
-        StopAllCoroutines();        // 리셋
-    }
-
-    protected virtual void OnDisable()
-    {
-        onDisable?.Invoke();        // 비활성화 알림
-    }
-
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:25bf44f87273623a17b53be1a7b580e77583501afa04405c47ec77886bb0ab3c
+size 525

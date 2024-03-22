@@ -1,23 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
-/// 아이템 코드(ID)
-/// </summary>
-public enum ItemCode
-{
-    Ruby = 0,
-    Emerald,
-    Sapphire
-}
-
-/// <summary>
-/// 아이템 정렬 기준
-/// </summary>
-public enum ItemSortBy
-{
-    Code,       // 코드 기준
-    Name,       // 이름 기준
-    Price       // 가격 기준
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:523a6c90ebc8829aa2b7a89b695763dd6edb15b4badad71f985f4d199903d10f
+size 404

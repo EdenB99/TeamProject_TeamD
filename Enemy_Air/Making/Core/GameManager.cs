@@ -1,24 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GameManager : Singleton<GameManager>
-{
-    Player player;
-    public Player Player
-    {
-        get
-        {
-            if(player == null)
-                player = FindAnyObjectByType<Player>();
-            return player;
-        }
-    }
-
-
-    protected override void OnInitialize()
-    {
-        player = FindAnyObjectByType<Player>();
-
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:8074295f7f6cbf7eb1834209f169736312244571e466b6546dfdd0017a04061c
+size 466
