@@ -1,84 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("í”Œë ˆì´ì–´ ìŠ¤íƒ¯")]
-    public float Damage;        // ê³µê²©ë ¥
-    public float Defense;       // ë°©ì–´ë ¥
-    public float MaxHp;         // ìµœëŒ€ì²´ë ¥
-    public float Hp;            // ì²´ë ¥
-    public float DashPower;     // ëŒ€ì‰¬íŒŒì›Œ (ëŒ€ì‰¬ë¥¼ í• ë•Œ ë°ë¯¸ì§€ë¥¼ ì¤Œ)  
-    private float CurrentHp;  // HpëŸ‰
+    [Header("ÇÃ·¹ÀÌ¾î ½ºÅİ")]
+    public float Damage;                // °ø°İ·Â
+    public float Defense;               // ¹æ¾î·Â
+    public float MaxHp = 100.0f;        // ÃÖ´ëÃ¼·Â
+    public float _hp;                   // ÇöÀçÃ¼·Â
+    public int criticalChance;          // Å©¸®Æ¼ÄÃ
+    public float damageTaken;           // ¸ó½ºÅÍ ¹Ş´Â ÇÇÇØ
+    public int Level;                   // ·¹º§
 
 
-    public float Satiety;       // í¬ë§Œê°
+    /// <summary>
+    /// ´ø±×¸®µå À½½Ä ³ÖÀ»½Ã ³ÖÀ» º¯¼ö
+    /// </summary>
+    public int Hungrycurr;
+    public int HungryMax;
+
+    public int gold;                    // ¼ÒÁö ±İ¾×
 
 
-    public int gold;            // ì†Œì§€ê³¨ë“œ
-    public int criticalChance;  // í¬ë¦¬í‹°ì»¬
+    /// <summary>
+    /// »ì¾Ò´ÂÁö Á×¾ú´ÂÁö È®ÀÎÇÏ±â À§ÇÑ ÇÁ·ÎÆÛÆ¼
+    /// </summary>
+    private bool IsAlive => _hp > 0;
 
-    
-
-    private bool isTakingDamage; // ë°ë¯¸ì§€í”¼ê²© í™•ì¸ìš©
-
-
-    // í˜„ì¬ hp í”„ë¡œí¼í‹°
-    public float MyCurrentHp
+    /// <summary>
+    /// Ã¼·Â ¼³Á¤ ÇÁ·ÎÆÛÆ¼
+    /// </summary>
+    public float CurrentHp
     {
-        get
-        {
-            return Hp;
-        }
+        get => _hp;
 
         set
         {
-            if(value > MaxHp)
+            float clampedValue = Mathf.Clamp(value, 0, MaxHp); // Å¬·¥ÇÎµÈ °ªÀ» ÀÓ½Ã º¯¼ö¿¡ ÀúÀå
+            if (_hp != clampedValue) // °ªÀÌ º¯°æµÇ¾ú´ÂÁö È®ÀÎ
             {
-                Hp = MaxHp;
+                _hp = clampedValue; // º¯°æµÈ °ªÀ¸·Î Hp ¾÷µ¥ÀÌÆ®
+                if (IsAlive)
+                {
+                    // ÇÃ·¹ÀÌ¾î°¡ »ì¾ÆÀÖÀ» ¶§ÀÇ Ã³¸®
+                }
+                else
+                {
+                    // ÇÃ·¹ÀÌ¾î°¡ »ç¸ÁÇßÀ» ¶§ÀÇ Ã³¸®
+                   
+                }
             }
-            else if(value < 0)
-            {
-                Hp = 0;
-            }
-            else
-            {
-                Hp = value;
-            }
-            CurrentHp = Hp / MaxHp;
-            // Hp UIê°€ ë“¤ì–´ì˜¬ê²½ìš° ì²˜ë¦¬í• ì˜ˆì •
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        MaxHp = 100;
-        Hp = MaxHp;
+        _hp = MaxHp;
     }
 
-
-
-
-    public void Update()
-    {
-        if(Hp <= 0)
-        {
-            // Hp UIë¶ˆëŸ¬ì˜¤ê¸°
-        }
-    }
-
-
-
-    // ë°ë¯¸ì§€ê°€ í”Œë ˆì´ì–´í•œí…Œ ë“¤ì–´ì˜¨ë‹¤ë©´ 
-    public void TakeDamge(int damage)
-    {
-        if(isTakingDamage)
-        {
-            Hp -= damage;
-            // ì½”ë£¨í‹´ ë¬´ì  ìƒê°í•˜ê¸°
-
-        }
-    }
-
+   
 }

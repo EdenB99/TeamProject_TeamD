@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerStats
 {
     // 대쉬 코루틴 애니메이션 코루틴 사용
     // ??
@@ -22,15 +22,14 @@ public class PlayerMovement : MonoBehaviour
     /// 점프
     /// </summary>
     public float jumpPower = 15.0f;
-    public float downJump;
-    public float downJumpTime;
-
+    private float downJump;
+    private float downJumpTime;
 
     /// <summary>
-    /// 땅 체크용 레이어마스크
+    /// 점프 쿨타임
     /// </summary>
-    private Transform groundCheck;
-    private LayerMask whatIsGround;
+    private float jumpCool = 1.0f;
+
 
     /// <summary>
     /// 점프 확인
@@ -47,9 +46,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private bool isJumpOff;
 
-    private Vector2 newVelocity;
-    private Vector2 newForce;
-
+    
+   
     // 레이어 태그
     private int playerLayer;
     private int platformLayer;
@@ -58,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
     /// 맵 체크
     /// </summary>
     private bool isGround;
-
 
     /// <summary>
     /// 플레이어 회전
@@ -70,9 +67,24 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private Vector2 mousePos;
 
+    /// <summary>
+    /// 맞았을 때 무적시간
+    /// </summary>
+    public float invincibleTime = 1.0f;
+
+
+    // 대쉬 그라운드 체크용 (미구현)
+    private Vector2 newVelocity;
+    private Vector2 newForce;
+
+    /// <summary>
+    /// 땅 체크용 레이어마스크
+    /// </summary>
+    private Transform groundCheck;
+    private LayerMask whatIsGround;
+
 
     BoxCollider2D box;
-
     SpriteRenderer spriteRenderer;
     Rigidbody2D rigid;
     Animator Player_ani;
@@ -96,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
+        // 점프 관련 
         if (!isJumpOff)
         {
             if (!isGround)
@@ -113,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.S))
         {
-            isJump = true;
+            isJump = true;  
         }
     }
 
@@ -136,58 +149,30 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+    // 이동관련
     private void MovePosition()
     {
         Jump();
         MousePosition();
-        xinput = Input.GetAxisRaw("Horizontal");
-        rigid.AddForce(Vector2.right * xinput, ForceMode2D.Impulse);
 
-        if (rigid.velocity.x > maxSpeed)
-        {
-            rigid.velocity = new Vector2(maxSpeed, rigid.velocity.y);
-        }
-        else if (rigid.velocity.x < maxSpeed * (-1))
-        {
-            rigid.velocity = new Vector2(maxSpeed * (-1), rigid.velocity.y);
-        }
-    }
+        float xInput = Input.GetAxisRaw("Horizontal");
+        rigid.velocity = new Vector2(xInput * maxSpeed, rigid.velocity.y);
 
+        /* xinput = Input.GetAxisRaw("Horizontal");
+         rigid.AddForce(Vector2.right * xinput, ForceMode2D.Impulse);
 
-    private void MousePosition()
-    {
-        // 마우스 포지션 변경
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // 마우스 좌표 캐릭터회전
-        // 스프라이트로 X.Y 변경
-
-        if (mousePos.x < transform.position.x)
-        {
-            if (isPosition)
-            {
-                // 플레이어 스프라이트 이미지 반전
-                //transform.rotation = Quaternion.Euler(0, 180, 0);
-                spriteRenderer.flipX = true;
-
-                isPosition = false;
-            }
-        }
-
-        else if (mousePos.x > transform.position.x)
-        {
-            if (!isPosition)
-            {
-                //transform.rotation = Quaternion.identity;
-                spriteRenderer.flipX = false;
-                isPosition = true;
-            }
-        }
+         if (rigid.velocity.x > maxSpeed)
+         {
+             rigid.velocity = new Vector2(maxSpeed, rigid.velocity.y);
+         }
+         else if (rigid.velocity.x < maxSpeed * (-1))
+         {
+             rigid.velocity = new Vector2(maxSpeed * (-1), rigid.velocity.y);
+         }*/
     }
 
     void Jump()
     {
-
         //점프상태가 아니거나 점프 횟수가 없으면 리턴
         if (!isJump || jumpCount == 0)
         {
@@ -199,18 +184,44 @@ public class PlayerMovement : MonoBehaviour
         Player_ani.SetBool("Jump", true);
         jumpCount -= 1;
         isJump = false;
-
     }
 
+    // 마우스 포지션 변경
+    private void MousePosition()
+    {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // 마우스 좌표 캐릭터회전
+        // 스프라이트로 X.Y 변경
+        if (mousePos.x < transform.position.x)
+        {
+            if (isPosition)
+            {
+                // 플레이어 스프라이트 이미지 반전
+                //transform.rotation = Quaternion.Euler(0, 180, 0);
+                spriteRenderer.flipX = true;
+
+                isPosition = false;
+            }
+        }
+        else if (mousePos.x > transform.position.x)
+        {
+            if (!isPosition)
+            {
+                //transform.rotation = Quaternion.identity;
+                spriteRenderer.flipX = false;
+                isPosition = true;
+            }
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
-
+            // 점프는 우선 2단점프로 구현 개선점 : 1단구현or점프쿨타임
             jumpCount = 2;
             Player_ani.SetBool("Jump", false);
-
         }
         jumpCount = 2;
         Player_ani.SetBool("Jump", false);
@@ -232,4 +243,6 @@ public class PlayerMovement : MonoBehaviour
     {
         cc.enabled = true;
     }
+
+  
 }
