@@ -4,55 +4,53 @@ using UnityEngine;
 
 public class EnemyBase_ : MonoBehaviour
 {
-    //ì»´í¬ë„ŒíŠ¸ ë¶ˆëŸ¬ì˜¤ê¸°
-    public Rigidbody2D rb;
+    //ÄÄÆ÷³ÍÆ® ºÒ·¯¿À±â
+    Rigidbody2D rb;
     public SpriteRenderer sprite;
 
     /// <summary>
-    /// í”Œë ˆì´ì–´ ë¶ˆëŸ¬ì˜¤ê¸°
+    /// ÇÃ·¹ÀÌ¾î ºÒ·¯¿À±â
     /// </summary>
     protected Player player;
 
     /// <summary>
-    /// í”Œë ˆì´ì–´ ìœ„ì¹˜ íƒ€ê²ŒíŒ…
+    /// ÇÃ·¹ÀÌ¾î À§Ä¡ Å¸°ÔÆÃ
     /// </summary>
-    public Vector2 targetPos;
+    Vector2 targetPos;
 
     /// <summary>
-    /// ì  ê°œì²´ì˜ ìµœëŒ€ ì²´ë ¥
+    /// Àû °³Ã¼ÀÇ ÃÖ´ë Ã¼·Â
     /// </summary>
     public int maxHp = 10;
 
-    public float jumpForce = 7f;
-
     /// <summary>
-    /// ì  ê°œì²´ì˜ í˜„ì¬ ì²´ë ¥
+    /// Àû °³Ã¼ÀÇ ÇöÀç Ã¼·Â
     /// </summary>
-    public int hp = 10;
+    private int hp = 10;
 
     /// <summary>
-    /// ì  ê°œì²´ì˜ ë°ë¯¸ì§€ ( ë¶€ë”ªíˆëŠ” ê²½ìš°ë§Œ )
+    /// Àû °³Ã¼ÀÇ µ¥¹ÌÁö ( ºÎµúÈ÷´Â °æ¿ì¸¸ )
     /// </summary>
     public int mobDamage = 0;
 
     /// <summary>
-    /// ì  ê°œì²´ì˜ ì´ë™ì†ë„
+    /// Àû °³Ã¼ÀÇ ÀÌµ¿¼Óµµ
     /// </summary>
     public float mobMoveSpeed = 0;
 
     /// <summary>
-    /// ì ì´ ì´ë™í•˜ëŠ”ì§€ (ê³ ì •í˜•) ì— ëŒ€í•œ ì—¬ë¶€ falseë©´ ë°©í–¥ì „í™˜ + ì´ë™ì„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+    /// ÀûÀÌ ÀÌµ¿ÇÏ´ÂÁö (°íÁ¤Çü) ¿¡ ´ëÇÑ ¿©ºÎ false¸é ¹æÇâÀüÈ¯ + ÀÌµ¿À» ÇÏÁö ¾Ê´Â´Ù.
     /// </summary>
     public bool IsMove = true;
     
     /// <summary>
-    /// í”Œë ˆì´ì–´ë¥¼ ë°œê²¬í–ˆëŠ”ì§€ ( trueë©´ ë°œê²¬ )
+    /// ÇÃ·¹ÀÌ¾î¸¦ ¹ß°ßÇß´ÂÁö ( true¸é ¹ß°ß )
     /// </summary>
     protected bool playerCheck = false;
 
 
     /// <summary>
-    /// Hp í”„ë¡œí¼í‹°
+    /// Hp ÇÁ·ÎÆÛÆ¼
     /// </summary>
     public int Hp
     {
@@ -62,7 +60,7 @@ public class EnemyBase_ : MonoBehaviour
             hp = value;
             hp = Mathf.Max(hp, 0);
 
-            // Hpê°€ 0 ì´í•˜ë©´ ì‚¬ë§
+            // Hp°¡ 0 ÀÌÇÏ¸é »ç¸Á
             if (Hp <= 0)
             {
                 Die();
@@ -72,23 +70,23 @@ public class EnemyBase_ : MonoBehaviour
     }
 
     /// <summary>
-    /// ì¢Œìš° í™•ì¸
+    /// ÁÂ¿ì È®ÀÎ
     /// </summary>
     public int checkLR = 1;
 
     /// <summary>
-    /// ì¢Œìš° ë³€ê²½ìš© í”„ë¡œí¼í‹°
+    /// ÁÂ¿ì º¯°æ¿ë ÇÁ·ÎÆÛÆ¼
     /// </summary>
     public int CheckLR
     {
         get { return checkLR; }
         set
         {
-            if (checkLR != value) // ê°’ì´ ë³€ê²½ ë˜ì—ˆë‹¤ë©´
+            if (checkLR != value) // °ªÀÌ º¯°æ µÇ¾ú´Ù¸é
             {
                 checkLR = value;
-                // ë°©í–¥ ì „í™˜ ( flip ìœ¼ë¡œ ìˆ˜ì • í•„ìš”í•˜ë©°, ìŠ¤í”„ë¼ì´íŠ¸ì˜ ê¸°ë³¸ì´ ì¢Œì¸¡ì´ëƒ ìš°ì¸¡ì´ëƒì— ë”°ë¼ ë°”ê¿”ì£¼ì–´ì•¼í•¨.)
-                gameObject.transform.localScale = new Vector3(1.0f * checkLR, 1.0f, 1.0f);
+                // ½ºÇÁ¶óÀÌÆ® ¹æÇâ ÀüÈ¯ 
+                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
             }
 
         }
@@ -106,29 +104,35 @@ public class EnemyBase_ : MonoBehaviour
         player = GameManager.Instance.Player;
     }
 
-    protected virtual void FixedUpdate() // ì´ë™ê´€ë ¨
+    protected virtual void FixedUpdate() // ÀÌµ¿°ü·Ã
     {
-        if (playerCheck) // í”Œë ˆì´ì–´ ë°œê²¬ì‹œ í–‰ë™
+        if (playerCheck) // ÇÃ·¹ÀÌ¾î ¹ß°ß½Ã Çàµ¿
         {
-            // í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ë°›ëŠ”ë‹¤.
+            // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ ¹Ş´Â´Ù.
             targetPos = player.transform.position;
-            // ì›€ì§ì´ëŠ” ëª¬ìŠ¤í„°ì¼ ê²½ìš°ì—ë§Œ
+            // ¿òÁ÷ÀÌ´Â ¸ó½ºÅÍÀÏ °æ¿ì¿¡¸¸
             if (IsMove)
             {
-                // í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ì— ë”°ë¼ CheckLR ì„ ë³€ê²½í•œë‹¤.
+                // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¿¡ µû¶ó CheckLR À» º¯°æÇÑ´Ù.
                 if (targetPos.x < rb.position.x) CheckLR = 1;
                 else CheckLR = -1;
             }
             attackAction();
+  
+
         }
-        else // í”Œë ˆì´ì–´ ë¯¸ë°œê²¬ì‹œ í–‰ë™
+        else // ÇÃ·¹ÀÌ¾î ¹Ì¹ß°ß½Ã Çàµ¿
         {
             idleAction();
         }
+
+
+
+
     }
 
     /// <summary>
-    /// /// ì—…ë°ì´íŠ¸ì—ì„œ ì‹¤í–‰ë  ì½”ë“œ ( í”Œë ˆì´ì–´ ë°œê²¬ )
+    /// /// ¾÷µ¥ÀÌÆ®¿¡¼­ ½ÇÇàµÉ ÄÚµå ( ÇÃ·¹ÀÌ¾î ¹ß°ß )
     /// </summary>
     protected virtual void attackAction()
     {
@@ -136,47 +140,72 @@ public class EnemyBase_ : MonoBehaviour
     }
 
     /// <summary>
-    /// ì—…ë°ì´íŠ¸ì—ì„œ ì‹¤í–‰ë  ì½”ë“œ ( í”Œë ˆì´ì–´ ë¯¸ë°œê²¬ )
+    /// ¾÷µ¥ÀÌÆ®¿¡¼­ ½ÇÇàµÉ ÄÚµå ( ÇÃ·¹ÀÌ¾î ¹Ì¹ß°ß )
     /// </summary>
     protected virtual void idleAction()
     {
 
     }
 
+
+    /// <summary>
+    /// Ãæµ¹À» °ËÃâÇÏ´Â ¸Ş¼­µå
+    /// </summary>
+    /// <param name="collision"></param>
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if ( !playerCheck ) // ë¯¸ ë°œê²¬ ìƒíƒœì—ì„œ 
+        if ( !playerCheck ) // ¹Ì ¹ß°ß »óÅÂ¿¡¼­ 
         {
-            if (collision.gameObject.CompareTag("Player")) // í”Œë ˆì´ì–´ê°€ Trigger ë²”ìœ„ ì•ˆì— ë“¤ì–´ì™”ë‹¤ë©´ ( ì¸ì‹í–ˆë‹¤ë©´ )
+            if (collision.gameObject.CompareTag("Player")) // ÇÃ·¹ÀÌ¾î°¡ Trigger ¹üÀ§ ¾È¿¡ µé¾î¿Ô´Ù¸é ( ÀÎ½ÄÇß´Ù¸é )
             {
                 checkNow();
             }
         }
+
     }
 
     /// <summary>
-    /// í”Œë ˆì´ì–´ ë°œê²¬ ì¦‰ì‹œ ì‹¤í–‰í•  í•¨ìˆ˜
+    /// ÇÃ·¹ÀÌ¾î ¹ß°ß Áï½Ã ½ÇÇàÇÒ ÇÔ¼ö
     /// </summary>
     protected virtual void checkNow()
     {
         playerCheck = true;
     }
 
+
+
+
+
     /// <summary>
-    /// í”¼í•´ë¥¼ ë°›ì•˜ì„ë•Œ ì‹¤í–‰í•  í•¨ìˆ˜ ìƒì„±
+    /// ÇÇÇØ¸¦ ¹Ş¾ÒÀ»¶§ ½ÇÇàÇÒ ÇÔ¼ö »ı¼º
     /// </summary>
-    /// <param name="Damage">í”Œë ˆì´ì–´ì—ê²Œ ë°›ì€ í”¼í•´</param>
+    /// <param name="Damage">ÇÃ·¹ÀÌ¾î¿¡°Ô ¹ŞÀº ÇÇÇØ</param>
     /// <exception cref="NotImplementedException"></exception>
-    private void Damaged(int Damage)
+    public void Damaged(int Damage)
     {
         Hp -= Damage;
     }
 
+
     /// <summary>
-    /// ì£½ì—ˆì„ë•Œ ì‹¤í–‰ ë  ë©”ì„œë“œ
+    /// Á×¾úÀ»¶§ ½ÇÇà µÉ ¸Ş¼­µå
     /// </summary>
     public void Die()
     {
         StopAllCoroutines();
+    }
+
+    /// <summary>
+    /// ¾ÆÀÌÅÛ µå¶ø ¸Ş¼­µå / ÀÏ¹İÀûÀ¸·Î Die¿¡¼­ ½ÇÇà
+    /// </summary>
+    public void ItemDrop()
+    {
+
     }
 }

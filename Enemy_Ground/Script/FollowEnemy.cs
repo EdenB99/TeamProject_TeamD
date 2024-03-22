@@ -6,22 +6,14 @@ using UnityEngine;
 public class FollowEnemy : EnemyBase_
 { 
     /// <summary>
-    /// 공격 거리
-    /// </summary>
-    public float attackDistance = 3f;
-
-    /// <summary>
     /// 레이의 길이
     /// </summary>
     float rayLength = 3.0f;
 
-
-    float attackCooldown = 2f;
-    float currentCooldown = 0f;
-
     readonly int canAttack_Hash = Animator.StringToHash("canAttack");
-    readonly int isMove_Hash = Animator.StringToHash("isMove");
+    readonly int isWalk_Hash = Animator.StringToHash("isWalk");
     readonly int Die_Hash = Animator.StringToHash("Die");
+    readonly int canJump_Hash = Animator.StringToHash("canJump");
     Animator animator;
 
     private void Awake()
@@ -32,44 +24,31 @@ public class FollowEnemy : EnemyBase_
         hp = maxHp;
     }
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-        checkNow();
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (rb != null)
+        if (playerCheck) 
         {
-            // Ray의 발사 방향과 길이를 시각화
-            Gizmos.color = Color.red; // Ray의 색상을 빨간색으로 설정
-            Vector2 direction = new Vector2(-CheckLR, 0); // Ray를 발사할 방향 설정
-            Gizmos.DrawRay(rb.position, direction * rayLength); // DrawRay를 사용하여 Ray를 그림
+            targetPos = player.transform.position;
+            if (IsMove)
+            {
+                if (targetPos.x < rb.position.x) CheckLR = 1;
+                else CheckLR = -1;
+            }
         }
+        checkNow();
     }
 
     protected override void attackAction()
     {
-        if (currentCooldown > 0)
-        {
-            currentCooldown -= Time.fixedDeltaTime;
-            return;
-        }
-
-        animator.SetBool(canAttack_Hash, true);
-
-        currentCooldown = attackCooldown;
+        animator.SetTrigger(canAttack_Hash);
     }
 
-    protected override void idleAction()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        animator.SetBool(canAttack_Hash, false);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            attackAction(); // 공격 액션 수행
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -80,20 +59,32 @@ public class FollowEnemy : EnemyBase_
         }
     }
 
+    /// <summary>
+    /// 플레이어 추적 및 벽 감지 점프 
+    /// </summary>
     protected override void checkNow()
     {
-        if(playerCheck)
+        //  플레이어가 감지되었는지 확인
+        if (playerCheck)
         {
-            animator.SetBool(isMove_Hash, true);
-            float distanceToPlayer = Vector2.Distance(transform.position, targetPos);
+            float distanceToPlayerSqr = ((Vector2)transform.position - targetPos).sqrMagnitude;
 
-            if (distanceToPlayer > attackDistance)
+            // 플레이어와의 거리가 4f 이상이면 실행 
+            if (distanceToPlayerSqr > 4f)
             {
+                animator.SetBool(isWalk_Hash, true);
+
                 float step = mobMoveSpeed * Time.deltaTime;
-                Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
+                Vector2 currentPosition = (Vector2)transform.position;
                 Vector2 targetPosition = new Vector2(targetPos.x, transform.position.y);
+
+                //목표위치까지 이동
                 Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
                 transform.position = newPosition;
+            }
+            else
+            {
+                animator.SetBool(isWalk_Hash, false);
             }
                 
             Vector2 direction = new Vector2(-CheckLR, 0);
@@ -107,8 +98,12 @@ public class FollowEnemy : EnemyBase_
         }
     }
 
-    private void Jump()
+    /// <summary>
+    /// 점프
+    /// </summary>
+    void Jump()
     {
+        animator.SetTrigger(canJump_Hash);
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 }
