@@ -132,7 +132,7 @@ public class EnemyBase_ : MonoBehaviour
     /// </summary>
     protected virtual void attackAction()
     {
-        
+
     }
 
     /// <summary>

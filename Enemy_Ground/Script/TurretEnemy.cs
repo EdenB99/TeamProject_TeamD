@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TurretEnemy : EnemyBase_
 {
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
