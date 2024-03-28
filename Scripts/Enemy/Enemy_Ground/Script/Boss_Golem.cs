@@ -114,6 +114,10 @@ public class Boss_Golem : BossBase_
         rb.velocity = shootDirection * shootSpeed;
     }
 
+    /// <summary>
+    /// 패턴 3: 레이저를 쏜 다음 플레이어 근처로 이동해 팔을 발사하는 패턴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator BossPattern_3()
     {
         animator.SetBool(isCast_Hash, true);
@@ -139,6 +143,9 @@ public class Boss_Golem : BossBase_
 
     }
 
+    /// <summary>
+    /// 팔을 여러개 날리는 패턴 함수
+    /// </summary>
     void FireMultiple()
     {
         float[] angles = { -30f, 0f, 30f };
@@ -150,6 +157,10 @@ public class Boss_Golem : BossBase_
         }
     }
 
+    /// <summary>
+    /// 기본 발사함수
+    /// </summary>
+    /// <param name="angle">날리는 각도</param>
     void FireArmShootAngle(float angle)
     {
         GameObject projectile = Instantiate(armShootPrefab, armshoot.position, Quaternion.identity);
