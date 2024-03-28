@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
+
 
 
 public class Player : MonoBehaviour
@@ -19,19 +19,20 @@ public class Player : MonoBehaviour
     public float downJump;
     public float downJumpTime;
     private bool isJump;
-    private int jumpCount;  
+    private int jumpCount;
     private bool isJumpOff;
 
     [Header("대시")]
     private bool canDash = true;
     private bool isDashing;
-    private float dashingPower = 2.0f;
+    public float dashingPower = 5.0f;
     private float dashingTime = 0.2f;
     private float dashingCool = 1f;
 
+    // 대시파워 Test
+    private Vector2 newForce;
 
     private Vector2 newVelocity;
-    private Vector2 newForce;
 
     // 레이어 태그
     private int playerLayer;
@@ -87,10 +88,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(isDashing)
-        {
-            return;
-        }
 
         if (!isJumpOff)
         {
@@ -107,7 +104,11 @@ public class Player : MonoBehaviour
             }
         }
 
-        
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
     }
 
 
@@ -116,14 +117,13 @@ public class Player : MonoBehaviour
         // 플레이어 땅 닿는지 확인
         //Debug.DrawRay(rigid.position, Vector3.down * 2, new Color(0, 1, 0));
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (isDashing)
         {
-            StartCoroutine(Dash());
+            return;
         }
 
-
         MovePosition();
-        if(isDashing)
+        if (isDashing)
         {
             return;
         }
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
 
     private void MovePosition()
     {
-        MousePosition();    // 마우스 포지션 변경 
+        MousePosition();    // 마우스 포지션 변경
         float moveDistance = moveInput.x * maxSpeed * Time.fixedDeltaTime;
         transform.position += new Vector3(moveDistance, 0, 0);
     }
@@ -225,7 +225,7 @@ public class Player : MonoBehaviour
         // 하단 점프를 위해 플레이어의 Collider를 잠시 비활성화
         cc.enabled = false;
         // 플랫폼과의 충돌을 잠시 무시하는 기간 설정
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         // Collider를 다시 활성화
         cc.enabled = true;
     }
@@ -237,32 +237,43 @@ public class Player : MonoBehaviour
 
     private void OnDash(InputAction.CallbackContext context)
     {
-        // 대시 로직 구현
-        StartCoroutine(Dash());
+        if (canDash)
+        {
+            // 애니메이션 넣고 출력
+            StartCoroutine(Dash());
+        }
     }
 
     private IEnumerator Dash()
     {
         canDash = false;
-        isDashing = true;
+        isDashing = true; // 대쉬할 때 동안 사용자의 입력 받지 않음.
+        float originalGravity = rigid.gravityScale;
         rigid.gravityScale = 0f;
-        rigid.AddForce(newForce * dashingPower, ForceMode2D.Impulse);
-        //tr.emitting = true;
+
+        // 마우스 값을 받아서 캐릭터 기준으로 좌우측을 있는걸 확인하고
+        // Vector2받아서 값방향에 맞는 음양수를 대시파워 받아서 계산(수정할예정)
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dashDirection = (mousePosition - new Vector2(transform.position.x, transform.position.y)).normalized;
+        // Y축 이동 방지를 위해 dashDirection의 y 값을 0으로 설정
+        dashDirection.y = 0;
+
+        rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse);
+        Debug.Log("대시");
         yield return new WaitForSeconds(dashingTime);
-        //tr.emitting = false;
-        //rb.gravityScale = originalGravity;
+        rigid.gravityScale = originalGravity;
         isDashing = false;
         yield return new WaitForSeconds(dashingCool);
         canDash = true;
-        Debug.Log("대시");
     }
+
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
-            jumpCount = 2;
+            jumpCount = 1;
             Player_ani.SetBool("Jump", false);
         }
     }
