@@ -15,7 +15,13 @@ public class PlayerStats : MonoBehaviour
     public float damageTaken;           // 몬스터 받는 피해
     public int Level;                   // 레벨
 
-
+    /// <summary>
+    /// 던그리드 음식 넣을시 넣을 변수
+    /// </summary>
+    public int Hungrycurr;
+    public int HungryMax;
+    
+    public int gold;                    // 소지 금액
 
     /// <summary>
     /// 살았는지 죽었는지 확인하기 위한 프로퍼티
