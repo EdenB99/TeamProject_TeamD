@@ -80,12 +80,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4676950052106445757, guid: e28bde2114053704e8b172c9c3164ffd, type: 3}
+  m_Sprite: {fileID: 8472398354385148736, guid: 6281beb4df33d6742b5587167e259de0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3, y: 2.875}
+  m_Size: {x: 0.48, y: 0.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -155,7 +155,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5208333, y: -0.65217394}
     oldSize: {x: 6, y: 5.75}
-    newSize: {x: 3, y: 2.875}
+    newSize: {x: 0.48, y: 0.46}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -228,20 +228,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 523319987619227778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f4bdeb9b77d6004face4c31725458b5, type: 3}
+  m_Script: {fileID: 11500000, guid: cee67e4cd95608043afcc391447cea27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 7606517137882255651}
-  sprite: {fileID: 4519170479611055415}
-  targetPos: {x: 0, y: 0}
+  sprite: {fileID: 0}
   maxHp: 50
-  hp: 50
   mobDamage: 0
   TestPattern: 0
   checkLR: 1
   intervalAfterTeleport: 2
   teleportDistance: 2
-  armShootPrefab: {fileID: 3297299060253153627, guid: 46b81ff65a74e0d4eb9488f7786f3986, type: 3}
+  armShootPrefab: {fileID: 0}
 --- !u!1 &5076767773150670168
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +353,7 @@ SpriteRenderer:
   m_Size: {x: 1.25, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &130290124571503854

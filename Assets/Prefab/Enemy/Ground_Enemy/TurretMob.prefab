@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b46b12ff290649c4aa428bce9c66cfbe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 46efc206583e8594a802a9d177e773f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.2, y: 3.2}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -151,8 +151,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.6, y: 1.6}
-    newSize: {x: 3.2, y: 3.2}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -172,12 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6231757f6cc7a4a90677c932ed2f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
   sprite: {fileID: 0}
-  targetPos: {x: 0, y: 0}
   maxHp: 10
-  jumpForce: 0
-  hp: 10
   mobDamage: 0
   mobMoveSpeed: 0
   IsMove: 0
