@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Enemy
   - PlayerAttack
+  - Item
   layers:
   - Default
   - TransparentFX

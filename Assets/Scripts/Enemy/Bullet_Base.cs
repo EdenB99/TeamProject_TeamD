@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet_Base : RecycleObject
+public class Bullet_Base : MonoBehaviour
 {
     /// <summary>
     /// 플레이어 불러오기 
@@ -60,7 +60,6 @@ public class Bullet_Base : RecycleObject
     {
 
     }
-
     /// <summary>
     /// 사라질때 실행 될 메서드
     /// </summary>
