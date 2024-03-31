@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BossBase_ : MonoBehaviour
+public class BossBase_ : MonoBehaviour, IEnemy
 {
     //컴포넌트 불러오기
     Rigidbody2D rb;
@@ -20,25 +20,85 @@ public class BossBase_ : MonoBehaviour
     /// </summary>
     Vector2 targetPos;
 
-    /// <summary>
-    /// 보스 개체의 최대 체력
-    /// </summary>
-    public int maxHp = 50;
+    protected enum BossState
+    {
+        Wait,       // 대기
+        Chase,      // 플레이어 추적
+        Attack,     // 공격 패턴
+        Dead        // 죽음
+    }
 
     /// <summary>
-    /// 보스 개체의 현재 체력
+    /// 보스 상태
     /// </summary>
-    private int hp = 50;
+    BossState state = BossState.Wait;
+
+    /// <summary>
+    /// 상태 변경
+    /// </summary>
+    Action stateUpdate;
+
+    /// <summary>
+    /// 상태 프로퍼티
+    /// </summary>
+    protected BossState State
+    {
+        get => state;
+        set
+        {
+            if (state != value)
+            {
+                state = value;
+                switch (state)  // 상태에 진입할 때 할 일들 처리
+                {
+                    case BossState.Wait:
+                        stateUpdate = Update_Wait; break;
+
+                    case BossState.Chase:
+                        stateUpdate = Update_Chase; break;
+
+                    case BossState.Attack:
+                        stateUpdate = Update_Attack; break;
+                }
+            }
+        }
+    }
+
+
+
+    protected float hp = 100.0f;
+    public float HP
+    {
+        get { return hp; }
+        set
+        {
+            hp = value;
+            hp = Mathf.Max(hp, 0);
+
+            // Hp가 0 이하면 사망
+            if (hp <= 0)
+            {
+                Die();
+            }
+
+        }
+    }
+
+
+    public float maxHP = 100.0f;
+    public float MaxHP => maxHP;
+
+    /// <summary>
+    /// 적 개체의 데미지 ( 부딪히는 경우만 )
+    /// </summary>
+    public uint Attackpower = 1;
+    public uint AttackPower => Attackpower;
+    public Action onDie { get; set; }
 
     /// <summary>
     /// 패턴 대기시간
     /// </summary>
     protected float waitTime;
-
-    /// <summary>
-    /// 적 개체의 데미지 ( 부딪히는 경우만 )
-    /// </summary>
-    public uint mobDamage = 0;
 
     /// <summary>
     /// 테스트용 uint
@@ -50,26 +110,6 @@ public class BossBase_ : MonoBehaviour
     /// 플레이어를 발견했는지 ( true면 발견 )
     /// </summary>
     protected bool playerCheck = false;
-
-    /// <summary>
-    /// Hp 프로퍼티
-    /// </summary>
-    public int Hp
-    {
-        get { return hp; }
-        set
-        {
-            hp = value;
-            hp = Mathf.Max(hp, 0);
-
-            // Hp가 0 이하면 사망
-            if (Hp <= 0)
-            {
-                Die();
-            }
-
-        }
-    }
 
     /// <summary>
     /// 좌우 확인
@@ -94,28 +134,31 @@ public class BossBase_ : MonoBehaviour
         }
     }
 
-
+    uint IEnemy.AttackPower { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     protected virtual void Awake()
     {
         //animator = GetComponent<Animator>(); 추후엔 애니메이터가 반드시 들어감
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        hp = maxHp;
         InitializePatterns();
     }
 
     protected virtual void Start()
     {
-        player = GameManager.Instance.Player;
-
-        // 보스는 공격을 코루틴으로 사용한다.
-        StartCoroutine(AwakeAction());
-
-        
+        player = GameManager.Instance.Player;   
     }
 
-    protected virtual void FixedUpdate() // 이동관련
+    protected virtual void Update()
+    {
+        // 플레이어의 위치를 받는다.
+        targetPos = player.transform.position;
+
+        // 상태에 따라 할일
+        stateUpdate();
+    }
+
+    void Update_Wait()
     {
         // 플레이어의 위치를 받는다.
         targetPos = player.transform.position;
@@ -125,15 +168,14 @@ public class BossBase_ : MonoBehaviour
         else CheckLR = -1;
     }
 
-    /// <summary>
-    /// 플레이어가, 보스와 조우했을때 처음으로 할 행동 ( 개전패턴 or 설정 )
-    /// </summary>
-    /// <returns></returns>
-    protected virtual IEnumerator AwakeAction()
+    void Update_Chase()
     {
-        // 
 
-        yield return new WaitForSeconds(1.0f);
+    }
+
+    void Update_Attack()
+    {
+
     }
 
     /// <summary>
@@ -152,6 +194,15 @@ public class BossBase_ : MonoBehaviour
 
         // 다른 패턴들도 이와 같이 초기화
     };
+    }
+
+    /// <summary>
+    /// 개전시 행동할 패턴
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator AwakeAction()
+    {
+        yield return null;
     }
 
     /// <summary>
@@ -184,8 +235,6 @@ public class BossBase_ : MonoBehaviour
     /// <returns></returns>
     protected virtual IEnumerator waitPattern()
     {
-        
-
         yield return new WaitForSeconds(1.0f);
     }
 
@@ -226,16 +275,19 @@ public class BossBase_ : MonoBehaviour
 
     }
 
+    public void Attack()
+    {
+        // 플레이어에게 피해주는것과 관련된 행동 적기
+    }
+
     /// <summary>
     /// 피해를 받았을때 실행할 함수 생성
     /// </summary>
     /// <param name="Damage">플레이어에게 받은 피해</param>
-    /// <exception cref="NotImplementedException"></exception>
-    public void Damaged(int Damage)
+    public void Damaged(float damage)
     {
-        Hp -= Damage;
+        HP -= damage;
     }
-
 
     /// <summary>
     /// 죽었을때 실행 될 메서드
@@ -244,4 +296,6 @@ public class BossBase_ : MonoBehaviour
     {
         StopAllCoroutines();
     }
+
+
 }

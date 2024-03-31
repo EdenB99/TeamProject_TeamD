@@ -25,12 +25,14 @@ public class Boss_Golem : BossBase_
         armshoot = transform.GetChild(1);
     }
 
+    
     protected override IEnumerator AwakeAction()
     {
         laser.gameObject.SetActive(true);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(false);
     }
+  
 
     /// <summary>
     /// 패턴1 : 레이저를 쏘고 플레이어 뒤로 순간이동 한 뒤 2초후에 레이저 또 발사
