@@ -6,7 +6,8 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [Header("아이템 기본 정보")]
-    // public ItemCode code;
+    public ItemCode code;
+    public ItemType type; //hjun : 타입에 대한 분류 추가
     public string itemName = "아이템";
     public string itemDescription = "설명";
     public Sprite itemIcon;

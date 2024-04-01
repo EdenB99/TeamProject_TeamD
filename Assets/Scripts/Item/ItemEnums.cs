@@ -41,10 +41,20 @@ public enum ItemCode : byte
 }
 
 /// <summary>
-/// 장비 가능한 아이템의 종류
+/// 장비 가능한 아이템의 종류 => 아이템 종류로 변경 :hjun
 /// </summary>
-public enum EquipType : byte
+public enum ItemType : byte
 {
-    Weapon,
-    Accessory
+    Weapon,         //무기
+    Accessory,      //악세사리
+    Consumable      //소모품
+}
+/// <summary>
+/// 아이템 정렬 기준
+/// </summary>
+public enum ItemSortBy
+{
+    Code,       // 코드 기준
+    Name,       // 이름 기준
+    Price       // 가격 기준
 }
