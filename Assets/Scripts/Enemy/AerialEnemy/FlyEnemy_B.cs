@@ -16,8 +16,6 @@ public class FlyEnemy_B : EnemyBase_
     /// </summary>
     Vector3 moveDir;
 
-    
-
     protected override void Start()
     {
         base.Start();
@@ -39,19 +37,19 @@ public class FlyEnemy_B : EnemyBase_
         }
     }
 
-    protected override void checkNow()
+    protected override void firstAction()
     {
-        base.checkNow();
         StartCoroutine(targetMove());
     }
+
 
     IEnumerator targetMove()
     {
         // 대상 위치를 지정한다. 멈춘다.
         IsMove = false;
         yield return new WaitForSeconds(1.5f);                  // 1.5초 동안 대기한뒤
-        playerPos = player.transform.position;                  
-        moveDir = (playerPos - transform.position).normalized;  
+        playerPos = player.transform.position;
+        moveDir = (playerPos - transform.position).normalized;
         IsMove = true;                                          // 플레이어가 있던 위치로 1.5초간 이동한다.
         yield return new WaitForSeconds(1.5f);                  
         StartCoroutine(targetMove());                           // 무한 반복

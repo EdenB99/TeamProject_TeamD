@@ -21,7 +21,7 @@ public interface IEnemy
     /// <summary>
     /// 공격력 프로퍼티
     /// </summary>
-    uint AttackPower { get; set; }
+    uint AttackPower { get; }
 
     /// <summary>
     /// 사망 델리게이트 프로퍼티
@@ -31,7 +31,6 @@ public interface IEnemy
     /// <summary>
     /// 적의 공격 메서드
     /// </summary>
-    /// <param name="target">대상</param>
     void Attack();
 
     /// <summary>

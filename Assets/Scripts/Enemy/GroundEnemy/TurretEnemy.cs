@@ -15,11 +15,5 @@ public class TurretEnemy : EnemyBase_
 
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            playerCheck = true;
-        }
-    }
+
 }

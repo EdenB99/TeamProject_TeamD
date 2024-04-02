@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 6950140138360203903}
   - component: {fileID: 3663959902586000169}
   - component: {fileID: 3768528397115297388}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ MonoBehaviour:
   attackPower: 0
   defense: 0
   maxHp: 100
-  _hp: 0
+  _hp: 1
   criticalChance: 0
   damageTaken: 0
   Level: 0

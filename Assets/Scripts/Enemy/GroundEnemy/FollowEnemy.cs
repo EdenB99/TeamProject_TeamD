@@ -29,7 +29,7 @@ public class FollowEnemy : EnemyBase_
 
     protected override void FixedUpdate()
     {
-        if (playerCheck) 
+        if (playerDetected) 
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -38,38 +38,21 @@ public class FollowEnemy : EnemyBase_
                 else CheckLR = -1;
             }
         }
-        checkNow();
+        attackAction();
     }
+
+    /*
+    protected override void attackAction()
+    {
+
+        animator.SetTrigger(canAttack_Hash);
+    }
+    */
 
     protected override void attackAction()
     {
-        animator.SetTrigger(canAttack_Hash);
-    }
-
-    new private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            attackAction(); // 공격 액션 수행
-
-        }
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            playerCheck = true;
-        }
-    }
-
-    /// <summary>
-    /// 플레이어 추적 및 벽 감지 점프 
-    /// </summary>
-    protected override void checkNow()
-    {
         //  플레이어가 감지되었는지 확인
-        if (playerCheck)
+        if (playerDetected)
         {
             float distanceToPlayerSqr = ((Vector2)transform.position - targetPos).sqrMagnitude;
 
@@ -90,7 +73,7 @@ public class FollowEnemy : EnemyBase_
             {
                 animator.SetBool(isWalk_Hash, false);
             }
-                
+
             Vector2 direction = new Vector2(-CheckLR, 0);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, LayerMask.GetMask("Wall"));
 
@@ -100,6 +83,18 @@ public class FollowEnemy : EnemyBase_
             }
         }
     }
+    new private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            attackAction(); // 공격 액션 수행
+
+        }
+    }
+
+
+
+   
 
     /// <summary>
     /// 점프

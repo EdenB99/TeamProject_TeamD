@@ -31,7 +31,7 @@ public class JumpingEnemy : EnemyBase_
 
     protected override void FixedUpdate()
     {
-        if (playerCheck)
+        if (playerDetected)
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -39,35 +39,18 @@ public class JumpingEnemy : EnemyBase_
                 if (targetPos.x < rb.position.x) CheckLR = 1;
                 else CheckLR = -1;
             }
+            attackAction();
         }
-        checkNow();
-    }
-
-    protected override void attackAction()
-    {
-
-    }
-
-    protected override void idleAction()
-    {
-
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            playerCheck = true;
-        }
+        
     }
 
     /// <summary>
     /// 플레이어 추적 및 벽 감지 점프 
     /// </summary>
-    protected override void checkNow()
+    protected override void attackAction()
     {
         //  플레이어가 감지되었는지 확인
-        if (playerCheck)
+        if (playerDetected)
         {
             float distanceToPlayerSqr = ((Vector2)transform.position - targetPos).sqrMagnitude;
 
@@ -109,7 +92,7 @@ public class JumpingEnemy : EnemyBase_
                 Jump();
             }
             yield return new WaitForSeconds(jumpCool); // 점프 쿨타임
-            checkNow();
+            
         }
     }
 

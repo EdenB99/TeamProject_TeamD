@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase_ : MonoBehaviour
+public class EnemyBase_ : MonoBehaviour, IEnemy
 {
     //컴포넌트 불러오기
     protected Rigidbody2D rb;
@@ -19,14 +20,10 @@ public class EnemyBase_ : MonoBehaviour
     protected Vector2 targetPos;
 
     /// <summary>
-    /// 적 개체의 최대 체력
+    /// 플레이어 발견 여부
     /// </summary>
-    public int maxHp = 10;
-
-    /// <summary>
-    /// 적 개체의 현재 체력
-    /// </summary>
-    private int hp = 10;
+    [SerializeField]
+    protected bool playerDetected;
 
     /// <summary>
     /// 적 개체의 데미지 ( 부딪히는 경우만 )
@@ -42,30 +39,32 @@ public class EnemyBase_ : MonoBehaviour
     /// 적이 이동하는지 (고정형) 에 대한 여부 false면 방향전환 + 이동을 하지 않는다.
     /// </summary>
     public bool IsMove = true;
-    
-    /// <summary>
-    /// 플레이어를 발견했는지 ( true면 발견 )
-    /// </summary>
-    protected bool playerCheck = false;
-
 
     /// <summary>
-    /// Hp 프로퍼티
+    /// 적의 시야 범위
     /// </summary>
-    public int Hp
+    public float sightRange = 1.0f;
+
+    /// <summary>
+    /// HP설정용
+    /// </summary>
+    protected float hp = 100.0f;
+
+    /// <summary>
+    /// HP
+    /// </summary>
+    public float HP
     {
         get { return hp; }
         set
         {
             hp = value;
             hp = Mathf.Max(hp, 0);
-
             // Hp가 0 이하면 사망
-            if (Hp <= 0)
+            if (hp <= 0)
             {
                 Die();
             }
-
         }
     }
 
@@ -92,11 +91,25 @@ public class EnemyBase_ : MonoBehaviour
         }
     }
 
+    public float maxHP = 100.0f;
+    public float MaxHP => maxHP;
+
+    /// <summary>
+    /// 적 개체의 데미지 ( 부딪히는 경우만 )
+    /// </summary>
+    public uint Attackpower = 1;
+    public uint AttackPower => Attackpower;
+
+    /// <summary>
+    /// 죽음 델리게이트
+    /// </summary>
+    public Action onDie { get; set; }
+    
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        hp = maxHp;
     }
 
     protected virtual void Start()
@@ -106,7 +119,7 @@ public class EnemyBase_ : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (playerCheck) // 플레이어 발견시 행동
+        if ( playerDetected ) // 플레이어 발견시 행동
         {
             // 플레이어의 위치를 받는다.
             targetPos = player.transform.position;
@@ -123,16 +136,14 @@ public class EnemyBase_ : MonoBehaviour
         }
         else // 플레이어 미발견시 행동
         {
+            
+            playerCheck();
             idleAction();
         }
-
-
-
-
     }
 
     /// <summary>
-    /// /// 업데이트에서 실행될 코드 ( 플레이어 발견 )
+    /// Update에서 실행될 코드 ( 플레이어 발견 )
     /// </summary>
     protected virtual void attackAction()
     {
@@ -140,13 +151,12 @@ public class EnemyBase_ : MonoBehaviour
     }
 
     /// <summary>
-    /// 업데이트에서 실행될 코드 ( 플레이어 미발견 )
+    /// Update에서 실행될 코드 ( 플레이어 미발견 )
     /// </summary>
     protected virtual void idleAction()
     {
 
     }
-
 
     /// <summary>
     /// 충돌을 검출하는 메서드
@@ -158,31 +168,38 @@ public class EnemyBase_ : MonoBehaviour
     }
 
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    /// <summary>
+    /// 플레이어를 탐지하는 불을 리턴하는 메서드 SightRange 안에 들어오면 플레이어가 있는것.
+    /// </summary>
+    /// <returns>리턴 true = 플레이어가 범위내에 있다.</returns>
+    private bool playerCheck()
     {
-   
-        if ( !playerCheck ) // 미 발견 상태에서 
-        {
-            if (collision.gameObject.CompareTag("Player")) // 플레이어가 Trigger 범위 안에 들어왔다면 ( 인식했다면 )
-            {
-                
-                checkNow();
-            }
-        }
+        // 범위 내에
+        Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
 
+        // 플레이어가 있다면
+        if (colliders != null)
+        {
+            
+
+            if (!playerDetected)
+            {
+                playerDetected = true;
+                firstAction();
+            }
+
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
-    /// 플레이어 발견 즉시 실행할 함수
+    /// 플레이어를 첫 조우했을때 할 행동 ( 일반적으로 1회 실행 )
     /// </summary>
-    protected virtual void checkNow()
+    protected virtual void firstAction()
     {
-        playerCheck = true;
+
     }
-
-
-
-
 
     /// <summary>
     /// 피해를 받았을때 실행할 함수 생성
@@ -191,16 +208,33 @@ public class EnemyBase_ : MonoBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void Damaged(int Damage)
     {
-        Hp -= Damage;
+        HP -= Damage;
     }
 
+    /// <summary>
+    /// 피해를 주는 메서드
+    /// </summary>
+    public void Attack()
+    {
+        // 플레이어에게 피해주는것과 관련된 행동 적기
+    }
 
     /// <summary>
-    /// 죽었을때 실행 될 메서드
+    /// 피해를 받는 메서드
     /// </summary>
-    public void Die()
+    /// <param name="damage"></param>
+    public void Damaged(float damage)
     {
-        StopAllCoroutines();
+        HP -= damage;
+    }
+
+    [System.Serializable]
+    public struct ItemDropInfo
+    {
+        public ItemCode code;       // 아이템 종류
+        [Range(0, 1)]
+        public float dropRatio;     // 드랍 확율(1.0f = 100%)
+        public uint dropCount;      // 최대 드랍 개수
     }
 
     /// <summary>
@@ -209,5 +243,14 @@ public class EnemyBase_ : MonoBehaviour
     public void ItemDrop()
     {
 
+    }
+
+    /// <summary>
+    /// 죽었을때 실행 될 메서드
+    /// </summary>
+    public void Die()
+    {
+        Debug.Log("죽었다.");
+        StopAllCoroutines();
     }
 }

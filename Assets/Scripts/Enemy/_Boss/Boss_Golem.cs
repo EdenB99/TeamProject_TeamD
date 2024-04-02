@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss_Golem : BossBase_
+public class Boss_Golem : PatternEnemyBase
 {
     float intervalpattern1 = 1.5f;
     float intervalpattern2 = 1.0f;

@@ -5,15 +5,12 @@ using UnityEngine;
 /// <summary>
 /// 아이템 코드(ID)
 /// </summary>
-public enum ItemCode : byte
+public enum ItemCode : ushort
 {
     /// <summary>
     /// 소비 아이템 ( 즉발 )
     /// </summary>
     Apple = 0,
-
-
-
 
 
     /// <summary>
@@ -23,7 +20,7 @@ public enum ItemCode : byte
 
 
     /// <summary>
-    /// 판매 전용 아이템 
+    /// 판매 전용 아이템 ( 다이아몬드 )
     /// </summary>
     Diamond,
 
@@ -36,7 +33,7 @@ public enum ItemCode : byte
 
 
     /// <summary>
-    /// 악세서리 아이템 
+    /// 장신구 아이템 
     /// </summary>
 }
 

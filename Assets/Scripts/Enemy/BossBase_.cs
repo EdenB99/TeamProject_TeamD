@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BossBase_ : MonoBehaviour, IEnemy
+public class PatternEnemyBase : MonoBehaviour, IEnemy
 {
     //컴포넌트 불러오기
     Rigidbody2D rb;
@@ -18,7 +18,12 @@ public class BossBase_ : MonoBehaviour, IEnemy
     /// <summary>
     /// 플레이어 위치 타게팅
     /// </summary>
-    Vector2 targetPos;
+    Vector2 playerPos;
+
+    /// <summary>
+    /// 플레이어 감지 범위 ( 보스는 컬라이더가 아닌 코드로 플레이어를 탐지한다 )
+    /// </summary>
+    public float sightRange = 1.0f;
 
     protected enum BossState
     {
@@ -58,6 +63,9 @@ public class BossBase_ : MonoBehaviour, IEnemy
                         stateUpdate = Update_Chase; break;
 
                     case BossState.Attack:
+                        stateUpdate = Update_Attack; break;
+                    case BossState.Dead:
+                        Die();
                         stateUpdate = Update_Attack; break;
                 }
             }
@@ -105,12 +113,6 @@ public class BossBase_ : MonoBehaviour, IEnemy
     /// </summary>
     public uint TestPattern = 0;
 
-
-    /// <summary>
-    /// 플레이어를 발견했는지 ( true면 발견 )
-    /// </summary>
-    protected bool playerCheck = false;
-
     /// <summary>
     /// 좌우 확인
     /// </summary>
@@ -134,8 +136,7 @@ public class BossBase_ : MonoBehaviour, IEnemy
         }
     }
 
-    uint IEnemy.AttackPower { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+   
     protected virtual void Awake()
     {
         //animator = GetComponent<Animator>(); 추후엔 애니메이터가 반드시 들어감
@@ -152,7 +153,7 @@ public class BossBase_ : MonoBehaviour, IEnemy
     protected virtual void Update()
     {
         // 플레이어의 위치를 받는다.
-        targetPos = player.transform.position;
+        playerPos = player.transform.position;
 
         // 상태에 따라 할일
         stateUpdate();
@@ -161,10 +162,10 @@ public class BossBase_ : MonoBehaviour, IEnemy
     void Update_Wait()
     {
         // 플레이어의 위치를 받는다.
-        targetPos = player.transform.position;
+        playerPos = player.transform.position;
 
         // 플레이어의 위치에따라 좌우 
-        if (targetPos.x < rb.position.x) CheckLR = 1;
+        if (playerPos.x < rb.position.x) CheckLR = 1;
         else CheckLR = -1;
     }
 
@@ -250,29 +251,26 @@ public class BossBase_ : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(1.0f);
         //공격
         yield return new WaitForSeconds(1.0f);
-        // 공격
+        //공격
         StartCoroutine(bossActionSelect());
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!playerCheck) // 미 발견 상태에서 
-        {
-            if (collision.gameObject.CompareTag("Player")) // 플레이어가 Trigger 범위 안에 들어왔다면 ( 인식했다면 )
-            {
-                playerCheck = true;
-            }
-        }
-
-    }
 
     /// <summary>
-    /// 충돌을 검출하는 메서드
+    /// 플레이어를 탐지하는 불을 리턴하는 메서드 SightRange 안에 들어오면 플레이어가 있는것.
     /// </summary>
-    /// <param name="collision"></param>
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    /// <returns>리턴 true = 플레이어가 범위내에 있다.</returns>
+    private bool playerCheck()
     {
+        // 범위 내에
+        Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
 
+        // 플레이어가 있다면
+        if (colliders.Length > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void Attack()
@@ -294,6 +292,7 @@ public class BossBase_ : MonoBehaviour, IEnemy
     /// </summary>
     public void Die()
     {
+        Debug.Log("죽었다.");
         StopAllCoroutines();
     }
 
