@@ -6,8 +6,9 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [Header("플레이어 스텟")]
-    public float Damage;                // 공격력
+    public float attackPower;                // 공격력
     public float Defense;               // 방어력
+    public float attackSpeed;                // 공격속도
     public float MaxHp = 100.0f;        // 최대체력
     public float _hp;                   // 현재체력
     public int criticalChance;          // 크리티컬

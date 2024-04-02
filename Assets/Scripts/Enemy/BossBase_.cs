@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PatternEnemyBase : MonoBehaviour, IEnemy
+public class BossBase_ : MonoBehaviour, IEnemy
 {
     //컴포넌트 불러오기
     Rigidbody2D rb;

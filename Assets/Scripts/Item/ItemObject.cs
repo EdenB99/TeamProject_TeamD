@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour
+public class ItemObject : RecycleObject
 {
     /// <summary>
     /// 이 오브젝트가 가질 아이템 데이터

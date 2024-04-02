@@ -2,30 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet_Base : MonoBehaviour
+public class Bullet_Base : RecycleObject
 {
+    public BulletType bulletType;
+
     /// <summary>
     /// 플레이어 불러오기 
     /// </summary>
     protected Player player;
 
-    Vector3 playerPos;
+    /// <summary>
+    /// 스프라이트 ( 추후에 스프라이트를 설정가능하게 변경 )
+    /// </summary>
+    // SpriteRenderer spriteRenderer = null;
 
     /// <summary>
-    /// 플레이어 위치 타게팅
+    /// 특정 위치 타게팅
     /// </summary>
     Vector2 targetPos;
 
     /// <summary>
     /// 이동방향
     /// </summary>
-    Vector2 moveDir;
-
+    public Vector2 moveDir;
 
     /// <summary>
     /// 탄의 이동속도
     /// </summary>
-    public float mobMoveSpeed = 5;
+    public float moveSpeed = 5;
 
     public uint bulletDamage = 1;
 
@@ -42,15 +46,22 @@ public class Bullet_Base : MonoBehaviour
     private void Awake()
     {
         player = GameManager.Instance.Player;
-
-        playerPos = player.transform.position;
-        moveDir = (playerPos - transform.position).normalized;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        transform.Translate(Time.deltaTime * mobMoveSpeed * moveDir);
+        switch (bulletType)
+        {
+            case BulletType.Bullet_Straight:
+                transform.Translate(Time.deltaTime * moveSpeed * moveDir);
+                break;
+            case BulletType.Bullet_Chase:
+                break;
+
+        }
     }
+
+
 
     /// <summary>
     /// 충돌을 검출하는 메서드
@@ -60,6 +71,7 @@ public class Bullet_Base : MonoBehaviour
     {
 
     }
+
     /// <summary>
     /// 사라질때 실행 될 메서드
     /// </summary>
