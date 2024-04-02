@@ -13,7 +13,7 @@ public class FollowEnemy : EnemyBase_
     /// <summary>
     /// 점프 높이
     /// </summary>
-    float jumpForce = 5.0f;
+    public float jumpForce = 5.0f;
 
     readonly int canAttack_Hash = Animator.StringToHash("canAttack");
     readonly int isWalk_Hash = Animator.StringToHash("isWalk");
@@ -34,25 +34,38 @@ public class FollowEnemy : EnemyBase_
             targetPos = player.transform.position;
             if (IsMove)
             {
-                if (targetPos.x < rb.position.x) CheckLR = 1;
-                else CheckLR = -1;
+                if (targetPos.x < rb.position.x) CheckLR = -1;
+                else CheckLR = 1;
             }
         }
         attackAction();
     }
 
-    /*
-    protected override void attackAction()
+    bool playerCheck()
     {
+        // 범위 내에
+        Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
 
-        animator.SetTrigger(canAttack_Hash);
+        // 플레이어가 있다면
+        if (colliders != null)
+        {
+
+
+            if (!playerDetected)
+            {
+                playerDetected = true;
+                firstAction();
+            }
+
+            return true;
+        }
+        return false;
     }
-    */
 
     protected override void attackAction()
     {
         //  플레이어가 감지되었는지 확인
-        if (playerDetected)
+        if (playerCheck())
         {
             float distanceToPlayerSqr = ((Vector2)transform.position - targetPos).sqrMagnitude;
 
@@ -74,7 +87,7 @@ public class FollowEnemy : EnemyBase_
                 animator.SetBool(isWalk_Hash, false);
             }
 
-            Vector2 direction = new Vector2(-CheckLR, 0);
+            Vector2 direction = new Vector2(CheckLR, 0);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, LayerMask.GetMask("Wall"));
 
             if (hit.collider != null)
@@ -83,18 +96,6 @@ public class FollowEnemy : EnemyBase_
             }
         }
     }
-    new private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            attackAction(); // 공격 액션 수행
-
-        }
-    }
-
-
-
-   
 
     /// <summary>
     /// 점프
@@ -103,5 +104,14 @@ public class FollowEnemy : EnemyBase_
     {
         animator.SetTrigger(canJump_Hash);
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            animator.SetTrigger(canAttack_Hash);
+
+        }
     }
 }

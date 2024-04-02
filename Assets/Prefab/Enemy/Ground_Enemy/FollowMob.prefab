@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 7766843133498859397}
   - component: {fileID: 959199364198085226}
   - component: {fileID: 8814586292796688112}
-  - component: {fileID: 7747868538537662362}
   - component: {fileID: 2476543700687747810}
   - component: {fileID: 1933076279677838565}
   - component: {fileID: 4358119447844660619}
@@ -111,8 +110,8 @@ Transform:
   m_GameObject: {fileID: 8458540727652415048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.68, y: 0.1, z: 0}
-  m_LocalScale: {x: 0.9143972, y: 0.9143972, z: 0.9143972}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6195848191783225555}
@@ -215,41 +214,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.98, y: 2.52}
   m_EdgeRadius: 0
---- !u!58 &7747868538537662362
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8458540727652415048}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 10
 --- !u!50 &2476543700687747810
 Rigidbody2D:
   serializedVersion: 4
@@ -310,13 +274,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9543a47cc62a934986d6bf948b3fb9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  sprite: {fileID: 0}
-  targetPos: {x: 0, y: 0}
-  maxHp: 10
-  jumpForce: 7
-  hp: 10
+  sprite: {fileID: 959199364198085226}
+  playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 2.5
   IsMove: 1
+  sightRange: 10
   checkLR: 1
+  maxHP: 100
+  Attackpower: 1
+  jumpForce: 7
