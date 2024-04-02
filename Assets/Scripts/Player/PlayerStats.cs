@@ -1,52 +1,25 @@
 using System;
-using System.ComponentModel;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class PlayerStats : MonoBehaviour
 {
     [Header("플레이어 스텟")]
-
-    /// <summary>
-    /// 플레이어의 공격력
-    /// </summary>
-    public float attackPower;
-    /// <summary>
-    /// 플레이어의 방어력
-    /// </summary>
-    public float defense;               
-    /// <summary>
-    /// 플레이어의 최대 체력
-    /// </summary>
-    public float maxHp = 100.0f;        // 최대체력
-    /// <summary>
-    /// 플레이어의 현재 체력
-    /// </summary>
+    public float Damage;                // 공격력
+    public float Defense;               // 방어력
+    public float MaxHp = 100.0f;        // 최대체력
     public float _hp;                   // 현재체력
-    /// <summary>
-    /// 플레이어의 크리티컬 확률
-    /// </summary>
     public int criticalChance;          // 크리티컬
-    /// <summary>
-    /// ?
-    /// </summary>
     public float damageTaken;           // 몬스터 받는 피해
-    /// <summary>
-    /// 플레이어의 레벨
-    /// </summary>
     public int Level;                   // 레벨
-    /// <summary>
-    /// 플레이어의 속도
-    /// </summary>
-    public float attackSpeed;
 
     /// <summary>
     /// 던그리드 음식 넣을시 넣을 변수
     /// </summary>
     public int Hungrycurr;
     public int HungryMax;
-    
+
     public int gold;                    // 소지 금액
 
     /// <summary>
@@ -54,13 +27,30 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public bool IsAlive => _hp > 0;
 
-    public Action OnDie;
+    /// <summary>
+    /// 무적시간
+    /// </summary>
+    private float invincibleTime = 2.0f;
 
+    /// <summary>
+    /// 무적상태 확인
+    /// </summary>
+    private bool isInvincible = false;
+
+    public Action OnDie;
+    /// <summary>
+    /// HP의 변경을 알리는 델리게이트
+    /// </summary>
+    public Action<float> onHealthChange { get; set; }
+
+    SpriteRenderer spriteRenderer;
     Animator ani;
 
     private void Awake()
     {
         ani = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     /// <summary>
@@ -72,18 +62,42 @@ public class PlayerStats : MonoBehaviour
 
         set
         {
-            _hp = Mathf.Clamp(value, 0, maxHp);
-
-            if(!IsAlive)
+            if (IsAlive)
             {
-                Die();
+                _hp = value;
+                if (_hp <= 0.0f)
+                {
+                    Die();
+                }
+                _hp = Mathf.Clamp(value, 0, MaxHp);
+                onHealthChange?.Invoke(_hp / MaxHp);
             }
         }
     }
 
     private void Start()
     {
-        _hp = maxHp;    // 게임 시작 시 체력을 최대로 설정
+        _hp = MaxHp;    // 게임 시작 시 체력을 최대로 설정
+    }
+
+
+
+    public void TakeDamage(float damage)
+    {
+        if (!isInvincible) // 플레이어가 무적 상태가 아닐 때만 피해를 입힘
+        {
+            _hp -= damage;
+            Debug.Log(_hp);
+
+            if (_hp > 0) // 체력이 남아있을 때만 무적 모드를 활성화
+            {
+                StartCoroutine(InvinvibleMode());
+            }
+            else if (_hp <= 0)
+            {
+                Die();
+            }
+        }
     }
 
     /// <summary>
@@ -102,9 +116,37 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             CurrentHp -= 10;
         }
     }
+
+
+    /// <summary>
+    /// 무적 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator InvinvibleMode()
+    {
+        isInvincible = true; // 무적 상태 시작
+        gameObject.layer = LayerMask.NameToLayer("Invincible"); // 레이어를 무적 레이어로 변경
+
+        float timeElapsed = 0.0f;
+        while (timeElapsed < invincibleTime) // 2초동안 계속하기
+        {
+            timeElapsed += Time.deltaTime;
+
+            float alpha = (Mathf.Cos(timeElapsed * 30.0f) + 1.0f) * 0.5f;   // 코사인 결과를 1 ~ 0 사이로 변경
+            spriteRenderer.color = new Color(1, 1, 1, alpha);               // 알파에 지정(깜박거리게 된다.)
+
+            yield return null;
+        }
+
+        // 2초가 지난후
+        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
+        spriteRenderer.color = Color.white;                 // 알파값도 원상복구
+        isInvincible = false; // 무적 상태 종료
+    }
+
 }

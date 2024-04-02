@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     public float dashingPower = 5.0f;
     private float dashingTime = 0.2f;
     private float dashingCool = 1f;
+    private Vector2 lastDashDirection = Vector2.right;
+    private Vector2 DeshmoveInput = Vector2.zero;
 
     // 대시파워 Test
     private Vector2 newForce;
@@ -42,7 +44,7 @@ public class Player : MonoBehaviour
     /// 맵 체크
     /// </summary>
     private bool isGround;
-    
+
     //private float checkRadius = 0.2f;
 
     /// <summary>
@@ -83,6 +85,7 @@ public class Player : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         inputActions = new PlayerAction();
 
+
     }
 
     private void Start()
@@ -115,6 +118,13 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+
+
+        // 마지막 본 방향 대시  초기화
+        /*if (moveInput.x != 0)
+        {
+            lastDashDirection = moveInput.normalized; // 마지막 이동 방향 업데이트
+        }*/
 
     }
 
@@ -251,33 +261,80 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator Dash()
+
+    /// <summary>
+    /// 마지막 보고있는방향 대시
+    /// </summary>
+    /// <param name="collision"></param>
+    /*private IEnumerator Dash()
     {
+        if (!canDash) yield break;
+
+        Debug.Log("대시 시작");
         canDash = false;
-        isDashing = true; // 대쉬할 때 동안 사용자의 입력 받지 않음.
         float originalGravity = rigid.gravityScale;
         rigid.gravityScale = 0f;
+        rigid.velocity = Vector2.zero;
 
-        // 마우스 값을 받아서 캐릭터 기준으로 좌우측을 있는걸 확인하고
-        // Vector2받아서 값방향에 맞는 음양수를 대시파워 받아서 계산(수정할예정)
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 dashDirection = (mousePosition - new Vector2(transform.position.x, transform.position.y)).normalized;
-        // Y축 이동 방지를 위해 dashDirection의 y 값을 0으로 설정
-        dashDirection.y = 0;
+        Vector2 dashDirection = lastDashDirection.normalized; // 가만히 있어도 마지막 이동 방향으로 대시
 
         rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse);
-        Debug.Log("대시");
+        Debug.Log($"대시 방향: {dashDirection}");
+
         yield return new WaitForSeconds(dashingTime);
+
         rigid.gravityScale = originalGravity;
-        isDashing = false;
         yield return new WaitForSeconds(dashingCool);
         canDash = true;
+        Debug.Log("대시 종료");
+    }*/
+
+
+
+    // 대쉬 최종본
+    private IEnumerator Dash()
+    {
+        if (!canDash) yield break; // 대시가 가능한 상태인지 확인
+
+        Debug.Log("대시 시작");
+        canDash = false;
+        float originalGravity = rigid.gravityScale;
+        rigid.gravityScale = 0f; // 대시 동안 중력 영향 제거
+        rigid.velocity = Vector2.zero; // 현재 속도 초기화
+
+        Vector2 dashDirection;
+
+        if (moveInput.x == 0) // 플레이어 입력이 없을 경우 마우스 위치를 사용
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            dashDirection = (mousePosition - new Vector2(transform.position.x, transform.position.y)).normalized;
+        }
+        else // 플레이어 입력이 있을 경우 입력 방향을 사용
+        {
+            dashDirection = new Vector2(moveInput.x, 0).normalized;
+            lastDashDirection = dashDirection; // 마지막 대시 방향 업데이트
+        }
+
+        //dashDirection.y = 0; // Y축 이동 방지
+        rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse); // 계산된 방향으로 대시 힘 적용
+        Debug.Log($"대시 방향: {dashDirection}");
+
+        yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
+
+        rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
+        yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
+        canDash = true;
+        Debug.Log("대시 종료");
     }
+
+
 
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
             jumpCount = 1;
