@@ -67,7 +67,7 @@ public class FollowEnemy : EnemyBase_
         //  플레이어가 감지되었는지 확인
         if (playerCheck())
         {
-            float distanceToPlayerSqr = ((Vector2)transform.position - targetPos).sqrMagnitude;
+            float distanceToPlayerSqr = (transform.position - targetPos).sqrMagnitude;
 
             // 플레이어와의 거리가 4f 이상이면 실행 
             if (distanceToPlayerSqr > 4f)

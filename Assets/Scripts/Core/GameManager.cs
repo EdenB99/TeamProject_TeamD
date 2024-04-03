@@ -17,6 +17,9 @@ public class GameManager : Singleton<GameManager>
     ItemDataManager itemDataManager;
     public ItemDataManager ItemData => itemDataManager;
 
+    BulletDataManager bulletDataManager;
+    public BulletDataManager BulletData => bulletDataManager;
+
     InventoryUI inventoryUI;
     public InventoryUI InventoryUI => inventoryUI;
 
@@ -24,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.OnPreInitialize();
         itemDataManager = GetComponent<ItemDataManager>();
+        bulletDataManager = GetComponent<BulletDataManager>();
     }
 
     protected override void OnInitialize()

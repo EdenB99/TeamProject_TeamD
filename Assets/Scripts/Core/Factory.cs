@@ -24,15 +24,13 @@ public class Factory : Singleton<Factory>
     /// <param name="Dir">방향지정</param>
     /// <param name="type">여기에 넣은 불릿 스크립트대로 이동한다.</param>
     /// <returns></returns>
-    public GameObject MakeBullet(Vector2 position, float speed, uint damage,Vector2 Dir, BulletType type )
+    public GameObject MakeBullet(Vector2 position, Vector2 Dir, BulletCode code )
     {
-        Bullet_Base obj = bulletPool.GetObject(position);
-
-        obj.moveSpeed = speed;      // 이동 스피드
-        obj.bulletDamage = damage;  // 데미지
+        BulletObject obj = bulletPool.GetObject(position);
+        BulletData data = GameManager.Instance.BulletData[code];
+        obj.BulletData = data;
         obj.moveDir = Dir;          // 이동 방향 설정
-        obj.bulletType = type;      // 이동방식
-
+        
         return obj.gameObject;
     }
 

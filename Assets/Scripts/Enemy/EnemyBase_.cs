@@ -17,7 +17,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy
     /// <summary>
     /// 플레이어 위치 타게팅
     /// </summary>
-    protected Vector2 targetPos;
+    protected Vector3 targetPos;
 
     /// <summary>
     /// 플레이어 발견 여부

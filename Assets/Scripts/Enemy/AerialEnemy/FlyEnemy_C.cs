@@ -9,12 +9,18 @@ public class FlyEnemy_C : EnemyBase_
     private float height = 0.8f; // 왕복 높이
     private Vector3 startPos; // 초기 위치
 
-    Vector3 playerPos;
+    public BulletCode bullet;
 
     protected override void Start()
     {
         base.Start();
         startPos = transform.position; // 시작 위치를 현재 위치로 설정
+    }
+
+    protected override void firstAction()
+    {
+        StartCoroutine(fire());
+
     }
 
     protected override void idleAction()
@@ -44,7 +50,17 @@ public class FlyEnemy_C : EnemyBase_
         transform.position = new Vector3(newX, currentPos.y, 0);
     }
 
+    IEnumerator fire()
+    {
+        yield return new WaitForSeconds(2.0f);
+        Vector2 moveDir = (targetPos - transform.position).normalized;
 
+        Factory.Instance.MakeBullet(transform.position,moveDir,bullet);
+
+        StartCoroutine(fire());
+
+
+    }
 
 
 
