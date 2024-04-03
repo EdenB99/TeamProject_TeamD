@@ -37,11 +37,6 @@ public class SlotUI_Base : MonoBehaviour
         itemEquip = child.GetComponent<TextMeshProUGUI>();
     }
 
-    private void Start()
-    {
-        
-    }
-
     /// <summary>
     /// 슬롯을 초기화 하는 함수(=InvenSlot과 InvenSlotUI를 연결)
     /// </summary>
@@ -49,7 +44,7 @@ public class SlotUI_Base : MonoBehaviour
     public virtual void InitializeSlot(InvenSlot slot)
     {
         invenSlot = slot;
-        invenSlot.onSlotItemChange = Refresh;   // 슬롯의 아이템에 변경이 있을 때 Refresh함수 실행(이전에 연결된 함수는 모두 무시)
+        invenSlot.onSlotItemChange = Refresh;   
         Refresh();          // 첫 화면 갱신
     }
 

@@ -19,12 +19,16 @@ public class UsableUI : MonoBehaviour
 
     public Action ClickedDiscard;
 
-    
+    CanvasGroup canvasGroup;
 
-    
+
 
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+        Close();
+
+
         Transform child = transform.GetChild(0);
         Button EquipButton = child.GetComponent<Button>();
 
@@ -34,44 +38,57 @@ public class UsableUI : MonoBehaviour
         child = transform.GetChild(2);
         Button DiscardButton = child.GetComponent<Button>();
 
+
     }
     public void Open(ItemData itemData)
     {
+        MovePosition(Mouse.current.position.ReadValue());
+        // 보이기 전에 커서 위치와 상세 정보창 옮기기
+        canvasGroup.alpha = 1.0f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
         if (itemData != null)
         {
             targetItemData = itemData;
         }
     }
     /// <summary>
-    /// 아이템 분리창을 닫는 함수
+    /// 해당 창을 종료하는 함수
     /// </summary>
     public void Close()
     {
-        gameObject.SetActive(false);
+        canvasGroup.alpha = 0.0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     /// <summary>
-    /// 클릭하면 실행되는 함수(UI밖을 클릭했는지를 체크하기 위한 용도)
+    /// 상세 정보창을 움직이는 함수
     /// </summary>
-    /// <param name="_"></param>
-    private void OnClick(InputAction.CallbackContext _)
+    /// <param name="screenPos">스크린 좌표</param>
+    public void MovePosition(Vector2 screenPos)
     {
-        if (!MousePointInRect())  // 마우스 포인터가 UI의 rect안에 있는지 확인
+        // Screen.width;   // 화면의 가로 해상도
+
+        if (canvasGroup.alpha > 0.0f)  // 보이는 상황인지 확인
         {
-            Close();    // UI 영역 밖을 클릭했으면 닫는다.
+            RectTransform rect = (RectTransform)transform;
+            int over = (int)(screenPos.x + rect.sizeDelta.x) - Screen.width;    // 얼마나 넘쳤는지 확인            
+            screenPos.x -= Mathf.Max(0, over);  // over를 양수로만 사용(음수일때는 별도 처리 필요없음)
+            rect.position = screenPos;
         }
     }
-
-    /// <summary>
-    /// 마우스 포인터가 UI rect 안에 있는지 확인하는 함수
-    /// </summary>
-    /// <returns>true면 안에 있다. false면 밖에 있다.</returns>
-    bool MousePointInRect()
+    private void EquipButton()
     {
-        Vector2 screenPos = Mouse.current.position.ReadValue();
-        Vector2 diff = screenPos - (Vector2)transform.position; // 이 UI의 피봇에서 마우스 포인터가 얼마나 떨어져 있는지 계산
 
-        RectTransform rectTransform = (RectTransform)transform;
-        return rectTransform.rect.Contains(diff);
+    }
+    private void UseButton()
+    {
+
+    }
+    private void DiscardButton()
+    {
+
     }
 }

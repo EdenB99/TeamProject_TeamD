@@ -16,25 +16,10 @@ public class DetaillUI : MonoBehaviour
     CanvasGroup canvasGroup;
 
     /// <summary>
-    /// 일시 정지 모드(true면 일시 정지, false면 사용 중)
+    /// 디테일창이 켜져있는지 확인
     /// </summary>
-    bool isPause = false;
+    public bool isOn = false;
 
-    /// <summary>
-    /// 일시 정지 모드를 확인하고 설정하는 프로퍼티
-    /// </summary>
-    public bool IsPause
-    {
-        get => isPause;
-        set
-        {
-            isPause = value;
-            if (isPause)
-            {
-                Close();    // 일시 정지가 되면 열려있던 상세 정보창도 닫는다.
-            }
-        }
-    }
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -60,7 +45,7 @@ public class DetaillUI : MonoBehaviour
     /// <param name="itemData">표시할 아이템 데이터</param>
     public void Open(ItemData itemData)
     {
-        if (!IsPause && itemData != null)
+        if (!isOn && itemData != null)
         {
             icon.sprite = itemData.itemIcon;
             itemName.text = itemData.itemName;
@@ -78,9 +63,12 @@ public class DetaillUI : MonoBehaviour
     }
     public void Close()
     {
-        // 알파 변경 시작(1->0)
-        StopAllCoroutines();
-        StartCoroutine(FadeOut());
+        if (isOn)
+        {
+            // 알파 변경 시작(1->0)
+            StopAllCoroutines();
+            StartCoroutine(FadeOut());
+        }
     }
     /// <summary>
     /// 상세 정보창을 움직이는 함수
@@ -113,6 +101,7 @@ public class DetaillUI : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = 1.0f;
+        isOn = true;
     }
     /// <summary>
     /// 알파를 1 -> 0으로 만드는 코루틴
@@ -125,5 +114,6 @@ public class DetaillUI : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = 0.0f;
+        isOn = false;
     }
 }

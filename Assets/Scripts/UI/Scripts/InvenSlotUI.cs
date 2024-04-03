@@ -10,7 +10,7 @@ public class InvenSlotUI : SlotUI_Base, IPointerClickHandler,
     IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
 
-
+    
     /// <summary>
     /// 마우스 클릭을 알리는 델리게이트(uint: 클릭이 된 슬롯의 인덱스)
     /// </summary>
@@ -62,6 +62,6 @@ public class InvenSlotUI : SlotUI_Base, IPointerClickHandler,
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        onPointerMove?.Invoke(eventData.position);
+        //onPointerMove?.Invoke(eventData.position);
     }
 }

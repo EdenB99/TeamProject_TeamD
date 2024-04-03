@@ -17,13 +17,15 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 임시 슬롯
     /// </summary>
-    TempSlotUI tempSlotUI;
+    public TempSlotUI tempSlotUI;
     /// <summary>
     /// 상세 정보창
     /// </summary>
-    DetaillUI detail;
-
-    UsableUI usableUI;
+    public DetaillUI detail;
+    /// <summary>
+    /// 버튼 UI
+    /// </summary>
+    public UsableUI usableUI;
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
@@ -36,11 +38,10 @@ public class InventoryUI : MonoBehaviour
         child = child.transform.GetChild(0);
         child = child.transform.GetChild(0);
         slotUIs = child.GetComponentsInChildren<InvenSlotUI>();
-        child = transform.GetChild(1);
-        detail = GetComponent<DetaillUI>();
-        child = transform.GetChild(2);
-        usableUI = GetComponent<UsableUI>();
-
+        //child = transform.GetChild(1);
+        //detail = GetComponent<DetaillUI>();
+        //child = transform.GetChild(2);
+        //usableUI = GetComponent<UsableUI>();
         InventoryInput = new InventoryInput();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -131,22 +132,12 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">클릭한 슬롯의 인덱스</param>
     private void OnSlotClick(uint index)
     {
-        if (tempSlotUI.InvenSlot.IsEmpty)
+        usableUI.Open(slotUIs[index].InvenSlot.ItemData);
+        if (detail.isOn)
         {
-            // 쉬프트가 안눌려진 상태 -> 아이템 사용 or 아이템 장비
-            if (inven[index].ItemData is IUsable)
-                inven[index].UseItem(gameObject);
-
-            if (inven[index].ItemData is IEquipable)
-                inven[index].EquipItem(gameObject);
-
+            detail.Close();
         }
-        else
-        {
-            // 임시 슬롯에 아이템이 들어있으면
-            OnItemMoveEnd(index, true); 
-            // 클릭된 슬롯에 아이템 넣기(슬롯이 클릭되었을 때 실행되니 isSlotEnd는 true)
-        }
+        
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
     {
@@ -157,7 +148,7 @@ public class InventoryUI : MonoBehaviour
             tempSlotUI.Close();                     // 임시 슬롯이 비면 닫는다.
         }
 
-        detail.IsPause = false; // 퍼즈 풀고
+        detail.isOn = false; // 퍼즈 풀고
         if (isSlotEnd)           // 슬롯에서 끝이 났으면 상세 정보창 다시 열기
         {
             detail.Open(inven[index].ItemData);
