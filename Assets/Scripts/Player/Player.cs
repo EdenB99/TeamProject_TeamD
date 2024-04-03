@@ -53,7 +53,6 @@ public class Player : MonoBehaviour
     private Transform groundCheck;
     private LayerMask groundLayer;
 
-
     [Header("플레이어 회전")]
     private bool isPosition = false;        // 플레이어 회전
     private Vector2 mousePos;               // 플레이어 마우스 회전
@@ -64,7 +63,6 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 외부에서 playerStats 을 읽기위한 프로퍼티
     /// </summary>
-
     public PlayerStats PlayerStats { get { return playerStats; } }
 
 
@@ -85,7 +83,8 @@ public class Player : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         inputActions = new PlayerAction();
 
-
+        // 플레이어 사망시 작동 정지
+        PlayerStats.OnDie += inputActions.Player.Disable;
     }
 
     private void Start()
@@ -120,8 +119,8 @@ public class Player : MonoBehaviour
         }
 
 
-        // 마지막 본 방향 대시  초기화
-        /*if (moveInput.x != 0)
+        /*// 마지막 본 방향 대시  초기화
+        if (moveInput.x != 0)
         {
             lastDashDirection = moveInput.normalized; // 마지막 이동 방향 업데이트
         }*/
@@ -266,7 +265,7 @@ public class Player : MonoBehaviour
     /// 마지막 보고있는방향 대시
     /// </summary>
     /// <param name="collision"></param>
-    /*private IEnumerator Dash()
+   /* private IEnumerator Dash()
     {
         if (!canDash) yield break;
 
@@ -287,8 +286,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingCool);
         canDash = true;
         Debug.Log("대시 종료");
-    }*/
-
+    }
+*/
 
 
     // 대쉬 최종본
