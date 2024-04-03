@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletIcon: {fileID: 21300000, guid: 64e52e6068d491f40829c8453a47cebb, type: 3}
   code: 0
-  bulletType: 0
-  moveSpeed: 13
+  bulletType: 1
+  moveSpeed: 2
   bulletDamage: 1
+  bulletSize: 0.3
   isThrougt: 0
   isParring: 0
   isPlayer: 0
