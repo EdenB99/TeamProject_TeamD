@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
     Animator animator;
+    WeaponAction inputActions;
+
     protected Player player;
 
     protected PlayerStats playerStats;
@@ -46,7 +50,7 @@ public class WeaponBase : MonoBehaviour
     public float weaponSpeed = 10.0f;
 
 
-    public float attackCooldown = 0.5f; // 공격 간격
+    public float attackCooldown = 0.2f; // 공격 간격
 
     
     private float lastAttackTime = 0f; // 마지막 공격 시간
@@ -70,7 +74,7 @@ public class WeaponBase : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
+        inputActions = new WeaponAction();
     }
 
     protected virtual void Start()
@@ -84,9 +88,7 @@ public class WeaponBase : MonoBehaviour
 
         playerStats = player.PlayerStats;
 
-        hinge = player.transform.GetChild(0);
-
-        
+        hinge = player.transform.GetChild(0);    
     }
 
     protected void Update()
@@ -99,6 +101,7 @@ public class WeaponBase : MonoBehaviour
             Attack();
             lastAttackTime = Time.time;
         }
+        Debug.Log("업데이트");
     }
 
     /// <summary>
@@ -118,6 +121,24 @@ public class WeaponBase : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        inputActions.Weapon.Enable();
+        inputActions.Weapon.Attack.performed += OnAttack;
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        Attack();
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Weapon.Attack.performed -= OnAttack;
+        inputActions.Weapon.Disable();
+    }
+
+
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
@@ -136,7 +157,7 @@ public class WeaponBase : MonoBehaviour
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
     {
-        animator.SetTrigger("Attack");
+        animator.SetTrigger(attackTrigger);
 
         ActivateEffect();
 
