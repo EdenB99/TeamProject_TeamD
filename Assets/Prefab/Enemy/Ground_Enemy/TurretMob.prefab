@@ -169,7 +169,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8958766941200498215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed6231757f6cc7a4a90677c932ed2f0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 09e4018997c63154ebfb09c6fc82ef08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
@@ -181,7 +181,7 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
-  ThunderPrefab: {fileID: 6784313238061595325, guid: f1d0d407942cfac44b3f8f338e3a7a13, type: 3}
+  ThunderPrefab: {fileID: 6784313238061595325, guid: 17326fbf328b5934cbe9d7017a1bf019, type: 3}
 --- !u!95 &7317045491588493595
 Animator:
   serializedVersion: 5
