@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     private float dashingCool = 1f;
     private Vector2 lastDashDirection = Vector2.right;
     private Vector2 DeshmoveInput = Vector2.zero;
+    TrailRenderer tr;
 
     // 대시파워 Test
     private Vector2 newForce;
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         cc = GetComponent<CapsuleCollider2D>();
         playerStats = GetComponent<PlayerStats>();
         inputActions = new PlayerAction();
+        tr = GetComponent<TrailRenderer>();
 
         // 플레이어 사망시 작동 정지
         PlayerStats.OnDie += inputActions.Player.Disable;
@@ -295,8 +297,9 @@ public class Player : MonoBehaviour
     {
         if (!canDash) yield break; // 대시가 가능한 상태인지 확인
 
-        Debug.Log("대시 시작");
+        Debug.Log("대시");
         canDash = false;
+        tr.emitting = true;
         float originalGravity = rigid.gravityScale;
         rigid.gravityScale = 0f; // 대시 동안 중력 영향 제거
         rigid.velocity = Vector2.zero; // 현재 속도 초기화
@@ -322,8 +325,9 @@ public class Player : MonoBehaviour
 
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
         yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
+        tr.emitting = false;
         canDash = true;
-        Debug.Log("대시 종료");
+        
     }
 
 
