@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 3468543500396611735}
   - component: {fileID: 2332697065537588037}
   - component: {fileID: 1305698171326583477}
-  - component: {fileID: 1985975645658757741}
   - component: {fileID: 535470105058086762}
   m_Layer: 6
   m_Name: Player
@@ -117,7 +116,7 @@ SpriteRenderer:
   m_Size: {x: 1.0625, y: 1.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &2332697065537588037
@@ -182,28 +181,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1.4}
   m_Direction: 0
---- !u!114 &1985975645658757741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9161225323560727809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6b119c80bc98a64f904b62479c8366f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 0
-  Defense: 0
-  MaxHp: 10
-  _hp: 10
-  criticalChance: 0
-  damageTaken: 0
-  Level: 0
-  Hungrycurr: 0
-  HungryMax: 0
-  gold: 0
 --- !u!95 &535470105058086762
 Animator:
   serializedVersion: 5
