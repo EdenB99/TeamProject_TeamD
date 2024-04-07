@@ -4,6 +4,8 @@ public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
     Animator animator;
+    WeaponAction inputActions;
+
     protected Player player;
 
     protected PlayerStats playerStats;
@@ -12,11 +14,6 @@ public class WeaponBase : MonoBehaviour
     /// 공격 이펙트 오브젝트
     /// </summary>
     public GameObject weaponEffect;
-
-    /// <summary>
-    /// 공격 이펙트 생성 지점
-    /// </summary>
-    public Transform effectSpawnPoint;
 
     /// <summary>
     /// 이펙트 활성화 여부
@@ -70,7 +67,7 @@ public class WeaponBase : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
+        inputActions = new WeaponAction();
     }
 
     protected virtual void Start()
@@ -86,7 +83,7 @@ public class WeaponBase : MonoBehaviour
 
         hinge = player.transform.GetChild(0);
 
-        
+       
     }
 
     protected void Update()
@@ -99,6 +96,19 @@ public class WeaponBase : MonoBehaviour
             Attack();
             lastAttackTime = Time.time;
         }
+
+        // 레이캐스트로 무기의 범위 밖인지 확인하고 이펙트를 활성화
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
+
+        if (hit.collider != null)
+        {
+            // 무기의 범위를 벗어나는 경우
+            Vector2 effectSpawnPoint = hit.point; // 충돌 지점을 이펙트의 스폰 위치로 사용
+            Debug.Log("무기의 범위를 벗어나는 위치: " + effectSpawnPoint);
+
+            // 무기의 범위를 벗어나는 지점에 이펙트 생성
+            ActivateEffect(effectSpawnPoint);
+        }
     }
 
     /// <summary>
@@ -109,36 +119,35 @@ public class WeaponBase : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // 마우스 위치 = 스크린상 월드 좌표
         mousePosition.z = 0f;
         transform.position = hinge.position;            // 힌지 위치 불러오기
-
+        Debug.Log($"{hinge.position}");
 
         Vector3 direction = mousePosition - transform.position; // 방향 벡터 계산
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         transform.rotation = rotation;
-
-
+        Debug.Log($"{direction}");
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
-        {
-            /* 추후에 인터페이스로 에너미 찾을 예정
-            Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                float totalDamage = weaponDamage + playerStats.attackPower;
-                enemy.Damaged(totalDamage);
-            }
-            */
-        }
-    }
+    //protected void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Enemy"))
+    //    {
+    //        /* 추후에 인터페이스로 에너미 찾을 예정
+    //        Enemy enemy = collision.GetComponent<Enemy>();
+    //        if (enemy != null)
+    //        {
+    //            float totalDamage = weaponDamage + playerStats.attackPower;
+    //            enemy.Damaged(totalDamage);
+    //        }
+    //        */
+    //    }
+    //}
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
     {
         animator.SetTrigger("Attack");
 
-        ActivateEffect();
+        ActivateEffect(transform.position); 
 
         // 공격 속도에 따라 애니메이션 속도 조절
         float attackAnimationSpeed = playerStats.attackSpeed;
@@ -148,15 +157,15 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected void ActivateEffect()
+    protected void ActivateEffect(Vector2 spawnPoint)
     {
         if (isEffectActive)
             return;
 
-        weaponEffect.SetActive(true);           // 무기 이펙트 활성화
-        weaponEffect.transform.position = effectSpawnPoint.position;
+        weaponEffect.SetActive(true);
+        weaponEffect.transform.position = spawnPoint;
 
-        isEffectActive = true;      // 무기 이펙트 활성화 확인
+        isEffectActive = true;
         Debug.Log("무기 이펙트 활성화");
     }
 
@@ -174,6 +183,3 @@ public class WeaponBase : MonoBehaviour
         DeactivateEffect();
     }
 }
-
-
-
