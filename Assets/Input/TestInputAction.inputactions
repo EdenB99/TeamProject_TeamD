@@ -1,0 +1,74 @@
+{
+    "name": "TestInputAction",
+    "maps": [
+        {
+            "name": "Test",
+            "id": "dd770b6a-a037-45ea-adbe-a1507873a825",
+            "actions": [
+                {
+                    "name": "Test1",
+                    "type": "Value",
+                    "id": "9bf31492-1dcf-44eb-8094-d234fb2017f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Test2",
+                    "type": "Button",
+                    "id": "23c4636c-dd6d-4f17-9266-ced12381e0af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test3",
+                    "type": "Button",
+                    "id": "8f7198c5-253f-437c-abf1-41d0e13f9b87",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8554eeb8-031d-4999-8e8b-499ff85ac2dd",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92956793-e431-498b-809b-62ea3b3e42e9",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7b55dc9-5845-4f44-8496-7d62976d7ccc",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

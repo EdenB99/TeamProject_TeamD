@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyBase_ : MonoBehaviour, IEnemy
 {
@@ -237,12 +238,22 @@ public class EnemyBase_ : MonoBehaviour, IEnemy
         public uint dropCount;      // 최대 드랍 개수
     }
 
+    public ItemDropInfo[] dropItems;
+
     /// <summary>
     /// 아이템 드랍 메서드 / 일반적으로 Die에서 실행
     /// </summary>
     public void ItemDrop()
     {
+        foreach(var item in dropItems)
+        {
+            if ( item.dropRatio > Random.value )
+            {
+                GameObject obj = Factory.Instance.MakeItem(item.code);
+                obj.transform.position = transform.position;
 
+            }
+        }
     }
 
     /// <summary>
@@ -252,5 +263,6 @@ public class EnemyBase_ : MonoBehaviour, IEnemy
     {
         Debug.Log("죽었다.");
         StopAllCoroutines();
+        ItemDrop();
     }
 }

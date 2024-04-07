@@ -15,6 +15,9 @@ public class Factory : Singleton<Factory>
 
         bulletPool = GetComponentInChildren<BulletPool>();
         if(bulletPool != null ) bulletPool.Initialize();
+
+        itemPool = GetComponentInChildren<ItemPool>();
+        if(itemPool != null ) itemPool.Initialize();
     }
 
     /// <summary>

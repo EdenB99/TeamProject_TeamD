@@ -43,9 +43,14 @@ public class BulletObject : RecycleObject
     public uint bulletDamage = 1;
 
     /// <summary>
+    /// 라이프타임
+    /// </summary>
+    public float LifeTime = 1;
+
+    /// <summary>
     /// 탄이 벽을 넘는지 못넘는지 여부
     /// </summary>
-    public bool isThrougt;
+    public bool isThrought;
 
     /// <summary>
     /// 탄의 피격 여부 (패링 , 제거)
@@ -67,6 +72,7 @@ public class BulletObject : RecycleObject
     {
         data = null;
         base.OnEnable();
+        
     }
 
     private void Start()
@@ -97,7 +103,23 @@ public class BulletObject : RecycleObject
     /// <param name="collision"></param>
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
+        if ( collision.gameObject.CompareTag("Platform") ) // 지형이라면 
+        {
+            if ( isThrought )
+            {
+                Die();
+            }
+        }
+    }
 
+    /// <summary>
+    /// 일정 시간후 사라지도록 하는 메서드
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BulletDelTime()
+    {
+        yield return new WaitForSeconds(LifeTime);
+        Die();
     }
 
     /// <summary>
@@ -106,6 +128,7 @@ public class BulletObject : RecycleObject
     public void Die()
     {
         StopAllCoroutines();
+        gameObject.SetActive(false);
     }
 
     public BulletData BulletData
@@ -122,8 +145,13 @@ public class BulletObject : RecycleObject
                 bulletType = data.bulletType;      // 이동방식
                 moveSpeed = data.moveSpeed;      // 이동 스피드
                 bulletDamage = data.bulletDamage;  // 데미지
+                isParring = data.isParring;
+                isThrought = data.isThrougt;
+                LifeTime = data.lifeTime;
                 circleCollider.radius = data.bulletSize; // 피격 범위
                 spriteRenderer.sprite = data.bulletIcon; // 스프라이트
+
+                StartCoroutine(BulletDelTime());
             }
         }
     }
