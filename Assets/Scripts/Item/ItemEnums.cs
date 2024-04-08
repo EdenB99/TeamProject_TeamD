@@ -55,3 +55,9 @@ public enum ItemSortBy
     Name,       // 이름 기준
     Price       // 가격 기준
 }
+
+public enum WeaponType
+{
+    Slash,
+    Stab
+}

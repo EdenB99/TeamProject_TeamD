@@ -14,4 +14,5 @@ public class WeaponData : ItemData
     public uint attackPower = 10;
     public float attackSpeed = 1.0f;
     public GameObject modelPrefab;
+    public WeaponType weaponType;
 }
