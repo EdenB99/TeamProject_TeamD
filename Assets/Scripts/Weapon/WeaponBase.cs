@@ -103,11 +103,11 @@ public class WeaponBase : MonoBehaviour
         if (hit.collider != null)
         {
             // 무기의 범위를 벗어나는 경우
-            Vector2 effectSpawnPoint = hit.point; // 충돌 지점을 이펙트의 스폰 위치로 사용
-            Debug.Log("무기의 범위를 벗어나는 위치: " + effectSpawnPoint);
+            Vector2 effectPoint = hit.point; // 충돌 지점을 이펙트의 스폰 위치로 사용
+            Debug.Log("무기의 범위를 벗어나는 위치: " + effectPoint);
 
             // 무기의 범위를 벗어나는 지점에 이펙트 생성
-            ActivateEffect(effectSpawnPoint);
+            ActivateEffect(effectPoint);
         }
     }
 
@@ -146,12 +146,14 @@ public class WeaponBase : MonoBehaviour
     protected virtual void Attack()
     {
         animator.SetTrigger("Attack");
+        Debug.Log("공격트리거 발동");
 
         ActivateEffect(transform.position); 
 
         // 공격 속도에 따라 애니메이션 속도 조절
         float attackAnimationSpeed = playerStats.attackSpeed;
         animator.SetFloat("weaponSpeed", attackAnimationSpeed);
+
     }
 
     /// <summary>
@@ -171,7 +173,7 @@ public class WeaponBase : MonoBehaviour
 
     protected void DeactivateEffect()
     {
-        weaponEffect.SetActive(false);      // 무기 이펙트 비활성화
+        weaponEffect.SetActive(false);      // 무기 이ㄹㄹ펙트 비활성화
 
         isEffectActive = false;     // 무기 이펙트 비활성화 확인
 
