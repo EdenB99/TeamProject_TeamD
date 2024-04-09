@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletObject : RecycleObject
+public class BulletObject : RecycleObject , IAttack
 {
     public BulletType bulletType;
 
@@ -61,6 +61,8 @@ public class BulletObject : RecycleObject
     /// True라면, 플레이어의 불릿이 된다.
     /// </summary>
     public bool isPlayer;
+
+    public uint AttackPower => bulletDamage;
 
     private void Awake()
     {

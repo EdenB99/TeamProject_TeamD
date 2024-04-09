@@ -19,6 +19,18 @@ public class ItemObject : RecycleObject
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    protected override void OnEnable()
+    {
+        data = null;
+        base.OnEnable();
+    }
+
+    public void itemDel()
+    {
+        StopAllCoroutines();
+        gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// 이미지 설정
     /// </summary>

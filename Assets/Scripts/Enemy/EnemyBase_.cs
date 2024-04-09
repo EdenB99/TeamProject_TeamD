@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyBase_ : MonoBehaviour, IEnemy
+public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 {
     //컴포넌트 불러오기
     protected Rigidbody2D rb;

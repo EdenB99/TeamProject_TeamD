@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2004898835834005254}
   - component: {fileID: 1139097294497233748}
   - component: {fileID: 2312697407571217868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   moveDir: {x: 0, y: 0}
   moveSpeed: 5
   bulletDamage: 1
-  isThrougt: 0
+  LifeTime: 1
+  isThrought: 0
   isParring: 0
   isPlayer: 0

@@ -19,11 +19,6 @@ public interface IEnemy
     float MaxHP { get; }
 
     /// <summary>
-    /// 공격력 프로퍼티
-    /// </summary>
-    uint AttackPower { get; }
-
-    /// <summary>
     /// 사망 델리게이트 프로퍼티
     /// </summary>
     Action onDie { get; set; }

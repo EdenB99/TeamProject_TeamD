@@ -10,6 +10,7 @@ public class Test_Item : TestBase
     public GameObject mob;
 
     FlyEnemy_C fly;
+    public ItemCode itemcode;
 
     Player player;
 
@@ -21,13 +22,13 @@ public class Test_Item : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        obj = Factory.Instance.MakeItem(ItemCode.HealingPotion_A);
+        obj = Factory.Instance.MakeItem(itemcode);
         obj.transform.position = transform.position;
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        player.PlayerStats.CurrentHp -= 10;
+        player.PlayerStats.TakeDamage(10);
     }
 
     protected override void OnTest3(InputAction.CallbackContext context)
