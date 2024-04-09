@@ -10,47 +10,46 @@ public class UsableUI : MonoBehaviour
     
     //선택된 아이템데이터와 슬롯
     ItemData targetItemData;
-    InvenSlot targetSlot;
+    InvenSlotUI targetSlot;
 
     //각각의 버튼이 눌러졌을때 실행되는 델리게이트
-    public Action ClickedEquip;
-
-    public Action ClickedUse;
+    public Action<ItemData> ClickedEquip_Use;
 
     public Action ClickedDiscard;
 
+    public Action ClickedExit;
+
     CanvasGroup canvasGroup;
 
+    /// <summary>
+    /// 사용창이 켜져있는지 확인
+    /// </summary>
+    public bool isOn = false;
 
-
+    
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         Close();
 
-
-        Transform child = transform.GetChild(0);
-        Button EquipButton = child.GetComponent<Button>();
-
-        child = transform.GetChild(1);
-        Button UseButton = child.GetComponent<Button>();
-
-        child = transform.GetChild(2);
-        Button DiscardButton = child.GetComponent<Button>();
-
-
     }
-    public void Open(ItemData itemData)
+    public void Open(InvenSlotUI SlotUI)
     {
+        isOn = true;
+        canvasGroup.alpha = 0.0001f;
         MovePosition(Mouse.current.position.ReadValue());
         // 보이기 전에 커서 위치와 상세 정보창 옮기기
         canvasGroup.alpha = 1.0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
-        if (itemData != null)
+        if (SlotUI != null)
         {
-            targetItemData = itemData;
+            targetSlot = SlotUI;
+        }
+        if (SlotUI.InvenSlot.ItemData != null)
+        {
+            targetItemData = SlotUI.InvenSlot.ItemData;
         }
     }
     /// <summary>
@@ -58,6 +57,7 @@ public class UsableUI : MonoBehaviour
     /// </summary>
     public void Close()
     {
+        isOn = false;
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -79,16 +79,19 @@ public class UsableUI : MonoBehaviour
             rect.position = screenPos;
         }
     }
-    private void EquipButton()
+    public void Equip_UseButton()
     {
-
+        ClickedEquip_Use?.Invoke(targetItemData);
+        Close();
     }
-    private void UseButton()
+    public void DiscardButton()
     {
-
+        ClickedDiscard?.Invoke();
+        Close();
     }
-    private void DiscardButton()
+    public void exitButton()
     {
-
+        ClickedExit?.Invoke();
+        Close();
     }
 }

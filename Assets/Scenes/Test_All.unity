@@ -1514,7 +1514,7 @@ PrefabInstance:
     - target: {fileID: 442027132787230386, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 910ca023e080096428b6e20b64b4a81f, type: 2}
+      objectReference: {fileID: 9100000, guid: 421e78c360f4cac4fbc4d9e71f5b577d, type: 2}
     - target: {fileID: 3007197684275618010, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
       propertyPath: weaponEffect
       value: 

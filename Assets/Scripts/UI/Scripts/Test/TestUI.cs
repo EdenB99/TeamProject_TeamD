@@ -12,7 +12,7 @@ public class TestUI : MonoBehaviour
         inven.AddItem(ItemCode.Apple);
         inven.AddItem(ItemCode.Apple);
         inven.AddItem(ItemCode.Apple);
-
+       
         inven.AddItem(ItemCode.Apple);
 
         inventoryUI.InitializeInventory(inven);

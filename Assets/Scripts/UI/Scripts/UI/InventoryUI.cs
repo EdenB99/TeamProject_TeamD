@@ -27,6 +27,13 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     public UsableUI usableUI;
 
+
+    public Transform Weapons;
+    InvenSlotUI[] WeaponsSlots;
+
+    public Transform Accessoires;
+    InvenSlotUI[] AccessoriesSlots;
+
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
 
@@ -42,6 +49,10 @@ public class InventoryUI : MonoBehaviour
         //detail = GetComponent<DetaillUI>();
         //child = transform.GetChild(2);
         //usableUI = GetComponent<UsableUI>();
+
+        WeaponsSlots = Weapons.GetComponentsInChildren<InvenSlotUI>();
+
+        AccessoriesSlots = Accessoires.GetComponentsInChildren<InvenSlotUI>();
         InventoryInput = new InventoryInput();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -109,7 +120,10 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">상세 정보창에서 표시될 아이템이 들어있는 슬롯의 인덱스</param>
     private void OnItemDetailOn(uint index)
     {
-        detail.Open(slotUIs[index].InvenSlot.ItemData); // 열기
+        if (!usableUI.isOn)
+        {
+            detail.Open(slotUIs[index].InvenSlot.ItemData); // 열기
+        }
     }
     /// <summary>
     /// 아이템 상세 정보창을 닫는 함수
@@ -125,6 +139,7 @@ public class InventoryUI : MonoBehaviour
     private void OnSlotPointerMove(Vector2 screen)
     {
         detail.MovePosition(screen);    // 움직이기
+        usableUI.MovePosition(screen);
     }
     /// <summary>
     /// 슬롯을 클릭했을 때 실행되는 함수
@@ -132,12 +147,16 @@ public class InventoryUI : MonoBehaviour
     /// <param name="index">클릭한 슬롯의 인덱스</param>
     private void OnSlotClick(uint index)
     {
-        usableUI.Open(slotUIs[index].InvenSlot.ItemData);
         if (detail.isOn)
         {
             detail.Close();
         }
-        
+        if (usableUI.isOn)
+        {
+            usableUI.Close();
+        }
+        usableUI.Open(slotUIs[index]);
+
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
     {
@@ -153,5 +172,29 @@ public class InventoryUI : MonoBehaviour
         {
             detail.Open(inven[index].ItemData);
         }
+    }
+    private void Eqiup_UseItem(ItemData itemData)
+    {
+        if (itemData != null)
+        {
+            switch (itemData.type)
+            {
+                case (ItemType.Weapon):
+
+
+                    break;
+                case (ItemType.Accessory): 
+
+
+                    break;
+                case (ItemType.Consumable): 
+
+                    break;
+            }
+        }
+    }
+    private void DiscardItem(InvenSlotUI slotUI)
+    {
+        
     }
 }
