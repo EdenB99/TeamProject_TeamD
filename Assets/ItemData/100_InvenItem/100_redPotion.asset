@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184436e5d28974b41ba0723fa345511f, type: 3}
-  m_Name: 100_HealingPotion_A
+  m_Script: {fileID: 11500000, guid: 3953e81c7efcfb04fa0bdc22283782a1, type: 3}
+  m_Name: 100_redPotion
   m_EditorClassIdentifier: 
-  code: 0
+  code: 1
   type: 2
-  itemName: "\uC911\uAE09 \uCE58\uC720 \uBB3C\uC57D"
-  itemDescription: "\uBCF5\uC6A9\uC2DC 100 \uD68C\uBCF5\uB41C\uB2E4."
+  itemName: "\uD3EC\uC158"
+  itemDescription: "20\uD68C\uBCF5"
   itemIcon: {fileID: 21300000, guid: 8a6d2202bfb135b4294b76393d650869, type: 3}
   price: 100
+  healPoint: 20

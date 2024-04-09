@@ -9,13 +9,12 @@ public class UsableUI : MonoBehaviour
 {
     
     //선택된 아이템데이터와 슬롯
-    ItemData targetItemData;
     InvenSlotUI targetSlot;
 
     //각각의 버튼이 눌러졌을때 실행되는 델리게이트
-    public Action<ItemData> ClickedEquip_Use;
+    public Action<InvenSlotUI> ClickedEquip_Use;
 
-    public Action ClickedDiscard;
+    public Action<InvenSlotUI> ClickedDiscard;
 
     public Action ClickedExit;
 
@@ -47,10 +46,6 @@ public class UsableUI : MonoBehaviour
         {
             targetSlot = SlotUI;
         }
-        if (SlotUI.InvenSlot.ItemData != null)
-        {
-            targetItemData = SlotUI.InvenSlot.ItemData;
-        }
     }
     /// <summary>
     /// 해당 창을 종료하는 함수
@@ -81,12 +76,12 @@ public class UsableUI : MonoBehaviour
     }
     public void Equip_UseButton()
     {
-        ClickedEquip_Use?.Invoke(targetItemData);
+        ClickedEquip_Use?.Invoke(targetSlot);
         Close();
     }
     public void DiscardButton()
     {
-        ClickedDiscard?.Invoke();
+        ClickedDiscard?.Invoke(targetSlot);
         Close();
     }
     public void exitButton()

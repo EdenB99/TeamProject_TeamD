@@ -109,6 +109,9 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onPointerEnter += OnItemDetailOn;
             slotUIs[i].onPointerExit += OnItemDetailOff;
             slotUIs[i].onPointerMove += OnSlotPointerMove;
+
+            usableUI.ClickedDiscard += DiscardItem;
+            usableUI.ClickedEquip_Use += Eqiup_UseItem;
         }
 
         tempSlotUI.InitializeSlot(inven.TempSlot);  // 임시 슬롯 초기화
@@ -173,28 +176,31 @@ public class InventoryUI : MonoBehaviour
             detail.Open(inven[index].ItemData);
         }
     }
-    private void Eqiup_UseItem(ItemData itemData)
+    private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
-        if (itemData != null)
+        Debug.Log("use");
+        ItemData itemdata = slotUI.InvenSlot.ItemData;
+        if (itemdata != null)
         {
-            switch (itemData.type)
+            switch (itemdata.type)
             {
                 case (ItemType.Weapon):
-
+                    
+                   
 
                     break;
                 case (ItemType.Accessory): 
 
 
                     break;
-                case (ItemType.Consumable): 
-
+                case (ItemType.Consumable):
+                    slotUI.InvenSlot.UseItem();
                     break;
             }
         }
     }
     private void DiscardItem(InvenSlotUI slotUI)
     {
-        
+        slotUI.InvenSlot.ClearSlotItem();
     }
 }
