@@ -31,6 +31,8 @@ public class ItemObject : RecycleObject
         gameObject.SetActive(false);
     }
 
+    /// 흡수되는 코드
+
     /// <summary>
     /// 이미지 설정
     /// </summary>
