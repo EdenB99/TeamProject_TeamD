@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 
@@ -66,6 +68,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public PlayerStats PlayerStats { get { return playerStats; } }
 
+    /// <summary>
+    /// NPC 상호작용 전용
+    /// </summary>
+    Image dialogBox;
+    bool canInteract = false;
 
     PlayerAction inputActions;
     private BoxCollider2D box;
@@ -84,6 +91,8 @@ public class Player : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         inputActions = new PlayerAction();
         tr = GetComponent<TrailRenderer>();
+
+        dialogBox = FindAnyObjectByType<Image>();  // NPC 상호작용
 
         // 플레이어 사망시 작동 정지
         PlayerStats.OnDie += inputActions.Player.Disable;
@@ -159,6 +168,7 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Dash.performed += OnDash;
+        inputActions.Player.Interaction.performed += PressF; // NPC 상호작용 버튼 F 
         inputActions.Player.DownJump.performed += OnDownJump;
     }
 
@@ -168,6 +178,7 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Jump.performed -= OnJump;
         inputActions.Player.Dash.performed -= OnDash;
+        inputActions.Player.Interaction.performed -= PressF; // NPC 상호작용 버튼 F
         inputActions.Player.DownJump.performed -= OnDownJump;
         inputActions.Player.Disable();
     }
@@ -330,8 +341,21 @@ public class Player : MonoBehaviour
         
     }
 
-
-
+    /// <summary>
+    /// NPC 상호작용 전용
+    /// </summary>
+    /// <param name="context"></param>
+    private void PressF(InputAction.CallbackContext context)
+    {
+        if (canInteract)
+        {
+            dialogBox.gameObject.SetActive(true);
+        }
+        if (!canInteract)
+        {
+            dialogBox.gameObject.SetActive(false);
+        }
+    }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -353,6 +377,22 @@ public class Player : MonoBehaviour
                 cc.enabled = false;
                 Invoke("Jumper", 0.4f);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)  // NPC 상호작용
+    {
+        if (collision.CompareTag("NPC"))
+        {
+            canInteract = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("NPC"))
+        {
+            canInteract = false;
         }
     }
 
