@@ -152,6 +152,10 @@ public class BulletObject : RecycleObject , IAttack
                 LifeTime = data.lifeTime;
                 circleCollider.radius = data.bulletSize; // 피격 범위
                 spriteRenderer.sprite = data.bulletIcon; // 스프라이트
+                isPlayer = data.isPlayer;
+
+                if (isPlayer) this.gameObject.layer = 11;
+                else this.gameObject.layer = 7;
 
                 StartCoroutine(BulletDelTime());
             }

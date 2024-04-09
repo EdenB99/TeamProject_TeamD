@@ -249,9 +249,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         {
             if ( item.dropRatio > Random.value )
             {
-                GameObject obj = Factory.Instance.MakeItem(item.code);
-                obj.transform.position = transform.position;
-
+                Factory.Instance.MakeItems(item.code,item.dropCount,transform.position);
             }
         }
     }

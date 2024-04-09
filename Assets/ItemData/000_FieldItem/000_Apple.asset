@@ -15,7 +15,7 @@ MonoBehaviour:
   code: 0
   type: 0
   itemName: Apple
-  itemDescription: "50 \uBA39\uC790\uB9C8\uC790 \uD68C\uBCF5 (\uC778\uBCA4x)"
+  itemDescription: "\uD544\uB4DC - 20\uD68C\uBCF5"
   itemIcon: {fileID: 21300000, guid: 4d12230e9db7f7f429ec9ac0b3c81fab, type: 3}
   price: 0
   healPoint: 20

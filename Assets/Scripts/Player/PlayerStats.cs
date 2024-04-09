@@ -98,10 +98,8 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeHeal(float heal)
     {
-        Debug.Log("힐 발동");
         if (CurrentHp > 0)
         {
-            Debug.Log("if 발동");
             CurrentHp += heal;
         }
     }

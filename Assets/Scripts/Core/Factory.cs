@@ -57,12 +57,17 @@ public class Factory : Singleton<Factory>
     /// <param name="code">아이템 코드</param>
     /// <param name="count">생성 개수</param>
     /// <returns>아이템 오브젝트들</returns>
-    public GameObject[] MakeItems(ItemCode code, uint count)
+    public GameObject[] MakeItems(ItemCode code, uint count, Vector2 pos)
     {
+        float widthLeft = count * 0.25f; // 가운데 정렬
+        Vector2 createPos = pos;
+
         GameObject[] items = new GameObject[count];
         for(int i = 0;i<count;i++)
         {
             items[i] = MakeItem(code);
+            createPos.x = pos.x + -widthLeft + i * 0.5f; // 왼쪽부터 1,2,3...
+            items[i].transform.position = pos;
         }
         return items;
     }

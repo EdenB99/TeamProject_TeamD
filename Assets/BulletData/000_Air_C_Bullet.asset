@@ -21,4 +21,4 @@ MonoBehaviour:
   lifeTime: 2
   isThrougt: 0
   isParring: 0
-  isPlayer: 0
+  isPlayer: 1
