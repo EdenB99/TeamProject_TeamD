@@ -11,6 +11,7 @@ TagManager:
   - Item
   - EnemyBullet
   - HealthSprite
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - Player_Invincible
   - Item
   - Player_Attack
-  - 
-  - 
+  - Enemy_Attack
+  - Effect
   - 
   - 
   - 

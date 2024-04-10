@@ -8,7 +8,9 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
 {
     //컴포넌트 불러오기
     Rigidbody2D rb;
+    protected Animator animator;
     public SpriteRenderer sprite;
+    
 
     /// <summary>
     /// 플레이어 불러오기
@@ -18,7 +20,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     /// <summary>
     /// 플레이어 위치 타게팅
     /// </summary>
-    Vector2 playerPos;
+    protected Vector2 playerPos;
 
     /// <summary>
     /// 플레이어 감지 범위 ( 보스는 컬라이더가 아닌 코드로 플레이어를 탐지한다 )
@@ -30,6 +32,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         Wait,       // 대기
         Chase,      // 플레이어 추적
         Attack,     // 공격 패턴
+        SpAttack,   // 특수 패턴
         Dead        // 죽음
     }
 
@@ -57,13 +60,21 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
                 switch (state)  // 상태에 진입할 때 할 일들 처리
                 {
                     case BossState.Wait:
+                        State_Wait();
                         stateUpdate = Update_Wait; break;
 
                     case BossState.Chase:
+                        State_Chase();
                         stateUpdate = Update_Chase; break;
 
                     case BossState.Attack:
+                        State_Attack();
                         stateUpdate = Update_Attack; break;
+
+                    case BossState.SpAttack:
+                        State_SpAttack();
+                        stateUpdate = Update_Attack; break;
+
                     case BossState.Dead:
                         Die();
                         stateUpdate = Update_Attack; break;
@@ -72,6 +83,25 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         }
     }
 
+    protected virtual void State_Wait()
+    {
+
+    }
+
+    protected virtual void State_Chase()
+    {
+
+    }
+
+    protected virtual void State_Attack() // 단순 패턴이 있을경우
+    {
+
+    }
+
+    protected virtual void State_SpAttack()
+    {
+
+    }
 
 
     protected float hp = 100.0f;
@@ -126,11 +156,10 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         get { return checkLR; }
         set
         {
-            if (checkLR != value) // 값이 변경 되었다면
+            if (checkLR != value && State != BossState.Attack && State != BossState.SpAttack ) // 값이 변경 되었고, 공격중이 아니라면
             {
                 checkLR = value;
-                // 방향 전환 ( flip 으로 수정 필요하며, 스프라이트의 기본이 좌측이냐 우측이냐에 따라 바꿔주어야함.)
-                gameObject.transform.localScale = new Vector3(1.0f * checkLR, 1.0f, 1.0f);
+                gameObject.transform.localScale = new Vector3(1.0f * checkLR, 1.0f, 1.0f); // 이 방법으로 구현해야, 자식 컬라이더가 따라감.
             }
 
         }
@@ -139,7 +168,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
    
     protected virtual void Awake()
     {
-        //animator = GetComponent<Animator>(); 추후엔 애니메이터가 반드시 들어감
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         InitializePatterns();
@@ -154,27 +183,26 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     {
         // 플레이어의 위치를 받는다.
         playerPos = player.transform.position;
+        // 플레이어의 위치에따라 좌우 
+        if (playerPos.x < rb.position.x) CheckLR = 1;
+        else CheckLR = -1;
 
         // 상태에 따라 할일
         stateUpdate();
     }
 
-    void Update_Wait()
+    protected virtual void Update_Wait()
     {
-        // 플레이어의 위치를 받는다.
-        playerPos = player.transform.position;
 
-        // 플레이어의 위치에따라 좌우 
-        if (playerPos.x < rb.position.x) CheckLR = 1;
-        else CheckLR = -1;
+
     }
 
-    void Update_Chase()
+    protected virtual void Update_Chase()
     {
 
     }
 
-    void Update_Attack()
+    protected virtual void Update_Attack()
     {
 
     }
@@ -260,10 +288,10 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     /// 플레이어를 탐지하는 불을 리턴하는 메서드 SightRange 안에 들어오면 플레이어가 있는것.
     /// </summary>
     /// <returns>리턴 true = 플레이어가 범위내에 있다.</returns>
-    private bool playerCheck()
+    protected bool playerCheck()
     {
         // 범위 내에
-        Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, sightRange, LayerMask.GetMask("Player"));
 
         // 플레이어가 있다면
         if (colliders.Length > 0)

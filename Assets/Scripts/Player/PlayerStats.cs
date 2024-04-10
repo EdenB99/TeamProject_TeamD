@@ -16,6 +16,8 @@ public class PlayerStats : MonoBehaviour
     public int Level;                   // 레벨
     public float itemRange;              // 아이템을 흡수하는 범위
 
+    public bool invincible;             // 무적상태
+
     /// <summary>
     /// 아이템이 플레이어에게 이동하는 속도
     /// </summary>
@@ -95,7 +97,7 @@ public class PlayerStats : MonoBehaviour
 
         if (hp > 0) // 체력이 남아있을 때만 무적 모드를 활성화
         {
-            StartCoroutine(InvinvibleMode());
+            StartCoroutine(InvincibleMode());
         }
         else if (hp <= 0)
         {
@@ -115,7 +117,7 @@ public class PlayerStats : MonoBehaviour
     {
         Debug.Log("트리거발견");
 
-        if ( collision.GetComponent<IAttack>() != null )            // IAttack을 가지고 있다면
+        if ( collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
         { 
             IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
 
@@ -192,9 +194,10 @@ public class PlayerStats : MonoBehaviour
     /// 무적 코루틴
     /// </summary>
     /// <returns></returns>
-    IEnumerator InvinvibleMode()
+    IEnumerator InvincibleMode()
     {
         gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
+        invincible = true;
 
         float timeElapsed = 0.0f;
         while (timeElapsed < invincibleTime) // 2초동안 계속하기
@@ -206,6 +209,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         // 2초가 지난후
+        invincible = false;
         gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
         spriteRenderer.color = Color.white;                 // 알파값도 원상복구
     }
