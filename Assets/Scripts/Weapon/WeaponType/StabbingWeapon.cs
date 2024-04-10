@@ -14,8 +14,8 @@ public class StabbingWeapon : WeaponBase
         animator = GetComponent<Animator>();
 
         // weaponEffect 변수 초기화
-        weaponEffect = GameObject.Find("WeaponEffect"); // 혹은 다른 방법으로 weaponEffect를 할당
-        if (weaponEffect == null)
+        weaponEffectPrefab = GameObject.Find("WeaponEffect"); // 혹은 다른 방법으로 weaponEffect를 할당
+        if (weaponEffectPrefab == null)
         {
             Debug.LogError("WeaponEffect is not assigned!");
         }

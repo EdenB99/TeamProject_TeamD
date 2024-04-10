@@ -68,6 +68,20 @@ public class WeaponEffect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        coolTime = -Time.deltaTime;
+        if (coolTime < 0)
+        {
+            foreach (EnemyBase_ enemy in enemies)
+            {
+                enemy.Damaged(totalDamage);
+            }
+            coolTime = effectTick;
+        }
+
+    }
+
     protected void ActivateEffect()
     {
         gameObject.SetActive(true);
