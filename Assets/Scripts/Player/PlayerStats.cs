@@ -21,9 +21,9 @@ public class PlayerStats : MonoBehaviour
     /// <summary>
     /// 아이템이 플레이어에게 이동하는 속도
     /// </summary>
-    public float PickSpeed = 5.0f;
+    public float PickSpeed = 3.0f;
 
-    public float checkRadius = 5f; // 아이템을 감지할 반경
+    public float checkRadius = 5.0f; // 아이템을 감지할 반경
 
     /// <summary>
     /// 던그리드 음식 넣을시 넣을 변수
@@ -125,6 +125,13 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+
+    // transform.position 찾고
+
+    // 빨아들이는 코드 작성 
+
+    // 거리가 더 가까워 지면 획득
+
     private void pickupItem()
     {
         // 주변에 있는 Item 레이어의 컬라이더를 전부 찾기
@@ -139,25 +146,27 @@ public class PlayerStats : MonoBehaviour
                 // 아이템과 플레이어 사이의 거리 계산
                 float distance = Vector3.Distance(transform.position, collider.transform.position);
 
-                if (distance <= itemRange)
-                {
-
-                }
-
-                else
+                if (distance > itemRange)
                 {
                     collider.transform.position = Vector3.MoveTowards(collider.transform.position,
                         transform.position, PickSpeed * Time.deltaTime);
                 }
+
+                else
+                {
+                    // 즉시 사용 아이템 처리
+                    IConsume consume = item.ItemData as IConsume;
+                    if (consume != null)
+                    {
+                        consume.Consume();
+                        item.itemDel();
+
+                    }
+                }
+                
             }
-            // transform.position 찾고
 
-            // 빨아들이는 코드 작성 
-
-            // 거리가 더 가까워 지면 획득
-
-
-            //획득
+            /*//획득
             IConsume consume = item.ItemData as IConsume;
             if (consume == null)
             {
@@ -169,7 +178,7 @@ public class PlayerStats : MonoBehaviour
             {
                 consume.Consume(); // 즉시발동
                 item.itemDel();
-            }
+            }*/
         }
     }
 
@@ -214,13 +223,13 @@ public class PlayerStats : MonoBehaviour
         spriteRenderer.color = Color.white;                 // 알파값도 원상복구
     }
 
-    void OnDrawGizmosSelected()
+   /* void OnDrawGizmosSelected()
     {
         // 에디터에서 감지 범위와 획득 범위를 표시
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, checkRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, itemRange);
-    }
+    }*/
 
 }
