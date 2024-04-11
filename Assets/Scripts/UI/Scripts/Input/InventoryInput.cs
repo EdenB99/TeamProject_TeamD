@@ -44,6 +44,33 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""079e2de0-59d3-4ea2-896c-e7a10d0f3d4f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""49f9ee20-0db2-4651-8545-f04bbae6b9ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""77467292-44a5-4114-82ab-9c7d62805c64"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -88,6 +115,39 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad184e80-a7c0-477a-93db-1e9e3f569b63"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5cbc66c-872c-4005-8564-91fc2cc92551"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""878072e1-61dd-4eb6-bfc4-0ecd1d906482"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -200,6 +260,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Open_Close = m_Inventory.FindAction("Open_Close", throwIfNotFound: true);
         m_Inventory_Click = m_Inventory.FindAction("Click", throwIfNotFound: true);
+        m_Inventory_QuickSlot1 = m_Inventory.FindAction("QuickSlot1", throwIfNotFound: true);
+        m_Inventory_QuickSlot2 = m_Inventory.FindAction("QuickSlot2", throwIfNotFound: true);
+        m_Inventory_QuickSlot3 = m_Inventory.FindAction("QuickSlot3", throwIfNotFound: true);
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test1 = m_Test.FindAction("Test1", throwIfNotFound: true);
@@ -269,12 +332,18 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
     private readonly InputAction m_Inventory_Open_Close;
     private readonly InputAction m_Inventory_Click;
+    private readonly InputAction m_Inventory_QuickSlot1;
+    private readonly InputAction m_Inventory_QuickSlot2;
+    private readonly InputAction m_Inventory_QuickSlot3;
     public struct InventoryActions
     {
         private @InventoryInput m_Wrapper;
         public InventoryActions(@InventoryInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Open_Close => m_Wrapper.m_Inventory_Open_Close;
         public InputAction @Click => m_Wrapper.m_Inventory_Click;
+        public InputAction @QuickSlot1 => m_Wrapper.m_Inventory_QuickSlot1;
+        public InputAction @QuickSlot2 => m_Wrapper.m_Inventory_QuickSlot2;
+        public InputAction @QuickSlot3 => m_Wrapper.m_Inventory_QuickSlot3;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -290,6 +359,15 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @QuickSlot1.started += instance.OnQuickSlot1;
+            @QuickSlot1.performed += instance.OnQuickSlot1;
+            @QuickSlot1.canceled += instance.OnQuickSlot1;
+            @QuickSlot2.started += instance.OnQuickSlot2;
+            @QuickSlot2.performed += instance.OnQuickSlot2;
+            @QuickSlot2.canceled += instance.OnQuickSlot2;
+            @QuickSlot3.started += instance.OnQuickSlot3;
+            @QuickSlot3.performed += instance.OnQuickSlot3;
+            @QuickSlot3.canceled += instance.OnQuickSlot3;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
@@ -300,6 +378,15 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @QuickSlot1.started -= instance.OnQuickSlot1;
+            @QuickSlot1.performed -= instance.OnQuickSlot1;
+            @QuickSlot1.canceled -= instance.OnQuickSlot1;
+            @QuickSlot2.started -= instance.OnQuickSlot2;
+            @QuickSlot2.performed -= instance.OnQuickSlot2;
+            @QuickSlot2.canceled -= instance.OnQuickSlot2;
+            @QuickSlot3.started -= instance.OnQuickSlot3;
+            @QuickSlot3.performed -= instance.OnQuickSlot3;
+            @QuickSlot3.canceled -= instance.OnQuickSlot3;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -400,6 +487,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     {
         void OnOpen_Close(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+        void OnQuickSlot1(InputAction.CallbackContext context);
+        void OnQuickSlot2(InputAction.CallbackContext context);
+        void OnQuickSlot3(InputAction.CallbackContext context);
     }
     public interface ITestActions
     {

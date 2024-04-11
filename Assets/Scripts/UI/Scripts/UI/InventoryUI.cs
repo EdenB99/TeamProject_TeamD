@@ -27,7 +27,10 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     public UsableUI usableUI;
 
+    public IngameUI ingameUI;
 
+
+    public Transform InvenSlotsTransform;
     public Transform Weapons;
     InvenSlotUI[] WeaponsSlots;
 
@@ -40,11 +43,11 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         //요소 선언
-        Transform child = transform.GetChild(0);
-        child = child.transform.GetChild(2);
-        child = child.transform.GetChild(0);
-        child = child.transform.GetChild(0);
-        slotUIs = child.GetComponentsInChildren<InvenSlotUI>();
+        //Transform child = transform.GetChild(0);
+        //child = child.transform.GetChild(2);
+        //child = child.transform.GetChild(0);
+        //child = child.transform.GetChild(0);
+        slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
         //child = transform.GetChild(1);
         //detail = GetComponent<DetaillUI>();
         //child = transform.GetChild(2);
@@ -60,9 +63,11 @@ public class InventoryUI : MonoBehaviour
     {
         InventoryInput.Inventory.Enable();
         InventoryInput.Inventory.Open_Close.performed += OnInvenstate;
+  
     }
     private void OnDisable()
     {
+ 
         InventoryInput.Inventory.Open_Close.performed -= OnInvenstate;
         InventoryInput.Inventory.Disable();
     }

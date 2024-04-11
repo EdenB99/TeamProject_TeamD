@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using System;
 
 public class IngameUI : MonoBehaviour
 {
@@ -10,28 +12,16 @@ public class IngameUI : MonoBehaviour
 	public Text healthText;
 	public float hitPoint = 100f;
 	public float maxHitPoint = 100f;
-	//==============================================================
-	// Regenerate Health & Mana
-	//==============================================================
-	/// <summary>
-	/// 체력 재생의 여부
-	/// </summary>
-	[Header("RegenInfo")]
-	public bool Regenerate = true;
-	/// <summary>
-	/// interval마다의 회복량
-	/// </summary>
-	public float regen = 1f;
-	private float timeleft = 0.0f;	// Left time for current interval
-	/// <summary>
-	/// 리젠시의 시간경과량
-	/// </summary>
-	public float regenUpdateInterval = 0.3f;
+
+
+	CanvasGroup QuickSlotGroup;
+
+	InventoryInput inventoryInput;
 
 	Player player;
 	void Awake()
 	{
-
+        QuickSlotGroup = gameObject.transform.GetChild(1).GetComponent<CanvasGroup>();
 	}
 	
   	void Start()
@@ -43,85 +33,52 @@ public class IngameUI : MonoBehaviour
 		//그래픽 초기화
 		UpdateGraphics();
 
-		//시간 조절
-		timeleft = regenUpdateInterval;
-	}
-
-	void Update ()
-	{
-
-		//리젠 체크 시 반복 실행
-		if (Regenerate)
-			Regen();
-	}
-	/// <summary>
-	/// 리젠 여부를 변경
-	/// </summary>
-	/// <param name="result">변경할 bool 값</param>
-	public void Rengen_OnOff(bool result)
-    {
-		Regenerate = result;
+        inventoryInput = new InventoryInput();
     }
-	
-	/// <summary>
-	/// TimeLeft만큼 반복해서 회복
-	/// </summary>
-	private void Regen()
-	{
-		timeleft -= Time.deltaTime;
+    private void OnEnable()
+    {
+		inventoryInput.Inventory.Enable();
+        inventoryInput.Inventory.QuickSlot1.performed += OnQuickSlot1;
+        inventoryInput.Inventory.QuickSlot2.performed += OnQuickSlot2;
+        inventoryInput.Inventory.QuickSlot3.performed += OnQuickSlot3;
 
-		if (timeleft <= 0.0)
-		{
-			HealDamage(regen);
-			UpdateGraphics();
-			timeleft = regenUpdateInterval;
-			Debug.Log($"{regen}만큼 회복");
-		}
+    }
+    private void OnDisable()
+    {
+		inventoryInput.Inventory.Disable();
+        inventoryInput.Inventory.QuickSlot3.canceled -= OnQuickSlot3;
+        inventoryInput.Inventory.QuickSlot2.canceled -= OnQuickSlot2;
+        inventoryInput.Inventory.QuickSlot1.canceled -= OnQuickSlot1;
+    }
+
+    void Update ()
+	{
+       
+    }
+
+	private void OnQuickSlot1(InputAction.CallbackContext context)
+	{
+		Debug.Log("Is slot1");
+	}
+    private void OnQuickSlot2(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
+        QuickSlotGroup.alpha = 0;
+    }
+    private void OnQuickSlot3(InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
+    }
+
+	public void QuickSlotsAlpha()
+	{
+
 	}
 
-	
-
-	/// <summary>
-	/// 즉시 피해입힘
-	/// </summary>
-	/// <param name="Damage">입을 피해량</param>
-	public void TakeDamage(float Damage)
-	{
-		hitPoint -= Damage;
-		if (hitPoint < 1)
-		{
-			hitPoint = 0;
-		}
-
-		UpdateGraphics();
-
-	}
-	/// <summary>
-	/// Heal만큼 즉시 회복
-	/// </summary>
-	/// <param name="Heal">즉시 회복할 양</param>
-	public void HealDamage(float Heal)
-	{
-		hitPoint += Heal;
-		if (hitPoint > maxHitPoint) 
-			hitPoint = maxHitPoint;
-
-		UpdateGraphics();
-	}
-	/// <summary>
-	/// maxHealth 증가
-	/// </summary>
-	/// <param name="max">증가하는 수치</param>
-	public void SetMaxHealth(float max)
-	{
-		maxHitPoint += (int)(maxHitPoint * max / 100);
-
-		UpdateGraphics();
-	}
-	/// <summary>
-	/// Hp바 그래픽 초기화
-	/// </summary>
-	private void UpdateHealthBar()
+    /// <summary>
+    /// Hp바 그래픽 초기화
+    /// </summary>
+    private void UpdateHealthBar()
 	{
 		float ratio = hitPoint / maxHitPoint;
 		currentHealthBar.rectTransform.localPosition = new Vector3(currentHealthBar.rectTransform.rect.width * ratio - currentHealthBar.rectTransform.rect.width, 0, 0);

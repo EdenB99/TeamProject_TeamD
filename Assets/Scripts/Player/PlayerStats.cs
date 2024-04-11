@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -16,7 +17,12 @@ public class PlayerStats : MonoBehaviour
     public int Level;                   // 레벨
     public float itemRange;              // 아이템을 흡수하는 범위
 
-    public bool invincible;             // 무적상태
+    public bool invincible;   // 무적상태
+
+    public bool Regenerate = true;  // 체력 리젠 여부
+    public float regen = 1f;        // 리젠 시 회복량
+    private float timeleft = 0.0f;  // 리젠까지의 남는 시간
+    public float regenUpdateInterval = 0.3f; // 리젠 틱 시간
 
     /// <summary>
     /// 아이템이 플레이어에게 이동하는 속도
@@ -62,6 +68,9 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         pickupItem();
+        //리젠 체크 시 반복 실행
+        if (Regenerate)
+            Regen();
     }
 
     /// <summary>
@@ -88,6 +97,7 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         hp = MaxHp;    // 게임 시작 시 체력을 최대로 설정
+        timeleft = regenUpdateInterval; //남은 리젠시간을 최대로 설정
     }
 
     public void TakeDamage(float damage)
@@ -110,6 +120,37 @@ public class PlayerStats : MonoBehaviour
         if (CurrentHp > 0)
         {
             CurrentHp += heal;
+        }
+    }
+    /// <summary>
+	/// 리젠 여부를 변경
+	/// </summary>
+	/// <param name="result">변경할 bool 값</param>
+	public void Rengen_OnOff(bool result)
+    {
+        Regenerate = result;
+    }
+
+    /// <summary>
+	/// maxHealth 증가
+	/// </summary>
+	/// <param name="max">증가하는 수치</param>
+	public void SetMaxHealth(float max)
+    {
+        MaxHp += max;
+    }
+
+    /// <summary>
+	/// TimeLeft만큼 반복해서 회복
+	/// </summary>
+	private void Regen()
+    {
+        timeleft -= Time.deltaTime;
+
+        if (timeleft <= 0.0)
+        {
+            TakeHeal(regen);
+            timeleft = regenUpdateInterval;
         }
     }
 
