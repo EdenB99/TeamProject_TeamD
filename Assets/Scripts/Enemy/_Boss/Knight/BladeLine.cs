@@ -27,21 +27,21 @@ public class BladeLine : MonoBehaviour, IAttack
     IEnumerator shotting()
     {
         
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.2f);
         ScaleY = 1.50f;
-        gameObject.layer = LayerMask.NameToLayer("Enemy_Attack");
         yield return new WaitForSeconds(0.1f);
+        gameObject.layer = LayerMask.NameToLayer("Enemy_Attack");
         animator.SetTrigger("shot");
 
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         Destroy(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ( ScaleY > 0.2 ) ScaleY -= 0.01f;
+        if ( ScaleY > 0.2 ) ScaleY -= 0.02f;
         transform.localScale = new Vector3(1.5f, ScaleY, 1);
     }
 }

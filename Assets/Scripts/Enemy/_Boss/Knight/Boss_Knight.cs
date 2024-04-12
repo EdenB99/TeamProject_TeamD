@@ -20,12 +20,15 @@ public class Boss_Knight : PatternEnemyBase
 
     public GameObject shadow;
 
+    Coroutine mapCoroutine;
+
     protected override void Start()
     {
         base.Start();
         State = BossState.Chase;
 
-        StartCoroutine(Map_Pattern());
+
+        mapCoroutine = StartCoroutine(Map_Pattern());
     }
 
 
@@ -60,7 +63,6 @@ public class Boss_Knight : PatternEnemyBase
 
     protected override void State_Chase()
     {
-        Debug.Log(" 체이스 발동 ");
         animator.SetInteger(move_temp, 1);
     }
 
@@ -114,7 +116,9 @@ public class Boss_Knight : PatternEnemyBase
         patternActions = new Dictionary<uint, Func<IEnumerator>>()
     {
             { 1, BossPattern_1 },
-            { 2, BossPattern_2 }
+            { 2, BossPattern_2 },
+            { 3, BossPattern_3 },
+            { 4, BossPattern_4 }
 
         // 다른 패턴들도 이와 같이 초기화
     };
@@ -139,7 +143,7 @@ public class Boss_Knight : PatternEnemyBase
             lineScript.dir = i * 5 * -CheckLR;
         }
 
-        yield return new WaitForSeconds(4.5f);
+        yield return new WaitForSeconds(3.5f);
         State = BossState.Chase;
     }
 
@@ -151,14 +155,14 @@ public class Boss_Knight : PatternEnemyBase
     {
         animator.SetTrigger("Attack_2");
         float temp = Random.Range(75, 105);
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
 
         animator.SetTrigger("Attack_3");
         yield return new WaitForSeconds(0.1f);
 
 
         // 임시코드 , 팩토리 쓸지 고민중
-        for ( int i = 0; i < 6 ; i++ )
+        for ( int i = 0; i < 7 ; i++ )
         {
             GameObject line = Instantiate(obj, new Vector2(transform.position.x + i * 1f, 0), Quaternion.identity);
             BladeLine lineScript = line.GetComponent<BladeLine>();
@@ -170,19 +174,85 @@ public class Boss_Knight : PatternEnemyBase
 
 
         
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(2.0f);
         State = BossState.Chase;
+    }
+
+    /// <summary>
+    /// 패턴 3 : 외곽 내려찍기
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BossPattern_3()
+    {
+        animator.SetTrigger("Attack_2");
+        float temp = Random.Range(75, 105);
+        yield return new WaitForSeconds(1.5f);
+
+        animator.SetTrigger("Attack_3");
+        yield return new WaitForSeconds(0.1f);
+
+
+        // 임시코드 , 팩토리 쓸지 고민중
+        for (int i = 0; i < 8; i++)
+        {
+            GameObject line = Instantiate(obj, new Vector2(transform.position.x + i * 1f + 3.0f, 0.8f), Quaternion.identity);
+            BladeLine lineScript = line.GetComponent<BladeLine>();
+            GameObject line2 = Instantiate(obj, new Vector2(transform.position.x + i * -1f - 3.0f, 0.8f), Quaternion.identity);
+            BladeLine lineScript2 = line2.GetComponent<BladeLine>();
+            lineScript.dir = temp;
+            lineScript2.dir = temp;
+        }
+
+
+
+        yield return new WaitForSeconds(2.0f);
+        State = BossState.Chase;
+    }
+
+    /// <summary>
+    /// 패턴 4 : 분신 베기
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BossPattern_4()
+    {
+        StopCoroutine(mapCoroutine);
+        animator.SetTrigger("Attack_2");
+        yield return new WaitForSeconds(1.5f);
+
+
+        // 임시코드 , 팩토리 쓸지 고민중
+        for (int i = 0; i < 7; i++)
+        {
+            Instantiate(shadow);
+            yield return new WaitForSeconds(0.8f);
+        }
+        yield return new WaitForSeconds(0.6f);
+        animator.SetTrigger("Attack_3");
+        GameObject line = Instantiate(obj, new Vector2(player.transform.position.x, player.transform.position.y+0.8f), Quaternion.identity);
+        BladeLine lineScript = line.GetComponent<BladeLine>();
+        lineScript.dir = 45;
+        GameObject line2 = Instantiate(obj, new Vector2(player.transform.position.x, player.transform.position.y + 0.8f), Quaternion.identity);
+        BladeLine lineScript2 = line2.GetComponent<BladeLine>();
+        lineScript2.dir = 135;
+
+
+        yield return new WaitForSeconds(2.0f);
+        State = BossState.Chase;
+        mapCoroutine = StartCoroutine(Map_Pattern());
     }
 
     // 쉐도우 크리에이트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 
+
     IEnumerator Map_Pattern()
     {
-        Instantiate(shadow);
-
-        yield return new WaitForSeconds(7.0f);
-        StartCoroutine(Map_Pattern());
+        while ( true)
+        {
+            Debug.Log("실행");
+            yield return new WaitForSeconds(7.0f);
+            Instantiate(shadow);
+        }
     }
 
 }
