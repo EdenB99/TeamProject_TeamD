@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -17,19 +16,17 @@ public class PlayerStats : MonoBehaviour
     public int Level;                   // 레벨
     public float itemRange;              // 아이템을 흡수하는 범위
 
-    public bool invincible;   // 무적상태
-
-    public bool Regenerate = true;  // 체력 리젠 여부
-    public float regen = 1f;        // 리젠 시 회복량
-    private float timeleft = 0.0f;  // 리젠까지의 남는 시간
-    public float regenUpdateInterval = 0.3f; // 리젠 틱 시간
+    public bool invincible;             // 무적상태
 
     /// <summary>
     /// 아이템이 플레이어에게 이동하는 속도
     /// </summary>
-    public float PickSpeed = 3.0f;
+    public float PickSpeed;
 
-    public float checkRadius = 5.0f; // 아이템을 감지할 반경
+    /// <summary>
+    /// 아이템이 감지할 반경
+    /// </summary>
+    public float checkRadius;
 
     /// <summary>
     /// 던그리드 음식 넣을시 넣을 변수
@@ -55,6 +52,13 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public Action<float> onHealthChange { get; set; }
 
+    /// <summary>
+    /// 플레이어의 인벤토리
+    /// </summary>
+    Inventory inven;
+    public Inventory Inventory => inven;
+
+
     SpriteRenderer spriteRenderer;
     Animator ani;
 
@@ -68,9 +72,6 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         pickupItem();
-        //리젠 체크 시 반복 실행
-        if (Regenerate)
-            Regen();
     }
 
     /// <summary>
@@ -97,7 +98,11 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         hp = MaxHp;    // 게임 시작 시 체력을 최대로 설정
-        timeleft = regenUpdateInterval; //남은 리젠시간을 최대로 설정
+        inven = new Inventory();
+        if (GameManager.Instance.InventoryUI != null)
+        {
+            GameManager.Instance.InventoryUI.InitializeInventory(Inventory);    // 인벤토리와 인벤토리 UI연결
+        }
     }
 
     public void TakeDamage(float damage)
@@ -122,44 +127,13 @@ public class PlayerStats : MonoBehaviour
             CurrentHp += heal;
         }
     }
-    /// <summary>
-	/// 리젠 여부를 변경
-	/// </summary>
-	/// <param name="result">변경할 bool 값</param>
-	public void Rengen_OnOff(bool result)
-    {
-        Regenerate = result;
-    }
-
-    /// <summary>
-	/// maxHealth 증가
-	/// </summary>
-	/// <param name="max">증가하는 수치</param>
-	public void SetMaxHealth(float max)
-    {
-        MaxHp += max;
-    }
-
-    /// <summary>
-	/// TimeLeft만큼 반복해서 회복
-	/// </summary>
-	private void Regen()
-    {
-        timeleft -= Time.deltaTime;
-
-        if (timeleft <= 0.0)
-        {
-            TakeHeal(regen);
-            timeleft = regenUpdateInterval;
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("트리거발견");
 
-        if ( collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
-        { 
+        if (collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
+        {
             IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
 
             TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
@@ -167,64 +141,51 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-    // transform.position 찾고
 
-    // 빨아들이는 코드 작성 
-
-    // 거리가 더 가까워 지면 획득
 
     private void pickupItem()
     {
-        // 주변에 있는 Item 레이어의 컬라이더를 전부 찾기
         Collider2D[] itemColliders = Physics2D.OverlapCircleAll(transform.position, itemRange, LayerMask.GetMask("Item"));
-
 
         foreach (Collider2D collider in itemColliders)
         {
             ItemObject item = collider.GetComponent<ItemObject>();
             if (item != null)
             {
-                // 아이템과 플레이어 사이의 거리 계산
                 float distance = Vector3.Distance(transform.position, collider.transform.position);
 
-                if (distance > itemRange)
+                // 아이템이 획득 가능 범위 내에 있을 때
+                if (distance <= itemRange)
                 {
+                    IConsume consume = item.ItemData as IConsume;   // IConsume 인터페이스가 있다면
+                    if (consume != null)
+                    {
+                        // 즉시 사용 아이템 처리
+                        consume.Consume();
+                        item.itemDel();     // 필드 삭제
+                    }
+                    else if (Inventory.AddItem(item.ItemData.code)) // IConsume이 없는 일반 아이템 
+                    {
+                        // 인벤토리에 추가
+                        // if
+                        item.itemDel();
+
+                        // 아이템을 인벤토리에 추가했다면 제거
+                        item.itemDel();
+                    }
+                }
+                else
+                {
+                    // 아이템을 플레이어 쪽으로 끌어당김
                     collider.transform.position = Vector3.MoveTowards(collider.transform.position,
                         transform.position, PickSpeed * Time.deltaTime);
                 }
-
-                else
-                {
-                    // 즉시 사용 아이템 처리
-                    IConsume consume = item.ItemData as IConsume;
-                    if (consume != null)
-                    {
-                        consume.Consume();
-                        item.itemDel();
-
-                    }
-                }
-                
             }
-
-            /*//획득
-            IConsume consume = item.ItemData as IConsume;
-            if (consume == null)
-            {
-                // 인벤토리로 들어가도록 코드 작성
-
-                item.itemDel();                              // 아이템 제거
-            }
-            else
-            {
-                consume.Consume(); // 즉시발동
-                item.itemDel();
-            }*/
         }
     }
 
 
-   
+
 
     /// <summary>
     /// 체력이 변경되었을때 호출되는 함수
@@ -264,13 +225,13 @@ public class PlayerStats : MonoBehaviour
         spriteRenderer.color = Color.white;                 // 알파값도 원상복구
     }
 
-   /* void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
         // 에디터에서 감지 범위와 획득 범위를 표시
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, checkRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, itemRange);
-    }*/
+    }
 
 }
