@@ -92,6 +92,9 @@ public class WeaponBase : MonoBehaviour
         weaponData = new WeaponData();
 
         SetAnimationState();
+
+        weaponEffectPrefab = Instantiate(weaponEffectPrefab, transform.position, Quaternion.identity);
+        weaponEffectPrefab.SetActive(false);        // 초기에는 비활성화 시키기
     }
 
 
@@ -133,7 +136,6 @@ public class WeaponBase : MonoBehaviour
             {
                 // 레이가 무기의 콜라이더와 충돌하지 않은 위치에 무기 이펙트를 활성화
                 Vector2 effectPosition = hit.point;
-                ActivateEffect(effectPosition);
             }
         }
 
@@ -193,25 +195,10 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected void ActivateEffect(Vector2 spawnPoint)
+    protected void ActivateEffect(Vector2 effectPosition)
     {
-        if (isEffectActive)
-            return;
-
-        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, spawnPoint, Quaternion.identity);
-        isEffectActive = true;
-        weaponEffectPrefab.transform.position = spawnPoint;
-
-        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffectInstance));
-
-        Debug.Log("무기 이펙트 활성화");
-    }
-
-    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
-    {
-        yield return new WaitForSeconds(weaponEffect.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0)[0].clip.length);
-        Destroy(weaponEffect);
-        isEffectActive = false;
+        weaponEffectPrefab.transform.position = effectPosition;
+        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
 
 }

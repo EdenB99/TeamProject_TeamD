@@ -18,6 +18,8 @@ public class WeaponEffect : MonoBehaviour
     
     protected Vector2 mosPosition;
 
+    GameObject weaponEffect;
+
     /// <summary>
     /// 무기 공격력
     /// </summary>
@@ -65,7 +67,7 @@ public class WeaponEffect : MonoBehaviour
 
         playerStats = player.PlayerStats;
 
-        gameObject.SetActive(false);
+        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
     private void Update()
@@ -82,10 +84,16 @@ public class WeaponEffect : MonoBehaviour
 
     }
 
-    protected void ActivateEffect()
+    public void OnStabAnimationEvent()
     {
-        gameObject.SetActive(true);
-        
+        stabCollider.enabled = true;
+        slashCollider.enabled = false;
+    }
+
+    public void OnSlashAnimation()
+    {
+        stabCollider.enabled = false;
+        slashCollider.enabled = true;
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
@@ -104,6 +112,11 @@ public class WeaponEffect : MonoBehaviour
     }
 
 
+    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    {
+        yield return new WaitForSeconds(weaponEffect.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0)[0].clip.length);
+        Destroy(weaponEffect);
+    }
 }
 
     // 웨폰 오브젝트를 불러와서 입력이 들어오면 비활성화된 이펙트 활성화 -> 웨폰의 특정 포지션에서 작동하게끔
