@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
     /// </summary>
     Image dialogBox;
     bool canInteract = false;
+    NPC_Store interactingNPC;
 
     PlayerAction inputActions;
     private BoxCollider2D box;
@@ -347,13 +348,16 @@ public class Player : MonoBehaviour
     /// <param name="context"></param>
     private void PressF(InputAction.CallbackContext context)
     {
-        if (canInteract)
+        if (canInteract && interactingNPC != null)
         {
-            dialogBox.gameObject.SetActive(true);
-        }
-        if (!canInteract)
-        {
-            dialogBox.gameObject.SetActive(false);
+            if (!interactingNPC.IsInteracting)
+            {
+                interactingNPC.StartDialogue();
+            }
+            else
+            {
+                interactingNPC.NextDialogue();
+            }
         }
     }
 
@@ -380,19 +384,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)  // NPC 상호작용
+    private void OnTriggerEnter2D(Collider2D other)  // NPC 상호작용
     {
-        if (collision.CompareTag("NPC"))
+        NPC_Store npc = other.GetComponent<NPC_Store>();
+        if (npc != null)
         {
             canInteract = true;
+            interactingNPC = npc;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (collision.CompareTag("NPC"))
+        if (other.GetComponent<NPC_Store>() != null)
         {
             canInteract = false;
+            interactingNPC = null;
         }
     }
 
