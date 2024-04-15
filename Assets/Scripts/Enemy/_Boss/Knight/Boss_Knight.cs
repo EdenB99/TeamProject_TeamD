@@ -291,7 +291,7 @@ public class Boss_Knight : PatternEnemyBase
         while ( true)
         {
             yield return new WaitForSeconds(7.0f);
-            //Instantiate(shadow);
+            Instantiate(shadow);
         }
     }
 

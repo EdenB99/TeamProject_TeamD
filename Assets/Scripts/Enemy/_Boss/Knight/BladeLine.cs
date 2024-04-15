@@ -22,8 +22,7 @@ public class BladeLine : MonoBehaviour, IAttack
 
     private void OnEnable()
     {
-        Debug.Log("½ÇÇà");
-
+        gameObject.layer = LayerMask.NameToLayer("Effect");
         transform.rotation = Quaternion.Euler(0, 0, dir);
         ScaleY = 3.00f;
         StartCoroutine(shotting());
