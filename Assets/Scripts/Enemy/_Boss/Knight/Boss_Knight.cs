@@ -28,6 +28,8 @@ public class Boss_Knight : PatternEnemyBase
         State = BossState.Chase;
 
 
+        GenerateObj();
+
         mapCoroutine = StartCoroutine(Map_Pattern());
     }
 
@@ -135,12 +137,10 @@ public class Boss_Knight : PatternEnemyBase
         Vector2 pos = transform.position;
         pos.y -= 1;
 
-        // 임시코드 , 팩토리 쓸지 고민중
         for (int i = 0; i < 8; i++)
         {
-            GameObject line = Instantiate(obj, pos, Quaternion.identity) ;
-            BladeLine lineScript = line.GetComponent<BladeLine>();
-            lineScript.dir = i * 5 * -CheckLR;
+
+            MakeBlade(pos, i * 5 * -CheckLR);
         }
 
         yield return new WaitForSeconds(3.5f);
@@ -164,12 +164,7 @@ public class Boss_Knight : PatternEnemyBase
         // 임시코드 , 팩토리 쓸지 고민중
         for ( int i = 0; i < 7 ; i++ )
         {
-            GameObject line = Instantiate(obj, new Vector2(transform.position.x + i * 1f, 0), Quaternion.identity);
-            BladeLine lineScript = line.GetComponent<BladeLine>();
-            GameObject line2 = Instantiate(obj, new Vector2(transform.position.x + i * -1f, 0), Quaternion.identity);
-            BladeLine lineScript2 = line2.GetComponent<BladeLine>();
-            lineScript.dir = temp;
-            lineScript2.dir = temp;
+            MakeBlade(new Vector2(transform.position.x + i * 1f, 0), temp);
         }
 
 
@@ -195,16 +190,9 @@ public class Boss_Knight : PatternEnemyBase
         // 임시코드 , 팩토리 쓸지 고민중
         for (int i = 0; i < 8; i++)
         {
-            GameObject line = Instantiate(obj, new Vector2(transform.position.x + i * 1f + 3.0f, 0.8f), Quaternion.identity);
-            BladeLine lineScript = line.GetComponent<BladeLine>();
-            GameObject line2 = Instantiate(obj, new Vector2(transform.position.x + i * -1f - 3.0f, 0.8f), Quaternion.identity);
-            BladeLine lineScript2 = line2.GetComponent<BladeLine>();
-            lineScript.dir = temp;
-            lineScript2.dir = temp;
+            MakeBlade(new Vector2(transform.position.x + i * 1f + 3.0f, 0.8f), temp);
+            MakeBlade(new Vector2(transform.position.x + i * -1f - 3.0f, 0.8f), temp);
         }
-
-
-
         yield return new WaitForSeconds(2.0f);
         State = BossState.Chase;
     }
@@ -228,20 +216,73 @@ public class Boss_Knight : PatternEnemyBase
         }
         yield return new WaitForSeconds(0.6f);
         animator.SetTrigger("Attack_3");
-        GameObject line = Instantiate(obj, new Vector2(player.transform.position.x, player.transform.position.y+0.8f), Quaternion.identity);
-        BladeLine lineScript = line.GetComponent<BladeLine>();
-        lineScript.dir = 45;
-        GameObject line2 = Instantiate(obj, new Vector2(player.transform.position.x, player.transform.position.y + 0.8f), Quaternion.identity);
-        BladeLine lineScript2 = line2.GetComponent<BladeLine>();
-        lineScript2.dir = 135;
-
+        MakeBlade(new Vector2(player.transform.position.x, player.transform.position.y + 0.8f), 45);
+        MakeBlade(new Vector2(player.transform.position.x, player.transform.position.y + 0.8f), 135);
 
         yield return new WaitForSeconds(2.0f);
         State = BossState.Chase;
         mapCoroutine = StartCoroutine(Map_Pattern());
     }
 
+    // 칼날 미니 팩토리
+
+    public GameObject bladeObj;
+    private Queue<GameObject> pool = new Queue<GameObject>();
+    public int poolSize = 32;
+
+    public void GenerateObj()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            GameObject obj = Instantiate(bladeObj, transform.position, Quaternion.identity);
+            
+            obj.name = $"{bladeObj.name}_{i}";    // 이름 변경
+            obj.SetActive(false);
+            pool.Enqueue(obj);
+        }
+    }
+
+    public GameObject MakeBlade(Vector2 pos, float direction)
+    {
+        if (pool.Count == 0)
+        {
+            // 풀에 오브젝트가 없다면 그냥 생성하지 않음.
+            return null;
+        }
+ 
+
+        GameObject obj = pool.Dequeue();
+        obj.transform.position = pos;
+
+        BladeLine bladeScript = obj.GetComponent<BladeLine>();
+        bladeScript.dir = direction;
+       
+
+        obj.SetActive(true);
+        return obj;
+    }
+
+    
+
+    public void ReturnToPool(GameObject obj)
+    {
+        obj.SetActive(false);
+        pool.Enqueue(obj);
+    }
+
+    void OnDestroy()
+    {
+        // A 오브젝트가 파괴될 때 풀 정리
+        while (pool.Count > 0)
+        {
+            Destroy(pool.Dequeue());
+        }
+    }
+
+
     // 쉐도우 크리에이트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
 
 
 
@@ -249,9 +290,8 @@ public class Boss_Knight : PatternEnemyBase
     {
         while ( true)
         {
-            Debug.Log("실행");
             yield return new WaitForSeconds(7.0f);
-            Instantiate(shadow);
+            //Instantiate(shadow);
         }
     }
 

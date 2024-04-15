@@ -1577,12 +1577,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1296178384445536080, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
+      propertyPath: bladeObj
+      value: 
+      objectReference: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
+    - target: {fileID: 1296178384445536080, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: PatternTime
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1296178384445536080, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: TestPattern
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3080392467515426430, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: m_LocalPosition.x

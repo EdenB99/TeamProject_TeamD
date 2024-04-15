@@ -5,22 +5,28 @@ using UnityEngine;
 public class BladeLine : MonoBehaviour, IAttack
 {
     public float dir;
-    public float ScaleY = 3.00f;
+    private float ScaleY;
     public uint Damage = 20;
+    
     Animator animator;
 
+    Boss_Knight knight;
 
     public uint AttackPower => Damage;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        StartCoroutine(shotting());
+        knight = FindAnyObjectByType<Boss_Knight>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        Debug.Log("½ÇÇà");
+
         transform.rotation = Quaternion.Euler(0, 0, dir);
+        ScaleY = 3.00f;
+        StartCoroutine(shotting());
     }
 
 
@@ -32,13 +38,11 @@ public class BladeLine : MonoBehaviour, IAttack
         yield return new WaitForSeconds(0.1f);
         gameObject.layer = LayerMask.NameToLayer("Enemy_Attack");
         animator.SetTrigger("shot");
-
-
         yield return new WaitForSeconds(0.2f);
-        Destroy(this.gameObject);
+        knight.ReturnToPool(this.gameObject);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if ( ScaleY > 0.2 ) ScaleY -= 0.02f;
