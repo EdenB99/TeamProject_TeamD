@@ -18,6 +18,8 @@ public class WeaponEffect : MonoBehaviour
     
     protected Vector2 mosPosition;
 
+    GameObject weaponEffect;
+
     /// <summary>
     /// 무기 공격력
     /// </summary>
@@ -65,7 +67,7 @@ public class WeaponEffect : MonoBehaviour
 
         playerStats = player.PlayerStats;
 
-        gameObject.SetActive(false);
+        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
     private void Update()
@@ -82,10 +84,16 @@ public class WeaponEffect : MonoBehaviour
 
     }
 
-    protected void ActivateEffect()
+    public void OnStabAnimationEvent()
     {
-        gameObject.SetActive(true);
-        
+        stabCollider.enabled = true;
+        slashCollider.enabled = false;
+    }
+
+    public void OnSlashAnimation()
+    {
+        stabCollider.enabled = false;
+        slashCollider.enabled = true;
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
@@ -104,9 +112,20 @@ public class WeaponEffect : MonoBehaviour
     }
 
 
+    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
+
+        float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
+
+
+        yield return new WaitForSeconds(currentClipLength);
+        Destroy(weaponEffect);
+        Debug.Log("이펙트 파괴");
+    }
 }
 
-    // 웨폰 오브젝트를 불러와서 입력이 들어오면 비활성화된 이펙트 활성화 -> 웨폰의 특정 포지션에서 작동하게끔
+// 웨폰 오브젝트를 불러와서 입력이 들어오면 비활성화된 이펙트 활성화 -> 웨폰의 특정 포지션에서 작동하게끔
 // 이펙트 오브젝트 풀은 합치고 나서 작성
 // 일단은 이펙트 활성화 비활성화 정도로 구현만 해두기
 // 애니메이션은 두개를 통일 시켜서 스위치로 둘중에 원하는 무기의 형태로 작동시키기
