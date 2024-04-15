@@ -2104,6 +2104,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2015098084590015238, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8a6d2202bfb135b4294b76393d650869, type: 3}
     - target: {fileID: 4204045041543290734, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_Interactable
       value: 0
@@ -2111,6 +2115,14 @@ PrefabInstance:
     - target: {fileID: 4204045041543290734, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_BlocksRaycasts
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448535056286571308, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448535056286571308, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5510382441635348672, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_Pivot.x

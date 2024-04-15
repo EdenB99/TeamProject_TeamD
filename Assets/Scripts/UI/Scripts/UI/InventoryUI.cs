@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -63,7 +64,6 @@ public class InventoryUI : MonoBehaviour
     {
         InventoryInput.Inventory.Enable();
         InventoryInput.Inventory.Open_Close.performed += OnInvenstate;
-  
     }
     private void OnDisable()
     {
@@ -91,6 +91,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.alpha = 1.0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+        ingameUI.SetQuickSlotOnOff(false);
     }
 
     private void Close()
@@ -98,6 +99,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+        ingameUI.SetQuickSlotOnOff(true);
     }
     /// <summary>
     /// 인벤토리 초기화용 함수

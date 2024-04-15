@@ -113,7 +113,6 @@ public class InvenSlot
             }
         }
     }
-
     /// <summary>
     /// 이 슬롯의 아이템을 장비하는 함수
     /// </summary>
