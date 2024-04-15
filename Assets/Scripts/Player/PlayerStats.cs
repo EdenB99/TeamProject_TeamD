@@ -29,6 +29,11 @@ public class PlayerStats : MonoBehaviour
     public float checkRadius;
 
     /// <summary>
+    /// 아이템을 끌어당길 반경
+    /// </summary>
+    public float pickupRange = 1.0f;
+
+    /// <summary>
     /// 던그리드 음식 넣을시 넣을 변수
     /// </summary>
     //public int Hungrycurr;
@@ -140,9 +145,6 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-
-
-
     private void pickupItem()
     {
         Collider2D[] itemColliders = Physics2D.OverlapCircleAll(transform.position, itemRange, LayerMask.GetMask("Item"));
@@ -152,39 +154,38 @@ public class PlayerStats : MonoBehaviour
             ItemObject item = collider.GetComponent<ItemObject>();
             if (item != null)
             {
+                // 플레이어와 아이템 간의 거리를 계산
                 float distance = Vector3.Distance(transform.position, collider.transform.position);
 
-                // 아이템이 획득 가능 범위 내에 있을 때
-                if (distance <= itemRange)
+                // 아이템이 끌어당겨질 범위 안에 있으면 플레이어 쪽으로 이동
+                if (distance > pickupRange && distance <= itemRange)
                 {
-                    IConsume consume = item.ItemData as IConsume;   // IConsume 인터페이스가 있다면
-                    if (consume != null)
-                    {
-                        // 즉시 사용 아이템 처리
-                        consume.Consume();
-                        item.itemDel();     // 필드 삭제
-                    }
-                    else if (Inventory.AddItem(item.ItemData.code)) // IConsume이 없는 일반 아이템 
-                    {
-                        // 인벤토리에 추가
-                        // if
-                        item.itemDel();
-
-                        // 아이템을 인벤토리에 추가했다면 제거
-                        item.itemDel();
-                    }
-                }
-                else
-                {
-                    // 아이템을 플레이어 쪽으로 끌어당김
                     collider.transform.position = Vector3.MoveTowards(collider.transform.position,
                         transform.position, PickSpeed * Time.deltaTime);
+                }
+                // 아이템이 획득 범위 안에 들어오면 아이템을 처리
+                else if (distance <= pickupRange)
+                {
+                    processItem(item);
                 }
             }
         }
     }
 
-
+    private void processItem(ItemObject item)
+    {
+        IConsume consume = item.ItemData as IConsume;
+        if (consume != null)
+        {
+            // 즉시 사용 아이템을 처리
+            consume.Consume();
+            item.itemDel(); // 아이템을 제거
+        }
+        else if (Inventory.AddItem(item.ItemData.code)) // 일반 아이템을 인벤토리에 추가
+        {
+            item.itemDel(); 
+        }
+    }
 
 
     /// <summary>

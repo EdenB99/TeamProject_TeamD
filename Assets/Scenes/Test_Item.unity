@@ -140,8 +140,20 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6419805879933886986, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
+      propertyPath: PickSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419805879933886986, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
       propertyPath: itemRange
-      value: 1.5
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419805879933886986, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
+      propertyPath: checkRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419805879933886986, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
+      propertyPath: pickupRange
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7290192330274884213, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
       propertyPath: m_Emitting

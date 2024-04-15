@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 300_Sword
   m_EditorClassIdentifier: 
   code: 3
-  type: 0
+  type: 2
   itemName: "\uCE7C"
   itemDescription: "\uC801\uB4E4\uC744 \uBCA0\uC5B4\uB0B8\uB2E4."
   itemIcon: {fileID: 21300000, guid: 45a5ddd5f8cb2b047943081a0ec6c0f1, type: 3}
