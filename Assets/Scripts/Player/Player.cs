@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
     /// </summary>
     Image dialogBox;
     bool canInteract = false;
-    NPC_Store interactingNPC;
+    NPC_Base interactingNPC;
 
     PlayerAction inputActions;
     private BoxCollider2D box;
@@ -170,6 +170,7 @@ public class Player : MonoBehaviour
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Dash.performed += OnDash;
         inputActions.Player.Interaction.performed += PressF; // NPC 상호작용 버튼 F 
+        inputActions.Player.Esc.performed += ESC;
         inputActions.Player.DownJump.performed += OnDownJump;
     }
 
@@ -180,6 +181,7 @@ public class Player : MonoBehaviour
         inputActions.Player.Jump.performed -= OnJump;
         inputActions.Player.Dash.performed -= OnDash;
         inputActions.Player.Interaction.performed -= PressF; // NPC 상호작용 버튼 F
+        inputActions.Player.Esc.performed -= ESC;
         inputActions.Player.DownJump.performed -= OnDownJump;
         inputActions.Player.Disable();
     }
@@ -352,11 +354,22 @@ public class Player : MonoBehaviour
         {
             if (!interactingNPC.IsInteracting)
             {
-                interactingNPC.StartDialogue();
+                interactingNPC.StartDialog();
             }
             else
             {
-                interactingNPC.NextDialogue();
+                interactingNPC.NextDialog();
+            }
+        }
+    }
+
+    private void ESC(InputAction.CallbackContext context)
+    {
+        if (canInteract && interactingNPC != null)
+        {
+            if (!interactingNPC.IsInteracting)
+            {
+                interactingNPC.EndDialog();
             }
         }
     }

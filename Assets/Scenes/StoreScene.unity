@@ -157,11 +157,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.02
+      value: 4.01
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.11
+      value: -3.83
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: fd6ddea1a71d3f94b8b67bcd89e9ec25, type: 3}
       propertyPath: m_LocalPosition.z
@@ -255,8 +255,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 428}
-  m_SizeDelta: {x: -628.56, y: 685.6484}
+  m_AnchoredPosition: {x: 0, y: 482.9687}
+  m_SizeDelta: {x: -628.56, y: 850.5544}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &526246586
 MonoBehaviour:
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 163.20312, w: 0}
+  m_margin: {x: 0, y: 0, z: -4.45105, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1617,6 +1617,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blade
       objectReference: {fileID: 0}
+    - target: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8388223445476126076, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.75
@@ -1715,9 +1719,27 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4094304389035959297, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
+      propertyPath: npcType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094304389035959297, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
       propertyPath: dialogText
       value: 
       objectReference: {fileID: 961450353}
+    - target: {fileID: 4094304389035959297, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
+      propertyPath: dialogues.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094304389035959297, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
+      propertyPath: dialogues.Array.data[2]
+      value: dsdsds
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094304389035959297, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
+      propertyPath: storeDialogues.Array.data[1]
+      value: "\uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?                 
+        \n                                                            \uC0C1\uC810\uC744
+        \uC774\uC6A9\uD55C\uB2E4   \uB300\uD654\uB97C \uB098\uAC04\uB2E4                                                                                               "
+      objectReference: {fileID: 0}
     - target: {fileID: 4573474475184300850, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
       propertyPath: m_Name
       value: Store_NPC
