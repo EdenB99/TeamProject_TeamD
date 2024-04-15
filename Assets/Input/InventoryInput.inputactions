@@ -22,33 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "QuickSlot1",
-                    "type": "Button",
-                    "id": "079e2de0-59d3-4ea2-896c-e7a10d0f3d4f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "QuickSlot2",
-                    "type": "Button",
-                    "id": "49f9ee20-0db2-4651-8545-f04bbae6b9ab",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "QuickSlot3",
-                    "type": "Button",
-                    "id": "77467292-44a5-4114-82ab-9c7d62805c64",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -93,39 +66,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ad184e80-a7c0-477a-93db-1e9e3f569b63",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "QuickSlot1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c5cbc66c-872c-4005-8564-91fc2cc92551",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "QuickSlot2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "878072e1-61dd-4eb6-bfc4-0ecd1d906482",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "QuickSlot3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -214,6 +154,74 @@
                     "processors": "",
                     "groups": "",
                     "action": "Test4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Ingame",
+            "id": "19320963-5d11-438b-888c-5e61a0fd5793",
+            "actions": [
+                {
+                    "name": "QuickSlot3",
+                    "type": "Button",
+                    "id": "5c5e51aa-29e7-404f-aea0-4719a7cd83f5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuickSlot2",
+                    "type": "Button",
+                    "id": "7ec15c4b-3e61-414b-87f2-e05bcea0b007",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuickSlot1",
+                    "type": "Button",
+                    "id": "22c0ba9a-a86b-4ce1-9e2e-a392b7390ab4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4f7545f3-9edd-418d-9100-381363ffe110",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickSlot1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "acd8ac2c-65ed-4e40-a116-ffa953ec002b",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickSlot2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38d02a0e-7a76-4861-b86f-35abfdf4487d",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickSlot3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
