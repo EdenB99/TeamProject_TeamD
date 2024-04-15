@@ -20,12 +20,6 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
-
-    /// <summary>
-    /// 이펙트 활성화 여부
-    /// </summary>
-    private bool isEffectActive = false;
-
     Transform hinge;
 
     /// <summary>
@@ -94,7 +88,6 @@ public class WeaponBase : MonoBehaviour
         SetAnimationState();
 
         weaponEffectPrefab = Instantiate(weaponEffectPrefab, transform.position, Quaternion.identity);
-        weaponEffectPrefab.SetActive(false);        // 초기에는 비활성화 시키기
     }
 
 
@@ -104,10 +97,9 @@ public class WeaponBase : MonoBehaviour
         UpdateWeaponPosition();
 
         // 공격 입력 처리
-        if (Input.GetButtonDown("Fire1") && Time.time - lastAttackTime >= attackCooldown)
+        if (Input.GetButtonDown("Fire1"))
         {
             Attack();
-            lastAttackTime = Time.time;
         }
     }
 
@@ -129,10 +121,9 @@ public class WeaponBase : MonoBehaviour
         if (weaponCollider != null)
         {
             Vector3 pivotPosition = hinge.position; // 무기의 콜라이더 중심 위치를 기준으로 설정
-            Vector3 rayDirection = Vector3.forward; // 2D 게임에서는 z축으로 깊이를 고려하지 않으므로 앞쪽 방향을 사용
-            RaycastHit2D hit = Physics2D.Raycast(pivotPosition, rayDirection);
+            RaycastHit2D hit = Physics2D.Raycast(pivotPosition, direction);
 
-            if (hit.collider != null && hit.collider != weaponCollider)
+            if (hit.collider != null)
             {
                 // 레이가 무기의 콜라이더와 충돌하지 않은 위치에 무기 이펙트를 활성화
                 Vector2 effectPosition = hit.point;
@@ -172,15 +163,15 @@ public class WeaponBase : MonoBehaviour
                 break;
         }
         Debug.Log($"{weaponData.weaponType}");
-
     }
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
     {
-        animator.SetTrigger("Attack");
+        SetAnimationState();
+        animator.SetTrigger(attackTrigger);
         Debug.Log("공격트리거 발동");
-
+        
 
 
         ActivateEffect(transform.position);

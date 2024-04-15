@@ -114,8 +114,14 @@ public class WeaponEffect : MonoBehaviour
 
     private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
     {
-        yield return new WaitForSeconds(weaponEffect.GetComponent<Animator>().GetCurrentAnimatorClipInfo(0)[0].clip.length);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
+
+        float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
+
+
+        yield return new WaitForSeconds(currentClipLength);
         Destroy(weaponEffect);
+        Debug.Log("이펙트 파괴");
     }
 }
 
