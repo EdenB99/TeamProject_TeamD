@@ -55,13 +55,18 @@ public class PlayerStats : MonoBehaviour
     /// <summary>
     /// HP의 변경을 알리는 델리게이트
     /// </summary>
-    public Action<float> onHealthChange { get; set; }
+    public Action<float, float> onHealthChange { get; set; } //델리게이트의 인자값을 float 2개로 변경
 
     /// <summary>
     /// 플레이어의 인벤토리
     /// </summary>
     Inventory inven;
     public Inventory Inventory => inven;
+    /// <summary>
+    /// 플레이어의 인게임 UI
+    /// </summary>
+    IngameUI ingameUI;
+    public IngameUI IngameUI => ingameUI;
 
 
     SpriteRenderer spriteRenderer;
@@ -95,7 +100,7 @@ public class PlayerStats : MonoBehaviour
                 {
                     Die();
                 }
-                onHealthChange?.Invoke(hp / MaxHp);
+                onHealthChange?.Invoke(hp ,MaxHp); //델리게이트로 hp와 Maxhp 전달
             }
         }
     }
@@ -108,6 +113,7 @@ public class PlayerStats : MonoBehaviour
         {
             GameManager.Instance.InventoryUI.InitializeInventory(Inventory);    // 인벤토리와 인벤토리 UI연결
         }
+        ingameUI = GameManager.Instance.IngameUI; //ingameUI 연결
     }
 
     public void TakeDamage(float damage)

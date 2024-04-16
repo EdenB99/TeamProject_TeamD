@@ -67,6 +67,7 @@ public class IngameSlotUI : MonoBehaviour
     {
         if (SlotItemData != null)
         {
+            Debug.Log($"{SlotItemData}is on");
             IUsable usable = SlotItemData as IUsable;   // IUsable을 상속 받았는지 확인
             if (usable != null)                     // 상속을 받았으면
             {

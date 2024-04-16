@@ -5,21 +5,28 @@ using UnityEngine;
 public class TestUI : MonoBehaviour
 {
     public InventoryUI inventoryUI;
+    public IngameUI ingameUI;
     Inventory inven;
     Player player;
     private void Start()
     {
-        inven = new Inventory();
+        player = GameManager.Instance.Player;
+
+        player.PlayerStats.TakeDamage(30);
+
+
+        inven = player.PlayerStats.Inventory;
+        ingameUI = player.PlayerStats.IngameUI;
+
+        ingameUI.SetQuickSlotItem(0, ItemCode.HealingPotion_A, 2);
+        
+
+
         inven.AddItem(ItemCode.HealingPotion_A);
         inven.AddItem(ItemCode.Apple);
         inven.AddItem(ItemCode.Sword);
         inven.AddItem(ItemCode.Diamond);
 
 
-        inventoryUI.InitializeInventory(inven);
-
-        player = GameManager.Instance.Player;
-
-        player.PlayerStats.TakeDamage(30);
     }
 }
