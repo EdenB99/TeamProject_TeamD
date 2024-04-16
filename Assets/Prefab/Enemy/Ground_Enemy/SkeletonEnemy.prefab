@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1933076279677838565}
   - component: {fileID: 4358119447844660619}
   m_Layer: 0
-  m_Name: FollowMob
+  m_Name: SkeletonEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

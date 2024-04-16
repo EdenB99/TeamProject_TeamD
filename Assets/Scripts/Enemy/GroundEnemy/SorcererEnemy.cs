@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretEnemy : EnemyBase_
+public class SorcererEnemy : EnemyBase_
 {
     public GameObject ThunderPrefab;
     readonly int isAttack_Hash = Animator.StringToHash("isAttack");
