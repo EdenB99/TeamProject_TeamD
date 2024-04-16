@@ -68,7 +68,8 @@ public class PlayerStats : MonoBehaviour
     IngameUI ingameUI;
     public IngameUI IngameUI => ingameUI;
 
-
+    GameObject blade;
+    //WeaponBase weapon;
     SpriteRenderer spriteRenderer;
     Animator ani;
 
@@ -128,6 +129,7 @@ public class PlayerStats : MonoBehaviour
         else if (hp <= 0)
         {
             Die();
+            blade.SetActive(false);
         }
     }
 
@@ -200,7 +202,7 @@ public class PlayerStats : MonoBehaviour
     void Die()
     {
         // 캐릭터가 사망했을 때의 로직 처리
-        Debug.Log("Player Died");
+        Debug.Log("플레이어가 죽었다.");
         ani.SetTrigger("Die");
         OnDie?.Invoke();
         //Player_ani.SetTrigger("Die");

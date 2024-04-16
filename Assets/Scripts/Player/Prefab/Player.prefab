@@ -190,12 +190,15 @@ MonoBehaviour:
   Defense: 0
   attackSpeed: 0
   MaxHp: 100
-  _hp: 0
+  hp: 0
   criticalChance: 0
   damageTaken: 0
   Level: 0
-  Hungrycurr: 0
-  HungryMax: 0
+  itemRange: 5
+  invincible: 0
+  PickSpeed: 4
+  checkRadius: 2
+  pickupRange: 2
   gold: 0
 --- !u!114 &2528449624804621298
 MonoBehaviour:
@@ -213,7 +216,7 @@ MonoBehaviour:
   jumpPower: 15
   downJump: 0
   downJumpTime: 0
-  dashingPower: 5
+  dashingPower: 12
 --- !u!96 &7290192330274884213
 TrailRenderer:
   serializedVersion: 3
@@ -235,7 +238,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -288,7 +291,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -312,7 +315,7 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -325,8 +328,8 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
-  m_ApplyActiveColorSpace: 1
+  m_Emitting: 0
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &6662286835158638177
 GameObject:
   m_ObjectHideFlags: 0
