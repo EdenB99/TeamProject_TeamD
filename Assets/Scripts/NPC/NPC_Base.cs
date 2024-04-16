@@ -18,11 +18,12 @@ public class NPC_Base : MonoBehaviour
     [TextArea(3, 5)]
     protected string[] dialogues = new string[] { "" };
     protected uint currentDialogIndex = 0;
+
     public TextMeshProUGUI dialogText;
-    Canvas canvas;
-    protected Transform dialogBox;
-    Transform key;
     public bool IsInteracting;
+    protected Transform dialogBox;
+    Canvas canvas;
+    Transform key;
 
     protected virtual void Awake()
     {
@@ -34,12 +35,21 @@ public class NPC_Base : MonoBehaviour
         ShowDialog();
         dialogBox.gameObject.SetActive(false);
     }
+
     public void StartDialog()
     {
         currentDialogIndex = 0;
         dialogBox.gameObject.SetActive(true);
         ShowDialog();
         IsInteracting = true;
+    }
+
+    public virtual void NextDialog()
+    {
+        if (IsInteracting && currentDialogIndex < dialogues.Length)
+        {
+            ShowDialog();
+        }
     }
 
     public void ShowDialog()
@@ -51,21 +61,14 @@ public class NPC_Base : MonoBehaviour
         }
     }
 
-
-    // 다음 대화로 넘기는 메서드
-    public virtual void NextDialog()
-    {
-        if (IsInteracting && currentDialogIndex < dialogues.Length)
-        {
-            ShowDialog();
-        }
-    }
-
     public void EndDialog()
     {
-        dialogBox.gameObject.SetActive(false);
-        IsInteracting = false;
-        currentDialogIndex = 0; // 대화 인덱스 초기화
+        if(IsInteracting)
+        {
+            dialogBox.gameObject.SetActive(false);
+            IsInteracting = false;
+            currentDialogIndex = 0; 
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

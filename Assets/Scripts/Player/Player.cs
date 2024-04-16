@@ -367,7 +367,7 @@ public class Player : MonoBehaviour
     {
         if (canInteract && interactingNPC != null)
         {
-            if (!interactingNPC.IsInteracting)
+            if (interactingNPC.IsInteracting)
             {
                 interactingNPC.EndDialog();
             }
