@@ -21,6 +21,12 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
+
+    /// <summary>
+    /// 무기 이펙트의 생성위치(자식오브젝트로 직접적인 좌표 설정)
+    /// </summary>
+    private Transform effectPosition;
+
     Transform hinge;
 
     /// <summary>
@@ -64,6 +70,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     private const string attackTrigger = "Attack";
 
+
     protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -89,6 +96,10 @@ public class WeaponBase : MonoBehaviour
         SetAnimationState();
 
         weaponEffectPrefab = Instantiate(weaponEffectPrefab, transform.position, Quaternion.identity);
+
+        effectPosition = transform.GetChild(1);
+
+        // 팩토리에서 가져오게끔 수정
     }
 
 
@@ -104,35 +115,9 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
-
-    ///// <summary>
-    ///// 업데이트된 무기의 위치좌표
-    ///// </summary>
-    //    protected virtual void UpdateWeaponPosition()
-    //    {
-    //        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);        // 마우스 위치 = 스크린상 월드 좌표
-    //        mousePosition.z = 0f;
-    //        transform.position = hinge.position;            // 힌지 위치 불러오기
-
-    //        Vector3 direction = mousePosition - transform.position; // 방향 벡터 계산
-    //        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
-    //        transform.rotation = rotation;
-
-    //        Collider2D weaponCollider = GetComponent<Collider2D>();
-    //        if (weaponCollider != null)
-    //        {
-    //            Vector3 pivotPosition = hinge.position; // 무기의 콜라이더 중심 위치를 기준으로 설정
-    //            RaycastHit2D hit = Physics2D.Raycast(pivotPosition, direction);
-
-    //            if (hit.collider != null)
-    //            {
-    //                // 레이가 무기의 콜라이더와 충돌하지 않은 위치에 무기 이펙트를 활성화
-    //                Vector2 effectPosition = hit.point;
-    //            }
-    //        }
-
-    //    }
-
+    /// <summary>
+    /// 무기 오브젝트가 마우스의 좌표를 따라가게 하는 함수
+    /// </summary>
     protected virtual void UpdateWeaponPosition()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -140,36 +125,14 @@ public class WeaponBase : MonoBehaviour
         transform.position = hinge.position;
 
         Vector3 direction = mousePosition - transform.position;
-        direction.z = 0; // 2D 게임에서는 z 축이 사용되지 않으므로 0으로 설정해줍니다.
+        direction.z = 0;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         transform.rotation = rotation;
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
-
-        if (hit.collider != null)
-        {
-            Vector2 effectPosition = hit.point;
-
-            // 충돌한 지점의 좌표를 가져와서 무기 이펙트를 활성화합니다.
-            ActivateEffect(effectPosition);
-        }
     }
 
-    //protected void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Enemy"))
-    //    {
-    //        /* 추후에 인터페이스로 에너미 찾을 예정
-    //        Enemy enemy = collision.GetComponent<Enemy>();
-    //        if (enemy != null)
-    //        {
-    //            float totalDamage = weaponDamage + playerStats.attackPower;
-    //            enemy.Damaged(totalDamage);
-    //        }
-    //        */
-    //    }
-    //}
-
+    /// <summary>
+    /// 무기타입에 따른 애니메이션 트리거를 활성화하는 함수
+    /// </summary>
     void SetAnimationState()
     {
         switch (weaponData.weaponType)
@@ -188,28 +151,27 @@ public class WeaponBase : MonoBehaviour
         Debug.Log($"{weaponData.weaponType}");
     }
 
-    // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
+
     protected virtual void Attack()
     {
-        SetAnimationState();
-        animator.SetTrigger(attackTrigger);
-        Debug.Log("공격트리거 발동");
-        
+            SetAnimationState();
+            animator.SetTrigger(attackTrigger);
+            Debug.Log("공격트리거 발동");
 
-
-        ActivateEffect(transform.position);
-        Debug.Log($"{transform.position}");
-
-        //// 공격 속도에 따라 애니메이션 속도 조절
-        //float attackAnimationSpeed = playerStats.attackSpeed;
-        //animator.SetFloat("weaponSpeed", attackAnimationSpeed);
-        if(lastAttackTime < attackCooldown)
-        {
-            animator.SetTrigger("AttackUp");
             ActivateEffect(transform.position);
-        }
-    }
 
+            Debug.Log($"{transform.position}");
+
+            //// 공격 속도에 따라 애니메이션 속도 조절
+            //float attackAnimationSpeed = playerStats.attackSpeed;
+            //animator.SetFloat("weaponSpeed", attackAnimationSpeed);
+
+            if (lastAttackTime < attackCooldown)
+            {
+                animator.SetTrigger("AttackUp");
+                ActivateEffect(transform.position);
+            }
+    }
 
     /// <summary>
     /// 이펙트 활성화 함수
@@ -217,7 +179,6 @@ public class WeaponBase : MonoBehaviour
     protected void ActivateEffect(Vector2 effectPosition)
     {
         weaponEffectPrefab.transform.position = effectPosition;
-        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
+        GameObject weaponEffect = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
-
 }

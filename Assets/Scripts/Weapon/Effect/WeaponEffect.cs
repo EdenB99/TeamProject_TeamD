@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponEffect : MonoBehaviour
+public class WeaponEffect : RecycleObject
 {
     Rigidbody2D rigidbody2d;
     BoxCollider2D slashCollider;
@@ -121,7 +121,7 @@ public class WeaponEffect : MonoBehaviour
 
         yield return new WaitForSeconds(currentClipLength);
         Destroy(weaponEffect);
-        Debug.Log("이펙트 파괴");
+        Debug.Log($"{currentClipLength}");
     }
 }
 
