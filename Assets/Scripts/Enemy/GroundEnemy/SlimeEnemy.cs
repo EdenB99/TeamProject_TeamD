@@ -1,35 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class FollowEnemy : EnemyBase_
-{ 
+public class SlimeEnemy : EnemyBase_
+{
     /// <summary>
     /// 레이의 길이
     /// </summary>
     float rayLength = 3.0f;
 
     /// <summary>
-    /// 점프 높이
+    /// 점프 쿨타임
     /// </summary>
-    public float jumpForce = 5.0f;
+    float jumpCool = 3f;
+    float lastJumpTime;
 
-    readonly int canAttack_Hash = Animator.StringToHash("canAttack");
-    readonly int isWalk_Hash = Animator.StringToHash("isWalk");
-    readonly int Die_Hash = Animator.StringToHash("Die");
-    readonly int canJump_Hash = Animator.StringToHash("canJump");
+    public float jumpForce = 3.0f;
+
+    bool isJumping = false;
+
+    IEnumerator jumpCoroutine;
+
+    readonly int isJump_Hash = Animator.StringToHash("isJump");
+
     Animator animator;
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
+        lastJumpTime = -jumpCool;
     }
 
     protected override void FixedUpdate()
     {
-        if (playerDetected) 
+        if (playerDetected)
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -39,6 +44,16 @@ public class FollowEnemy : EnemyBase_
             }
         }
         attackAction();
+
+        if (isJumping)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
+            if (hit.collider != null)
+            {
+                isJumping = false;
+                animator.SetBool(isJump_Hash, false);
+            }
+        }
     }
 
     bool playerCheck()
@@ -49,11 +64,14 @@ public class FollowEnemy : EnemyBase_
         // 플레이어가 있다면
         if (colliders != null)
         {
-
-
             if (!playerDetected)
             {
                 playerDetected = true;
+                if (jumpCoroutine == null) // 코루틴이 이미 실행 중이지 않으면
+                {
+                    jumpCoroutine = JumpCoroutine(); // 코루틴 할당
+                    StartCoroutine(jumpCoroutine); // 코루틴 시작
+                }
                 firstAction();
             }
 
@@ -62,6 +80,9 @@ public class FollowEnemy : EnemyBase_
         return false;
     }
 
+    /// <summary>
+    /// 플레이어 추적 및 벽 감지 점프 
+    /// </summary>
     protected override void attackAction()
     {
         //  플레이어가 감지되었는지 확인
@@ -72,7 +93,6 @@ public class FollowEnemy : EnemyBase_
             // 플레이어와의 거리가 4f 이상이면 실행 
             if (distanceToPlayerSqr > 4f)
             {
-                animator.SetBool(isWalk_Hash, true);
 
                 float step = mobMoveSpeed * Time.deltaTime;
                 Vector2 currentPosition = (Vector2)transform.position;
@@ -82,12 +102,8 @@ public class FollowEnemy : EnemyBase_
                 Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
                 transform.position = newPosition;
             }
-            else
-            {
-                animator.SetBool(isWalk_Hash, false);
-            }
 
-            Vector2 direction = new Vector2(CheckLR, 0);
+            Vector2 direction = new Vector2(-CheckLR, 0);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, LayerMask.GetMask("Wall"));
 
             if (hit.collider != null)
@@ -98,20 +114,32 @@ public class FollowEnemy : EnemyBase_
     }
 
     /// <summary>
+    /// 점프 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator JumpCoroutine()
+    {
+        while(playerDetected)
+        {
+            if (!isJumping)
+            {
+                Jump();
+            }
+            yield return new WaitForSeconds(jumpCool); 
+        }
+    }
+
+    /// <summary>
     /// 점프
     /// </summary>
     void Jump()
     {
-        animator.SetTrigger(canJump_Hash);
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-    }
-
-    protected override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        if (!isJumping && (Time.time - lastJumpTime >= jumpCool))
         {
-            animator.SetTrigger(canAttack_Hash);
-
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            animator.SetBool(isJump_Hash, true);
+            isJumping = true;
+            lastJumpTime = Time.time;
         }
     }
 }

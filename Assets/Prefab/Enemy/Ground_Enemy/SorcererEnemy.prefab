@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7514826088176447188}
   - component: {fileID: 7317045491588493595}
   m_Layer: 0
-  m_Name: TurretMob
+  m_Name: SorcererEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8807506331804036958}
   - component: {fileID: 7537326202985532171}
   m_Layer: 0
-  m_Name: JumpingMob
+  m_Name: SlimeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
