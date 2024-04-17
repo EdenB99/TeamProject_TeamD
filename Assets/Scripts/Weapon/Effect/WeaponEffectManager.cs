@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class WeaponEffectDataManager : MonoBehaviour
 {
-    public WeaponData[] weaponDatas = null;
+    public WeaponEffectData[] weaponEffectDatas = null;
 
-    public WeaponData this[WeaponCode code] => weaponDatas[(int)code];
+    public WeaponEffectData this[WeaponCode code] => weaponEffectDatas[(int)code];
 
-    public WeaponData this[int index] => weaponDatas[index];
+    public WeaponEffectData this[int index] => weaponEffectDatas[index];
 
 }
