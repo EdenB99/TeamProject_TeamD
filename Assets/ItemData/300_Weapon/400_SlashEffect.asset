@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: 400_SlashEffect
   m_EditorClassIdentifier: 
   weaponType: 0
-  effectPrefab: {fileID: 4564052738236777869, guid: 5dcc212e728e5664fa0608b866273140, type: 3}
+  weaponEffectCode: 0
+  effectPrefab: {fileID: 5322136623609831766, guid: 48b01e92f5ad6f843bbcfb742bcf2e13, type: 3}

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: 401_StabEffect
   m_EditorClassIdentifier: 
   weaponType: 1
-  effectPrefab: {fileID: 0}
+  weaponEffectCode: 1
+  effectPrefab: {fileID: 4799543914179641167, guid: 2101f884d0a761246aa1c0e62def4ea1, type: 3}
