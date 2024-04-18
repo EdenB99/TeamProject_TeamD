@@ -26,11 +26,16 @@ public class GameManager : Singleton<GameManager>
     IngameUI ingameUI;
     public IngameUI IngameUI => ingameUI;
 
+    WeaponEffectDataManager weaponEffectDataManager;
+
+    public WeaponEffectDataManager WeaponEffectData => weaponEffectDataManager;
+
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
         itemDataManager = GetComponent<ItemDataManager>();
         bulletDataManager = GetComponent<BulletDataManager>();
+        weaponEffectDataManager = GetComponent<WeaponEffectDataManager>();
     }
 
     protected override void OnInitialize()
