@@ -10,6 +10,8 @@ public class NPC_Store : NPC_Base
 {
     [TextArea(3, 10)]
     public string[] storeDialogues = new string[] { "안녕하세요, 상점입니다.", "무엇을 도와드릴까요?" };
+
+    Transform StoreUI;
     protected override void Awake()
     {
         base.Awake();
@@ -17,6 +19,7 @@ public class NPC_Store : NPC_Base
         {
             dialogues = storeDialogues;
         }
+        StoreUI = canvas.transform.GetChild(1);
     }
 
     public override void NextDialog()
@@ -33,6 +36,7 @@ public class NPC_Store : NPC_Base
 
     void ShowStore()
     {
-        Debug.Log("상점으로 이동");
+        dialogBox.gameObject.SetActive(false);
+        StoreUI.gameObject.SetActive(true);
     }
 }
