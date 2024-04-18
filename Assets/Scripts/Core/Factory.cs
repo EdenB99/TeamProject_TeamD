@@ -8,6 +8,7 @@ public class Factory : Singleton<Factory>
 {
     BulletPool bulletPool;
     ItemPool itemPool;
+    WeaponEffectPool weaponEffectPool;
 
     protected override void OnInitialize()
     {
@@ -18,6 +19,9 @@ public class Factory : Singleton<Factory>
 
         itemPool = GetComponentInChildren<ItemPool>();
         if(itemPool != null ) itemPool.Initialize();
+
+        weaponEffectPool = GetComponentInChildren<WeaponEffectPool>();
+        if (weaponEffectPool != null) weaponEffectPool.Initialize();
     }
 
     /// <summary>
@@ -72,5 +76,12 @@ public class Factory : Singleton<Factory>
         return items;
     }
 
+    public GameObject MakeEffect(Vector2 position,WeaponEffectType code)
+    {
+        WeaponEffectData data = GameManager.Instance.WeaponEffectData[code];
+        WeaponEffect obj = weaponEffectPool.GetObject(position);
+        obj.WeaponEffectData = data;
 
+        return obj.gameObject;
+    }
 }

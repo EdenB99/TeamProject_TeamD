@@ -77,11 +77,11 @@ public class IngameUI : MonoBehaviour
 	}
     private void OnQuickSlot2(InputAction.CallbackContext context)
     {
-
+        UseQuickSlotItem(1);
     }
     private void OnQuickSlot3(InputAction.CallbackContext context)
     {
-
+        UseQuickSlotItem(2);
     }
     /// <summary>
     /// 아이템 코드를 참조해서 아이템 데이터로 변환

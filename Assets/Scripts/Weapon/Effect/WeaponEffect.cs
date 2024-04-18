@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponEffect : MonoBehaviour
+public class WeaponEffect : RecycleObject
 {
     Rigidbody2D rigidbody2d;
     BoxCollider2D slashCollider;
@@ -30,6 +30,8 @@ public class WeaponEffect : MonoBehaviour
     /// </summary>
     public float totalDamage => weaponDamage + playerStats.attackPower;
 
+    public WeaponEffectData WeaponEffectData { get; internal set; }
+
     /// <summary>
     /// 이펙트가 데미지를 주는 간격
     /// </summary>
@@ -44,7 +46,7 @@ public class WeaponEffect : MonoBehaviour
 
     protected EnemyBase_ enemy;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         slashCollider = GetComponent<BoxCollider2D>();
@@ -59,7 +61,6 @@ public class WeaponEffect : MonoBehaviour
             stabCollider = collider2Ds[0];
             slashCollider = collider2Ds[1];
         }
-        animator = GetComponent<Animator>();
     }
     protected virtual void Start()
     {
@@ -119,9 +120,10 @@ public class WeaponEffect : MonoBehaviour
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
 
 
+
         yield return new WaitForSeconds(currentClipLength);
         Destroy(weaponEffect);
-        Debug.Log("이펙트 파괴");
+        Debug.Log($"{currentClipLength}");
     }
 }
 
