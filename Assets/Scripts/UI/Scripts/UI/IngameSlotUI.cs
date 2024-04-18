@@ -15,6 +15,7 @@ public class IngameSlotUI : MonoBehaviour
     [Header("퀵슬롯 내 아이템의 쿨타임")]
     public float coolTime = 5.0f;
     private float currentTime;
+    private bool ReadytoUseItem;
 
     private int itemCount;
     public int ItemCount
@@ -48,6 +49,7 @@ public class IngameSlotUI : MonoBehaviour
             ItemCount = Count;
             SetItemImage(itemData.itemIcon);
             currentTime = coolTime;
+            ReadytoUseItem = true;
         }
     }
     public void AddItem(int Count = 1)
@@ -67,16 +69,22 @@ public class IngameSlotUI : MonoBehaviour
     {
         if (SlotItemData != null)
         {
-            Debug.Log($"{SlotItemData}is on");
             IUsable usable = SlotItemData as IUsable;   // IUsable을 상속 받았는지 확인
             if (usable != null)                     // 상속을 받았으면
             {
-                if (usable.Use())            // 아이템 사용 시도
+                if (ReadytoUseItem)
                 {
-                    ItemCount--; //갯수 줄임
-                    currentTime = 0.0f;
+                    if (usable.Use())            // 아이템 사용 시도
+                    {
+                        ItemCount--; //갯수 줄임
+                        currentTime = 0.0f;
+                        ReadytoUseItem = false;
+                    }
                 }
             }
+        } else
+        {
+            Debug.Log("아이템 정보가 없습니다.");
         }
     }
 
@@ -107,7 +115,9 @@ public class IngameSlotUI : MonoBehaviour
             float colorValue = Mathf.Lerp(0f, 255f, currentTime / coolTime); // 시간비레한 값으로 0부터 255값 사이값 계산
             Color newColor = new Color(colorValue / 255f, colorValue / 255f, colorValue / 255f);
             itemimage.color = newColor;
-            
+        } else
+        {
+            ReadytoUseItem = true;
         }
     }
 }

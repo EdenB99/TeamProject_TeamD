@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ public class UsableUI : MonoBehaviour
 
     public Action ClickedExit;
 
+    public TextMeshProUGUI EquipUseText;
     CanvasGroup canvasGroup;
 
     /// <summary>
@@ -45,6 +47,19 @@ public class UsableUI : MonoBehaviour
         if (SlotUI != null)
         {
             targetSlot = SlotUI;
+            ItemData targetItemData = targetSlot.InvenSlot.ItemData;
+            IUsable usable = targetItemData as IUsable;   // IUsable을 상속 받았는지 확인
+            IEquipable equipable = targetItemData as IEquipable; //Iequipable을 상속받았는지 확인
+            if (equipable != null)                     // 상속을 받았으면
+            {
+                EquipUseText.text = "Equip";
+            } else if (usable != null)  
+            {
+                EquipUseText.text = "Use";
+            } else
+            {
+                EquipUseText.text = "Use";
+            }
         }
     }
     /// <summary>

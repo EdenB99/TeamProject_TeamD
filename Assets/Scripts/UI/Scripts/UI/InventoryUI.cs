@@ -40,7 +40,6 @@ public class InventoryUI : MonoBehaviour
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
-
     private void Awake()
     {
         //요소 선언
@@ -92,6 +91,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         ingameUI.SetQuickSlotOnOff(false);
+        
     }
 
     private void Close()
