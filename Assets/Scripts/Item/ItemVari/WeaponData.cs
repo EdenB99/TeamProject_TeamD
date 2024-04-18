@@ -15,7 +15,4 @@ public class WeaponData : ItemData
     public float attackSpeed = 1.0f;
     public GameObject modelPrefab;
     public WeaponType weaponType;
-
-    [Header("무기 이펙트 정보")]
-    public WeaponEffectData weaponEffectData;
 }

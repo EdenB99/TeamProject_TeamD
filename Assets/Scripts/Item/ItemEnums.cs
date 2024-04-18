@@ -30,7 +30,6 @@ public enum ItemCode : ushort
     /// 무기 아이템 
     /// </summary>
     Sword,
-    Spear,
 
 
     /// <summary>
@@ -57,14 +56,8 @@ public enum ItemSortBy
     Price       // 가격 기준
 }
 
-public enum WeaponType : ushort
+public enum WeaponType
 {
     Slash,
     Stab
-}
-
-public enum WeaponEffectType : ushort
-{
-    SlashEffect,
-    StabEffect
 }
