@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d6506b577b46c941aef2e8d69c8698d, type: 3}
-  m_Name: 400_SlashEffect
+  m_Name: 401_StabEffect
   m_EditorClassIdentifier: 
-  weaponType: 0
-  effectPrefab: {fileID: 4564052738236777869, guid: 5dcc212e728e5664fa0608b866273140, type: 3}
+  weaponType: 1
+  effectPrefab: {fileID: 0}

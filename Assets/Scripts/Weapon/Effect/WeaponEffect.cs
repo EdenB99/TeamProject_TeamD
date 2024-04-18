@@ -30,6 +30,8 @@ public class WeaponEffect : RecycleObject
     /// </summary>
     public float totalDamage => weaponDamage + playerStats.attackPower;
 
+    public WeaponEffectData WeaponEffectData { get; internal set; }
+
     /// <summary>
     /// 이펙트가 데미지를 주는 간격
     /// </summary>
@@ -44,7 +46,7 @@ public class WeaponEffect : RecycleObject
 
     protected EnemyBase_ enemy;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         slashCollider = GetComponent<BoxCollider2D>();
@@ -59,7 +61,6 @@ public class WeaponEffect : RecycleObject
             stabCollider = collider2Ds[0];
             slashCollider = collider2Ds[1];
         }
-        animator = GetComponent<Animator>();
     }
     protected virtual void Start()
     {
@@ -117,6 +118,7 @@ public class WeaponEffect : RecycleObject
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
+
 
 
         yield return new WaitForSeconds(currentClipLength);

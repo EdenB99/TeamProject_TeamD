@@ -76,5 +76,12 @@ public class Factory : Singleton<Factory>
         return items;
     }
 
+    public GameObject MakeEffect(Vector2 position,WeaponEffectType code)
+    {
+        WeaponEffectData data = GameManager.Instance.WeaponEffectData[code];
+        WeaponEffect obj = weaponEffectPool.GetObject(position);
+        obj.WeaponEffectData = data;
 
+        return obj.gameObject;
+    }
 }

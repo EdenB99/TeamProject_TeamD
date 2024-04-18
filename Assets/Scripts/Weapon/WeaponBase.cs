@@ -95,10 +95,10 @@ public class WeaponBase : MonoBehaviour
 
         SetAnimationState();
 
-        weaponEffectPrefab = Instantiate(weaponEffectPrefab, transform.position, Quaternion.identity);
+        //weaponEffectPrefab = Factory.Instance.MakeEffect(effectPosition, WeaponType);
+
 
         effectPosition = transform.GetChild(1);
-
         // 팩토리에서 가져오게끔 수정
     }
 
@@ -176,9 +176,8 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected void ActivateEffect(Vector2 effectPosition)
+    protected virtual void ActivateEffect(Vector2 effectPosition)
     {
         weaponEffectPrefab.transform.position = effectPosition;
-        GameObject weaponEffect = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
 }

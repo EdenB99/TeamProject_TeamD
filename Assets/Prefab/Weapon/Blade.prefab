@@ -205,9 +205,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8388223445476126076}
-  - component: {fileID: 3007197684275618010}
   - component: {fileID: 5045745156114296684}
   - component: {fileID: 2137658742544611539}
+  - component: {fileID: 4636026328262634020}
   m_Layer: 0
   m_Name: Blade
   m_TagString: Untagged
@@ -232,24 +232,6 @@ Transform:
   - {fileID: 2995516430561241670}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3007197684275618010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7178932382336574287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f28b1444948bd54491641980eb274f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponEffectPrefab: {fileID: 4564052738236777869, guid: 5dcc212e728e5664fa0608b866273140, type: 3}
-  weaponDamage: 10
-  critical: 10
-  rotationSpeed: 5
-  weaponSpeed: 10
-  attackCooldown: 0.5
 --- !u!50 &5045745156114296684
 Rigidbody2D:
   serializedVersion: 4
@@ -322,3 +304,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &4636026328262634020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178932382336574287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c920412be62c7f46ab502d480addddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponEffectPrefab: {fileID: 4799543914179641167, guid: 2101f884d0a761246aa1c0e62def4ea1, type: 3}
+  weaponDamage: 10
+  critical: 10
+  rotationSpeed: 5
+  weaponSpeed: 10
+  attackCooldown: 0.5
+  attackAnimationSpeed: 1

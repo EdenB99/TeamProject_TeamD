@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
-  m_Name: 300_Sword
+  m_Name: 301_Spear
   m_EditorClassIdentifier: 
-  code: 3
+  code: 0
   type: 0
-  itemName: "\uCE7C"
-  itemDescription: "\uC801\uB4E4\uC744 \uBCA0\uC5B4\uB0B8\uB2E4."
-  itemIcon: {fileID: 21300000, guid: 45a5ddd5f8cb2b047943081a0ec6c0f1, type: 3}
-  price: 500
+  itemName: "\uC544\uC774\uD15C"
+  itemDescription: "\uC124\uBA85"
+  itemIcon: {fileID: 0}
+  price: 0
   maxStackCount: 1
   attackPower: 10
   attackSpeed: 1
-  modelPrefab: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
+  modelPrefab: {fileID: 0}
   weaponType: 0
-  weaponEffectData: {fileID: 11400000, guid: 8f108b11692b0e24dab593abe474c782, type: 2}
+  weaponEffectData: {fileID: 0}
