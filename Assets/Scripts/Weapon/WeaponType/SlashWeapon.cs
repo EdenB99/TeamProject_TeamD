@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OneHandWeapon : WeaponBase
+public class SlashWeapon : WeaponBase
 {
     public float attackAnimationSpeed = 1.0f; // 공격 애니메이션 속도
 
@@ -20,18 +20,12 @@ public class OneHandWeapon : WeaponBase
     protected override void Start()
     {
         base.Start();
-        player = GameManager.Instance.Player;
-        UpdateWeaponPosition();
     }
 
-    protected virtual new void UpdateWeaponPosition()
-    {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.right = (mouseWorldPos - transform.position).normalized;
-    }
 
     protected override void Attack()
     {
+        base.Attack();
         // 공격 애니메이션 재생
         if (Time.time - lastAttackTime < attackCooldown)
         {
@@ -39,10 +33,10 @@ public class OneHandWeapon : WeaponBase
             animator.SetTrigger("AttackUp");
             Debug.Log("아래공격");
         }
-        else
-        {
-            animator.SetTrigger("Attack");
-            Debug.Log("공격");
-        }
+    }
+    protected override void ActivateEffect(Vector2 effectPosition)
+    {
+        weaponEffectPrefab.transform.position = effectPosition;
+        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
 }

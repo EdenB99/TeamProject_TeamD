@@ -22,4 +22,4 @@ MonoBehaviour:
   attackPower: 10
   attackSpeed: 1
   modelPrefab: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
-  weaponType: 1
+  weaponType: 0

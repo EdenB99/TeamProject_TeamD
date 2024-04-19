@@ -23,10 +23,12 @@ public class WeaponBase : MonoBehaviour
 
     Transform hinge;
 
+    Transform effectPosition;
+
     /// <summary>
     /// 무기 공격력
     /// </summary>
-    public int weaponDamage = 10;
+   public  int weaponDamage = 10;
 
     public float critical = 10.0f;
 
@@ -64,10 +66,14 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     private const string attackTrigger = "Attack";
 
+    
+
     protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         inputActions = new WeaponAction();
+
+        effectPosition = transform.GetChild(1);
     }
 
     protected virtual void Start()
@@ -144,15 +150,15 @@ public class WeaponBase : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         transform.rotation = rotation;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
 
-        if (hit.collider != null)
-        {
-            Vector2 effectPosition = hit.point;
+        //if (hit.collider != null)
+        //{
+        //    Vector2 effectPosition = hit.point;
 
-            // 충돌한 지점의 좌표를 가져와서 무기 이펙트를 활성화합니다.
-            ActivateEffect(effectPosition);
-        }
+        //    // 충돌한 지점의 좌표를 가져와서 무기 이펙트를 활성화합니다.
+        //    ActivateEffect(effectPosition);
+        //}
     }
 
     //protected void OnTriggerEnter2D(Collider2D collision)
@@ -214,10 +220,9 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected void ActivateEffect(Vector2 effectPosition)
+    protected virtual void ActivateEffect(Vector2 effectPosition)
     {
         weaponEffectPrefab.transform.position = effectPosition;
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
-
 }
