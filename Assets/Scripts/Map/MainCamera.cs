@@ -3,39 +3,65 @@ using UnityEngine;
 public class MainCamera : MonoBehaviour
 {
     public float cameraSpeed = 5.0f;
+    public GameObject boundaryObject; // Boundary 게임 오브젝트 참조
+
     private Player player;
-    Vector3 cameraPosition;
-    public LayerMask cameraWallMask; // "CameraWall" 레이어를 포함하는 레이어 마스크
+    private Vector3 cameraPosition;
+    private BoxCollider2D boundaryCollider;
+    private float cameraHeight;
+    private float cameraWidth;
 
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
-        cameraWallMask = LayerMask.GetMask("CameraWall");
+        FindBoundaryObject();
+        CalculateCameraSize();
     }
 
     private void LateUpdate()
     {
-        CameraMove();
+        if (boundaryCollider == null)
+        {
+            FindBoundaryObject();
+        }
 
+        CameraMove();
+    }
+
+    private void FindBoundaryObject()
+    {
+        // "Boundary" 태그를 가진 GameObject 찾기
+        GameObject foundBoundaryObject = GameObject.FindGameObjectWithTag("Boundary");
+
+        if (foundBoundaryObject != null)
+        {
+            boundaryObject = foundBoundaryObject;
+            boundaryCollider = boundaryObject.GetComponent<BoxCollider2D>();
+        }
+    }
+
+    private void CalculateCameraSize()
+    {
+        // 카메라의 크기 계산
+        cameraHeight = Camera.main.orthographicSize * 2f;
+        cameraWidth = cameraHeight * Camera.main.aspect;
     }
 
     private void CameraMove()
     {
         Vector3 playerPosition = player.transform.position;
-        Vector3 direction = (playerPosition - transform.position).normalized;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, Vector3.Distance(transform.position, playerPosition), cameraWallMask))
+        // 카메라 위치를 플레이어 위치로 설정
+        cameraPosition = new Vector3(playerPosition.x, playerPosition.y, transform.position.z);
+
+        // BoxCollider2D의 bounds 정보를 사용하여 카메라 위치를 제한된 범위 내로 조정
+        if (boundaryCollider != null)
         {
-            // 장애물이 있으면 카메라를 장애물 위치로 이동
-            cameraPosition = hit.point;
-        }
-        else
-        {
-            // 장애물이 없으면 카메라를 원래 위치로 이동
-            cameraPosition = Vector3.Lerp(transform.position, playerPosition, Time.deltaTime * cameraSpeed);
+            Bounds bounds = boundaryCollider.bounds;
+            cameraPosition.x = Mathf.Clamp(cameraPosition.x, bounds.min.x + cameraWidth / 2, bounds.max.x - cameraWidth / 2);
+            cameraPosition.y = Mathf.Clamp(cameraPosition.y, bounds.min.y + cameraHeight / 2, bounds.max.y - cameraHeight / 2);
         }
 
-        transform.position = new Vector3(cameraPosition.x, cameraPosition.y, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * cameraSpeed);
     }
 }
