@@ -17,7 +17,7 @@ public class IngameSlotUI : MonoBehaviour
     private float currentTime;
     private bool ReadytoUseItem;
 
-    private int itemCount;
+    private int itemCount = 0;
     public int ItemCount
     {
         get => itemCount;
@@ -39,6 +39,7 @@ public class IngameSlotUI : MonoBehaviour
         commandText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         AmountText = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         currentTime = coolTime;
+        SetAmountText(itemCount);
     }
 
     //아이템 데이터를 초기화 , 삭제
@@ -98,7 +99,13 @@ public class IngameSlotUI : MonoBehaviour
     }
     public void SetAmountText(int Count) 
     {
-        AmountText.text = Count.ToString("00");
+        if (Count <= 0)
+        {
+            AmountText.text = null;
+        } else
+        {
+            AmountText.text = Count.ToString("00");
+        }
     }
     public void ClearSlot()
     {

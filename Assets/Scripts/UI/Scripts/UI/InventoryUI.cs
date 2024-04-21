@@ -33,10 +33,10 @@ public class InventoryUI : MonoBehaviour
 
     public Transform InvenSlotsTransform;
     public Transform Weapons;
-    InvenSlotUI[] WeaponsSlots;
+    WeaponSlotUI[] WeaponsSlots;
 
     public Transform Accessoires;
-    InvenSlotUI[] AccessoriesSlots;
+    AccessoryUI[] AccessoriesSlots;
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
@@ -53,9 +53,9 @@ public class InventoryUI : MonoBehaviour
         //child = transform.GetChild(2);
         //usableUI = GetComponent<UsableUI>();
 
-        WeaponsSlots = Weapons.GetComponentsInChildren<InvenSlotUI>();
+        WeaponsSlots = Weapons.GetComponentsInChildren<WeaponSlotUI>();
 
-        AccessoriesSlots = Accessoires.GetComponentsInChildren<InvenSlotUI>();
+        AccessoriesSlots = Accessoires.GetComponentsInChildren<AccessoryUI>();
         InventoryInput = new InventoryInput();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -209,5 +209,19 @@ public class InventoryUI : MonoBehaviour
     private void DiscardItem(InvenSlotUI slotUI)
     {
         slotUI.InvenSlot.ClearSlotItem();
+    }
+    private void EquipWeapon()
+    {
+        for (int i =0; i < WeaponsSlots.Length; i++)
+        {
+            if (WeaponsSlots[i].SlotItemData == null)
+            {
+
+            }
+        }
+    }
+    private void EquipAccessory()
+    {
+
     }
 }
