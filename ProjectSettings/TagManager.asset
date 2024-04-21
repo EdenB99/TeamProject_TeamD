@@ -12,6 +12,8 @@ TagManager:
   - EnemyBullet
   - HealthSprite
   - NPC
+  - Boundary
+  - PlayerLocation
   layers:
   - Default
   - TransparentFX

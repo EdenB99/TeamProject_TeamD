@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &165193974200966096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8895561708166012469}
+  - component: {fileID: 8739993864134140158}
+  m_Layer: 0
+  m_Name: MapGen1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8895561708166012469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165193974200966096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.208136, y: -3.274883, z: 0.4140252}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8739993864134140158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165193974200966096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a72f18e26928f584c945cd1592a4a401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapSize: 14
+  worldMapSize: 6
+  currentMapCount: 0
+  mapPrefabs:
+  - {fileID: 2183822786085288322, guid: 661186ee741f95e4f9709b47ee0e0706, type: 3}
+  - {fileID: 4928055268724433393, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+  - {fileID: 1133248675159652848, guid: 8aa713f16ac7d454fb0e1706ae82f516, type: 3}
+  - {fileID: 3722449066959077255, guid: 6a1d2b9f2e0421a45b27d682f856e913, type: 3}
+  - {fileID: 805459755782646114, guid: f0444a4bcffa6eb4f9aaf228adfdb718, type: 3}
+  - {fileID: 1256907656462950108, guid: 474776993e71df34abd06788bb52db9d, type: 3}
+  - {fileID: 8735063208679508164, guid: 0ee9c23d2e8506a43a1686bda52cade1, type: 3}
+  - {fileID: 7327422354387135318, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+  - {fileID: 8704071011953904361, guid: 51c4a970fe6bc9f4b8821e5c7945d5fb, type: 3}
+  - {fileID: 795003584899103600, guid: 5593b3ddd1ad65242a74330c95be2f09, type: 3}
+  - {fileID: 2477688531007317170, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+  - {fileID: 7087714784560994430, guid: 75b650304271e0a45b2d14a73b404794, type: 3}
+  - {fileID: 3141633767630662157, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+  - {fileID: 3057257542404340774, guid: 8abaca1dd1a086747bb032f3842e82c0, type: 3}
+  - {fileID: 3004287705185990225, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+  - {fileID: 8742290397252495815, guid: 359e81b0a69f44f4d9eb0cc2d8592c07, type: 3}
+  mapScenes: []
+  startMapPrefabs:
+  - {fileID: 3855989642606098958, guid: 27f72d58f6e17dd4698b81bdfc6c5477, type: 3}
+  - {fileID: 3180488167253008893, guid: 719314401cf7a0c4aa2b1dda8c8b5ac0, type: 3}
+  - {fileID: 3763739579104756483, guid: 1c4d68d5f26ded74ca8b10d91bc17be5, type: 3}
+  startMapScenes: []

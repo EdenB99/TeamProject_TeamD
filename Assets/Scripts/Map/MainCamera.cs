@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour
 {
+
+
     public float cameraSpeed = 5.0f;
     public GameObject boundaryObject; // Boundary 게임 오브젝트 참조
 
@@ -10,6 +12,11 @@ public class MainCamera : MonoBehaviour
     private BoxCollider2D boundaryCollider;
     private float cameraHeight;
     private float cameraWidth;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
@@ -23,6 +30,10 @@ public class MainCamera : MonoBehaviour
         if (boundaryCollider == null)
         {
             FindBoundaryObject();
+        }
+        if(player == null)
+        {
+            player = GameObject.FindObjectOfType<Player>();
         }
 
         CameraMove();
