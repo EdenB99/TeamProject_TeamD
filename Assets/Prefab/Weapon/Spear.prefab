@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7445561625365424312}
-  - component: {fileID: 2043620092403608826}
   - component: {fileID: 516960594191097566}
   - component: {fileID: 2030206726609762177}
   - component: {fileID: 830603705981455979}
@@ -148,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 3510177746431845488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.71, y: 0.38, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -156,24 +155,6 @@ Transform:
   - {fileID: 2894111467454047425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2043620092403608826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510177746431845488}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f28b1444948bd54491641980eb274f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponEffectPrefab: {fileID: 4564052738236777869, guid: 5dcc212e728e5664fa0608b866273140, type: 3}
-  weaponDamage: 10
-  critical: 10
-  rotationSpeed: 5
-  weaponSpeed: 10
-  attackCooldown: 0.5
 --- !u!50 &516960594191097566
 Rigidbody2D:
   serializedVersion: 4
