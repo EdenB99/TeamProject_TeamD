@@ -8,7 +8,6 @@ public class SlashWeapon : WeaponBase
 
     private Animator animator;
 
-
     private float lastAttackTime = 0f; // 마지막 공격 시간
 
     protected override void Awake()
@@ -25,12 +24,22 @@ public class SlashWeapon : WeaponBase
     protected override void Attack()
     {
         base.Attack();
-        animator.SetTrigger("SlashAttack");
-
-        if (lastAttackTime < attackCooldown)
+        if (effectPosition.position.x < hinge.transform.position.x)
         {
-            animator.SetTrigger("AttackUp");
-            ActivateEffect(transform.position);
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-    }
+        else
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+     
+       animator.SetTrigger("SlashAttack");
+
+       if (lastAttackTime < attackCooldown)
+       {
+           animator.SetTrigger("AttackUp");
+           ActivateEffect(transform.position);
+       }
+    }                  
 }

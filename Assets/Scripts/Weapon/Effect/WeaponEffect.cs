@@ -47,19 +47,6 @@ public class WeaponEffect : MonoBehaviour
 
     protected virtual void Awake()
     {
-        //rigidbody2d = GetComponent<Rigidbody2D>();
-        //slashCollider = GetComponent<BoxCollider2D>();
-        //BoxCollider2D[] collider2Ds = GetComponents<BoxCollider2D>();
-        //if (collider2Ds[0].isTrigger)
-        //{
-        //    slashCollider = collider2Ds[0];
-        //    stabCollider = collider2Ds[1];
-        //}
-        //else
-        //{
-        //    stabCollider = collider2Ds[0];
-        //    slashCollider = collider2Ds[1];
-        //}
         animator = GetComponent<Animator>();
     }
     protected virtual void Start()

@@ -28,9 +28,9 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
-    Transform hinge;
+    protected Transform hinge;
 
-    Transform effectPosition;
+    protected Transform effectPosition;
 
     /// <summary>
     /// 무기 공격력
