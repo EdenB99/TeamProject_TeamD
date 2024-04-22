@@ -8,7 +8,7 @@ public class ReturnZone : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            gameObject.transform.position = new Vector3(0, 0,transform.position.z);
+           collision.gameObject.transform.position = new Vector3(0, 0,transform.position.z);
         } 
     }
     

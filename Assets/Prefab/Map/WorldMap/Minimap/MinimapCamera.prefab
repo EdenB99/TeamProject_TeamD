@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2629709539601195443}
   - component: {fileID: 8349909213025421019}
   - component: {fileID: -1912188642031792466}
+  - component: {fileID: 6149703413917742320}
   m_Layer: 0
   m_Name: MinimapCamera
   m_TagString: Untagged
@@ -72,7 +73,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 32768
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 3c8c8430d7a301c4d958e1cd620ad4cb, type: 2}
   m_TargetDisplay: 0
@@ -128,3 +129,17 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &6149703413917742320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5589120402629026987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2882ef3fc414f439b163fa68fa3d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 5
+  boundaryObject: {fileID: 0}

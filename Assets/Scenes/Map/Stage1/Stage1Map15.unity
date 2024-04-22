@@ -135,6 +135,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage1Map15
       objectReference: {fileID: 0}
+    - target: {fileID: 5003292215979808332, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 5ee1a3c425672da4290a14d3f67e664b, type: 3}
+    - target: {fileID: 5060943259500468442, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6134546353992857883, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.932955
@@ -174,6 +182,22 @@ PrefabInstance:
     - target: {fileID: 6134546353992857883, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757347309034921197, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7757347309034921197, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233583507062453779, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247222640621531311, guid: c0d7e1342a0d2ce43ad94030dcd9baaa, type: 3}
+      propertyPath: m_TagString
+      value: Platform
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

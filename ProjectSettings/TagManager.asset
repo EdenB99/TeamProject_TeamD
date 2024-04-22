@@ -14,6 +14,7 @@ TagManager:
   - NPC
   - Boundary
   - PlayerLocation
+  - Spike
   layers:
   - Default
   - TransparentFX
@@ -29,8 +30,8 @@ TagManager:
   - Player_Attack
   - Enemy_Attack
   - Effect
-  - 
-  - 
+  - Boundary
+  - MiniMapMarker
   - 
   - 
   - 
@@ -50,4 +51,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 2400153797
     locked: 0

@@ -131,9 +131,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1127733024940472242, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6874adb3e06b96941bf3e4c4ba98d65e, type: 2}
     - target: {fileID: 2477688531007317170, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
       propertyPath: m_Name
       value: Stage1Map11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354018460303489648, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_TagString
+      value: Spike
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726015321736866248, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4199474810518854167, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -174,6 +186,26 @@ PrefabInstance:
     - target: {fileID: 4199474810518854167, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748748498411796796, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748748498411796796, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644618332845612301, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 5ee1a3c425672da4290a14d3f67e664b, type: 3}
+    - target: {fileID: 9056322011591528033, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081026531610528858, guid: 5cc2b3f289402844ca3dbd60822151dc, type: 3}
+      propertyPath: m_TagString
+      value: Platform
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -131,9 +131,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 552038334051763970, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938504438913462426, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103687280721936483, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103687280721936483, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 3141633767630662157, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
       propertyPath: m_Name
       value: Stage1Map13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299310576520371732, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 5ee1a3c425672da4290a14d3f67e664b, type: 3}
+    - target: {fileID: 4436776519437324253, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
+      propertyPath: m_TagString
+      value: Platform
       objectReference: {fileID: 0}
     - target: {fileID: 5260752496324431189, guid: 82f2485098fba70418b214f0a35704fd, type: 3}
       propertyPath: m_LocalPosition.x

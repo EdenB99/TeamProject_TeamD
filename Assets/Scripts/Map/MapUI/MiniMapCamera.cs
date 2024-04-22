@@ -11,6 +11,10 @@ public class MiniMapCamera : MonoBehaviour
     private float cameraHeight;
     private float cameraWidth;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
