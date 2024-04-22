@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         Player_ani = GetComponent<Animator>();
@@ -99,6 +100,7 @@ public class Player : MonoBehaviour
         PlayerStats.OnDie += inputActions.Player.Disable;
     }
 
+    
     private void Start()
     {
         /* playerLayer = LayerMask.NameToLayer("Player");
