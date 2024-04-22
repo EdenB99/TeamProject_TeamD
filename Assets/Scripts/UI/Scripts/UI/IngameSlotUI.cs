@@ -83,6 +83,17 @@ public class IngameSlotUI : MonoBehaviour
                     }
                 }
             }
+            IBuff buff = SlotItemData as IBuff;   // IUsable을 상속 받았는지 확인
+            if (buff != null)                     // 상속을 받았으면
+            {
+                if (ReadytoUseItem)
+                {
+                    StartCoroutine(BuffEnd(buff, buff.BuffActive())); // 버프 시작
+                    ItemCount--; //갯수 줄임
+                    currentTime = 0.0f;
+                    ReadytoUseItem = false;
+                }
+            }
         } else
         {
             Debug.Log("아이템 정보가 없습니다.");
@@ -126,5 +137,17 @@ public class IngameSlotUI : MonoBehaviour
         {
             ReadytoUseItem = true;
         }
+    }
+
+    /// <summary>
+    /// 버프 효과를 끄는 코루틴
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    IEnumerator BuffEnd(IBuff item, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        item.BuffEnd();
     }
 }

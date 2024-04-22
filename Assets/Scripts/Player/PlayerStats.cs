@@ -210,32 +210,6 @@ public class PlayerStats : MonoBehaviour
     }
 
     /// <summary>
-    /// 버프효과를 발동한다.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="item"></param>
-    public void Buff<T>(IBuff<T> item)where T : Player
-    {
-        // 해당 아이템을 발동하고, 엔드 코루틴을 실행한다.
-        StartCoroutine( BuffEnd(item, item.BuffActive(this as T) ) );
-        
-    }
-
-    /// <summary>
-    /// 버프 효과를 끄는 코루틴
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="item"></param>
-    /// <param name="duration"></param>
-    /// <returns></returns>
-    IEnumerator BuffEnd<T>(IBuff<T> item , float duration)where T : Player
-    {
-        yield return new WaitForSeconds(duration);
-        item.BuffEnd(this as T);
-    }
-
-
-    /// <summary>
     /// 무적 코루틴
     /// </summary>
     /// <returns></returns>
