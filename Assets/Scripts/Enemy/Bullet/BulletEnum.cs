@@ -8,5 +8,6 @@ public enum BulletCode : ushort
 
     Air_C_Bullet = 0,
     Air_C_Test_Bullet,
+    Test_Item_Bullet,
 }
 

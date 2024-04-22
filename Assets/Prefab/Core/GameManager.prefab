@@ -75,7 +75,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDatas:
   - {fileID: 11400000, guid: db377d5ebff177a4c8459fdf3195ca28, type: 2}
-  - {fileID: 11400000, guid: c2f40f307875bd943b89c894e06bffca, type: 2}
+  - {fileID: 11400000, guid: 6c4e0fc168813ae47990bb1e2f3c0eb8, type: 2}
+  - {fileID: 11400000, guid: 5ba62330611122f4cb22489a0e0668a5, type: 2}
+  - {fileID: 11400000, guid: aa5cf611c66b206449e2c64fd09e22ec, type: 2}
   - {fileID: 11400000, guid: 6081316966289714abdb117a16e8fc5c, type: 2}
   - {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
 --- !u!114 &4537722945803715838
@@ -93,6 +95,7 @@ MonoBehaviour:
   bulletDatas:
   - {fileID: 11400000, guid: 99f58f31fd1e8c94ba29b3443c252ecc, type: 2}
   - {fileID: 11400000, guid: 49b33a0cebdad10468d92f6eb110965d, type: 2}
+  - {fileID: 11400000, guid: e24fc52fe29f1e14b8bd7e7fad3ba43e, type: 2}
 --- !u!1 &3058200837043300529
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,16 @@ public enum ItemCode : ushort
     /// </summary>
     HealingPotion_A,
 
+    /// <summary>
+    /// 소비 아이템 ( 액티브 )
+    /// </summary>
+    Shiruken,
+
+    /// <summary>
+    /// 소비 아이템 ( 버프 )
+    /// </summary>
+    SwiftPotion,
+
 
     /// <summary>
     /// 판매 전용 아이템 ( 다이아몬드 )
