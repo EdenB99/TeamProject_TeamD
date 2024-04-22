@@ -14,7 +14,7 @@ public class SlashWeapon : WeaponBase
     protected override void Awake()
     {
         base.Awake();
-        animator = GetComponent<Animator>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
     protected override void Start()
@@ -22,21 +22,15 @@ public class SlashWeapon : WeaponBase
         base.Start();
     }
 
-
     protected override void Attack()
     {
         base.Attack();
-        // 공격 애니메이션 재생
-        if (Time.time - lastAttackTime < attackCooldown)
+        animator.SetTrigger("SlashAttack");
+
+        if (lastAttackTime < attackCooldown)
         {
-            // 짧은 간격 내에 연속 공격 발생시 Attack Up 애니메이션 재생
             animator.SetTrigger("AttackUp");
-            Debug.Log("아래공격");
+            ActivateEffect(transform.position);
         }
-    }
-    protected override void ActivateEffect(Vector2 effectPosition)
-    {
-        weaponEffectPrefab.transform.position = effectPosition;
-        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
     }
 }

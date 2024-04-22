@@ -30,7 +30,7 @@ public enum ItemCode : ushort
     /// 무기 아이템 
     /// </summary>
     Sword,
-
+    Spear,
 
     /// <summary>
     /// 장신구 아이템 

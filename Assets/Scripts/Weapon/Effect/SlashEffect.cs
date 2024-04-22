@@ -6,6 +6,7 @@ public class SlashEffect : WeaponEffect
 {
     BoxCollider2D slashCollider;
     Animator animator;
+    GameObject weaponEffect;
 
     protected override void Awake()
     {
@@ -14,9 +15,11 @@ public class SlashEffect : WeaponEffect
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void OnEnable()
     {
-
+        animator.SetTrigger("Attack");
+        animator.SetTrigger("SlashAttack");
+        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
     private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
@@ -25,9 +28,10 @@ public class SlashEffect : WeaponEffect
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
 
-
         yield return new WaitForSeconds(currentClipLength);
-        Destroy(weaponEffect);
+
+        isDestroyed = true;
+        Destroy(this.gameObject);
         Debug.Log("이펙트 파괴");
     }
 }

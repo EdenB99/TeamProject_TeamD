@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class StabWeapon : WeaponBase
 {
@@ -11,7 +12,7 @@ public class StabWeapon : WeaponBase
     protected override void Awake()
     {
         base.Awake();
-        animator = GetComponent<Animator>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
     protected override void Start()
@@ -22,12 +23,6 @@ public class StabWeapon : WeaponBase
     protected override void Attack()
     {
         base.Attack();
-        animator.SetFloat("AttackSpeed", attackAnimationSpeed);
-        animator.SetTrigger("Attack");
-    }
-    protected override void ActivateEffect(Vector2 effectPosition)
-    {
-        weaponEffectPrefab.transform.position = effectPosition;
-        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
+        animator.SetTrigger("StabAttack");
     }
 }

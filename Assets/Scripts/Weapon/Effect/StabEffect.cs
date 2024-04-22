@@ -6,6 +6,7 @@ public class StabEffect : WeaponEffect
 {
     Animator animator;
     BoxCollider2D stabCollider;
+    GameObject weaponEffect;
 
     protected override void Awake()
     {
@@ -17,9 +18,11 @@ public class StabEffect : WeaponEffect
         base.Start();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        
+        animator.SetTrigger("Attack");
+        animator.SetTrigger("StabAttack");
+        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
     private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
@@ -30,7 +33,9 @@ public class StabEffect : WeaponEffect
 
 
         yield return new WaitForSeconds(currentClipLength);
-        Destroy(weaponEffect);
+
+        isDestroyed = true;
+        Destroy(this.gameObject);
         Debug.Log("ÀÌÆåÆ® ÆÄ±«");
     }
 }

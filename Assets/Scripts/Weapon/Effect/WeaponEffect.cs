@@ -6,8 +6,7 @@ using UnityEngine;
 public class WeaponEffect : MonoBehaviour
 {
     Rigidbody2D rigidbody2d;
-    BoxCollider2D slashCollider;
-    BoxCollider2D stabCollider;
+
     Animator animator;
     
     protected Player player;
@@ -40,6 +39,8 @@ public class WeaponEffect : MonoBehaviour
     /// </summary>
     float coolTime = 0.0f;
 
+    protected bool isDestroyed = false;
+
     public List<EnemyBase_> enemies = new List<EnemyBase_>(1);
 
     protected EnemyBase_ enemy;
@@ -69,6 +70,8 @@ public class WeaponEffect : MonoBehaviour
 
         StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
+
+
 
     private void Update()
     {
@@ -121,7 +124,9 @@ public class WeaponEffect : MonoBehaviour
 
 
         yield return new WaitForSeconds(currentClipLength);
-        Destroy(weaponEffect);
+
+        isDestroyed = true;
+        Destroy(this.gameObject);
         Debug.Log("이펙트 파괴");
     }
 }
