@@ -124,6 +124,10 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI.InitializeSlot(inven.TempSlot);  // 임시 슬롯 초기화
         Close();
     }
+
+
+
+
     /// <summary>
     /// 아이템 상세 정보창을 여는 함수
     /// </summary>
@@ -142,6 +146,11 @@ public class InventoryUI : MonoBehaviour
     {
         detail.Close(); // 닫기
     }
+
+
+
+
+
     /// <summary>
     /// 슬롯안에서 마우스 커서가 움직였을 때 실행되는 함수
     /// </summary>
@@ -183,18 +192,23 @@ public class InventoryUI : MonoBehaviour
             detail.Open(inven[index].ItemData);
         }
     }
+
+
+
+
+
+
+
     private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
-        Debug.Log("use");
+        Debug.Log("use1");
         ItemData itemdata = slotUI.InvenSlot.ItemData;
         if (itemdata != null)
         {
             switch (itemdata.type)
             {
                 case (ItemType.Weapon):
-                    
-                   
-
+                    EquipWeapon(itemdata); 
                     break;
                 case (ItemType.Accessory): 
 
@@ -206,17 +220,34 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    private void DiscardItem(InvenSlotUI slotUI)
+    /// <summary>
+    /// 무기군을 장착하는 함수
+    /// </summary>
+    /// <param name="itemData">장착할 무기 아이템 데이터</param>
+    private void EquipWeapon(ItemData itemData)
     {
-        slotUI.InvenSlot.ClearSlotItem();
-    }
-    private void EquipWeapon()
-    {
-        for (int i =0; i < WeaponsSlots.Length; i++)
+        bool isFull = false;
+        for (int i = 0; i<WeaponsSlots.Length; i++)
         {
             if (WeaponsSlots[i].SlotItemData == null)
             {
-
+                WeaponsSlots[i].EquipItemdata(itemData);
+                isFull = false;
+                break;
+            } else
+            {
+                isFull = true;
+            }
+        }
+        if (!isFull)
+        {
+            for (int i =0; i<WeaponsSlots.Length; i++)
+            {
+                if (!WeaponsSlots[i].Onhand)
+                {
+                    WeaponsSlots[i].ClearSlot();
+                    WeaponsSlots[i].EquipItemdata(itemData);
+                }
             }
         }
     }
@@ -224,4 +255,11 @@ public class InventoryUI : MonoBehaviour
     {
 
     }
+
+
+    private void DiscardItem(InvenSlotUI slotUI)
+    {
+        slotUI.InvenSlot.ClearSlotItem();
+    }
+
 }

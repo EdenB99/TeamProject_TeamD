@@ -24,16 +24,6 @@ public class EquipmentSlot_Base : MonoBehaviour
     Image itemimage;
     TextMeshProUGUI EquipText;
 
-    private bool isEquip;
-    public bool IsEquip
-    {
-        get => isEquip;
-        set
-        {
-            isEquip = value;
-        }
-    }
-
     private void Awake()
     {
         itemimage = transform.GetChild(0).GetComponent<Image>();
