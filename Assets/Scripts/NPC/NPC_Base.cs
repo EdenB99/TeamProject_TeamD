@@ -22,7 +22,7 @@ public class NPC_Base : MonoBehaviour
     public TextMeshProUGUI dialogText;
     public bool IsInteracting;
     protected Transform dialogBox;
-    Canvas canvas;
+    protected Canvas canvas;
     Transform key;
 
     protected virtual void Awake()

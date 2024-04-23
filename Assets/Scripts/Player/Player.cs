@@ -374,6 +374,15 @@ public class Player : MonoBehaviour
                 interactingNPC.EndDialog();
             }
         }
+
+        if (interactingNPC != null && interactingNPC is NPC_Store)
+        {
+            NPC_Store store = (NPC_Store)interactingNPC;
+            if (store.StoreUI.gameObject.activeSelf)
+            {
+                store.DisableStore();
+            }
+        }
     }
 
 
