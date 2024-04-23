@@ -18,9 +18,9 @@ public class TestUI : MonoBehaviour
         inven = player.PlayerStats.Inventory;
         ingameUI = player.PlayerStats.IngameUI;
 
-        ingameUI.SetQuickSlotItem(0, ItemCode.HealingPotion_A, 2);
+        ingameUI.SetQuickSlotItem(0, ItemCode.HealingPotion_A, 3);
         ingameUI.SetQuickSlotItem(1, ItemCode.SwiftPotion, 2);
-        ingameUI.SetQuickSlotItem(2, ItemCode.Shiruken, 2);
+        ingameUI.SetQuickSlotItem(2, ItemCode.Shiruken, 15);
 
 
 

@@ -12,4 +12,5 @@ public class ItemData : ScriptableObject
     public string itemDescription = "Ό³Έν";
     public Sprite itemIcon;
     public uint price = 0;
+    public float cooltime = 0;
 }

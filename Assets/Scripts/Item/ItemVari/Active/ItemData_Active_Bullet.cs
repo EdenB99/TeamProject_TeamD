@@ -5,7 +5,7 @@ public class ItemData_Active_Bullet : ItemData, IActivatable
 {
     [Header("사용형 아이템 데이터")]
     public BulletCode bulletCode;
-
+        
     public bool ItemActive(Vector2 pos)
     {
         Player player = GameManager.Instance.Player;

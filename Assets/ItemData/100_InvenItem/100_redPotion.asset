@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDescription: "20\uD68C\uBCF5"
   itemIcon: {fileID: 21300000, guid: 8a6d2202bfb135b4294b76393d650869, type: 3}
   price: 100
+  cooltime: 5
   healPoint: 20

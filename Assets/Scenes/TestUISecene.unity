@@ -2807,7 +2807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 1332563620}
-  ingameUI: {fileID: 0}
+  ingameUI: {fileID: 4860169575968898939}
 --- !u!4 &2065343583
 Transform:
   m_ObjectHideFlags: 0
@@ -2961,6 +2961,10 @@ PrefabInstance:
     - target: {fileID: 112194741426884514, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996921458213207636, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3568319243048983299, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_AnchorMax.y

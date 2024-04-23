@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dcb0742382e58d4fae46a580c05970b, type: 3}
+  m_Script: {fileID: 11500000, guid: b919da6daaa1a17468a479f1942c2cfd, type: 3}
   m_Name: 101_Shuriken
   m_EditorClassIdentifier: 
   code: 2
@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDescription: "\uD45C\uCC3D\uC744 \uB358\uC9C4\uB2E4."
   itemIcon: {fileID: 21300000, guid: fc13b5ca10c23274daaccf5d1ffe2d98, type: 3}
   price: 0
+  cooltime: 1
   bulletCode: 2

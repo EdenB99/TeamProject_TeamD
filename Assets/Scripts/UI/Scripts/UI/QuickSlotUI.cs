@@ -14,7 +14,11 @@ public class QuickSlotUI : MonoBehaviour
     TextMeshProUGUI AmountText;
 
     [Header("ƒ¸ΩΩ∑‘ ≥ª æ∆¿Ã≈€¿« ƒ≈∏¿”")]
-    public float coolTime = 5.0f;
+    private float coolTime = 5.0f;
+
+
+
+
     private float currentTime;
     private bool ReadytoUseItem;
 
@@ -117,8 +121,8 @@ public class QuickSlotUI : MonoBehaviour
 
         if ( ItemCount != 0 )
         {
-                    currentTime = 0.0f;
-        ReadytoUseItem = false;
+            currentTime = 0.0f;
+            ReadytoUseItem = false;
         }
 
     }
