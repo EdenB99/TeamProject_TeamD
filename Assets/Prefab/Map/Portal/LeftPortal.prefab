@@ -261,6 +261,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortalMinimapMarker
       objectReference: {fileID: 0}
+    - target: {fileID: 410468958443460874, guid: 17fb8859d14107d4dbadff02a7040773, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3430773946273935315, guid: 17fb8859d14107d4dbadff02a7040773, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

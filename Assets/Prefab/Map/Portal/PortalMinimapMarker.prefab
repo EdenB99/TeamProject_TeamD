@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3430773946273935315}
   - component: {fileID: 5866028371372990046}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: PortalMinimapMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

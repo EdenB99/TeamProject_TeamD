@@ -211,6 +211,15 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MapToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""00297565-51e7-45cd-9d38-4b0190bb928b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -246,6 +255,17 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
                     ""action"": ""QuickSlot3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9317021e-6f48-4bff-996f-138a41e70b1f"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MapToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -279,6 +299,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         m_Ingame_QuickSlot3 = m_Ingame.FindAction("QuickSlot3", throwIfNotFound: true);
         m_Ingame_QuickSlot2 = m_Ingame.FindAction("QuickSlot2", throwIfNotFound: true);
         m_Ingame_QuickSlot1 = m_Ingame.FindAction("QuickSlot1", throwIfNotFound: true);
+        m_Ingame_MapToggle = m_Ingame.FindAction("MapToggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -467,6 +488,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Ingame_QuickSlot3;
     private readonly InputAction m_Ingame_QuickSlot2;
     private readonly InputAction m_Ingame_QuickSlot1;
+    private readonly InputAction m_Ingame_MapToggle;
     public struct IngameActions
     {
         private @InventoryInput m_Wrapper;
@@ -474,6 +496,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         public InputAction @QuickSlot3 => m_Wrapper.m_Ingame_QuickSlot3;
         public InputAction @QuickSlot2 => m_Wrapper.m_Ingame_QuickSlot2;
         public InputAction @QuickSlot1 => m_Wrapper.m_Ingame_QuickSlot1;
+        public InputAction @MapToggle => m_Wrapper.m_Ingame_MapToggle;
         public InputActionMap Get() { return m_Wrapper.m_Ingame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -492,6 +515,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
             @QuickSlot1.started += instance.OnQuickSlot1;
             @QuickSlot1.performed += instance.OnQuickSlot1;
             @QuickSlot1.canceled += instance.OnQuickSlot1;
+            @MapToggle.started += instance.OnMapToggle;
+            @MapToggle.performed += instance.OnMapToggle;
+            @MapToggle.canceled += instance.OnMapToggle;
         }
 
         private void UnregisterCallbacks(IIngameActions instance)
@@ -505,6 +531,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
             @QuickSlot1.started -= instance.OnQuickSlot1;
             @QuickSlot1.performed -= instance.OnQuickSlot1;
             @QuickSlot1.canceled -= instance.OnQuickSlot1;
+            @MapToggle.started -= instance.OnMapToggle;
+            @MapToggle.performed -= instance.OnMapToggle;
+            @MapToggle.canceled -= instance.OnMapToggle;
         }
 
         public void RemoveCallbacks(IIngameActions instance)
@@ -548,5 +577,6 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         void OnQuickSlot3(InputAction.CallbackContext context);
         void OnQuickSlot2(InputAction.CallbackContext context);
         void OnQuickSlot1(InputAction.CallbackContext context);
+        void OnMapToggle(InputAction.CallbackContext context);
     }
 }

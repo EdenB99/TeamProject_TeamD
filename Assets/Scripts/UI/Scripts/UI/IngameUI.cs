@@ -18,13 +18,19 @@ public class IngameUI : MonoBehaviour
     /// 최대 체력
     /// </summary>
 	public float maxHitPoint;
-	
+    /// <summary>
+    /// 맵찾는횟수
+    /// </summary>
+    int bigMapCount =0;
+    bool mapToggle = false;
+
 	QuickSlotUI[] IngameSlotUIs;
 	float[] IngameSlotCount;
     CanvasGroup QuickSlotGroup;
 
 	InventoryInput inventoryInput;
     Player player;
+    MapUI bigMap;
 
 	void Awake()
 	{
@@ -52,7 +58,10 @@ public class IngameUI : MonoBehaviour
         inventoryInput.Ingame.QuickSlot1.performed += OnQuickSlot1;
         inventoryInput.Ingame.QuickSlot2.performed += OnQuickSlot2;
         inventoryInput.Ingame.QuickSlot3.performed += OnQuickSlot3;
+        inventoryInput.Ingame.MapToggle.performed += MapToggle;
     }
+
+
     private void OnDisable()
     {
 		inventoryInput.Ingame.Disable();
@@ -61,10 +70,17 @@ public class IngameUI : MonoBehaviour
         inventoryInput.Ingame.QuickSlot1.canceled -= OnQuickSlot1;
     }
 
-    void Update ()
+    void LateUpdate ()
 	{
-		
+		if(bigMap == null&& bigMapCount<5)
+        {
+            GameObject.FindAnyObjectByType<MapUI>();
+            bigMapCount++;
+        }
     }
+
+    
+
     private void SetHpbar(float currentHp, float MaxHp)
     {
         maxHitPoint = MaxHp;
@@ -82,6 +98,20 @@ public class IngameUI : MonoBehaviour
     private void OnQuickSlot3(InputAction.CallbackContext context)
     {
         UseQuickSlotItem(2);
+    }
+    private void MapToggle(InputAction.CallbackContext context)
+    {
+        if (!mapToggle)
+        {
+        bigMap.ShowMap();
+            mapToggle = true;
+        }
+        else
+        {
+        bigMap.HideMap();
+            mapToggle = false;
+        }
+
     }
     /// <summary>
     /// 아이템 코드를 참조해서 아이템 데이터로 변환

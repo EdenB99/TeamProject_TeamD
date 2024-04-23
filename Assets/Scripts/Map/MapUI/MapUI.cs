@@ -125,6 +125,8 @@ public class MapUI : MonoBehaviour
 
         UpdateMapUI();
     }
+
+
     //TODO:: 빠른이동.
     public void FastTrevelEnble()
     {

@@ -189,6 +189,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MapToggle",
+                    "type": "Button",
+                    "id": "00297565-51e7-45cd-9d38-4b0190bb928b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -222,6 +231,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "QuickSlot3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9317021e-6f48-4bff-996f-138a41e70b1f",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MapToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

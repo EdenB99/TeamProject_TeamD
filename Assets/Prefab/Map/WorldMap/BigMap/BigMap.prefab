@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5725199480299440549}
   m_Layer: 5
   m_Name: BigMap
-  m_TagString: Untagged
+  m_TagString: BigMap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,11 +92,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
+  mapTilePrefab: {fileID: 0}
   itemSprite: {fileID: -6929924221510541977, guid: 19e07f9d107e445408633f50457d456e, type: 3}
   healSprite: {fileID: 21300206, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   shopSprite: {fileID: 21300180, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   bossSprite: {fileID: 21300166, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-  portalSprites: []
+  portalSprites: {fileID: 0}
   dragSpeed: 2
 --- !u!225 &3575224085025316023
 CanvasGroup:
