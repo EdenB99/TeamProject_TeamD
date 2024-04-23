@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class WeaponBase : MonoBehaviour
@@ -28,8 +29,14 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
+    /// <summary>
+    /// 플레이어의 힌지
+    /// </summary>
     protected Transform hinge;
 
+    /// <summary>
+    /// 이펙트의 생성좌표
+    /// </summary>
     protected Transform effectPosition;
 
     /// <summary>
@@ -89,17 +96,26 @@ public class WeaponBase : MonoBehaviour
         weaponLength = spriteRenderer.sprite.bounds.size.y * transform.localScale.y;
     }
 
+    protected void OnEnable()
+    {
+        inputActions.Weapon.Enable();
+        inputActions.Weapon.Attack.performed += OnAttack;
+    }
 
+    protected void OnDisable()
+    {
+        inputActions.Weapon.Attack.performed -= OnAttack;
+        inputActions.Weapon.Disable();
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        Attack();
+    }
 
     protected void Update()
     {
         UpdateWeaponPosition();
-
-        // 공격 입력 처리
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Attack();
-        }
     }
 
     protected virtual void UpdateWeaponPosition()
@@ -113,19 +129,27 @@ public class WeaponBase : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         transform.rotation = rotation;
 
+        // 마우스 위치에 따라 무기의 방향(좌우 반전) 결정
+        if (mousePosition.x < transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
 
         if (hit.collider != null)
         {
             // 충돌 지점이 무기의 세로 길이보다 멀리 있으면, 이펙트는 무기의 최대 세로 길이에서 생성
             Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
-            Debug.Log($"{effectPosition}");
         }
         else
         {
             // 충돌이 없거나 충돌 지점이 무기 세로 길이보다 가까울 경우, 무기 끝에서 이펙트를 생성
             Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
-            Debug.Log($"{effectPosition}");
         }
     }
 
@@ -150,11 +174,23 @@ public class WeaponBase : MonoBehaviour
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
     {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // 마우스 위치에 따라 애니메이션의 방향(좌우 반전) 결정
+        if (mousePosition.x < transform.position.x)
+        {
+            // 애니메이션이 왼쪽을 향하도록 좌우 반전
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            // 애니메이션이 오른쪽을 향하도록 원래대로 복구
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
         SetAnimationState();
         animator.SetTrigger(attackTrigger);
         Debug.Log("공격트리거 발동");
         
-
 
         ActivateEffect(transform.position);
         Debug.Log($"{transform.position}");
@@ -172,5 +208,6 @@ public class WeaponBase : MonoBehaviour
     protected virtual void ActivateEffect(Vector2 effectPosition)
     {
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
+        Debug.Log("이펙트 생성");
     }
 }

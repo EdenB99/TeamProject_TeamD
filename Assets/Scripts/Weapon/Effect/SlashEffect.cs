@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class SlashEffect : WeaponEffect
@@ -19,10 +20,12 @@ public class SlashEffect : WeaponEffect
     {
         animator.SetTrigger("Attack");
         animator.SetTrigger("SlashAttack");
+        Debug.Log("트리거 발동");
         StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
+        Debug.Log("코루틴 시작");
     }
 
-    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    protected override IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 

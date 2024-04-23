@@ -25,7 +25,7 @@ public class StabEffect : WeaponEffect
         StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
-    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    protected override IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
