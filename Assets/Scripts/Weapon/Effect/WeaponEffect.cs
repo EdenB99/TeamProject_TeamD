@@ -101,8 +101,7 @@ public class WeaponEffect : MonoBehaviour
         }
     }
 
-
-    private IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    protected virtual IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
@@ -118,9 +117,27 @@ public class WeaponEffect : MonoBehaviour
     }
 }
 
-// 웨폰 오브젝트를 불러와서 입력이 들어오면 비활성화된 이펙트 활성화 -> 웨폰의 특정 포지션에서 작동하게끔
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 이펙트 오브젝트 풀은 합치고 나서 작성
-// 일단은 이펙트 활성화 비활성화 정도로 구현만 해두기
 // 애니메이션은 두개를 통일 시켜서 스위치로 둘중에 원하는 무기의 형태로 작동시키기
 // Mathf 각도를 부여해서 회전시키기
 // 

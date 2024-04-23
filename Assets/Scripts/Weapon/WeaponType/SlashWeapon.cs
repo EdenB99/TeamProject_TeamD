@@ -24,21 +24,13 @@ public class SlashWeapon : WeaponBase
     protected override void Attack()
     {
         base.Attack();
-        if (effectPosition.position.x < hinge.transform.position.x)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
-
      
        animator.SetTrigger("SlashAttack");
 
        if (lastAttackTime < attackCooldown)
        {
            animator.SetTrigger("AttackUp");
+            Debug.Log("어퍼 트리거 발동");
            ActivateEffect(transform.position);
        }
     }                  

@@ -12,14 +12,14 @@ public class ShortSwordAnimation : StateMachineBehaviour
         this.animator = animator;
     }
 
-    // 웨폰 코드를 설정하고 애니메이션을 변경합니다.
+    // 웨폰 코드를 설정하고 애니메이션을 변경
     public void SetWeaponCode(WeaponCode weaponCode)
     {
         currentWeaponCode = weaponCode;
         UpdateAnimator();
     }
 
-    // 애니메이터에 웨폰 코드에 해당하는 매개변수 값을 전달합니다.
+    // 애니메이터에 웨폰 코드에 해당하는 매개변수 값을 전달
     private void UpdateAnimator()
     {
         if (animator != null)
