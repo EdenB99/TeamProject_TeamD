@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class IngameSlotUI : MonoBehaviour
+public class QuickSlotUI : MonoBehaviour
 {
     ItemData SlotItemData;
     Image itemimage;
@@ -78,9 +78,7 @@ public class IngameSlotUI : MonoBehaviour
                 {
                     if (usable.Use())            // 아이템 사용 시도
                     {
-                        ItemCount--; //갯수 줄임
-                        currentTime = 0.0f;
-                        ReadytoUseItem = false;
+                        ItemUsed();
                     }
                 }
             }
@@ -92,9 +90,7 @@ public class IngameSlotUI : MonoBehaviour
                 {
 
                     StartCoroutine(BuffEnd(buff, buff.BuffActive())); // 버프 시작
-                    ItemCount--; //갯수 줄임
-                    currentTime = 0.0f;
-                    ReadytoUseItem = false;
+                    ItemUsed();
                 }
             }
 
@@ -105,9 +101,7 @@ public class IngameSlotUI : MonoBehaviour
                 {
                     if (active.ItemActive(Camera.main.ScreenToWorldPoint(Input.mousePosition) ) )
                     {
-                        ItemCount--; //갯수 줄임
-                        currentTime = 0.0f;
-                        ReadytoUseItem = false;
+                        ItemUsed();
                     }
                 }
             }
@@ -115,6 +109,18 @@ public class IngameSlotUI : MonoBehaviour
         {
             Debug.Log("아이템 정보가 없습니다.");
         }
+    }
+
+    public void ItemUsed()
+    {
+        ItemCount--; //갯수 줄임
+
+        if ( ItemCount != 0 )
+        {
+                    currentTime = 0.0f;
+        ReadytoUseItem = false;
+        }
+
     }
 
     public void SetItemImage(Sprite itemSprite)
@@ -137,6 +143,7 @@ public class IngameSlotUI : MonoBehaviour
     }
     public void ClearSlot()
     {
+        SlotItemData = null;
         itemimage.sprite = null;
         AmountText.text = null;
     }

@@ -19,7 +19,7 @@ public class IngameUI : MonoBehaviour
     /// </summary>
 	public float maxHitPoint;
 	
-	IngameSlotUI[] IngameSlotUIs;
+	QuickSlotUI[] IngameSlotUIs;
 	float[] IngameSlotCount;
     CanvasGroup QuickSlotGroup;
 
@@ -29,7 +29,7 @@ public class IngameUI : MonoBehaviour
 	void Awake()
 	{
         QuickSlotGroup = gameObject.transform.GetChild(1).GetComponent<CanvasGroup>();
-        IngameSlotUIs = QuickSlotGroup.transform.GetComponentsInChildren<IngameSlotUI>();
+        IngameSlotUIs = QuickSlotGroup.transform.GetComponentsInChildren<QuickSlotUI>();
         inventoryInput = new InventoryInput();
 
         
