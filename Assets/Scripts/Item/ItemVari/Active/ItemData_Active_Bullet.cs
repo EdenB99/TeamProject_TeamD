@@ -12,7 +12,9 @@ public class ItemData_Active_Bullet : ItemData, IActivatable
 
         Vector2 playerPos = (Vector2)player.transform.position;
 
-        Vector2 dir = pos - playerPos;
+        Vector2 dir = (pos - playerPos).normalized;
+
+
 
         Factory.Instance.MakeBullet(playerPos, dir, bulletCode);
 
