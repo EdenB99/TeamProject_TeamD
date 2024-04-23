@@ -280,7 +280,7 @@ MonoBehaviour:
   damageTaken: 0
   Level: 0
   itemRange: 3
-  speed: 15
+  speed: 5
   invincible: 0
   PickSpeed: 0
   checkRadius: 0
@@ -298,7 +298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1e99bc8be1d2c468e3904f56968235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
   jumpPower: 15
   downJump: 0
   downJumpTime: 0

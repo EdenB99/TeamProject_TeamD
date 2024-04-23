@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class IngameSlotUI : MonoBehaviour
@@ -83,15 +84,31 @@ public class IngameSlotUI : MonoBehaviour
                     }
                 }
             }
-            IBuff buff = SlotItemData as IBuff;   // IUsable을 상속 받았는지 확인
+
+            IBuff buff = SlotItemData as IBuff;   // IBuff를 상속 받았는지 확인
             if (buff != null)                     // 상속을 받았으면
             {
                 if (ReadytoUseItem)
                 {
+
                     StartCoroutine(BuffEnd(buff, buff.BuffActive())); // 버프 시작
                     ItemCount--; //갯수 줄임
                     currentTime = 0.0f;
                     ReadytoUseItem = false;
+                }
+            }
+
+            IActivatable active = SlotItemData as IActivatable;     // Iactive를 상속 받았는지 확인
+            if (active != null)                                     // 상속을 받았으면
+            {
+                if (ReadytoUseItem)
+                {
+                    if (active.ItemActive(Camera.main.ScreenToWorldPoint(Input.mousePosition) ) )
+                    {
+                        ItemCount--; //갯수 줄임
+                        currentTime = 0.0f;
+                        ReadytoUseItem = false;
+                    }
                 }
             }
         } else
@@ -140,7 +157,7 @@ public class IngameSlotUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 버프 효과를 끄는 코루틴
+    /// 버프 효과를 끄는 코루틴 ( 추후 코드 변경 예정 )
     /// </summary>
     /// <param name="item"></param>
     /// <param name="duration"></param>

@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 
     [Header("이동")]
     private Vector2 moveInput; // 이동 입력을 저장할 변수
-    public float maxSpeed = 5.0f;
 
 
     [Header("점프")]
@@ -205,7 +204,7 @@ public class Player : MonoBehaviour
     private void MovePosition()
     {
         MousePosition();    // 마우스 포지션 변경
-        float moveDistance = moveInput.x * maxSpeed * Time.fixedDeltaTime;
+        float moveDistance = moveInput.x * playerStats.speed * Time.fixedDeltaTime;
         transform.position += new Vector3(moveDistance, 0, 0);
     }
 
