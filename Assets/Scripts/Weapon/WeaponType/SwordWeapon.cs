@@ -35,28 +35,22 @@ public class SwordWeapon : MonoBehaviour, IWeapon
         animator = GetComponent<Animator>();
         inputActions = new WeaponAction();
         sprite = GetComponent<SpriteRenderer>();
+        
     }
 
     private void Start()
     {
-        AttachToPlayer();
+        //AttachToPlayer();
 
-        transform.SetParent(hinge, false);
+        /*transform.SetParent(hinge, false);
 
         transform.localPosition = new Vector3(0f, 0f, 0f);
-        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);*/
     }
 
     private void Update()
     {
-        if (hinge.localScale.x < 0)
-        {
-            transform.localScale = new Vector3(1f, -1f, 1f);
-        }
-        else
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
+      
         FlipWeapon();
         FollowMousePosition();
         //Testangle();
@@ -77,8 +71,8 @@ public class SwordWeapon : MonoBehaviour, IWeapon
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        Debug.Log("공격");
-        animator.SetTrigger("Attack");
+       Debug.Log("공격");
+       animator.SetTrigger("Attack");
     }
 
 
@@ -95,7 +89,7 @@ public class SwordWeapon : MonoBehaviour, IWeapon
     private IEnumerator SwingEffect()
     {
         isAttacking = transform;
-        animator.SetTrigger("Attack");
+        //animator.SetTrigger("Attack");
 
         yield return new WaitForSeconds(1.0f);
 
@@ -106,7 +100,7 @@ public class SwordWeapon : MonoBehaviour, IWeapon
     /// <summary>
     /// 플레이어 한테 무기를 붙임
     /// </summary>
-    private void AttachToPlayer()
+   /* private void AttachToPlayer()
     {
         if (player != null)
         {
@@ -115,12 +109,12 @@ public class SwordWeapon : MonoBehaviour, IWeapon
 
             // 여기에 무기 로컬 설정
             // 손의 위치에 따라 조정
-            transform.localPosition = new Vector3(1f, 0f, 0f); // 이 값을 조정하세요.
+            transform.localPosition = new Vector3(1f, 0f, 0f); // 
 
             // 무기의 로컬 회전을 초기화
             transform.localRotation = Quaternion.Euler(0f, 0f, offsetRotation);
         }
-    }
+    }*/
 
     // 무기가 플레이어의 방향을 따라 회전
     private void FlipWeapon()
@@ -128,54 +122,43 @@ public class SwordWeapon : MonoBehaviour, IWeapon
         if (player != null)
         {
             // 플레이어 무기 스케일에 따라 조정
-            transform.localScale = new Vector3(player.localScale.x, 1f, 1f);
+            transform.position = new Vector3(hinge.localScale.x, 1f, 1f);
         }
     }
 
-    /* private void Testangle()
-     {
-         angleMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-         weaponAngle = Mathf.Atan2(angleMouse.y - target.y, angleMouse.x - target.x) * Mathf.Rad2Deg;
-         this.transform.rotation = Quaternion.AngleAxis(weaponAngle - 90, Vector3.forward);
 
-     }*/
-
-    /// <summary>
-    /// 마우스 포지션
-    /// </summary>
-    /*private void FollowMousePosition()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = transform.position.z - Camera.main.transform.position.z;
-        Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
-
-        float dy = target.y - transform.position.y;
-        float dx = target.x - transform.position.x;
-
-        float rotateDegree = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rotateDegree + offsetRotation);
-    }*/
+   
+   
 
     private void FollowMousePosition()
     {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.nearClipPlane;
-        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0f;
+        transform.position = hinge.position;
 
-        // hinge를 통해 무기의 방향을 결정합니다.
-        Vector3 hingeDirection = worldMousePos - hinge.position;
-        hingeDirection.z = 0; // z축 방향 무시
+        Vector3 direction = mousePos - transform.position;
+        direction.z = 0;
+        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        hinge.rotation = rotation;
 
-        // 플레이어가 바라보는 방향에 따라 무기의 회전 방향을 결정합니다.
-        float angleOffset = hinge.localScale.x < 0 ? 180f : 0f;
-        bool shouldFlip = mousePos.x < transform.position.x;
+        if(mousePos.x < transform.position.x)
+        {
+            sprite.flipX = true;
+            hinge.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            sprite.flipX = false;
+            hinge.localScale = new Vector3(1, -1, 1);
+        }
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
+    }
 
-        // Mathf.Atan2를 사용하여 무기가 마우스 위치를 바라보도록 회전각도를 계산합니다.
-        float angle = Mathf.Atan2(hingeDirection.y, hingeDirection.x) * Mathf.Rad2Deg;
-
-        // hinge의 회전을 설정합니다.
-        hinge.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle + angleOffset + offsetRotation));
-
+    private IEnumerator ResetHingeRotation()
+    {
+       
+        yield return new WaitForSeconds(0.5f); 
+        hinge.rotation = Quaternion.identity; 
     }
 
 
