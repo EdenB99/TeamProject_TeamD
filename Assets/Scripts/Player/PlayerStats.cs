@@ -30,22 +30,22 @@ public class PlayerStats : MonoBehaviour
     public float attackSpeed;                // 공격속도
     public float MaxHp = 100.0f;        // 최대체력
     public float hp;                   // 현재체력
-    public int criticalChance;          // 크리티컬
+    public float criticalChance;          // 크리티컬
     public float damageTaken;           // 몬스터 받는 피해
     public int Level;                   // 레벨
     public float itemRange;              // 아이템을 흡수하는 범위
     public float speed;
 
     // 플레이어가 적용받고 있는 스탯
-    public float AddattackPower;                // 공격력
-    public float AddDefense;               // 방어력
-    public float AddattackSpeed;                // 공격속도
-    public float AddMaxHp = 100.0f;        // 최대체력
-    public float Addhp;                   // 현재체력
-    public int AddcriticalChance;          // 크리티컬
-    public float AdddamageTaken;           // 몬스터 받는 피해
-    public float AdditemRange;              // 아이템을 흡수하는 범위
-    public float Addspeed;
+    private float _attackPower;                // 공격력
+    private float _Defense;               // 방어력
+    private float _attackSpeed;                // 공격속도
+    private float _MaxHp = 100.0f;        // 최대체력
+    private float _hp;                   // 현재체력
+    private float _criticalChance;          // 크리티컬
+    private float _damageTaken;           // 몬스터 받는 피해
+    private float _itemRange;              // 아이템을 흡수하는 범위
+    private float _speed;
 
     public bool invincible;             // 무적상태
 
@@ -266,16 +266,26 @@ public class PlayerStats : MonoBehaviour
 
     public void buffChanged()
     {
+        float temp_attackPower = 0;
+        float temp_Defense = 0;
+        float temp_hp = 0;
+        float temp_criticalChance = 0;
         float temp_speed = 0;
 
         foreach (var inbuff in buffs)
         {
+            temp_attackPower += inbuff.buff_attackPower;
+            temp_Defense += inbuff.buff_Defense;
+            temp_hp += inbuff.buff_hp;
+            temp_criticalChance += inbuff.buff_criticalChance;
             temp_speed += inbuff.buff_speed;
         }
 
-        Addspeed = temp_speed;  // 모든 buff_speed 합산
-
-        speed = 5 + Addspeed;   // 
+        _attackPower = attackPower + temp_attackPower;
+        _Defense = Defense + temp_Defense;
+        _MaxHp = MaxHp + temp_hp;
+        _criticalChance = criticalChance + temp_criticalChance;
+        _speed = speed + temp_speed;   
     }
 
     IEnumerator Corutine_buffEnd(PlayerBuff buff)
