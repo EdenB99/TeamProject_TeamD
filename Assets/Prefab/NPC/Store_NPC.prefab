@@ -135,7 +135,7 @@ Transform:
   m_GameObject: {fileID: 4573474475184300850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.98, y: -3.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -273,6 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcType: 0
-  dialogue: "\uC5B4\uC11C \uC624\uC138\uC694! \uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?\n\uBB34\uC5C7\uC744
-    \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?"
   dialogText: {fileID: 0}
+  IsInteracting: 0
+  storeDialogues:
+  - "\uC548\uB155\uD558\uC138\uC694, \uC0C1\uC810\uC785\uB2C8\uB2E4."
+  - "\uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?"

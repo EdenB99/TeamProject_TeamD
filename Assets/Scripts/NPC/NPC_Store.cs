@@ -15,11 +15,11 @@ public class NPC_Store : NPC_Base
     protected override void Awake()
     {
         base.Awake();
-        if(npcType == NPCType.Store)
+        if (npcType == NPCType.Store)
         {
             dialogues = storeDialogues;
         }
-        //StoreUI = canvas.transform.GetChild(1); //오류로 잠시 주석처리
+        StoreUI = canvas.transform.GetChild(1); //오류로 잠시 주석처리
     }
 
     public override void NextDialog()
