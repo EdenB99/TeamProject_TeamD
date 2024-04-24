@@ -234,6 +234,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    
     void Jump()
     {
         // 점프 로직
