@@ -28,7 +28,7 @@ public class NPC_Base : MonoBehaviour
     protected virtual void Awake()
     {
         canvas = GetComponentInChildren<Canvas>();
-        dialogBox = canvas.GetComponentInChildren<Transform>();
+        dialogBox = canvas.transform.GetChild(0);
         dialogText = dialogBox.transform.GetComponentInChildren<TextMeshProUGUI>();
         key = transform.GetChild(0);
 
