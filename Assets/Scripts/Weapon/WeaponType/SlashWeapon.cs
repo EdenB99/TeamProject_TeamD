@@ -26,12 +26,5 @@ public class SlashWeapon : WeaponBase
         base.Attack();
      
        animator.SetTrigger("SlashAttack");
-
-       if (lastAttackTime < attackCooldown)
-       {
-           animator.SetTrigger("AttackUp");
-            Debug.Log("어퍼 트리거 발동");
-           ActivateEffect(transform.position);
-       }
     }                  
 }

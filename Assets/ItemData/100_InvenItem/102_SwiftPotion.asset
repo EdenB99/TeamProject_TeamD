@@ -14,10 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 3
   type: 2
-  itemName: "\uC2A4\uC704\uD504\uD2B8 \uD3EC"
-  itemDescription: "\uC774\uC18D\uC774 \uC99D\uAC00\uD55C\uB2E4."
+  itemName: "\uC18D\uB3C4 \uBB3C\uC57D"
+  itemDescription: "\uC18D\uB3C4\uAC00 \uC99D\uAC00\uD55C\uB2E4"
   itemIcon: {fileID: 21300000, guid: 36d43ab418290f4499125371215a8ba7, type: 3}
-  price: 50
-  cooltime: 10
-  speedUp: 10
-  duration: 10
+  price: 0
+  cooltime: 0
+  playerBuff:
+    code: 3
+    buff_attackPower: 0
+    buff_Defense: 0
+    buff_hp: 0
+    buff_criticalChance: 0
+    buff_speed: 5
+    buff_duration: 5

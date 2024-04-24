@@ -8,16 +8,13 @@ using UnityEngine.UI;
 
 public class QuickSlotUI : MonoBehaviour
 {
-    ItemData SlotItemData;
+    public ItemData SlotItemData;
     Image itemimage;
     TextMeshProUGUI commandText;
     TextMeshProUGUI AmountText;
 
     [Header("퀵슬롯 내 아이템의 쿨타임")]
     private float coolTime = 5.0f;
-
-
-
 
     private float currentTime;
     private bool ReadytoUseItem;
@@ -54,6 +51,7 @@ public class QuickSlotUI : MonoBehaviour
             SlotItemData = itemData;
             ItemCount = Count;
             SetItemImage(itemData.itemIcon);
+            coolTime = itemData.cooltime;
             currentTime = coolTime;
             ReadytoUseItem = true;
         }
@@ -63,6 +61,7 @@ public class QuickSlotUI : MonoBehaviour
         if (SlotItemData != null)
         {
             itemCount += Count;
+            SetAmountText(itemCount);
         }
     }
     public void ClearItemData()
@@ -92,8 +91,8 @@ public class QuickSlotUI : MonoBehaviour
             {
                 if (ReadytoUseItem)
                 {
-
-                    StartCoroutine(BuffEnd(buff, buff.BuffActive())); // 버프 시작
+                    if ( buff.BuffActive() > 0 ) // 버프 아이템은 0초 이상의 시간을 가진다. 장비 아이템이 사용되는 경우 버그
+                    
                     ItemUsed();
                 }
             }
@@ -165,17 +164,5 @@ public class QuickSlotUI : MonoBehaviour
         {
             ReadytoUseItem = true;
         }
-    }
-
-    /// <summary>
-    /// 버프 효과를 끄는 코루틴 ( 추후 코드 변경 예정 )
-    /// </summary>
-    /// <param name="item"></param>
-    /// <param name="duration"></param>
-    /// <returns></returns>
-    IEnumerator BuffEnd(IBuff item, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        item.BuffEnd();
     }
 }

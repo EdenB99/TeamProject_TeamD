@@ -21,7 +21,7 @@ public class IngameUI : MonoBehaviour
     /// <summary>
     /// 맵찾는횟수
     /// </summary>
-    int bigMapCount =0;
+    int bigMapCount = 0;
     bool mapToggle = false;
 
 	QuickSlotUI[] IngameSlotUIs;
@@ -30,7 +30,7 @@ public class IngameUI : MonoBehaviour
 
 	InventoryInput inventoryInput;
     Player player;
-    MapUI bigMap;
+    public MapUI bigMap;
 
 	void Awake()
 	{
@@ -47,9 +47,11 @@ public class IngameUI : MonoBehaviour
 		player = GameManager.Instance.Player;
 
         maxHitPoint = player.PlayerStats.MaxHp;
+        
 		hitPoint = player.PlayerStats.CurrentHp;
-		//그래픽 초기화
-		UpdateGraphics();
+        Debug.Log($"{maxHitPoint},{hitPoint}");
+        //그래픽 초기화
+        UpdateGraphics();
         player.PlayerStats.onHealthChange += SetHpbar;
     }
     private void OnEnable()
@@ -70,14 +72,6 @@ public class IngameUI : MonoBehaviour
         inventoryInput.Ingame.QuickSlot1.canceled -= OnQuickSlot1;
     }
 
-    void LateUpdate ()
-	{
-		if(bigMap == null&& bigMapCount<5)
-        {
-            GameObject.FindAnyObjectByType<MapUI>();
-            bigMapCount++;
-        }
-    }
 
     
 
@@ -101,6 +95,10 @@ public class IngameUI : MonoBehaviour
     }
     private void MapToggle(InputAction.CallbackContext context)
     {
+        if (bigMap == null)
+        {
+            bigMap = GameObject.FindAnyObjectByType<MapUI>();
+        }
         if (!mapToggle)
         {
         bigMap.ShowMap();
@@ -145,13 +143,34 @@ public class IngameUI : MonoBehaviour
         IngameSlotUIs[SlotNumber].GetItemdata(itemData);
     }
     /// <summary>
-    /// 퀵슬롯 내 아이템의 갯수를 일정 수치만큼 증가
+    /// 퀵슬롯 내 아이템 여부를 확인하고 존재하면 해당 아이템만큼 추가, 없으면 빈칸을 찾아 추가
     /// </summary>
     /// <param name="SlotNumber">변경할 슬롯</param>
     /// <param name="Addnum">증가시킬 아이템 갯수</param>
-    public void AddQuickSlotItem(int SlotNumber, int Addnum)
+    public void AddQuickSlotItem(ItemCode code, int Addnum)
 	{
-		IngameSlotUIs[SlotNumber].AddItem(Addnum);
+        ItemData itemData = SetItemCodeToData(code);
+        bool isItem = false;
+        for (int i = 0; i<IngameSlotUIs.Length; i++)
+        {
+            if (IngameSlotUIs[i].SlotItemData ==  itemData)
+            {
+                IngameSlotUIs[i].AddItem(Addnum);
+                isItem = true;
+                break;
+            }
+        }
+        if (!isItem)
+        {
+            for (int i = 0; i<IngameSlotUIs.Length;i++)
+            {
+                if (IngameSlotUIs[i].SlotItemData == null)
+                {
+                    IngameSlotUIs[i].GetItemdata(itemData, Addnum);
+                }
+            }
+        }
+        
 	}
     /// <summary>
     /// 퀵슬롯 내 아이템의 정보를 삭제

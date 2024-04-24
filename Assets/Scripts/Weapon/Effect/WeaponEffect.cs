@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponEffect : MonoBehaviour
+public class WeaponEffect : RecycleObject
 {
     Rigidbody2D rigidbody2d;
 
@@ -14,10 +14,10 @@ public class WeaponEffect : MonoBehaviour
     protected PlayerStats playerStats;
 
     public GameObject weapon;
-    
-    protected Vector2 mosPosition;
 
-    GameObject weaponEffect;
+    WeaponData weaponData;
+
+    protected Vector2 mosPosition;
 
     /// <summary>
     /// 무기 공격력
@@ -54,11 +54,31 @@ public class WeaponEffect : MonoBehaviour
         player = GameManager.Instance.Player;
 
         playerStats = player.PlayerStats;
-
-        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
+    void SetAnimationState()
+    {
+        switch (weaponData.weaponType)
+        {
+            case WeaponType.Slash:
+                animator.SetTrigger("SlashAttack");
+                Debug.Log("슬래시 어택 트리거");
+                break;
 
+            case WeaponType.Stab:
+                animator.SetTrigger("StabAttack");
+                break;
+            default:
+                break;
+        }
+        Debug.Log($"{weaponData.weaponType}");
+    }
+
+    protected override void OnEnable()
+    {
+        StartCoroutine(DeactivateEffectAfterAnimation());
+        Debug.Log("코루틴 발동");
+    }
 
     private void Update()
     {
@@ -71,7 +91,6 @@ public class WeaponEffect : MonoBehaviour
             }
             coolTime = effectTick;
         }
-
     }
 
     //public void OnStabAnimationEvent()
@@ -101,73 +120,16 @@ public class WeaponEffect : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    protected IEnumerator DeactivateEffectAfterAnimation()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
         Debug.Log($"{currentClipLength}");
 
-
         yield return new WaitForSeconds(currentClipLength);
 
         isDestroyed = true;
         Destroy(this.gameObject);
-        Debug.Log("이펙트 파괴");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 이펙트 오브젝트 풀은 합치고 나서 작성
-// 애니메이션은 두개를 통일 시켜서 스위치로 둘중에 원하는 무기의 형태로 작동시키기
-// Mathf 각도를 부여해서 회전시키기
-// 
-
-///// < summary >
-///// 마우스 버튼이 인벤토리 영역 밖에서 떨어졌을 때 실행되는 함수
-///// </summary>
-///// <param name="screenPosition">마우스 커서의 스크린좌표 위치</param>
-//public void OnDrop(Vector2 screenPosition)
-//{
-//    // 일단 아이템이 있을 때만 처리
-//    if (!InvenSlot.IsEmpty)
-//    {
-//        Ray ray = Camera.main.ScreenPointToRay(screenPosition); // 스크린좌표를 이용해서 레이 생성
-//        if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000.0f, LayerMask.GetMask("Ground")))
-//        {
-//            // 레이를 이용해서 레이캐스트 실행(Ground레이어에 있는 컬라이더랑만 체크)
-//            Vector3 dropoPsition = hitInfo.point;
-//            dropPosition.y = 0;
-
-//            Vector3 dropDir = dropPosition - owner.transform.position;
-//            if (dropDir.sqrMagnitude > owner.ItemPickupRange * owner.ItemPickupRange)
-//            {
-//                dropPosition = dropDir.normalized * owner.ItemPickupRange + owner.transform.position;
-//            }
-
-//            // 충돌지점에 아이템 생성
-//            Factory.Instance.MakeItems(InvenSlot.ItemData.code, InvenSlot.ItemCount,
-//                dropPosition, InvenSlot.ItemCount > 1);
-//            InvenSlot.ClearSlotItem();      // 임시 슬롯 비우기
-//        }
-//    }
-//}
