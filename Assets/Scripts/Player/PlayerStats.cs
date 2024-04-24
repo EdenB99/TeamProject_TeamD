@@ -1,11 +1,30 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// 플레이어에 대한 버프 구조체 
+/// </summary>
+[System.Serializable]
+public struct PlayerBuff
+{
+    public ItemCode code;
+    public float buff_attackPower;
+    public float buff_Defense;
+    public float buff_hp;
+    public float buff_criticalChance;
+    public float buff_speed;
+    /// <summary>
+    /// -1 일경우 영구지속 ( 해제 전까지 )
+    /// </summary>
+    public float buff_duration;
+}
 
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("플레이어 스텟")]
+    [Header("플레이어의 기본 스텟")]
     public float attackPower;                // 공격력
     public float Defense;               // 방어력
     public float attackSpeed;                // 공격속도
@@ -17,7 +36,21 @@ public class PlayerStats : MonoBehaviour
     public float itemRange;              // 아이템을 흡수하는 범위
     public float speed;
 
+    // 플레이어가 적용받고 있는 스탯
+    public float AddattackPower;                // 공격력
+    public float AddDefense;               // 방어력
+    public float AddattackSpeed;                // 공격속도
+    public float AddMaxHp = 100.0f;        // 최대체력
+    public float Addhp;                   // 현재체력
+    public int AddcriticalChance;          // 크리티컬
+    public float AdddamageTaken;           // 몬스터 받는 피해
+    public float AdditemRange;              // 아이템을 흡수하는 범위
+    public float Addspeed;
+
     public bool invincible;             // 무적상태
+
+
+    public List<PlayerBuff> buffs;
 
     /// <summary>
     /// 아이템이 플레이어에게 이동하는 속도
@@ -196,6 +229,65 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 버프를 추가하는 함수
+    /// </summary>
+    /// <param name="buff"></param>
+    public void onAddBuff(PlayerBuff buff)
+    {
+        bool temp = true; // 버프의 실행여부
+
+        if ( buff.buff_duration != -1 )             // 지속시간이 있는 ( 악세사리가 아닌 ) 버프라면,
+        {
+            foreach ( PlayerBuff inbuff in buffs)   // 현재 지속중인 버프를 찾는다.
+            {
+                if ( inbuff.code == buff.code )     // 같은 버프가 있다면
+                {
+                    temp = false;                   // 버프의 실행여부를 false로 한다.
+                    break;
+                }
+            }
+
+            if (temp == true)
+            {
+                StartCoroutine(Corutine_buffEnd(buff));
+                buffs.Add(buff); // 버프를 추가한다.
+                buffChanged();
+            }
+
+        }
+        else                                        // 지속시간이 없는 ( 악세사리 ) 버프라면,
+        {
+            buffs.Add(buff); // 버프를 추가한다.
+            buffChanged();
+        }
+
+    }
+
+    public void buffChanged()
+    {
+        float temp_speed = 0;
+
+        foreach (var inbuff in buffs)
+        {
+            temp_speed += inbuff.buff_speed;
+        }
+
+        Addspeed = temp_speed;  // 모든 buff_speed 합산
+
+        speed = 5 + Addspeed;   // 
+    }
+
+    IEnumerator Corutine_buffEnd(PlayerBuff buff)
+    {
+        if ( buff.buff_duration > 0 )
+        {
+            yield return new WaitForSeconds(buff.buff_duration);
+        }
+        buffs.Remove(buff);
+        buffChanged();
+
+    }
 
     /// <summary>
     /// 체력이 변경되었을때 호출되는 함수
