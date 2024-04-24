@@ -35,17 +35,11 @@ public class WeaponBase : MonoBehaviour
     protected Transform hinge;
 
     /// <summary>
-    /// 이펙트의 생성좌표
-    /// </summary>
-    protected Transform effectPosition;
-
-    /// <summary>
     /// 무기 공격력
     /// </summary>
    public  int weaponDamage = 10;
 
     public float critical = 10.0f;
-
 
     public float rotationSpeed = 5.0f;
 
@@ -59,9 +53,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public float weaponSpeed = 10.0f;
 
-
     public float attackCooldown = 0.5f; // 공격 간격
-
 
     private float lastAttackTime; // 마지막 공격 시간
 
@@ -69,8 +61,6 @@ public class WeaponBase : MonoBehaviour
     /// 공격 애니메이션을 제어하기 위한 트리거
     /// </summary>
     private const string attackTrigger = "Attack";
-
-    
 
     protected virtual void Awake()
     {
@@ -139,18 +129,8 @@ public class WeaponBase : MonoBehaviour
             spriteRenderer.flipX = false;
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
-
-        if (hit.collider != null)
-        {
-            // 충돌 지점이 무기의 세로 길이보다 멀리 있으면, 이펙트는 무기의 최대 세로 길이에서 생성
-            Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
-        }
-        else
-        {
-            // 충돌이 없거나 충돌 지점이 무기 세로 길이보다 가까울 경우, 무기 끝에서 이펙트를 생성
-            Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
-        }
+        Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
+        //Debug.Log($"{effectPosition}");
     }
 
     void SetAnimationState()
@@ -169,7 +149,7 @@ public class WeaponBase : MonoBehaviour
                 break;
         }
         Debug.Log($"{weaponData.weaponType}");
-    }
+    } 
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
@@ -189,18 +169,15 @@ public class WeaponBase : MonoBehaviour
 
         SetAnimationState();
         animator.SetTrigger(attackTrigger);
-        Debug.Log("공격트리거 발동");
-        
+        Debug.Log("공격트리거 발동");        
 
         ActivateEffect(transform.position);
-        Debug.Log($"{transform.position}");
+        //Debug.Log($"{transform.position}");
 
         //// 공격 속도에 따라 애니메이션 속도 조절
         //float attackAnimationSpeed = playerStats.attackSpeed;
         //animator.SetFloat("weaponSpeed", attackAnimationSpeed);
-
     }
-
 
     /// <summary>
     /// 이펙트 활성화 함수
@@ -210,4 +187,4 @@ public class WeaponBase : MonoBehaviour
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
         Debug.Log("이펙트 생성");
     }
-}
+}   
