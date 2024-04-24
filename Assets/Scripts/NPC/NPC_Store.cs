@@ -19,7 +19,7 @@ public class NPC_Store : NPC_Base
         {
             dialogues = storeDialogues;
         }
-        StoreUI = canvas.transform.GetChild(1); //오류로 잠시 주석처리
+        //StoreUI = canvas.transform.GetChild(1); //오류로 잠시 주석처리
     }
 
     public override void NextDialog()
