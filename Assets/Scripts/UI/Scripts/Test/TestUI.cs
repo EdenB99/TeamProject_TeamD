@@ -22,6 +22,7 @@ public class TestUI : MonoBehaviour
         ingameUI.SetQuickSlotItem(1, ItemCode.SwiftPotion, 2);
         ingameUI.SetQuickSlotItem(2, ItemCode.Shiruken, 15);
 
+        ingameUI.AddQuickSlotItem(ItemCode.HealingPotion_A, 3);
 
 
         inven.AddItem(ItemCode.HealingPotion_A);

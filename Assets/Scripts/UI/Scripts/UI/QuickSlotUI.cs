@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class QuickSlotUI : MonoBehaviour
 {
-    ItemData SlotItemData;
+    public ItemData SlotItemData;
     Image itemimage;
     TextMeshProUGUI commandText;
     TextMeshProUGUI AmountText;
@@ -51,6 +51,7 @@ public class QuickSlotUI : MonoBehaviour
             SlotItemData = itemData;
             ItemCount = Count;
             SetItemImage(itemData.itemIcon);
+            coolTime = itemData.cooltime;
             currentTime = coolTime;
             ReadytoUseItem = true;
         }
@@ -60,6 +61,7 @@ public class QuickSlotUI : MonoBehaviour
         if (SlotItemData != null)
         {
             itemCount += Count;
+            SetAmountText(itemCount);
         }
     }
     public void ClearItemData()
