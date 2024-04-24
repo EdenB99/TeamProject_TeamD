@@ -16,6 +16,7 @@ TagManager:
   - PlayerLocation
   - Spike
   - BigMap
+  - Wall
   layers:
   - Default
   - TransparentFX

@@ -30,7 +30,7 @@ public class IngameUI : MonoBehaviour
 
 	InventoryInput inventoryInput;
     Player player;
-    MapUI bigMap;
+    public MapUI bigMap;
 
 	void Awake()
 	{
@@ -72,14 +72,6 @@ public class IngameUI : MonoBehaviour
         inventoryInput.Ingame.QuickSlot1.canceled -= OnQuickSlot1;
     }
 
-    void LateUpdate ()
-	{
-		if(bigMap == null&& bigMapCount<5)
-        {
-            GameObject.FindAnyObjectByType<MapUI>();
-            bigMapCount++;
-        }
-    }
 
     
 
@@ -103,6 +95,10 @@ public class IngameUI : MonoBehaviour
     }
     private void MapToggle(InputAction.CallbackContext context)
     {
+        if (bigMap == null)
+        {
+            bigMap = GameObject.FindAnyObjectByType<MapUI>();
+        }
         if (!mapToggle)
         {
         bigMap.ShowMap();

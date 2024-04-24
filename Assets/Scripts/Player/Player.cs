@@ -253,6 +253,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    //TODO:: 플레이어가 Platform 태그를 가진 Platform만 s키를 누른동안 통과해야함
+    //현재는 포탈을 포함한 전부 통과해버림
     IEnumerator DownJump()
     {
         // 하단 점프를 위해 플레이어의 Collider를 잠시 비활성화
