@@ -47,9 +47,11 @@ public class IngameUI : MonoBehaviour
 		player = GameManager.Instance.Player;
 
         maxHitPoint = player.PlayerStats.MaxHp;
+        
 		hitPoint = player.PlayerStats.CurrentHp;
-		//그래픽 초기화
-		UpdateGraphics();
+        Debug.Log($"{maxHitPoint},{hitPoint}");
+        //그래픽 초기화
+        UpdateGraphics();
         player.PlayerStats.onHealthChange += SetHpbar;
     }
     private void OnEnable()
