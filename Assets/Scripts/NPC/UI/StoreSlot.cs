@@ -8,6 +8,7 @@ public class StoreSlot : MonoBehaviour
     Button storeSlot;
     Inventory inventory;
     Transform buyTab;
+    public ItemCode itemToPurchase;
     public Canvas canvas;
 
     private void Awake()
@@ -17,12 +18,17 @@ public class StoreSlot : MonoBehaviour
         buyTab = storeUI.GetChild(2);
 
         storeSlot = GetComponent<Button>();
-
         storeSlot.onClick.AddListener(() => OnItemPurchase());
     }
 
     public void OnItemPurchase()
     {
         buyTab.gameObject.SetActive(true);
+        BuyTab buyTabScript = buyTab.GetComponent<BuyTab>();
+        if (buyTabScript != null)
+        {
+            buyTabScript.SetItemToPurchase(itemToPurchase, inventory);
+        }
     }
+
 }
