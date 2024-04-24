@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponEffect : MonoBehaviour
+public class WeaponEffect : RecycleObject
 {
     Rigidbody2D rigidbody2d;
 
-    Animator animator;
+    protected Animator animator;
     
     protected Player player;
 
     protected PlayerStats playerStats;
 
     public GameObject weapon;
-    
-    protected Vector2 mosPosition;
 
-    GameObject weaponEffect;
+    WeaponData weaponData;
+
+    protected Vector2 mosPosition;
 
     /// <summary>
     /// 무기 공격력
@@ -54,11 +54,31 @@ public class WeaponEffect : MonoBehaviour
         player = GameManager.Instance.Player;
 
         playerStats = player.PlayerStats;
-
-        StartCoroutine(DeactivateEffectAfterAnimation(weaponEffect));
     }
 
+    void SetAnimationState()
+    {
+        switch (weaponData.weaponType)
+        {
+            case WeaponType.Slash:
+                animator.SetTrigger("SlashAttack");
+                Debug.Log("슬래시 어택 트리거");
+                break;
 
+            case WeaponType.Stab:
+                animator.SetTrigger("StabAttack");
+                break;
+            default:
+                break;
+        }
+        Debug.Log($"{weaponData.weaponType}");
+    }
+
+    protected override void OnEnable()
+    {
+        StartCoroutine(DeactivateEffectAfterAnimation());
+        Debug.Log("코루틴 발동");
+    }
 
     private void Update()
     {
@@ -71,7 +91,6 @@ public class WeaponEffect : MonoBehaviour
             }
             coolTime = effectTick;
         }
-
     }
 
     //public void OnStabAnimationEvent()
@@ -101,19 +120,17 @@ public class WeaponEffect : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator DeactivateEffectAfterAnimation(GameObject weaponEffect)
+    protected IEnumerator DeactivateEffectAfterAnimation()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
         Debug.Log($"{currentClipLength}");
 
-
         yield return new WaitForSeconds(currentClipLength);
 
         isDestroyed = true;
         Destroy(this.gameObject);
-        Debug.Log("이펙트 파괴");
     }
 }
 
