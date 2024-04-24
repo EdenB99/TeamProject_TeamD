@@ -97,7 +97,7 @@ MonoBehaviour:
   healSprite: {fileID: 21300206, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   shopSprite: {fileID: 21300180, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   bossSprite: {fileID: 21300166, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-  portalSprites: {fileID: 0}
+  portalSprites: {fileID: -1796461765, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   dragSpeed: 2
 --- !u!225 &3575224085025316023
 CanvasGroup:

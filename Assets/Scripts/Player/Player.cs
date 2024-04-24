@@ -235,6 +235,7 @@ public class Player : MonoBehaviour
     }
 
     
+    //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음, Spike태그의 Spike타일에선 점프불가능
     void Jump()
     {
         // 점프 로직

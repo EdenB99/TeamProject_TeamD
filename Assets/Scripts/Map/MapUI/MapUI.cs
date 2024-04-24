@@ -1,32 +1,28 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 //빠른이동은 canvasGroup레이캐스트 활용해서 만들기
 public class MapUI : MonoBehaviour
 {
-
-
     private CanvasGroup canvasGroupUI;
     private CanvasGroup canvasGroupMini;
 
     [SerializeField] private MapManager mapManager;
     [SerializeField] private GameObject mapTilePrefab;
-
     [SerializeField] private Sprite itemSprite;
     [SerializeField] private Sprite healSprite;
     [SerializeField] private Sprite shopSprite;
     [SerializeField] private Sprite bossSprite;
-    [SerializeField] private Sprite portalSprites; 
+    [SerializeField] private Sprite portalSprites;
 
-    [SerializeField] private Image[,] mapTiles;
+    private Image[,] mapTiles;
+    private Dictionary<string, GameObject> portalIcons = new Dictionary<string, GameObject>();
 
     private RectTransform MapPosition;
     private bool isDragging = false;
     private Vector2 MousePosition;
     [SerializeField] private float dragSpeed = 2f;
-
 
     private void Start()
     {
@@ -182,21 +178,60 @@ public class MapUI : MonoBehaviour
                         bossRect.anchorMax = new Vector2(0.5f, 0.5f);
                         bossRect.anchoredPosition = new Vector2(0f, 10f);
                     }
-                    //if (mapData.hasLeftPortal)
-                    //{
-                    
 
-                    //    GameObject leftportalIcon = new("leftportalIcon");
-                    //    leftportalIcon.transform.SetParent(mapTiles[x, y].transform);
-                    //    leftportalIcon.AddComponent<Image>().sprite = portalSprites;
-                    //    RectTransform leftRect = leftportalIcon.GetComponent<RectTransform>();
-                    //    leftRect.anchorMin = new Vector2(0.5f, 0.5f);
-                    //    leftRect.anchorMax = new Vector2(0.5f, 0.5f);
-                    //    leftRect.anchoredPosition = new Vector2(10f, -10f);
-                    //}
-  
 
+                    ShowPortalIcon(mapData, Direction.Up, new Vector2(0f, 275f));
+                    ShowPortalIcon(mapData, Direction.Down, new Vector2(0f, -265f));
+                    ShowPortalIcon(mapData, Direction.Left, new Vector2(-480f, 0f));
+                    ShowPortalIcon(mapData, Direction.Right, new Vector2(480f, 0f));
                 }
+            }
+        }
+    }
+
+    //포탈프리팹 생성안되는 버그
+    private void ShowPortalIcon(MapData mapData, Direction direction, Vector2 iconPosition)
+    {
+        bool hasPortal = false;
+
+        switch (direction)
+        {
+            case Direction.Up:
+                hasPortal = mapData.hasUpPortal;
+                break;
+            case Direction.Down:
+                hasPortal = mapData.hasDownPortal;
+                break;
+            case Direction.Left:
+                hasPortal = mapData.hasLeftPortal;
+                break;
+            case Direction.Right:
+                hasPortal = mapData.hasRightPortal;
+                break;
+        }
+
+        if (hasPortal)
+        {
+            string portalName = $"{direction}PortalIcon";
+            Transform parentTransform = mapTiles[mapData.mapX, mapData.mapY].transform;
+
+            if (!portalIcons.ContainsKey(portalName))
+            {
+                GameObject portalIcon = new GameObject(portalName);
+                portalIcon.transform.SetParent(parentTransform);
+
+                Image portalImage = portalIcon.AddComponent<Image>();
+                portalImage.sprite = portalSprites;
+
+                RectTransform portalRect = portalIcon.GetComponent<RectTransform>();
+                portalRect.anchorMin = new Vector2(0.5f, 0.5f);
+                portalRect.anchorMax = new Vector2(0.5f, 0.5f);
+                portalRect.anchoredPosition = iconPosition;
+
+                float iconSize = 20f;
+                portalRect.sizeDelta = new Vector2(iconSize, iconSize);
+
+                portalIcons[portalName] = portalIcon;
             }
         }
     }
