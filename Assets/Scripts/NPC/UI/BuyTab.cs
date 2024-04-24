@@ -6,44 +6,43 @@ using UnityEngine.UI;
 public class BuyTab : MonoBehaviour
 {
     StoreSlot storeSlot;
-    Inventory inven;
     Button yesButton;
     Button noButton;
     GameManager manager;
     Player player;
 
+    ItemCode itemToPurchase;
+    Inventory inventory;
+
     private void Awake()
     {
         manager = new GameManager();
         player = GameManager.Instance.Player;
-        inven = player.PlayerStats.Inventory;
+        inventory = player.PlayerStats.Inventory;
         storeSlot = FindAnyObjectByType<StoreSlot>();
 
         Transform child = transform.GetChild(1);
         yesButton = child.GetComponent<Button>();
-        yesButton.onClick.AddListener(() =>
-        {
-            Debug.Log("구매 완료");
-            gameObject.SetActive(false);
-            inven.AddItem(ItemCode.Sword);
-
-        });
+        yesButton.onClick.AddListener(CompletePurchase);
 
         child = transform.GetChild(2);
         noButton = child.GetComponent<Button>();
-        noButton.onClick.AddListener(() =>
-        {
-            gameObject.SetActive(false);
-        });
+        noButton.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    private void Start()
+    public void SetItemToPurchase(ItemCode item, Inventory inv)
     {
-        //manager = new GameManager();
-        //player = GameManager.Instance.Player;
-        //inven = player.PlayerStats.Inventory;
+        itemToPurchase = item;
+        inventory = inv;
+    }
 
-        //IngameUI ingame = GameManager.Instance.IngameUI;
-        //ingame.SetItemCodeToData(ItemCode.HealingPotion_A);
+    private void CompletePurchase()
+    {
+        Debug.Log("구매 완료: " + itemToPurchase.ToString());
+        gameObject.SetActive(false);
+        if (inventory != null)
+        {
+            inventory.AddItem(itemToPurchase);
+        }
     }
 }

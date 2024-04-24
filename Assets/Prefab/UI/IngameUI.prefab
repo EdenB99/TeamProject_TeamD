@@ -413,6 +413,7 @@ MonoBehaviour:
   healthText: {fileID: 5510382441472828713}
   hitPoint: 100
   maxHitPoint: 100
+  bigMap: {fileID: 0}
 --- !u!223 &6755356060413569939
 Canvas:
   m_ObjectHideFlags: 0
@@ -458,7 +459,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!1 &5510382442009819812
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,7 +801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7c2d54cd8fab6448a00474640cff43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolTime: 5
 --- !u!1001 &3455489062172153679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -929,7 +929,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7c2d54cd8fab6448a00474640cff43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolTime: 5
 --- !u!224 &5688824927739354160 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6991443559166397311, guid: be002327f0447b546978a9da0970cc23, type: 3}
@@ -1078,7 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7c2d54cd8fab6448a00474640cff43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolTime: 5
 --- !u!1001 &6955810011811726557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1212,4 +1210,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7c2d54cd8fab6448a00474640cff43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolTime: 5

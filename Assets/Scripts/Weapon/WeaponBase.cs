@@ -29,6 +29,10 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
+    Vector2 effectPosition;
+
+    Vector3 direction;
+
     /// <summary>
     /// 플레이어의 힌지
     /// </summary>
@@ -114,7 +118,7 @@ public class WeaponBase : MonoBehaviour
         mousePosition.z = 0f;
         transform.position = hinge.position;
 
-        Vector3 direction = mousePosition - transform.position;
+        direction = mousePosition - transform.position;
         direction.z = 0;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         transform.rotation = rotation;
@@ -129,8 +133,7 @@ public class WeaponBase : MonoBehaviour
             spriteRenderer.flipX = false;
         }
 
-        Vector2 effectPosition = transform.position + (direction.normalized * weaponLength);
-        //Debug.Log($"{effectPosition}");
+        effectPosition = transform.position + (direction.normalized * weaponLength);
     }
 
     void SetAnimationState()
@@ -172,7 +175,6 @@ public class WeaponBase : MonoBehaviour
         Debug.Log("공격트리거 발동");        
 
         ActivateEffect(transform.position);
-        //Debug.Log($"{transform.position}");
 
         //// 공격 속도에 따라 애니메이션 속도 조절
         //float attackAnimationSpeed = playerStats.attackSpeed;
@@ -184,7 +186,10 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     protected virtual void ActivateEffect(Vector2 effectPosition)
     {
-        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, effectPosition, Quaternion.identity);
+        float angle = MathF.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
+
+        GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, this.effectPosition, rotation);
         Debug.Log("이펙트 생성");
     }
 }   

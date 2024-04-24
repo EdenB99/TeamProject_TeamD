@@ -8,22 +8,34 @@ public class StoreSlot : MonoBehaviour
     Button storeSlot;
     Inventory inventory;
     Transform buyTab;
-    Canvas canvas;
+    GameManager manager;
+    Player player;
+
+    public ItemCode itemToPurchase;
+    public Canvas canvas;
 
     private void Awake()
     {
+        manager = new GameManager();
+        player = GameManager.Instance.Player;
+        inventory = player.PlayerStats.Inventory;
+
         // 구매 창 찾기
-        canvas = FindAnyObjectByType<Canvas>();
         Transform storeUI = canvas.transform.GetChild(1);
         buyTab = storeUI.GetChild(2);
 
         storeSlot = GetComponent<Button>();
-
         storeSlot.onClick.AddListener(() => OnItemPurchase());
     }
 
     public void OnItemPurchase()
     {
         buyTab.gameObject.SetActive(true);
+        BuyTab buy = buyTab.GetComponent<BuyTab>();
+        if (buy != null)
+        {
+            buy.SetItemToPurchase(itemToPurchase, inventory);
+        }
     }
+
 }

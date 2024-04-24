@@ -139,7 +139,7 @@ TextureImporter:
         width: 48
         height: 65
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,6 +147,27 @@ TextureImporter:
       bones: []
       spriteID: a3ce95c1577c5fd489c6387eb5491419
       internalID: -1101820612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MoneyIcon
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 289
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 793a02b7aeec2654db1cb16321af5bb2
+      internalID: 799063330
       vertices: []
       indices: 
       edges: []
@@ -162,8 +183,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      MoneyIcon: 799063330
       UI books & more_0: 1394752418
       UI books & more_1: -1101820612
+      UI books & more_3: -1334704829
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

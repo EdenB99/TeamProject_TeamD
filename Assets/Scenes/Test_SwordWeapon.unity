@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3442750560186511577, guid: d1b45ff530af34341911c84e7998171c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3733301120436740600, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.287
@@ -1400,6 +1404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 2640174094568773829, guid: 8f48a0edcd5828d43ad1b9545c66df33, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3239612808430572886, guid: 8f48a0edcd5828d43ad1b9545c66df33, type: 3}
       propertyPath: hinge
       value: 
@@ -1447,6 +1455,10 @@ PrefabInstance:
     - target: {fileID: 7294180045245802663, guid: 8f48a0edcd5828d43ad1b9545c66df33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198321488977171627, guid: 8f48a0edcd5828d43ad1b9545c66df33, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
