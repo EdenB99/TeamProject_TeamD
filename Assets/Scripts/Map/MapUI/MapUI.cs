@@ -68,7 +68,6 @@ public class MapUI : MonoBehaviour
 
     private void Update()
     {//TODO:: 나중에 바꾸기
-        UpdateMapUI();
         DragMap();
 
     }
@@ -142,7 +141,7 @@ public class MapUI : MonoBehaviour
             {
                 MapData mapData = mapManager.GetMapData(x, y);
                 // 맵 데이터를 가져오기
-                if (mapData != null && mapData.IsLoaded)
+                if (mapData != null)
                 {
                     mapTiles[x, y].color = Color.white; // 플레이어가 있는 맵은 보이도록 설정
 

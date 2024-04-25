@@ -21568,6 +21568,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 6727950038303507917, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7327422354387135318, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
       propertyPath: m_Name
       value: Stage1Map8
