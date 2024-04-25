@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
   mapTilePrefab: {fileID: 0}
+  currentMapSprite: {fileID: 21300000, guid: b39e50895df525245989c0883f909a31, type: 3}
   itemSprite: {fileID: -6929924221510541977, guid: 19e07f9d107e445408633f50457d456e, type: 3}
   healSprite: {fileID: 21300206, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   shopSprite: {fileID: 21300180, guid: 7810966f0f690954c87305933cabf2b0, type: 3}

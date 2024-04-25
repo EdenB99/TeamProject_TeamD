@@ -13,7 +13,8 @@ public class MapData
     public int mapX;
     public int mapY;
     public Direction enteredDirection;
-    public bool IsLoaded { get; set; }
+
+    public bool isVisited;
     public bool hasItem;
     public bool hasBossRoom;
     public bool hasShop;

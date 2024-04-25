@@ -197,6 +197,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigMap
       objectReference: {fileID: 0}
+    - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
+      propertyPath: currentMapSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b39e50895df525245989c0883f909a31, type: 3}
     - target: {fileID: 6799877681933779901, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

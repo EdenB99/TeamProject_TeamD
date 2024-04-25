@@ -35,6 +35,12 @@ private Player player;
     [SerializeField] private MapData[] startMapScenes;
 
     private MapData currentMap;
+    public MapData CurrentMap
+    {
+        get { return currentMap; }
+        private set { currentMap = value; }
+    }
+    MapUI mapUI;
 
     private void Awake()
     {
@@ -75,6 +81,7 @@ private Player player;
     private void Start()
     {
         player = GameObject.FindAnyObjectByType<Player>();
+        mapUI = GameObject.FindAnyObjectByType<MapUI>();
         GenerateWorldMap();
     }
 
@@ -161,42 +168,38 @@ private Player player;
         Queue<MapData> mapQueue = new Queue<MapData>();
         mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
 
-        while (mapQueue.Count > 0 && currentMapCount < mapSize)
+        int maxGenCount = 100; // 최대 반복 횟수 설정
+        int genCount = 0;
+
+        while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount)
         {
             MapData currentMap = mapQueue.Dequeue();
             GenerateAdjacentMaps(currentMap, mapQueue);
-        }
 
-
-        // 맵 생성 후 맵 체크 및 수정
-        int checkCount = 0;
-        int maxCheckCount = 100;
-
-        while (!CheckWorldMap() && checkCount < maxCheckCount)
-        {
+            // 맵 생성 후 맵 체크 및 수정
             CheckWorldMap();
             RemoveInvalidMaps();
             GenerateAdditionalMaps();
-            checkCount++;
+
+            genCount++;
         }
-        if (checkCount >= maxCheckCount)
+
+        if (genCount >= maxGenCount)
         {
             Debug.LogError("맵 생성에 실패했습니다. 무한 루프 발생.");
             return;
         }
 
-
-        // 포탈  비활성화
+        // 포탈 비활성화
         foreach (var kvp in worldMap)
         {
             MapData mapData = kvp.Value;
             CheckAndDisablePortal(mapData);
         }
-
-
     }
+
     //맵 생성을 시작하는 함수
-private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
+    private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
 {
     List<Direction> availableDirections = GetAvailableDirections(currentMap);
 
@@ -215,11 +218,31 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
                 worldMap[newPosition] = newMap;
                 currentMapCount++;
                 mapQueue.Enqueue(newMap);
-
             }
         }
     }
 }
+
+    private bool CanCreateMapAtPosition(Vector2Int position, Direction direction)
+    {
+        if (!IsValidPosition(position))
+            return false;
+
+        foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+        {
+            Vector2Int adjacentPosition = GetAdjacentPosition(position.x, position.y, dir);
+            if (worldMap.ContainsKey(adjacentPosition))
+            {
+                MapData adjacentMapData = worldMap[adjacentPosition];
+                if (IsValidPortalConnection(adjacentMapData, OppositeDirection(dir)))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     //사용 가능한 방향 체크
     private List<Direction> GetAvailableDirections(MapData mapData)
@@ -292,6 +315,9 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
     private bool IsValidPortalConnection(MapData mapData, Direction direction)
     {
         Vector2Int adjacentPosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
+
+        if (!IsValidPosition(adjacentPosition))
+            return false;
 
         if (worldMap.ContainsKey(adjacentPosition))
         {
@@ -373,7 +399,7 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
             {
                 Vector2Int newPosition = GetAdjacentPosition(position.x, position.y, dir);
 
-                if (!worldMap.ContainsKey(newPosition) && CanCreateMap(mapData, dir))
+                if (!worldMap.ContainsKey(newPosition) && IsValidPosition(newPosition) && CanCreateMapAtPosition(newPosition, dir))
                 {
                     string randomMapScene = SelectRandomMapScene(dir);
                     MapData selectedMap = FindMapWithPortal(randomMapScene, dir);
@@ -394,27 +420,6 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
         }
     }
 
-    private bool CanCreateMap(MapData mapData, Direction direction)
-    {
-        Vector2Int adjacentPosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
-
-        if (!worldMap.ContainsKey(adjacentPosition))
-        {
-            switch (direction)
-            {
-                case Direction.Up:
-                    return mapData.hasUpPortal;
-                case Direction.Down:
-                    return mapData.hasDownPortal;
-                case Direction.Left:
-                    return mapData.hasLeftPortal;
-                case Direction.Right:
-                    return mapData.hasRightPortal;
-            }
-        }
-
-        return false;
-    }
 
     private Direction GetRandomDirection()
     {
@@ -425,54 +430,78 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
 
 
     //----------포탈 끄기
-    //TODO::현재 맵이 제대로 안꺼짐(월드맵의 밖과 이어진 포탈이 안꺼지는오류,맵이없는곳과 포탈이 이어져있는 버그
-    private void CheckAndDisablePortal(MapData mapData)
+    //TODO::포탈 생성조건을 살짝 완화할필요가있음
+private void CheckAndDisablePortal(MapData mapData)
+{
+    // 현재 맵의 포탈 방향에 따라 반대 방향의 포탈 체크
+    if (mapData.hasUpPortal)
     {
-        // 현재 맵의 포탈 방향에 따라 반대 방향의 포탈 체크
-        if (mapData.hasUpPortal && !HasOppositePortal(mapData, Direction.Up))
+        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Up);
+        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        {
+            MapData oppositeMapData = worldMap[oppositePosition];
+            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Up))
+            {
+                DisablePortal(mapData, Direction.Up);
+            }
+        }
+        else
         {
             DisablePortal(mapData, Direction.Up);
         }
+    }
 
-        if (mapData.hasDownPortal && !HasOppositePortal(mapData, Direction.Down))
+    if (mapData.hasDownPortal)
+    {
+        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Down);
+        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        {
+            MapData oppositeMapData = worldMap[oppositePosition];
+            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Down))
+            {
+                DisablePortal(mapData, Direction.Down);
+            }
+        }
+        else
         {
             DisablePortal(mapData, Direction.Down);
         }
+    }
 
-        if (mapData.hasLeftPortal && !HasOppositePortal(mapData, Direction.Left))
+    if (mapData.hasLeftPortal)
+    {
+        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Left);
+        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        {
+            MapData oppositeMapData = worldMap[oppositePosition];
+            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Left))
+            {
+                DisablePortal(mapData, Direction.Left);
+            }
+        }
+        else
         {
             DisablePortal(mapData, Direction.Left);
         }
+    }
 
-        if (mapData.hasRightPortal && !HasOppositePortal(mapData, Direction.Right))
+    if (mapData.hasRightPortal)
+    {
+        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Right);
+        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        {
+            MapData oppositeMapData = worldMap[oppositePosition];
+            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Right))
+            {
+                DisablePortal(mapData, Direction.Right);
+            }
+        }
+        else
         {
             DisablePortal(mapData, Direction.Right);
         }
     }
-
-    private bool HasOppositePortal(MapData mapData, Direction direction)
-    {
-        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
-
-        if (worldMap.ContainsKey(oppositePosition))
-        {
-            MapData oppositeMapData = worldMap[oppositePosition];
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    return oppositeMapData.hasDownPortal;
-                case Direction.Down:
-                    return oppositeMapData.hasUpPortal;
-                case Direction.Left:
-                    return oppositeMapData.hasRightPortal;
-                case Direction.Right:
-                    return oppositeMapData.hasLeftPortal;
-            }
-        }
-
-        return false;
-    }
+}
 
     private void DisablePortal(MapData mapData, Direction direction)
     {
@@ -641,6 +670,7 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
     }
 
 
+
     private void LoadMap(Vector2Int position, Direction direction)
     {
         if (worldMap.ContainsKey(position))
@@ -654,7 +684,7 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
 
                 if (asyncLoad == null)
                 {
-                    Debug.LogError($"Failed to load map: {mapToLoad.sceneName}");
+                    Debug.LogError($"불러오는데 실패한 맵: {mapToLoad.sceneName}");
                     return;
                 }
 
@@ -663,6 +693,8 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
                     Scene loadedScene = SceneManager.GetSceneByName(mapToLoad.sceneName);
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
+                    currentMap.isVisited = true;
+                    mapUI.UpdateMapUI();
                     SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
                 };
             }
