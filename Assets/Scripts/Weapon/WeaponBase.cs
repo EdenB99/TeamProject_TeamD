@@ -29,9 +29,12 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public GameObject weaponEffectPrefab;
 
+    /// <summary>
+    /// 이펙트 생성좌표
+    /// </summary>
     Vector2 effectPosition;
 
-    Vector3 direction;
+    protected Vector3 direction;
 
     /// <summary>
     /// 플레이어의 힌지

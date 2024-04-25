@@ -194,6 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 3510177746431845488, guid: c6a5d2c6a94138e4196d7dbc9a8b692a, type: 3}
+  effectSpeed: 1
+  effectSize: 1
   weaponDamage: 10
   effectTick: 0.5
   enemies: []

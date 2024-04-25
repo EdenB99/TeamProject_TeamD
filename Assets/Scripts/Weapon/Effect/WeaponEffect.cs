@@ -20,6 +20,13 @@ public class WeaponEffect : RecycleObject
     protected Vector2 mosPosition;
 
     /// <summary>
+    /// 이펙트의 공격 속도
+    /// </summary>
+    public float effectSpeed = 1.0f;
+
+    public float effectSize = 1.0f;
+
+    /// <summary>
     /// 무기 공격력
     /// </summary>
     public int weaponDamage = 10;
@@ -54,6 +61,8 @@ public class WeaponEffect : RecycleObject
         player = GameManager.Instance.Player;
 
         playerStats = player.PlayerStats;
+
+        transform.localScale = new Vector3(effectSize, effectSize, 1.0f);
     }
 
     void SetAnimationState()
@@ -127,7 +136,9 @@ public class WeaponEffect : RecycleObject
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
         Debug.Log($"{currentClipLength}");
 
-        yield return new WaitForSeconds(currentClipLength);
+        float animationLength = currentClipLength * effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
+
+        yield return new WaitForSeconds(animationLength);
 
         isDestroyed = true;
         Destroy(this.gameObject);
