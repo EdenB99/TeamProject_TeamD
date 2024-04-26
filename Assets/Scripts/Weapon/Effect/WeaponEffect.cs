@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponEffect : RecycleObject
+public class WeaponEffect : RecycleObject, IAttack
 {
     Rigidbody2D rigidbody2d;
 
@@ -32,9 +32,9 @@ public class WeaponEffect : RecycleObject
     public int weaponDamage = 10;
 
     /// <summary>
-    /// 공격할 때 데미지의 총합
+    /// 공격할 때 데미지의 총합 ( IAttack )
     /// </summary>
-    public float totalDamage => weaponDamage + playerStats.attackPower;
+    public uint AttackPower => (uint)(weaponDamage + playerStats.attackPower);
 
     /// <summary>
     /// 이펙트가 데미지를 주는 간격
@@ -92,14 +92,7 @@ public class WeaponEffect : RecycleObject
     private void Update()
     {
         coolTime = -Time.deltaTime;
-        if (coolTime < 0)
-        {
-            foreach (EnemyBase_ enemy in enemies)
-            {
-                enemy.Damaged(totalDamage);
-            }
-            coolTime = effectTick;
-        }
+
     }
 
     //public void OnStabAnimationEvent()

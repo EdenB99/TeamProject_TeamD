@@ -28,7 +28,7 @@ public class SwordEffect : MonoBehaviour
        
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<IEnemy>().Damaged(damage);
+            collision.GetComponent<IEnemy>().TakeDamage(damage);
             
         }
     }

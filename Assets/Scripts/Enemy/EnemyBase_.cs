@@ -224,7 +224,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// 피해를 받는 메서드
     /// </summary>
     /// <param name="damage"></param>
-    public void Damaged(float damage)
+    public void TakeDamage(float damage)
     {
         HP -= damage;
     }

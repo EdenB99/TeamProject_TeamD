@@ -32,7 +32,7 @@ public interface IEnemy
     /// 적이 피해를 받는 메서드
     /// </summary>
     /// <param name="damage">들어온 데미지</param>
-    void Damaged(float damage);
+    void TakeDamage(float damage);
 
     /// <summary>
     /// 사망 처리용 함수(메서드 method)

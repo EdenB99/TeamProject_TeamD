@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 9089648416542843352}
   - component: {fileID: 2005221937752940612}
   - component: {fileID: 3940828716308771193}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SlashEffect
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
+  effectSpeed: 1
+  effectSize: 1
   weaponDamage: 10
   effectTick: 0.5
   enemies: []

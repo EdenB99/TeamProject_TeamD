@@ -113,6 +113,8 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
             hp = value;
             hp = Mathf.Max(hp, 0);
 
+            Debug.Log(hp);
+
             // Hp가 0 이하면 사망
             if (hp <= 0)
             {
@@ -176,6 +178,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
 
     protected virtual void Start()
     {
+        HP = MaxHP;
         player = GameManager.Instance.Player;   
     }
 
@@ -306,11 +309,23 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         // 플레이어에게 피해주는것과 관련된 행동 적기
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.GetComponent<IAttack>() != null )            // IAttack을 가지고 있고, 무적상태가 아닐때만
+        {
+            IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
+
+            TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
+        }
+    }
+
+
     /// <summary>
     /// 피해를 받았을때 실행할 함수 생성
     /// </summary>
     /// <param name="Damage">플레이어에게 받은 피해</param>
-    public void Damaged(float damage)
+    public void TakeDamage(float damage)
     {
         HP -= damage;
     }
