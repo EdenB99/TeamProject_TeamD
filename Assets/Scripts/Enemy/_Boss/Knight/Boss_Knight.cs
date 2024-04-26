@@ -25,14 +25,15 @@ public class Boss_Knight : PatternEnemyBase
     protected override void Start()
     {
         base.Start();
-        State = BossState.Chase;
 
+
+        StartCoroutine(AwakeAction());                      // 개전 시작 
 
         GenerateObj();
 
         mapCoroutine = StartCoroutine(Map_Pattern());
     }
-
+    
 
     // 상태에 따라 할일 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -280,7 +281,34 @@ public class Boss_Knight : PatternEnemyBase
     }
 
 
+
+    // 개전 행동 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    protected override IEnumerator AwakeAction()
+    {
+        // 여러 모션을 취하거나 , 행동을 취한뒤에
+
+        yield return new WaitForSeconds(0);
+
+        yield return new WaitForSeconds(0);
+
+        yield return new WaitForSeconds(0);
+        State = BossState.Chase;
+
+    }
+
+
+
+
+
+
+
+
     // 쉐도우 크리에이트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+
 
 
 

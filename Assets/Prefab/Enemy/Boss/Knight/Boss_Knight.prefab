@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3080392467515426430
 Transform:
   m_ObjectHideFlags: 0
@@ -319,7 +319,9 @@ MonoBehaviour:
   Attackpower: 10
   TestPattern: 0
   checkLR: 1
-  PatternTime: 3
+  PatternTime: 5
   speed: 1
   obj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
   shadow: {fileID: 5259075507484147006, guid: c8d8b91106361df448061e9689bd377f, type: 3}
+  bladeObj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
+  poolSize: 32
