@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private bool isDashing;
     public float dashingPower = 5.0f;
     private float dashingTime = 0.2f;
-    private float dashingCool = 1f;
+    public float dashingCool = 1f;
     private Vector2 lastDashDirection = Vector2.right;
     private Vector2 DeshmoveInput = Vector2.zero;
     TrailRenderer tr;

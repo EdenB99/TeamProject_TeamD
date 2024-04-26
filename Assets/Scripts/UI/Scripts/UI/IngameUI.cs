@@ -32,13 +32,24 @@ public class IngameUI : MonoBehaviour
     Player player;
     public MapUI bigMap;
 
+    Slider DashCoolSlider;
+    /// <summary>
+    /// 변할 색상은 0,0,255에서 255,255,255
+    /// </summary>
+    Image dashCoolColor;
+
+
+
 	void Awake()
 	{
         QuickSlotGroup = gameObject.transform.GetChild(1).GetComponent<CanvasGroup>();
         IngameSlotUIs = QuickSlotGroup.transform.GetComponentsInChildren<QuickSlotUI>();
         inventoryInput = new InventoryInput();
-
-        
+        DashCoolSlider = gameObject.GetComponentInChildren<Slider>();
+        Transform child =  DashCoolSlider.transform.GetChild(1);
+        dashCoolColor = child.GetComponentInChildren<Image>();
+        DashCoolSlider.value = 0.0f;
+        dashCoolColor.color = Color.HSVToRGB(0, 0, 255f);
     }
 	
   	void Start()
@@ -216,4 +227,11 @@ public class IngameUI : MonoBehaviour
 			QuickSlotGroup.alpha = 0.0f;
 		}
 	}
+    //대쉬 쿨타임을 받아서 해당 입력을 받으면 색상과 쿨타임 바가 초기화 되게
+    public void SetDashCoolTime(float coolTime)
+    {
+        //float colorValue = Mathf.Lerp(0f, 255f, currentTime / coolTime); // 시간비레한 값으로 0부터 255값 사이값 계산
+        //Color newColor = new Color(colorValue / 255f, colorValue / 255f, colorValue / 255f);
+    }
+    
 }
