@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
     public float jumpPower = 15.0f;
     public float downJump;
     public float downJumpTime;
-    private bool isJump;
+    private bool isJump = true;
     private int jumpCount;
     private bool isJumpOff;
 
@@ -28,7 +29,25 @@ public class Player : MonoBehaviour
     private bool isDashing;
     public float dashingPower = 5.0f;
     private float dashingTime = 0.2f;
-    public float dashingCool = 1f;
+    public Action<float> OnDashingCoolChanged;
+
+    /// <summary>
+    /// 대시 쿨타임 프로퍼티
+    /// </summary>
+    /*private float _ondashingCool = 1f;
+    public float OndashingCool
+    {
+        get => _ondashingCool;
+        set
+        {
+            if (_ondashingCool != value)
+            {
+                _ondashingCool = value;
+                OnDashingCoolChanged?.Invoke(_ondashingCool); 
+            }
+        }
+    }
+*/
     private Vector2 lastDashDirection = Vector2.right;
     private Vector2 DeshmoveInput = Vector2.zero;
     TrailRenderer tr;
@@ -46,6 +65,8 @@ public class Player : MonoBehaviour
     /// 맵 체크
     /// </summary>
     private bool isGround;
+
+    private bool onSpike = false;
 
     //private float checkRadius = 0.2f;
 
@@ -238,12 +259,16 @@ public class Player : MonoBehaviour
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음, Spike태그의 Spike타일에선 점프불가능
     void Jump()
     {
+        if (onSpike) return;  // Spike 타일 위에 있을 경우 점프 불가
         // 점프 로직
         Debug.Log("윗점프");
         rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
         Player_ani.SetBool("Jump", true);
+        isJump = true;
         jumpCount -= 1;
     }
+
+
 
 
     public void OnDownJump(InputAction.CallbackContext context)
@@ -269,7 +294,8 @@ public class Player : MonoBehaviour
 
     private bool IsGround()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        //return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.Raycast(transform.position, Vector2.down, 0.1f, groundLayer);
     }
 
     private void OnDash(InputAction.CallbackContext context)
@@ -311,10 +337,10 @@ public class Player : MonoBehaviour
 */
 
 
-    // 대쉬 최종본
+    // 대쉬 점프 수정중
     private IEnumerator Dash()
     {
-        if (!canDash) yield break; // 대시가 가능한 상태인지 확인
+        if (!canDash || !isJump ) yield break; // 대시가 가능한 상태인지 확인
 
         Debug.Log("대시");
         canDash = false;
@@ -343,7 +369,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
 
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
-        yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
+        //yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
         tr.emitting = false;
         canDash = true;
         
@@ -392,14 +418,26 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
             jumpCount = 1;
             Player_ani.SetBool("Jump", false);
         }
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            onSpike = true;
+        }
     }
-    void OnCollisionStay2D(Collision2D other)
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            onSpike = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
