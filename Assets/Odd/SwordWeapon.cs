@@ -127,31 +127,33 @@ public class SwordWeapon : MonoBehaviour, IWeapon
     }
 
 
-   
-   
+
+
 
     private void FollowMousePosition()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        transform.position = hinge.position;
+        mousePos.z = 0;
 
-        Vector3 direction = mousePos - transform.position;
+
+        Vector3 direction = mousePos - hinge.position;
         direction.z = 0;
-        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
-        hinge.rotation = rotation;
 
-        if(mousePos.x < transform.position.x)
+        // Mathf.Atan2 함수를 사용하여 방향 벡터에 대한 각도를 계산
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // 무기 오브젝트의 z축 회전만을 변경하여 마우스 위치를 가리키도록 설정
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+
+        if (mousePos.x < hinge.position.x)
         {
             sprite.flipX = true;
-            hinge.localScale = new Vector3(-1, 1, 1);
         }
         else
         {
             sprite.flipX = false;
-            hinge.localScale = new Vector3(1, -1, 1);
         }
-        //RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
+        transform.position = hinge.position;
     }
 
     private IEnumerator ResetHingeRotation()
