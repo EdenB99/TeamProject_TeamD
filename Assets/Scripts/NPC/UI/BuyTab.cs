@@ -5,44 +5,35 @@ using UnityEngine.UI;
 
 public class BuyTab : MonoBehaviour
 {
-    StoreSlot storeSlot;
+    Inventory inventory;
+    ItemCode currentItemCode;
     Button yesButton;
     Button noButton;
-    GameManager manager;
-    Player player;
-
-    ItemCode itemToPurchase;
-    Inventory inventory;
+    ItemDataManager itemDataManager;
 
     private void Awake()
     {
-        manager = new GameManager();
-        player = GameManager.Instance.Player;
-        inventory = player.PlayerStats.Inventory;
-        storeSlot = FindAnyObjectByType<StoreSlot>();
+        itemDataManager = GameManager.Instance.ItemData;
 
         Transform child = transform.GetChild(1);
         yesButton = child.GetComponent<Button>();
-        yesButton.onClick.AddListener(CompletePurchase);
+        yesButton.onClick.AddListener(OnBuyButtonClicked);
 
         child = transform.GetChild(2);
         noButton = child.GetComponent<Button>();
         noButton.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    public void SetItemToPurchase(ItemCode item, Inventory inv)
+    public void SetItemCode(ItemCode itemCode)
     {
-        itemToPurchase = item;
-        inventory = inv;
+        currentItemCode = itemCode;
+
+        ItemData itemData = itemDataManager[itemCode];
     }
 
-    private void CompletePurchase()
+    private void OnBuyButtonClicked()
     {
-        Debug.Log("���� �Ϸ�: " + itemToPurchase.ToString());
-        gameObject.SetActive(false);
-        if (inventory != null)
-        {
-            inventory.AddItem(itemToPurchase);
-        }
+        inventory.AddItem(currentItemCode); // 인벤토리에 아이템 추가
+        this.gameObject.SetActive(false); // 구매 후 구매창 비활성화
     }
 }

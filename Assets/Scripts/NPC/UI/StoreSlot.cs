@@ -1,41 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StoreSlot : MonoBehaviour
 {
-    Button storeSlot;
-    Inventory inventory;
-    Transform buyTab;
-    GameManager manager;
-    Player player;
-
-    public ItemCode itemToPurchase;
+    public Image itemIconImage;
+    public TextMeshProUGUI itemNameText; 
+    public TextMeshProUGUI itemDescriptionText; 
+    public TextMeshProUGUI itemPriceText;
     public Canvas canvas;
+
+    ItemDataManager itemDataManager;
+    Button storeSlot;
+    BuyTab buyTab; 
+    ItemCode currentItemCode;
 
     private void Awake()
     {
-        manager = new GameManager();
-        player = GameManager.Instance.Player;
-        inventory = player.PlayerStats.Inventory;
+        itemDataManager = GameManager.Instance.ItemData;
 
-        // 구매 창 찾기
         Transform storeUI = canvas.transform.GetChild(1);
-        buyTab = storeUI.GetChild(2);
+        buyTab = storeUI.gameObject.transform.GetComponentInChildren<BuyTab>();
 
         storeSlot = GetComponent<Button>();
-        storeSlot.onClick.AddListener(() => OnItemPurchase());
+        storeSlot.onClick.AddListener(() => ShowButTab());
+
     }
 
-    public void OnItemPurchase()
+    public void SetItemCode(ItemCode itemCode)
     {
-        buyTab.gameObject.SetActive(true);
-        BuyTab buy = buyTab.GetComponent<BuyTab>();
-        if (buy != null)
+        currentItemCode = itemCode;
+
+        ItemData itemData = itemDataManager[itemCode];
+
+        if (itemData != null)
         {
-            buy.SetItemToPurchase(itemToPurchase, inventory);
+            itemIconImage.sprite = itemData.itemIcon;
+            itemNameText.text = itemData.itemName;
+            itemDescriptionText.text = itemData.itemDescription;
+            itemPriceText.text = itemData.price.ToString();
         }
+    }
+
+    public void ShowButTab()
+    {
+        buyTab.SetItemCode(currentItemCode);
+        buyTab.gameObject.SetActive(true);
     }
 
 }
