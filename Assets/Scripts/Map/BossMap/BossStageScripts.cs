@@ -14,7 +14,8 @@ public class BossStageScripts : MonoBehaviour
     public GameObject bossPrefab;
     public TextMeshPro bossInfo;
     public Transform bossTransform;
-
+    public MainCamera mainCamera;
+    Player player;
     private void Awake()
     {
         Transform child = transform.GetChild(0);
@@ -31,8 +32,8 @@ public class BossStageScripts : MonoBehaviour
     {
         collider.enabled = true;
         bossInfo.alpha = 0.0f;
-
-
+        mainCamera = FindAnyObjectByType<MainCamera>();
+        player = GameObject.FindAnyObjectByType<Player>();
     }
 
     //AwakeAction수정하기
@@ -40,11 +41,12 @@ public class BossStageScripts : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player player = GameObject.FindAnyObjectByType<Player>();
             Debug.Log("충돌함");
             collider.enabled = false;
             //플레이어 이동 끄기
-            Instantiate(bossPrefab, bossTransform);
+            Instantiate(bossPrefab);
+            bossPrefab.transform.position = new Vector3(bossTransform.transform.position.x, bossTransform.transform.position.y-1f, 0.0f);
+            bossPrefab.SetActive(true);
             StartCoroutine(StartBossCoroutine(collider));
 
         }
@@ -53,22 +55,37 @@ public class BossStageScripts : MonoBehaviour
     private IEnumerator StartBossCoroutine(Collider2D collider)
     {
         float time = 0.0f;
-        yield return new WaitForSeconds(1f);
+        player.enabled = false;
 
+        yield return new WaitForSeconds(1f);
+        mainCamera.enabled = false;
+        while (time < 2f)
+        {
+            time += Time.deltaTime;
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, bossTransform.transform.position, Time.deltaTime * 5);
+            bossInfo.alpha += Time.deltaTime;
+            bossInfo.rectTransform.Translate(Vector2.right * Time.deltaTime * 0.2f);
+            yield return null;
+        }
         while (time < 3f)
         {
             time += Time.deltaTime;
             bossInfo.alpha += Time.deltaTime;
-            bossInfo.rectTransform.Translate(Vector2.right * Time.deltaTime);
-            animator.SetBool("IsClose", true);
+            bossInfo.rectTransform.Translate(Vector2.right * Time.deltaTime * 0.2f);
+            yield return null;
+        }
+        bossInfo.alpha = 1f;
+        while (time < 5f)
+        {
+            time += Time.deltaTime;
+            bossInfo.rectTransform.Translate(Vector2.right * Time.deltaTime * 0.1f);
+            bossInfo.alpha -= Time.deltaTime;
+            yield return null;
 
         }
-        bossInfo.alpha -= Time.deltaTime;
-
-        yield return new WaitForSeconds(1f);
-
-        collider.enabled = true;
-
+        player.enabled = true;
+        mainCamera.enabled = true;
+        animator.SetBool("IsClose", true);
 
 
 

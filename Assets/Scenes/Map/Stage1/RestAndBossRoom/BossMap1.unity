@@ -658,6 +658,7 @@ MonoBehaviour:
   bossPrefab: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
   bossInfo: {fileID: 1326100162}
   bossTransform: {fileID: 0}
+  mainCamera: {fileID: 0}
 --- !u!50 &880879368
 Rigidbody2D:
   serializedVersion: 4
@@ -837,6 +838,7 @@ GameObject:
   - component: {fileID: 1091277351}
   - component: {fileID: 1091277353}
   - component: {fileID: 1091277352}
+  - component: {fileID: 1091277354}
   m_Layer: 0
   m_Name: BossDoor
   m_TagString: Untagged
@@ -931,6 +933,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 3}
   m_EdgeRadius: 0
+--- !u!50 &1091277354
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091277350}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1202152137
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,7 +1069,7 @@ Transform:
   m_GameObject: {fileID: 1296282303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.78, y: -10.33, z: 0}
+  m_LocalPosition: {x: 10.78, y: -10.98, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1080,7 +1109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.71, y: -12.53}
+  m_AnchoredPosition: {x: 11.17, y: -12.53}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1326100162
@@ -1130,8 +1159,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

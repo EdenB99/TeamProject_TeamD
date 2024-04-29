@@ -288,11 +288,11 @@ public class Boss_Knight : PatternEnemyBase
     {
         // 여러 모션을 취하거나 , 행동을 취한뒤에
 
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(3);
 
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(2);
 
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(1);
         State = BossState.Chase;
 
     }
