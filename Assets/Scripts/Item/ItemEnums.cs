@@ -54,7 +54,8 @@ public enum ItemType : byte
 {
     Weapon,         //무기
     Accessory,      //악세사리
-    Consumable      //소모품
+    Consumable,      //소모품
+    sell            //판매품
 }
 /// <summary>
 /// 아이템 정렬 기준

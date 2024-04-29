@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,43 +11,51 @@ public class StoreSlot : MonoBehaviour
     public TextMeshProUGUI itemNameText; 
     public TextMeshProUGUI itemDescriptionText; 
     public TextMeshProUGUI itemPriceText;
+    public TextMeshProUGUI itemStatText;
     public Canvas canvas;
 
-    ItemDataManager itemDataManager;
     Button storeSlot;
     BuyTab buyTab; 
-    ItemCode currentItemCode;
+    ItemData currentItemData;
+
 
     private void Awake()
     {
-        itemDataManager = GameManager.Instance.ItemData;
-
-        Transform storeUI = canvas.transform.GetChild(1);
-        buyTab = storeUI.gameObject.transform.GetComponentInChildren<BuyTab>();
-
         storeSlot = GetComponent<Button>();
-        storeSlot.onClick.AddListener(() => ShowButTab());
-
+        ClearSlot();
     }
 
-    public void SetItemCode(ItemCode itemCode)
+    private void Start()
     {
-        currentItemCode = itemCode;
-
-        ItemData itemData = itemDataManager[itemCode];
-
-        if (itemData != null)
+        Transform storeUI = canvas.transform.GetChild(1);
+        buyTab = storeUI.gameObject.transform.GetComponentInChildren<BuyTab>();
+        buyTab.isBuyonChange += ClearSlot;
+    }
+    public void ClearSlot()
+    {
+        itemIconImage.sprite = null;
+        itemNameText.text = null;
+        itemDescriptionText.text = null;
+        itemPriceText.text = null;
+        itemStatText.text = null;
+        storeSlot.onClick.RemoveAllListeners();
+    }
+    public void SetItemCode(ItemData itemdata)
+    {
+        if (itemdata != null)
         {
-            itemIconImage.sprite = itemData.itemIcon;
-            itemNameText.text = itemData.itemName;
-            itemDescriptionText.text = itemData.itemDescription;
-            itemPriceText.text = itemData.price.ToString();
+            currentItemData = itemdata;
+            itemIconImage.sprite = itemdata.itemIcon;
+            itemNameText.text = itemdata.itemName;
+            itemDescriptionText.text = itemdata.itemDescription;
+            itemPriceText.text = itemdata.price.ToString()+"G";
+            storeSlot.onClick.AddListener(() => ShowButTab());
         }
     }
 
     public void ShowButTab()
     {
-        buyTab.SetItemCode(currentItemCode);
+        buyTab.SetItemdata(currentItemData);
         buyTab.gameObject.SetActive(true);
     }
 
