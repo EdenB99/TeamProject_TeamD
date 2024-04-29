@@ -39,9 +39,14 @@ public class MainCamera : MonoBehaviour
         CameraMove();
     }
 
+
+
+    //경계 관련 코드============================================
+
+    //경계찾기(없으면)
     private void FindBoundaryObject()
     {
-        // "Boundary" 태그를 가진 GameObject 찾기
+
         GameObject foundBoundaryObject = GameObject.FindGameObjectWithTag("Boundary");
 
         if (foundBoundaryObject != null)
@@ -50,14 +55,24 @@ public class MainCamera : MonoBehaviour
             boundaryCollider = boundaryObject.GetComponent<BoxCollider2D>();
         }
     }
+    //경계 교체(public)
+    public void UpdateBoundaryObject(GameObject newBoundaryObject)
+    {
+        boundaryObject = newBoundaryObject;
+        boundaryCollider = boundaryObject.GetComponent<BoxCollider2D>();
+    }
 
+    //카메라 관련 코드============================================
+
+    //카메라크기계산
     private void CalculateCameraSize()
     {
-        // 카메라의 크기 계산
+
         cameraHeight = Camera.main.orthographicSize * 2f;
         cameraWidth = cameraHeight * Camera.main.aspect;
     }
 
+    //카메라이동
     private void CameraMove()
     {
         Vector3 playerPosition = player.transform.position;

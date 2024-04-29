@@ -286,13 +286,12 @@ public class Boss_Knight : PatternEnemyBase
 
     protected override IEnumerator AwakeAction()
     {
-        // 여러 모션을 취하거나 , 행동을 취한뒤에
 
         yield return new WaitForSeconds(3);
-
-        yield return new WaitForSeconds(2);
-
+        animator.SetTrigger("Attack_2");
         yield return new WaitForSeconds(1);
+        animator.SetTrigger("Attack_3");
+        yield return new WaitForSeconds(2);
         State = BossState.Chase;
 
     }

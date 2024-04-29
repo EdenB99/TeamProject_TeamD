@@ -190,13 +190,74 @@ private Player player;
             return;
         }
 
-        // 포탈 비활성화
+        //포탈 비활성화
         foreach (var kvp in worldMap)
         {
             MapData mapData = kvp.Value;
             CheckAndDisablePortal(mapData);
         }
+        // 이어진 포탈 활성화
+        foreach (var kvp in worldMap)
+        {
+            MapData mapData = kvp.Value;
+            CheckAndEnableConnectedPortals(mapData);
+        }
+
+
     }
+
+
+
+    //실험중----------------------------------------------------------------
+    //TODO:: 작동안함
+    private void CheckAndEnableConnectedPortals(MapData mapData)
+    {
+        CheckAndEnableConnectedPortal(mapData, Direction.Up);
+        CheckAndEnableConnectedPortal(mapData, Direction.Down);
+        CheckAndEnableConnectedPortal(mapData, Direction.Left);
+        CheckAndEnableConnectedPortal(mapData, Direction.Right);
+    }
+
+    private void CheckAndEnableConnectedPortal(MapData mapData, Direction direction)
+    {
+        Vector2Int adjacentPosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
+        if (IsValidPosition(adjacentPosition) && worldMap.ContainsKey(adjacentPosition))
+        {
+            MapData adjacentMapData = worldMap[adjacentPosition];
+            EnableOppositePortal(adjacentMapData, OppositeDirection(direction));
+        }
+    }
+
+    private void EnableOppositePortal(MapData mapData, Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                mapData.hasUpPortal = true;
+                break;
+            case Direction.Down:
+                mapData.hasDownPortal = true;
+                break;
+            case Direction.Left:
+                mapData.hasLeftPortal = true;
+                break;
+            case Direction.Right:
+                mapData.hasRightPortal = true;
+                break;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //실험중---------------------------------------------------------------
 
     //맵 생성을 시작하는 함수
     private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
