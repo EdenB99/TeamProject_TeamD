@@ -37,15 +37,15 @@ public class PlayerStats : MonoBehaviour
     public float speed;
 
     // 플레이어가 적용받고 있는 스탯
-    private float _attackPower;                // 공격력
-    private float _Defense;               // 방어력
-    private float _attackSpeed;                // 공격속도
-    private float _MaxHp = 100.0f;        // 최대체력
-    private float _hp;                   // 현재체력
-    private float _criticalChance;          // 크리티컬
-    private float _damageTaken;           // 몬스터 받는 피해
-    private float _itemRange;              // 아이템을 흡수하는 범위
-    private float _speed;
+    public float _attackPower;                // 공격력
+    public float _Defense;               // 방어력
+    public float _attackSpeed;                // 공격속도
+    public float _MaxHp = 100.0f;        // 최대체력
+    public float _hp;                   // 현재체력
+    public float _criticalChance;          // 크리티컬
+    public float _damageTaken;           // 몬스터 받는 피해
+    public float _itemRange;              // 아이템을 흡수하는 범위
+    public float _speed;
 
     public bool invincible;             // 무적상태
 

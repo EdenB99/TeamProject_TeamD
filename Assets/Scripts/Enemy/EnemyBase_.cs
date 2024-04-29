@@ -61,6 +61,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         {
             hp = value;
             hp = Mathf.Max(hp, 0);
+            Debug.Log(hp);
             // Hp가 0 이하면 사망
             if (hp <= 0)
             {
@@ -160,12 +161,18 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     }
 
     /// <summary>
-    /// 충돌을 검출하는 메서드
+    /// 피격
     /// </summary>
     /// <param name="collision"></param>
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
 
+        if (collision.GetComponent<IAttack>() != null)            // IAttack을 가지고 있고
+        {
+            IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
+
+            TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
+        }
     }
 
 

@@ -143,7 +143,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.3, y: 0}
@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
+  playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 0
   IsMove: 1
@@ -179,3 +180,4 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
+  dropItems: []
