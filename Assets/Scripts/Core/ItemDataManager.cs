@@ -12,4 +12,5 @@ public class ItemDataManager : MonoBehaviour
     //public WeaponData this[WeaponCode code] => WeaponDatas[(int)code];
     public ItemData this[int index] => itemDatas[index];
     //public WeaponData this[int index] => WeaponDatas[index];
+
 }

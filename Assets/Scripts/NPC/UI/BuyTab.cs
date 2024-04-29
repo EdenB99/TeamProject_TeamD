@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,34 +7,36 @@ using UnityEngine.UI;
 public class BuyTab : MonoBehaviour
 {
     Inventory inventory;
-    ItemCode currentItemCode;
+    ItemData CurrentItemdata;
     Button yesButton;
     Button noButton;
-    ItemDataManager itemDataManager;
 
+
+    public Action isBuyonChange;
     private void Awake()
     {
-        itemDataManager = GameManager.Instance.ItemData;
-
         Transform child = transform.GetChild(1);
         yesButton = child.GetComponent<Button>();
         yesButton.onClick.AddListener(OnBuyButtonClicked);
-
         child = transform.GetChild(2);
         noButton = child.GetComponent<Button>();
         noButton.onClick.AddListener(() => gameObject.SetActive(false));
     }
-
-    public void SetItemCode(ItemCode itemCode)
+    private void Start()
     {
-        currentItemCode = itemCode;
+        inventory = GameManager.Instance.Player.PlayerStats.Inventory;
+    }
 
-        ItemData itemData = itemDataManager[itemCode];
+    public void SetItemdata (ItemData itemdata)
+    {
+        CurrentItemdata = itemdata;
+        this.gameObject.SetActive(true);
     }
 
     private void OnBuyButtonClicked()
     {
-        inventory.AddItem(currentItemCode); // 인벤토리에 아이템 추가
+        inventory.AddItem(CurrentItemdata.code); // 인벤토리에 아이템 추가
+        isBuyonChange?.Invoke();
         this.gameObject.SetActive(false); // 구매 후 구매창 비활성화
     }
 }
