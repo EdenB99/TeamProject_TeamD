@@ -237,7 +237,7 @@ public class Player : MonoBehaviour
     private void MovePosition()
     {
         MousePosition();    // 마우스 포지션 변경
-        float moveDistance = moveInput.x * playerStats.speed * Time.fixedDeltaTime;
+        float moveDistance = moveInput.x * playerStats._speed * Time.fixedDeltaTime;
         transform.position += new Vector3(moveDistance, 0, 0);
     }
 

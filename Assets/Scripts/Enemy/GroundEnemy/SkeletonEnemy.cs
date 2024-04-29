@@ -106,12 +106,5 @@ public class SkeletonEnemy : EnemyBase_
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
-    protected override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            animator.SetTrigger(canAttack_Hash);
 
-        }
-    }
 }

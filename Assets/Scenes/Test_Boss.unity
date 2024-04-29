@@ -1695,6 +1695,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss_Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
