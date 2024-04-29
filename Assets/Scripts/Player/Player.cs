@@ -28,8 +28,10 @@ public class Player : MonoBehaviour
     private bool canDash = true;
     private bool isDashing;
     public float dashingPower = 5.0f;
-    private float dashingTime = 0.2f;
-    public Action<float> OnDashingCoolChanged;
+    public float dashingTime = 0.2f;
+    public float dashCoolTime = 2.0f;
+    private float currentdashTime = 0.0f;
+    public Action<float, float> OnDashingCoolChanged;
 
     /// <summary>
     /// 대시 쿨타임 프로퍼티
@@ -149,9 +151,19 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
+            currentdashTime = 0.0f;
             StartCoroutine(Dash());
         }
-
+        //대쉬 쿨타임 관련 조건문
+        if (currentdashTime < dashCoolTime)
+        {
+            OnDashingCoolChanged?.Invoke(dashCoolTime,currentdashTime);
+            currentdashTime += Time.deltaTime;
+            if (currentdashTime >= dashCoolTime)
+            {
+                canDash = true;
+            }
+        }
 
         /*// 마지막 본 방향 대시  초기화
         if (moveInput.x != 0)
@@ -302,6 +314,7 @@ public class Player : MonoBehaviour
     {
         if (canDash)
         {
+            currentdashTime = 0.0f;
             // 애니메이션 넣고 출력
             StartCoroutine(Dash());
         }
@@ -371,7 +384,7 @@ public class Player : MonoBehaviour
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
         //yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
         tr.emitting = false;
-        canDash = true;
+        //canDash = true; candash를 Update에서 관리
         
     }
 

@@ -26,6 +26,7 @@ public class StoreUI : MonoBehaviour
             if (storeSlot != null)
             {
                 storeSlot.SetItemCode(allItemCode[i]);
+                Debug.Log(allItemCode[i]);
             }
         }
     }

@@ -64,6 +64,7 @@ public class IngameUI : MonoBehaviour
         //그래픽 초기화
         UpdateGraphics();
         player.PlayerStats.onHealthChange += SetHpbar;
+        player.OnDashingCoolChanged += SetDashCoolTime;
     }
     private void OnEnable()
     {
@@ -228,8 +229,13 @@ public class IngameUI : MonoBehaviour
 		}
 	}
     //대쉬 쿨타임을 받아서 해당 입력을 받으면 색상과 쿨타임 바가 초기화 되게
-    public void SetDashCoolTime(float coolTime)
+    public void SetDashCoolTime(float coolTime, float currentTime)
     {
+        
+        float sliderValue = Mathf.Lerp(0.0f,1.0f, currentTime/coolTime);
+        float colorValue = Mathf.Lerp(0.0f, 255.0f, currentTime / coolTime);
+        DashCoolSlider.value = sliderValue;
+        dashCoolColor.color = new Color(colorValue / 255f, colorValue / 255f, 255f);
         //float colorValue = Mathf.Lerp(0f, 255f, currentTime / coolTime); // 시간비레한 값으로 0부터 255값 사이값 계산
         //Color newColor = new Color(colorValue / 255f, colorValue / 255f, colorValue / 255f);
     }
