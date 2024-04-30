@@ -196,60 +196,67 @@ private Player player;
             MapData mapData = kvp.Value;
             CheckAndDisablePortal(mapData);
         }
+
         // 이어진 포탈 활성화
-        foreach (var kvp in worldMap)
-        {
-            MapData mapData = kvp.Value;
-            CheckAndEnableConnectedPortals(mapData);
-        }
+        CheckAndActivatePortals();
 
 
     }
+
 
 
 
     //실험중----------------------------------------------------------------
-    //TODO:: 작동안함
-    private void CheckAndEnableConnectedPortals(MapData mapData)
-    {
-        CheckAndEnableConnectedPortal(mapData, Direction.Up);
-        CheckAndEnableConnectedPortal(mapData, Direction.Down);
-        CheckAndEnableConnectedPortal(mapData, Direction.Left);
-        CheckAndEnableConnectedPortal(mapData, Direction.Right);
-    }
 
-    private void CheckAndEnableConnectedPortal(MapData mapData, Direction direction)
-    {
-        Vector2Int adjacentPosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
-        if (IsValidPosition(adjacentPosition) && worldMap.ContainsKey(adjacentPosition))
-        {
-            MapData adjacentMapData = worldMap[adjacentPosition];
-            EnableOppositePortal(adjacentMapData, OppositeDirection(direction));
-        }
-    }
-
-    private void EnableOppositePortal(MapData mapData, Direction direction)
+    //TODO::맵끝쪽에서 작동안함
+    private void ActivatePortal(MapData mapData, Direction direction)
     {
         switch (direction)
         {
             case Direction.Up:
                 mapData.hasUpPortal = true;
+                if (mapData.upPortalObject != null)
+                    mapData.upPortalObject.SetActive(true);
                 break;
             case Direction.Down:
                 mapData.hasDownPortal = true;
+                if (mapData.downPortalObject != null)
+                    mapData.downPortalObject.SetActive(true);
                 break;
             case Direction.Left:
                 mapData.hasLeftPortal = true;
+                if (mapData.leftPortalObject != null)
+                    mapData.leftPortalObject.SetActive(true);
                 break;
             case Direction.Right:
                 mapData.hasRightPortal = true;
+                if (mapData.rightPortalObject != null)
+                    mapData.rightPortalObject.SetActive(true);
                 break;
         }
     }
 
+    private void CheckAndActivatePortals()
+    {
+        foreach (var kvp in worldMap)
+        {
+            MapData mapData = kvp.Value;
+            Vector2Int currentPosition = new Vector2Int(mapData.mapX, mapData.mapY);
 
-
-
+            foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+            {
+                Vector2Int adjacentPosition = GetAdjacentPosition(currentPosition.x, currentPosition.y, dir);
+                if (worldMap.ContainsKey(adjacentPosition))
+                {
+                    MapData adjacentMapData = worldMap[adjacentPosition];
+                    if (IsConnectedToPreviousMap(mapData, adjacentMapData, OppositeDirection(dir)))
+                    {
+                        ActivatePortal(mapData, OppositeDirection(dir));
+                    }
+                }
+            }
+        }
+    }
 
 
 
@@ -762,11 +769,13 @@ private void CheckAndDisablePortal(MapData mapData)
             else
             {
                 Debug.LogError($"해당좌표의 맵 데이터를 찾을 수 없습니다.: ({position.x}, {position.y})");
+                LoadMap(new Vector2Int(centerX, centerY),Direction.Right);
             }
         }
         else
         {
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
+            LoadMap(new Vector2Int(centerX, centerY), Direction.Right);
         }
     }
 

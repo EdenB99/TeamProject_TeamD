@@ -35,9 +35,14 @@ public class MapUI : MonoBehaviour
         mapTiles = new Image[mapManager.WorldMapSize, mapManager.WorldMapSize];
         GenerateMapUI();
     }
+    private void Update()
+    {
+        DragMap();
+
+    }
 
 
-
+    //지도 맵전체 생성하기======================================================================
     private void GenerateMapUI()
     {
         int worldMapSize = mapManager.WorldMapSize;
@@ -85,12 +90,8 @@ public class MapUI : MonoBehaviour
         }
     }
 
-    private void Update()
-    {//TODO:: 나중에 바꾸기
-        DragMap();
 
-    }
-
+    //맵 드래그하기
     private void DragMap()
     {
         if (canvasGroupUI.alpha > 0 && canvasGroupUI.interactable)
@@ -122,7 +123,8 @@ public class MapUI : MonoBehaviour
         }
     }
 
-    //TODO:: 키를 통해 열고닫을 때 마다 맵업데이트
+    //TODO::UpdateMapUI방식바꾸기
+    //맵 열기, 닫기, 빠른이동===================================================================
     public void ShowMap()
     {
         UpdateMapUI();
@@ -151,7 +153,9 @@ public class MapUI : MonoBehaviour
         //맵을누르면 빠른이동이 가능해지게하는 변수 bool?
     }
 
-
+    //맵 그리기 관련 함수=======================================================================
+    
+    //맵 상태 업데이트
     public void UpdateMapUI()
     {
         for (int y = 0; y < mapManager.WorldMapSize; y++)
@@ -191,7 +195,7 @@ public class MapUI : MonoBehaviour
             }
         }
     }
-
+    //아이콘 생성
     private void ShowInteractiveIcon(MapData mapData, bool hasInteractive, Sprite iconSprite, Vector2 iconPosition)
     {
         if (hasInteractive)
@@ -209,7 +213,8 @@ public class MapUI : MonoBehaviour
         }
     }
 
-    //포탈프리팹 생성안되는 버그
+    //TODO:: 포탈이 맵과 다르게표시되는 버그
+    //포탈 아이콘 만들기
     private void ShowPortalIcon(MapData mapData, Direction direction, Vector2 iconPosition)
     {
         bool hasPortal = false;
