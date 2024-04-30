@@ -6,64 +6,61 @@ using UnityEngine.UIElements;
 
 public class StoreUI : MonoBehaviour
 {
-    /* public GameObject storeSlotPrefab; 
-     public Transform storeSlotContainer;;*/
     public ItemCode[] allItemCode;
-    private ItemCode[] StoreItemCode = new ItemCode[4];
+    ItemCode[] StoreItemCode = new ItemCode[4];
+
     StoreSlot[] storeSlots;
-
-
     ItemDataManager itemDataManager;
 
 
     private void Awake()
     {
-        
         Transform child = gameObject.transform.GetChild(1);
         child = child.transform.GetChild(0);
         child = child.transform.GetChild(0);
-        storeSlots = child.GetComponentsInChildren<StoreSlot>(); //»óÁ¡ÀÇ ÀÖ´Â ½½·Ô ÃÊ±âÈ­
-        /*InitializeStoreSlots();*/
+        storeSlots = child.GetComponentsInChildren<StoreSlot>(); //ìƒì ì˜ ìˆëŠ” ìŠ¬ë¡¯ ì´ˆê¸°í™”
     }
+
     private void Start()
     {
-        itemDataManager = GameManager.Instance.ItemData; //¾ÆÀÌÅÛ ¸Å´ÏÀú ÃÊ±âÈ­
+        itemDataManager = GameManager.Instance.ItemData; //ì•„ì´í…œ ë§¤ë‹ˆì € ì´ˆê¸°í™”
         SetSlotItemData();
     }
+
     /// <summary>
-    /// ½½·Ô °³¼ö¸¸Å­ °¢ ½½·Ô¿¡ ¾ÆÀÌÅÛ ÄÚµå¸¦ Àü¼Û
+    /// ìŠ¬ë¡¯ ê°œìˆ˜ë§Œí¼ ê° ìŠ¬ë¡¯ì— ì•„ì´í…œ ì½”ë“œë¥¼ ì „ì†¡
     /// </summary>
-    /// <param name="SlotNum">½½·ÔÀÇ °¹¼ö</param>
+    /// <param name="SlotNum">ìŠ¬ë¡¯ì˜ ê°¯ìˆ˜</param>
     private void SetSlotItemData(int SlotNum = 4)
     {
-        GetItemCodetoRandom(SlotNum); //½½·ÔÀÇ °¹¼ö¸¸Å­ ¾ÆÀÌÅÛ ¼±º°
+        GetItemCodetoRandom(SlotNum); //ìŠ¬ë¡¯ì˜ ê°¯ìˆ˜ë§Œí¼ ì•„ì´í…œ ì„ ë³„
         for (int i = 0; i < storeSlots.Length; i++)
         {
             ItemData itemData = GameManager.Instance.ItemData[StoreItemCode[i]];
-            storeSlots[i].SetItemCode(itemData);
-            //°¢ ½½·Ô¿¡ ¼±Á¤µÈ ¾ÆÀÌÅÛ ÄÚµå ÀÔ·Â
+            storeSlots[i].SetItemData(itemData);
+            //ê° ìŠ¬ë¡¯ì— ì„ ì •ëœ ì•„ì´í…œ ì½”ë“œ ì…ë ¥
         }
     }
 
     /// <summary>
-    /// ½ÇÁ¦ »ç¿ëµÉ StoreItemCode¸¦ ¼±º°ÇÏ´Â ÇÔ¼ö
+    /// ì‹¤ì œ ì‚¬ìš©ë  StoreItemCodeë¥¼ ì„ ë³„í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <param name="Count">StoreItemCodeÀÇ ±æÀÌ</param>
+    /// <param name="Count">StoreItemCodeì˜ ê¸¸ì´</param>
     private void GetItemCodetoRandom(int Count)
     {
-        //»õ·Î¿î ¾ÆÀÌÅÛ ¸®½ºÆ®¸¦ ¼±¾ğ, ¹Ì¸® ÁØºñµÈ ¾ÆÀÌÅÛ ÄÚµå¸¦ ¸®½ºÆ®¿¡ Àü¼ÛÇÏ°í,
+        //ìƒˆë¡œìš´ ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ë¥¼ ì„ ì–¸, ë¯¸ë¦¬ ì¤€ë¹„ëœ ì•„ì´í…œ ì½”ë“œë¥¼ ë¦¬ìŠ¤íŠ¸ì— ì „ì†¡í•˜ê³ ,
         List<ItemCode> items = new List<ItemCode>();
         for (int i = 0; i < allItemCode.Length; i++)  items.Add(allItemCode[i]);
 
-        //¸¸ÀÏ ÁØºñµÈ ¾ÆÀÌÅÛ ÄÚµåÀÇ ¼ö°¡ Ä«¿îÆ®º¸´Ù ºÎÁ·ÇÏ´Ù¸é
+        //ë§Œì¼ ì¤€ë¹„ëœ ì•„ì´í…œ ì½”ë“œì˜ ìˆ˜ê°€ ì¹´ìš´íŠ¸ë³´ë‹¤ ë¶€ì¡±í•˜ë‹¤ë©´
         if (items.Count < Count)
         {
-            while (items.Count >= Count) //ÁØºñµÈ ¾ÆÀÌÅÛ ÄÚµåÀÇ ¼ö°¡ Countº¸´Ù Ä¿Áú¶§±îÁö
+            while (items.Count >= Count) //ì¤€ë¹„ëœ ì•„ì´í…œ ì½”ë“œì˜ ìˆ˜ê°€ Countë³´ë‹¤ ì»¤ì§ˆë•Œê¹Œì§€
             {
-                items.Add(itemDataManager.itemDatas[0].code); //ÀüÃ¼ ¾ÆÀÌÅÛ Áß¿¡¼­ Ã¹¹øÂ° ¾ÆÀÌÅÛÀ» Ãß°¡ÇÑ´Ù. ÇöÀç´Â »ç°ú
+                items.Add(itemDataManager.itemDatas[0].code); //ì „ì²´ ì•„ì´í…œ ì¤‘ì—ì„œ ì²«ë²ˆì§¸ ì•„ì´í…œì„ ì¶”ê°€í•œë‹¤. í˜„ì¬ëŠ” ì‚¬ê³¼
             }
         }
-        // ¼±º°µÈ ¾ÆÀÌÅÛ ¸®½ºÆ®¿¡¼­ ·£´ıÀ¸·Î »óÁ¡¿¡ Ãß°¡ÇÒ ¾ÆÀÌÅÛÀ» ¼±Á¤ÈÄ ¸®½ºÆ®¿¡¼­ »èÁ¦
+        // ì„ ë³„ëœ ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ì—ì„œ ëœë¤ìœ¼ë¡œ ìƒì ì— ì¶”ê°€í•  ì•„ì´í…œì„ ì„ ì •í›„ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ
         for (int i = 0; i < StoreItemCode.Length; i++)
         {
             int rand = Random.Range(0, items.Count);
@@ -71,19 +68,4 @@ public class StoreUI : MonoBehaviour
             items.RemoveAt(rand);
         }
     }
-
-    /*private void InitializeStoreSlots()
-    {
-        for (int i = 0; i < allItemCode.Length; i++)
-        {
-            GameObject slotObj = Instantiate(storeSlotPrefab, storeSlotContainer);
-            StoreSlot storeSlot = slotObj.GetComponent<StoreSlot>();
-
-            if (storeSlot != null)
-            {
-                storeSlot.SetItemCode(allItemCode[i]);
-                Debug.Log(allItemCode[i]);
-            }
-        }
-    }*/
 }

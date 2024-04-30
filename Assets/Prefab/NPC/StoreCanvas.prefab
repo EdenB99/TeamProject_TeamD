@@ -1920,7 +1920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1682631898485210132
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2057,12 +2057,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9897a8711b98e6d428bf25e31628b462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storeSlotPrefab: {fileID: 3756759216833262889, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
-  storeSlotContainer: {fileID: 331267565302357173}
-  allItemData:
-  - {fileID: 11400000, guid: db377d5ebff177a4c8459fdf3195ca28, type: 2}
-  - {fileID: 11400000, guid: 6c4e0fc168813ae47990bb1e2f3c0eb8, type: 2}
-  - {fileID: 11400000, guid: 5ba62330611122f4cb22489a0e0668a5, type: 2}
-  - {fileID: 11400000, guid: 4fae4f775cd45284e8085fc8deffa2f3, type: 2}
-  - {fileID: 11400000, guid: 6081316966289714abdb117a16e8fc5c, type: 2}
-  - {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
+  allItemCode: 

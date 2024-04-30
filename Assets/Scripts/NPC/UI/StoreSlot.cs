@@ -14,20 +14,25 @@ public class StoreSlot : MonoBehaviour
     public TextMeshProUGUI itemStatText;
 
     Button storeSlot;
-    public BuyTab buyTab; 
     ItemData currentItemData;
+    NPC_Store storeNPC;
+    Transform buyTab; 
+    Transform storeCanvas;
+    StoreSlot store;
 
 
     private void Awake()
     {
+        storeNPC = FindAnyObjectByType<NPC_Store>();
+        storeCanvas = storeNPC.transform.GetChild(1);
+        Transform child = storeCanvas.GetChild(1);
+        buyTab = child.GetChild(2);
+
         storeSlot = GetComponent<Button>();
-        ClearSlot();
+        store = GetComponent<StoreSlot>();
+        storeSlot.onClick.AddListener(() => ShowBuyTab());
     }
 
-    private void Start()
-    {
-       
-    }
     public void ClearSlot()
     {
         itemIconImage.sprite = null;
@@ -35,9 +40,11 @@ public class StoreSlot : MonoBehaviour
         itemDescriptionText.text = null;
         itemPriceText.text = null;
         itemStatText.text = null;
+        currentItemData = null;
         storeSlot.onClick.RemoveAllListeners();
     }
-    public void SetItemCode(ItemData itemdata)
+
+    public void SetItemData(ItemData itemdata)
     {
         if (itemdata != null)
         {
@@ -46,13 +53,12 @@ public class StoreSlot : MonoBehaviour
             itemNameText.text = itemdata.itemName;
             itemDescriptionText.text = itemdata.itemDescription;
             itemPriceText.text = itemdata.price.ToString()+"G";
-            storeSlot.onClick.AddListener(() => ShowButTab());
         }
     }
 
-    public void ShowButTab()
+    public void ShowBuyTab()
     {
-        buyTab.SetItemdata(currentItemData);
+        BuyTab buyTabComponent = buyTab.GetComponent<BuyTab>();
+        buyTabComponent.SetItemdata(currentItemData, store);
     }
-
 }

@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.01
+      value: 4.49
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1269,17 +1269,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 183b19fdfe1b3ad4db95b45c0b62a5f5, type: 3}
---- !u!114 &254442094 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8365628660196700608, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
-  m_PrefabInstance: {fileID: 8241977799561662986}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7610d0f86f0cfe54e810179365b641f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &389307589 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7960196045317113411, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
@@ -1419,10 +1408,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 389307589}
     m_Modifications:
-    - target: {fileID: 1234856569477197980, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
-      propertyPath: buyTab
-      value: 
-      objectReference: {fileID: 254442094}
     - target: {fileID: 3756759216833262889, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
       propertyPath: m_Name
       value: StoreSlot (2)
@@ -1525,10 +1510,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 389307589}
     m_Modifications:
-    - target: {fileID: 1234856569477197980, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
-      propertyPath: buyTab
-      value: 
-      objectReference: {fileID: 254442094}
     - target: {fileID: 3756759216833262889, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
       propertyPath: m_Name
       value: StoreSlot
@@ -2441,10 +2422,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 389307589}
     m_Modifications:
-    - target: {fileID: 1234856569477197980, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
-      propertyPath: buyTab
-      value: 
-      objectReference: {fileID: 254442094}
     - target: {fileID: 3756759216833262889, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
       propertyPath: m_Name
       value: StoreSlot (3)
@@ -2679,10 +2656,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 389307589}
     m_Modifications:
-    - target: {fileID: 1234856569477197980, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
-      propertyPath: buyTab
-      value: 
-      objectReference: {fileID: 254442094}
     - target: {fileID: 3756759216833262889, guid: fd166e7d16cc64542bd4461fb7a928a5, type: 3}
       propertyPath: m_Name
       value: StoreSlot (1)
@@ -3073,6 +3046,10 @@ PrefabInstance:
     - target: {fileID: 6337773095924150986, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
       propertyPath: m_Name
       value: Store_NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775494882268194865, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6820360508374873186, guid: aef9bb0bcb2672b40b0fee748dcb14be, type: 3}
       propertyPath: m_AnchorMax.y
