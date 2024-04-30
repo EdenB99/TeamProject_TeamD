@@ -49,6 +49,7 @@ public class BossStageScripts : MonoBehaviour
         bossInfo.alpha = 0.0f;
         //카메라경계변경
         mainCamera.UpdateBoundaryObject(bossBoundaryObject);
+        StopAllCoroutines();
     }
 
 

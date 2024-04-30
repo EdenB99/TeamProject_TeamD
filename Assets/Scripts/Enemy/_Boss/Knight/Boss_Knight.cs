@@ -316,8 +316,8 @@ public class Boss_Knight : PatternEnemyBase
     
     public override void Die()
     {
-        //스탑코루틴이 잘안되는중
-        base.Die();
+        //패턴이 스탑되지않음.
+        StopAllCoroutines();
         State = BossState.Wait;
         bossDie?.Invoke();
         StartCoroutine(DieAction());
