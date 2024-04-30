@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InvenSlotUI : SlotUI_Base, IPointerClickHandler, 
-    IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+    IPointerEnterHandler, IPointerExitHandler
 {
 
     
@@ -26,10 +26,6 @@ public class InvenSlotUI : SlotUI_Base, IPointerClickHandler,
     /// </summary>
     public Action onPointerExit;
 
-    /// <summary>
-    /// 마우스 커서가 슬롯위에서 움직인다.(Vector2: 마우스 포인터의 스크린 좌표)
-    /// </summary>
-    public Action<Vector2> onPointerMove;
     /// <summary>
     /// 장비여부 표시용 텍스트
     /// </summary>
@@ -50,18 +46,12 @@ public class InvenSlotUI : SlotUI_Base, IPointerClickHandler,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Enter");
         onPointerEnter?.Invoke(Index);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Exit");
         onPointerExit?.Invoke();
     }
 
-    public void OnPointerMove(PointerEventData eventData)
-    {
-        //onPointerMove?.Invoke(eventData.position);
-    }
 }

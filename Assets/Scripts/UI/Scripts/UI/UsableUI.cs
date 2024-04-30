@@ -48,17 +48,18 @@ public class UsableUI : MonoBehaviour
         {
             targetSlot = SlotUI;
             ItemData targetItemData = targetSlot.InvenSlot.ItemData;
-            IUsable usable = targetItemData as IUsable;   // IUsable을 상속 받았는지 확인
-            IEquipable equipable = targetItemData as IEquipable; //Iequipable을 상속받았는지 확인
-            if (equipable != null)                     // 상속을 받았으면
+            switch (targetItemData.type)
             {
-                EquipUseText.text = "Equip";
-            } else if (usable != null)  
-            {
-                EquipUseText.text = "Use";
-            } else
-            {
-                EquipUseText.text = "Use";
+                case ItemType.Weapon:
+                    EquipUseText.text = "Equip";
+                    break;
+                case ItemType.Accessory:
+                    EquipUseText.text = "Equip";
+                    break;
+                case ItemType.Consumable:
+                    EquipUseText.text = "Use";
+                    break;
+                default: EquipUseText.text = "None";  break;
             }
         }
     }

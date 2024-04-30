@@ -12,10 +12,9 @@ public class StoreSlot : MonoBehaviour
     public TextMeshProUGUI itemDescriptionText; 
     public TextMeshProUGUI itemPriceText;
     public TextMeshProUGUI itemStatText;
-    public Canvas canvas;
 
     Button storeSlot;
-    BuyTab buyTab; 
+    public BuyTab buyTab; 
     ItemData currentItemData;
 
 
@@ -27,9 +26,7 @@ public class StoreSlot : MonoBehaviour
 
     private void Start()
     {
-        Transform storeUI = canvas.transform.GetChild(1);
-        buyTab = storeUI.gameObject.transform.GetComponentInChildren<BuyTab>();
-        buyTab.isBuyonChange += ClearSlot;
+       
     }
     public void ClearSlot()
     {
@@ -56,7 +53,6 @@ public class StoreSlot : MonoBehaviour
     public void ShowButTab()
     {
         buyTab.SetItemdata(currentItemData);
-        buyTab.gameObject.SetActive(true);
     }
 
 }

@@ -42,16 +42,7 @@ public class InventoryUI : MonoBehaviour
     CanvasGroup canvasGroup;
     private void Awake()
     {
-        //요소 선언
-        //Transform child = transform.GetChild(0);
-        //child = child.transform.GetChild(2);
-        //child = child.transform.GetChild(0);
-        //child = child.transform.GetChild(0);
         slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
-        //child = transform.GetChild(1);
-        //detail = GetComponent<DetaillUI>();
-        //child = transform.GetChild(2);
-        //usableUI = GetComponent<UsableUI>();
 
         WeaponsSlots = Weapons.GetComponentsInChildren<WeaponSlotUI>();
 
@@ -75,12 +66,10 @@ public class InventoryUI : MonoBehaviour
     {
         if (canvasGroup.interactable)
         {
-            Debug.Log("Close");
             Close();
         }
         else
         {
-            Debug.Log("Open");
             Open();
         }
     }
@@ -115,7 +104,6 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onClick += OnSlotClick;
             slotUIs[i].onPointerEnter += OnItemDetailOn;
             slotUIs[i].onPointerExit += OnItemDetailOff;
-            slotUIs[i].onPointerMove += OnSlotPointerMove;
 
             usableUI.ClickedDiscard += DiscardItem;
             usableUI.ClickedEquip_Use += Eqiup_UseItem;
@@ -201,32 +189,36 @@ public class InventoryUI : MonoBehaviour
 
     private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
-        Debug.Log("use1");
         ItemData itemdata = slotUI.InvenSlot.ItemData;
         if (itemdata != null)
         {
             switch (itemdata.type)
             {
                 case (ItemType.Weapon):
-                    EquipWeapon(itemdata); 
+                    EquipWeapon(itemdata);
+                    slotUI.InvenSlot.EquipItem(true); //텍스트 변경을 위한 슬롯활성화
                     break;
-                case (ItemType.Accessory): 
-
-
+                case (ItemType.Accessory):
+                    EquipAccessory(itemdata);
+                    slotUI.InvenSlot.EquipItem(true);
                     break;
                 case (ItemType.Consumable):
                     slotUI.InvenSlot.UseItem();
                     break;
+                default: usableUI.Close(); break;
             }
         }
     }
+
+    
+
     /// <summary>
     /// 무기군을 장착하는 함수
     /// </summary>
     /// <param name="itemData">장착할 무기 아이템 데이터</param>
     private void EquipWeapon(ItemData itemData)
     {
-        bool isFull = false;
+        bool isFull = true;
         for (int i = 0; i<WeaponsSlots.Length; i++)
         {
             if (WeaponsSlots[i].SlotItemData == null)
@@ -239,7 +231,7 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;
             }
         }
-        if (!isFull)
+        if (isFull)
         {
             for (int i =0; i<WeaponsSlots.Length; i++)
             {
@@ -251,11 +243,37 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    private void EquipAccessory()
+    private void EquipAccessory(ItemData itemdata)
+    {
+        bool isFull = false;
+        for (int i = 0; i < AccessoriesSlots.Length; i++)
+        {
+            if (AccessoriesSlots[i].SlotItemData == null)
+            {
+                AccessoriesSlots[i].EquipItemdata(itemdata);
+                isFull = false;
+                break;
+            }
+            else
+            {
+                isFull = true;
+            }
+        }
+        if (!isFull)
+        {
+            for (int i = 0; i < AccessoriesSlots.Length; i++)
+            {
+                AccessoriesSlots[i].ClearSlot();
+                AccessoriesSlots[i].EquipItemdata(itemdata);
+            }
+        }
+    }
+
+
+    private void WeaponDataToPlayer(ItemData itemdata)
     {
 
     }
-
 
     private void DiscardItem(InvenSlotUI slotUI)
     {

@@ -12,7 +12,7 @@ public class BuyTab : MonoBehaviour
     Button noButton;
 
 
-    public Action isBuyonChange;
+  
     private void Awake()
     {
         Transform child = transform.GetChild(1);
@@ -29,14 +29,13 @@ public class BuyTab : MonoBehaviour
 
     public void SetItemdata (ItemData itemdata)
     {
-        CurrentItemdata = itemdata;
         this.gameObject.SetActive(true);
+        CurrentItemdata = itemdata;
     }
 
     private void OnBuyButtonClicked()
     {
         inventory.AddItem(CurrentItemdata.code); // 인벤토리에 아이템 추가
-        isBuyonChange?.Invoke();
         this.gameObject.SetActive(false); // 구매 후 구매창 비활성화
     }
 }

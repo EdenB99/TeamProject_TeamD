@@ -117,17 +117,9 @@ public class InvenSlot
     /// 이 슬롯의 아이템을 장비하는 함수
     /// </summary>
     /// <param name="target">아이템을 장비할 대상</param>
-    public void EquipItem(GameObject target)
+    public void EquipItem(bool isequip)
     {
-        // 만약 슬롯에 아이템이 있고 아이템이 장비되지 않았다면
-        if (!IsEmpty && !IsEquipped)
-        {
-            //아이템의 효과를 적용, 플레이어의 장비 슬롯에 아이템을 추가
-
-            // 장비되었음을 표시
-            IsEquipped = true;
-
-            // 아이템을 장비했을 때의 추가적인 처리가 필요하다면 이 곳에 추가
-        }
+        isEquipped = isequip;
+        onSlotItemChange?.Invoke();
     }
 }
