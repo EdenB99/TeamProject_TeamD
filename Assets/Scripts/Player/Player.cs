@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
     private int playerLayer;
     private int platformLayer;
 
+    // Ground Check
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayerCheck;
+
+
     private PlayerStats playerStats;
 
     /// <summary>
@@ -257,11 +262,16 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
-                                              //yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
+        //yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
         tr.emitting = false;
         //canDash = true; candash를 Update에서 관리
     }
 
+
+    /// <summary>
+    /// 대시 무적 
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DashinvincibleMode()
     {
         gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
@@ -294,6 +304,8 @@ public class Player : MonoBehaviour
     {
 
     }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
