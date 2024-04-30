@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,17 +13,15 @@ public class BossStageScripts : MonoBehaviour
 
     [SerializeField] private GameObject bossBoundaryObject;
     [SerializeField] private GameObject portalBoundaryObject;
-
     [SerializeField] private GameObject bossPrefab;
+    [SerializeField] private Boss_Knight knightboss;
     private GameObject boss;
 
     private TextMeshPro bossInfo;
     private Transform bossTransform;
     private MainCamera mainCamera;
     private Player player;
-    private bool IsBossOn => boss != null;
-    private bool IsStartBattle = false;
-    private bool isDoorOpen = false;
+
     private void Awake()
     {
         Transform child = transform.GetChild(0);
@@ -43,6 +42,7 @@ public class BossStageScripts : MonoBehaviour
         mainCamera = FindAnyObjectByType<MainCamera>();
         player = GameObject.FindAnyObjectByType<Player>();
     }
+
     private void OnEnable()
     {
         collider.enabled = true;
@@ -51,16 +51,7 @@ public class BossStageScripts : MonoBehaviour
         mainCamera.UpdateBoundaryObject(bossBoundaryObject);
     }
 
-    private void Update()
-    {
-        //TODO:: 보스 죽으면 작동하도록 할것, 물어보고 코드수정하기, 보스전 종료 연출도 간단하게 있었으면 좋겠음.
-        if (!IsBossOn && IsStartBattle && !isDoorOpen)
-        {
-            animator.SetBool("IsClose", false);
-            mainCamera.UpdateBoundaryObject(portalBoundaryObject);
-            isDoorOpen = true;
-        }
-    }
+
 
     //보스전 시작,연출용 코드 ==========================================
 
@@ -71,29 +62,28 @@ public class BossStageScripts : MonoBehaviour
         {
             Debug.Log("충돌함");
             collider.enabled = false;
-            BossSpawn();
+            BattleStart();
 
         }
     }
 
     //보스 스폰
-    private void BossSpawn()
+    private void BattleStart()
     {
         boss = Instantiate(bossPrefab);
         //z축을 제외한 보스트랜스폼의x,y위치에 생성
         boss.transform.position = new Vector3(bossTransform.transform.position.x, bossTransform.transform.position.y - 1f, 0.0f);
         boss.SetActive(true);
-        StartCoroutine(StartBossCoroutine());
+        StartCoroutine(StartCoroutine());
     }
 
 
     //보스전 시작연출용 코루틴
-    private IEnumerator StartBossCoroutine()
+    private IEnumerator StartCoroutine()
     {
         float time = 0.0f;
         //플레이어 멈추고 6초에 걸쳐 보스를 보여주고 보스이름을 페이드 인, 아웃시키기
         player.enabled = false;
-        IsStartBattle = true;
         yield return new WaitForSeconds(1f);
         mainCamera.enabled = false;
         while (time < 2f)
@@ -123,9 +113,42 @@ public class BossStageScripts : MonoBehaviour
         player.enabled = true;
         mainCamera.enabled = true;
         animator.SetBool("IsClose", true);
+        knightboss = FindAnyObjectByType<Boss_Knight>();
 
+        knightboss.bossDie += BattleEnd;
 
+    }
 
+    //보스전 종료 연출 -------------------------------------------------------------------
+
+    private void BattleEnd()
+    {
+        StartCoroutine(EndCoroutine());
+    }
+    IEnumerator EndCoroutine()
+    {
+        float time = 0.0f;
+        player.enabled = false;
+        yield return new WaitForSeconds(2f);
+        mainCamera.enabled = false;
+        while (time < 2f)
+        {
+            time += Time.deltaTime;
+            Vector3 bossPosition = new Vector3(boss.transform.position.x, boss.transform.position.y+2f, -10);
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, bossPosition , Time.deltaTime * 5);
+            yield return null;
+        }
+        while (time < 5f)
+        {
+            time += Time.deltaTime;
+        }
+
+        player.enabled = true;
+        mainCamera.enabled = true;
+
+        yield return null;
+        animator.SetBool("IsClose", false);
+        mainCamera.UpdateBoundaryObject(portalBoundaryObject);
     }
 
 }

@@ -280,6 +280,14 @@ public class Boss_Knight : PatternEnemyBase
         }
     }
 
+    IEnumerator Map_Pattern()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(7.0f);
+            Instantiate(shadow);
+        }
+    }
 
 
     // 개전 행동 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -303,23 +311,39 @@ public class Boss_Knight : PatternEnemyBase
 
 
 
-    // 쉐도우 크리에이트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-
-
-
-
-
-
-
-
-    IEnumerator Map_Pattern()
+    // 사망시 행동 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    public Action bossDie;
+    
+    public override void Die()
     {
-        while ( true)
-        {
-            yield return new WaitForSeconds(7.0f);
-            Instantiate(shadow);
-        }
+        //스탑코루틴이 잘안되는중
+        base.Die();
+        State = BossState.Wait;
+        bossDie?.Invoke();
+        StartCoroutine(DieAction());
     }
+
+     IEnumerator DieAction()
+    {
+        Color color = sprite.color;
+        float time = 0f;
+        float colorSpeed = 5f;
+        yield return new WaitForSeconds(2f);
+
+        while(time < 5f)
+        {
+            time += Time.deltaTime;
+            color.r -= Time.deltaTime * colorSpeed;
+            color.g -= Time.deltaTime * colorSpeed;
+            color.b -= Time.deltaTime * colorSpeed;
+            color.a -= Time.deltaTime * 0.5f;
+            sprite.color = color;
+            yield return null;
+        }
+        
+
+        Destroy(gameObject);
+    }
+
 
 }

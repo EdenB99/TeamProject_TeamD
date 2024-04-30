@@ -173,17 +173,22 @@ public class Player : MonoBehaviour
 
     protected void MousePosition()
     {
-        if (playerStats != null && playerStats.IsAlive)
+        if (playerStats != null && playerStats.IsAlive )
         {
             // 마우스 포지션 변경
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            bool shouldFlip = mousePos.x < transform.position.x;
-            if (spriteRenderer.flipX != shouldFlip)
+           // Camera camera = FindAnyObjectByType<Camera>();
+            //if ( camera != null)
             {
-                spriteRenderer.flipX = shouldFlip;
-                isPosition = !isPosition;
+                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                bool shouldFlip = mousePos.x < transform.position.x;
+                if (spriteRenderer.flipX != shouldFlip)
+                {
+                    spriteRenderer.flipX = shouldFlip;
+                    isPosition = !isPosition;
+                }
             }
+
         }
     }
 

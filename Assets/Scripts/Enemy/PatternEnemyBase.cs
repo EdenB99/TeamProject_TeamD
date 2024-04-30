@@ -335,7 +335,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     /// <summary>
     /// 죽었을때 실행 될 메서드
     /// </summary>
-    public void Die()
+    public virtual void Die()
     {
         Debug.Log("죽었다.");
         StopAllCoroutines();
