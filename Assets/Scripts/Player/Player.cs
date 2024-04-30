@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     public float dashingPower = 5.0f;
     public float dashingTime = 0.2f;
     public float dashCoolTime = 2.0f;
+    private Vector2 lastDashDirection;
+    private bool dashInvincible;
+    private float dashInvincibleTime = 1.0f;
     private float currentdashTime = 0.0f;
     public Action<float, float> OnDashingCoolChanged;
 
@@ -223,12 +226,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 대쉬 점프 수정중
     private IEnumerator Dash()
     {
-        if (!canDash || !isJump ) yield break; // 대시가 가능한 상태인지 확인
-
+        if (!canDash || !isJump) yield break; // 대시가 가능한 상태인지 확인
         Debug.Log("대시");
+        StartCoroutine(DashinvincibleMode());
+
         canDash = false;
         tr.emitting = true;
         float originalGravity = rigid.gravityScale;
@@ -237,23 +240,48 @@ public class Player : MonoBehaviour
 
         Vector2 dashDirection;
 
-        /*
         if (moveInput.x == 0) // 플레이어 입력이 없을 경우 마우스 위치를 사용
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             dashDirection = (mousePosition - new Vector2(transform.position.x, transform.position.y)).normalized;
         }
-        */
+        else // 플레이어 입력이 있을 경우 입력 방향을 사용
+        {
+            dashDirection = new Vector2(moveInput.x, 0).normalized;
+            lastDashDirection = dashDirection; // 마지막 대시 방향 업데이트
+        }
 
-        dashDirection = new Vector2(moveInput.x, 0).normalized;
+        dashDirection.y = 0; // Y축 이동 방지
         rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse); // 계산된 방향으로 대시 힘 적용
         Debug.Log($"대시 방향: {dashDirection}");
 
         yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
-
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
+                                              //yield return new WaitForSeconds(dashingCool); // 대시 쿨다운 시간
         tr.emitting = false;
+        //canDash = true; candash를 Update에서 관리
     }
+
+    IEnumerator DashinvincibleMode()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
+        dashInvincible = true;
+
+        float timeElapsed = 0.0f;
+        while (timeElapsed < dashInvincibleTime) // 2초동안 계속하기
+        {
+            timeElapsed += Time.deltaTime;
+            float alpha = (Mathf.Cos(timeElapsed * 30.0f) + 1.0f) * 0.25f + 0.5f;   // 코사인 결과를 1 ~ 0.5 사이로 변경
+            spriteRenderer.color = new Color(1, 1, 1, alpha);               // 알파에 지정(깜박거리게 된다.)
+            yield return null;
+        }
+
+        // 2초가 지난후
+        dashInvincible = false;
+        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
+        spriteRenderer.color = Color.white;                 // 알파값도 원상복구
+    }
+
 
     // 지형 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -270,9 +298,10 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike"))
         {
-            jumpCount = 1;
+            jumpCount = 2;
+            canDash = true;
             Player_ani.SetBool("Jump", false);
         }
     }
