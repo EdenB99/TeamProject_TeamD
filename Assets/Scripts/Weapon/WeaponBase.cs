@@ -53,7 +53,7 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 공격할 때 데미지의 총합
     /// </summary>
-    public float totalDamage => weaponDamage + playerStats.attackPower;
+    public float totalDamage => weaponDamage + playerStats.AttackPower;
 
     /// <summary>
     /// 무기의 공격 속도

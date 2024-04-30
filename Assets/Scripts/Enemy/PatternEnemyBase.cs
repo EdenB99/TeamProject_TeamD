@@ -174,6 +174,8 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         InitializePatterns();
+
+        State = BossState.Wait;
     }
 
     protected virtual void Start()

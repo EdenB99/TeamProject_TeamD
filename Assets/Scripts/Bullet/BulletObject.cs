@@ -155,7 +155,7 @@ public class BulletObject : RecycleObject , IAttack
                 isPlayer = data.isPlayer;
 
                 if (isPlayer) this.gameObject.layer = 11;
-                else this.gameObject.layer = 7;
+                else this.gameObject.layer = 12;
 
                 StartCoroutine(BulletDelTime());
             }

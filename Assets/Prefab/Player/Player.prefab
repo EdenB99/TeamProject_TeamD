@@ -271,22 +271,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075292c57b89cb74eb362d4e6b1b1d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 0
-  Defense: 0
-  attackSpeed: 0
-  MaxHp: 100
+  BaseAttackPower: 0
+  BaseDefense: 0
+  BaseAttackSpeed: 0
+  BaseMaxHp: 100
+  BaseCriticalChance: 0
+  BaseItemRange: 0
+  BaseSpeed: 5
   hp: 0
-  criticalChance: 0
-  damageTaken: 0
-  Level: 0
-  itemRange: 3
-  speed: 5
-  invincible: 0
   buffs: []
+  invincible: 0
   PickSpeed: 0
-  checkRadius: 0
   pickupRange: 1
-  gold: 0
 --- !u!114 &2528449624804621298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +299,8 @@ MonoBehaviour:
   downJump: 0
   downJumpTime: 0
   dashingPower: 12
+  dashingTime: 0.2
+  dashCoolTime: 2
 --- !u!96 &7290192330274884213
 TrailRenderer:
   serializedVersion: 3

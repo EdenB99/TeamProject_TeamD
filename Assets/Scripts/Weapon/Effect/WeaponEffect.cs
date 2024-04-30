@@ -34,7 +34,7 @@ public class WeaponEffect : RecycleObject, IAttack
     /// <summary>
     /// 공격할 때 데미지의 총합 ( IAttack )
     /// </summary>
-    public uint AttackPower => (uint)(weaponDamage + playerStats.attackPower);
+    public uint AttackPower => (uint)(weaponDamage + playerStats.AttackPower);
 
     /// <summary>
     /// 이펙트가 데미지를 주는 간격

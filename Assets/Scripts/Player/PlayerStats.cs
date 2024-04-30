@@ -25,55 +25,68 @@ public struct PlayerBuff
 public class PlayerStats : MonoBehaviour
 {
     [Header("플레이어의 기본 스텟")]
-    public float attackPower;                // 공격력
-    public float Defense;               // 방어력
-    public float attackSpeed;                // 공격속도
-    public float MaxHp = 100.0f;        // 최대체력
-    public float hp;                   // 현재체력
-    public float criticalChance;          // 크리티컬
-    public float damageTaken;           // 몬스터 받는 피해
-    public int Level;                   // 레벨
-    public float itemRange;              // 아이템을 흡수하는 범위
-    public float speed;
+    public float BaseAttackPower;                // 공격력
+    public float BaseDefense;               // 방어력
+    public float BaseAttackSpeed;                // 공격속도
+    public float BaseMaxHp = 100.0f;        // 최대체력
+    public float BaseCriticalChance;          // 크리티컬
+    public float BaseItemRange;              // 아이템을 흡수하는 범위
+    public float BaseSpeed;
 
     // 플레이어가 적용받고 있는 스탯
-    public float _attackPower;                // 공격력
-    public float _Defense;               // 방어력
-    public float _attackSpeed;                // 공격속도
-    public float _MaxHp = 100.0f;        // 최대체력
-    public float _hp;                   // 현재체력
-    public float _criticalChance;          // 크리티컬
-    public float _damageTaken;           // 몬스터 받는 피해
-    public float _itemRange;              // 아이템을 흡수하는 범위
-    public float _speed;
+    private float attackPower;                // 공격력
+    private float Defense;               // 방어력
+    private float attackSpeed;                // 공격속도
+    private float maxHp = 100.0f;        // 최대체력
+    private float criticalChance;          // 크리티컬
+    private float itemRange;              // 아이템을 흡수하는 범위
+    private float speed;
 
-    public bool invincible;             // 무적상태
-
+    public float hp;                   // 현재체력
 
     public List<PlayerBuff> buffs;
 
-    /// <summary>
-    /// 아이템이 플레이어에게 이동하는 속도
-    /// </summary>
-    public float PickSpeed;
+    private void Awake()
+    {
+        ani = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+    }
+    private void Start()
+    {
+        hp = MaxHp;    // 게임 시작 시 체력을 최대로 설정
+        inven = new Inventory();
+        if (GameManager.Instance.InventoryUI != null)
+        {
+            GameManager.Instance.InventoryUI.InitializeInventory(Inventory);    // 인벤토리와 인벤토리 UI연결
+        }
+        ingameUI = GameManager.Instance.IngameUI; //ingameUI 연결
+
+        RefreshStats();
+    }
+
+    private void Update()
+    {
+        pickupItem();
+    }
+
+    SpriteRenderer spriteRenderer;
+    Animator ani;
+
+    // 스탯 프로퍼티 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    public float Speed { get { return speed; } set { speed = value; } }
+    public float MaxHp { get { return maxHp; } set { maxHp = value; } }
+    public float AttackPower { get { return attackPower; } set { attackPower = value; } }
+
+    // 피격 , HP 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    public bool invincible;             // 무적상태
 
     /// <summary>
-    /// 아이템이 감지할 반경
+    /// HP의 변경을 알리는 델리게이트
     /// </summary>
-    public float checkRadius;
-
-    /// <summary>
-    /// 아이템을 끌어당길 반경
-    /// </summary>
-    public float pickupRange = 1.0f;
-
-    /// <summary>
-    /// 던그리드 음식 넣을시 넣을 변수
-    /// </summary>
-    //public int Hungrycurr;
-    //public int HungryMax;
-
-    public int gold;                    // 소지 금액
+    public Action<float, float> onHealthChange { get; set; } //델리게이트의 인자값을 float 2개로 변경
 
     /// <summary>
     /// 살았는지 죽었는지 확인하기 위한 프로퍼티
@@ -86,38 +99,6 @@ public class PlayerStats : MonoBehaviour
     private float invincibleTime = 2.0f;
 
     public Action OnDie;
-    /// <summary>
-    /// HP의 변경을 알리는 델리게이트
-    /// </summary>
-    public Action<float, float> onHealthChange { get; set; } //델리게이트의 인자값을 float 2개로 변경
-
-    /// <summary>
-    /// 플레이어의 인벤토리
-    /// </summary>
-    Inventory inven;
-    public Inventory Inventory => inven;
-    /// <summary>
-    /// 플레이어의 인게임 UI
-    /// </summary>
-    IngameUI ingameUI;
-    public IngameUI IngameUI => ingameUI;
-
-    GameObject blade;
-    //WeaponBase weapon;
-    SpriteRenderer spriteRenderer;
-    Animator ani;
-
-    private void Awake()
-    {
-        ani = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-    }
-
-    private void Update()
-    {
-        pickupItem();
-    }
 
     /// <summary>
     /// 체력 설정 프로퍼티
@@ -135,20 +116,9 @@ public class PlayerStats : MonoBehaviour
                 {
                     Die();
                 }
-                onHealthChange?.Invoke(hp ,MaxHp); //델리게이트로 hp와 Maxhp 전달
+                onHealthChange?.Invoke(hp, MaxHp); //델리게이트로 hp와 Maxhp 전달
             }
         }
-    }
-
-    private void Start()
-    {
-        hp = MaxHp;    // 게임 시작 시 체력을 최대로 설정
-        inven = new Inventory();
-        if (GameManager.Instance.InventoryUI != null)
-        {
-            GameManager.Instance.InventoryUI.InitializeInventory(Inventory);    // 인벤토리와 인벤토리 UI연결
-        }
-        ingameUI = GameManager.Instance.IngameUI; //ingameUI 연결
     }
 
     public void TakeDamage(float damage)
@@ -163,21 +133,13 @@ public class PlayerStats : MonoBehaviour
         else if (hp <= 0)
         {
             Die();
-            blade.SetActive(false);
-        }
-    }
 
-    public void TakeHeal(float heal)
-    {
-        if (CurrentHp > 0)
-        {
-            CurrentHp += heal;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+
 
         if (collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
         {
@@ -188,6 +150,74 @@ public class PlayerStats : MonoBehaviour
             TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
         }
     }
+
+    /// <summary>
+    /// 체력이 변경되었을때 호출되는 함수
+    /// </summary>
+    void Die()
+    {
+        // 캐릭터가 사망했을 때의 로직 처리
+        Debug.Log("플레이어가 죽었다.");
+        ani.SetTrigger("Die");
+        OnDie?.Invoke();
+        //Player_ani.SetTrigger("Die");
+    }
+
+    /// <summary>
+    /// 무적 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator InvincibleMode()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
+        invincible = true;
+
+        float timeElapsed = 0.0f;
+        while (timeElapsed < invincibleTime) // 2초동안 계속하기
+        {
+            timeElapsed += Time.deltaTime;
+            float alpha = (Mathf.Cos(timeElapsed * 30.0f) + 1.0f) * 0.25f + 0.5f;   // 코사인 결과를 1 ~ 0.5 사이로 변경
+            spriteRenderer.color = new Color(1, 1, 1, alpha);               // 알파에 지정(깜박거리게 된다.)
+            yield return null;
+        }
+
+        // 2초가 지난후
+        invincible = false;
+        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
+        spriteRenderer.color = Color.white;                 // 알파값도 원상복구
+    }
+
+    // 아이템 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    /// <summary>
+    /// 아이템이 플레이어에게 이동하는 속도
+    /// </summary>
+    public float PickSpeed;
+
+    /// <summary>
+    /// 아이템을 획득하는 반경
+    /// </summary>
+    public float pickupRange = 1.0f;
+
+    /// <summary>
+    /// 플레이어의 인벤토리
+    /// </summary>
+    Inventory inven;
+    public Inventory Inventory => inven;
+    /// <summary>
+    /// 플레이어의 인게임 UI
+    /// </summary>
+    IngameUI ingameUI;
+    public IngameUI IngameUI => ingameUI;
+
+    public void TakeHeal(float heal)
+    {
+        if (CurrentHp > 0)
+        {
+            CurrentHp += heal;
+        }
+    }
+
 
     private void pickupItem()
     {
@@ -283,11 +313,21 @@ public class PlayerStats : MonoBehaviour
             temp_speed += inbuff.buff_speed;
         }
 
-        _attackPower = attackPower + temp_attackPower;
-        _Defense = Defense + temp_Defense;
-        _MaxHp = MaxHp + temp_hp;
-        _criticalChance = criticalChance + temp_criticalChance;
-        _speed = speed + temp_speed;   
+        attackPower = BaseAttackPower + temp_attackPower;
+        Defense = BaseDefense + temp_Defense;
+        MaxHp = BaseMaxHp + temp_hp;
+        criticalChance = BaseCriticalChance + temp_criticalChance;
+        Speed = BaseSpeed + temp_speed;
+
+    }
+
+    void RefreshStats()
+    {
+        attackPower = BaseAttackPower;
+        Defense = BaseDefense;
+        MaxHp = BaseMaxHp;
+        criticalChance = BaseCriticalChance;
+        Speed = BaseSpeed;
     }
 
     IEnumerator Corutine_buffEnd(PlayerBuff buff)
@@ -301,49 +341,10 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// 체력이 변경되었을때 호출되는 함수
-    /// </summary>
-    void Die()
-    {
-        // 캐릭터가 사망했을 때의 로직 처리
-        Debug.Log("플레이어가 죽었다.");
-        ani.SetTrigger("Die");
-        OnDie?.Invoke();
-        //Player_ani.SetTrigger("Die");
-    }
 
-    /// <summary>
-    /// 무적 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator InvincibleMode()
-    {
-        gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
-        invincible = true;
 
-        float timeElapsed = 0.0f;
-        while (timeElapsed < invincibleTime) // 2초동안 계속하기
-        {
-            timeElapsed += Time.deltaTime;
-            float alpha = (Mathf.Cos(timeElapsed * 30.0f) + 1.0f) * 0.25f + 0.5f;   // 코사인 결과를 1 ~ 0.5 사이로 변경
-            spriteRenderer.color = new Color(1, 1, 1, alpha);               // 알파에 지정(깜박거리게 된다.)
-            yield return null;
-        }
 
-        // 2초가 지난후
-        invincible = false;
-        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
-        spriteRenderer.color = Color.white;                 // 알파값도 원상복구
-    }
 
-    void OnDrawGizmosSelected()
-    {
-        // 에디터에서 감지 범위와 획득 범위를 표시
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, checkRadius);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, itemRange);
-    }
+
 
 }

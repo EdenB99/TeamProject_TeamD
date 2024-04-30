@@ -9,7 +9,7 @@ public class SwordEffect : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerStats playerstats = FindObjectOfType<PlayerStats>();
-        float baseDamage = playerstats.attackPower;
+        float baseDamage = playerstats.AttackPower;
 
         // 크리티컬 대미지 구현 로직
         /*   float critical = playerstats.criticalChance;
