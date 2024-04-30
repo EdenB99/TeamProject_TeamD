@@ -78,10 +78,11 @@ public class IngameUI : MonoBehaviour
 
     private void OnDisable()
     {
+        inventoryInput.Ingame.MapToggle.performed -= MapToggle;
+        inventoryInput.Ingame.QuickSlot3.performed -= OnQuickSlot3;
+        inventoryInput.Ingame.QuickSlot2.performed -= OnQuickSlot2;
+        inventoryInput.Ingame.QuickSlot1.performed -= OnQuickSlot1;
 		inventoryInput.Ingame.Disable();
-        inventoryInput.Ingame.QuickSlot3.canceled -= OnQuickSlot3;
-        inventoryInput.Ingame.QuickSlot2.canceled -= OnQuickSlot2;
-        inventoryInput.Ingame.QuickSlot1.canceled -= OnQuickSlot1;
     }
 
 
