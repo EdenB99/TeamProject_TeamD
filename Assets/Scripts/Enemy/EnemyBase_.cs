@@ -108,7 +108,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     public uint AttackPower => Attackpower;
 
     /// <summary>
-    /// Á×À½ µ¨¸®°ÔÀÌÆ®
+    /// Á×À½ Ã³¸®
     /// </summary>
     public Action onDie { get; set; }
 
@@ -121,11 +121,12 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
-        material = sprite.material;
 
+        // ¸÷ ¸ÞÅ×¸®¾ó °¡Á®¿À±â
+        sprite.material = GameManager.Instance.Mobmaterial;
+        material = sprite.material;
         Sprite sprite2d = sprite.sprite;
         Texture2D texture = sprite2d.texture;
-
         material.SetTexture(Texture2DID, texture);
     }
 
@@ -160,7 +161,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
         if ( !IsLive ) // Á×À»½Ã
         {
-            fade += Time.deltaTime;
+            fade += Time.deltaTime * 0.5f;
             material.SetFloat(FadeID, 1 - fade);
 
             if ( fade > 1 )

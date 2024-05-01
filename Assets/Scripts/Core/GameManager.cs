@@ -26,6 +26,8 @@ public class GameManager : Singleton<GameManager>
     IngameUI ingameUI;
     public IngameUI IngameUI => ingameUI;
 
+    public Material Mobmaterial;
+
     //WeaponEffectDataManager weaponEffectDataManager;
 
     //public WeaponEffectDataManager WeaponEffectData => weaponEffectDataManager;
