@@ -23,6 +23,6 @@ public class TestBossDie : MonoBehaviour
     private void OnTest1(InputAction.CallbackContext context)
     {
         Boss = FindAnyObjectByType<Boss_Knight>();
-        Boss.HP -= 100;
+        Boss.HP -= 500;
     }
 }

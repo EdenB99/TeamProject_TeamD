@@ -322,11 +322,12 @@ public class Boss_Knight : PatternEnemyBase
 
     // 사망시 행동 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public Action bossDie;
-    
+
+
     public override void Die()
     {
+        
         //패턴이 스탑되지않음.
-        StopAllCoroutines();
         State = BossState.Wait;
         bossDie?.Invoke();
         StartCoroutine(DieAction());
