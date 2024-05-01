@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3893383040987567949
 Transform:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.5, y: 2.2}
+  m_Offset: {x: -1.2, y: 1.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -104,7 +104,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4.4}
+  m_Size: {x: 4, y: 3.6}
   m_EdgeRadius: 0
 --- !u!114 &4000332315942175836
 MonoBehaviour:
@@ -321,6 +321,7 @@ MonoBehaviour:
   checkLR: 1
   PatternTime: 5
   speed: 1
+  startFight: 0
   obj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
   shadow: {fileID: 5259075507484147006, guid: c8d8b91106361df448061e9689bd377f, type: 3}
   bladeObj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}

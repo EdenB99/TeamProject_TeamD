@@ -135,13 +135,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6662286835158638177, guid: d1b45ff530af34341911c84e7998171c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.33
+      value: -6.62
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.46
+      value: -3.36
       objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -742,36 +746,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -2, y: 3, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -1, y: 3, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 0, y: 3, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: 11, y: 3, z: 0}
     second:
       serializedVersion: 2
@@ -1186,15 +1160,15 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 82
     m_Data: {fileID: 11400000, guid: cfe77fe9e30156748a1be7ac0ce4f0fc, type: 2}
-  - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: 895290c18cceb6c4199b1b9eb62fff7a, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 82
     m_Data: {fileID: 21300000, guid: dda2dc8fabaa6f94db21d39ab7a3423a, type: 3}
-  - m_RefCount: 3
-    m_Data: {fileID: -1766307359, guid: 5fe5454ec8605de43809133b020d1b69, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 85
+  - m_RefCount: 82
     m_Data:
       e00: 1
       e01: 0
@@ -1213,7 +1187,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 85
+  - m_RefCount: 82
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -1294,14 +1268,6 @@ CompositeCollider2D:
         Y: 110000000
       - X: 110000000
         Y: -40000000
-    - - X: 10000000
-        Y: 40000000
-      - X: -20000000
-        Y: 40000000
-      - X: -20000000
-        Y: 30000000
-      - X: 10000000
-        Y: 30000000
   m_CompositePaths:
     m_Paths:
     - - {x: 11.99997, y: -5}
@@ -1312,10 +1278,6 @@ CompositeCollider2D:
       - {x: -13, y: -3.9999704}
       - {x: -12.99997, y: 11}
       - {x: 11, y: 10.99997}
-    - - {x: 0.99997073, y: 3}
-      - {x: 0.99997073, y: 4}
-      - {x: -2, y: 3.999971}
-      - {x: -1.9999708, y: 3}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -1651,6 +1613,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 870842434298453016, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1296178384445536080, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
+      propertyPath: TestPattern
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3080392467515426430, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -1696,8 +1666,8 @@ PrefabInstance:
       value: Boss_Knight
       objectReference: {fileID: 0}
     - target: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

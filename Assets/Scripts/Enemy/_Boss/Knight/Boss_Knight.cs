@@ -14,6 +14,8 @@ public class Boss_Knight : PatternEnemyBase
 
     public float speed = 5.0f;
 
+    public bool startFight = false;
+
     Vector2 moveDir;
 
     public GameObject obj;
@@ -45,23 +47,27 @@ public class Boss_Knight : PatternEnemyBase
 
     protected override void Update_Wait()
     {
-        // 방향
-        if (Mathf.Abs(transform.position.y - playerPos.y) < 3.0 && Mathf.Abs(transform.position.x - playerPos.x) > 0.2 )
+        if ( startFight )
         {
-            State = BossState.Chase;
+            // 방향
+            if (Mathf.Abs(transform.position.y - playerPos.y) < 3.0 && Mathf.Abs(transform.position.x - playerPos.x) > 0.2)
+            {
+                State = BossState.Chase;
+            }
+
+            // 패턴 시간 증가 ( 이시간이 증가하면 상태 변경 )
+            if (TimeElapsed < PatternTime)
+            {
+                TimeElapsed += Time.deltaTime;
+            }
+            else
+            {
+                State = BossState.SpAttack;
+                animator.SetInteger(move_temp, 0);
+                TimeElapsed = 0;
+            }
         }
 
-        // 패턴 시간 증가 ( 이시간이 증가하면 상태 변경 )
-        if (TimeElapsed < PatternTime)
-        {
-            TimeElapsed += Time.deltaTime;
-        }
-        else
-        {
-            State = BossState.SpAttack;
-            animator.SetInteger(move_temp, 0);
-            TimeElapsed = 0;
-        }
     }
 
 
@@ -164,9 +170,10 @@ public class Boss_Knight : PatternEnemyBase
 
 
         // 임시코드 , 팩토리 쓸지 고민중
-        for ( int i = 0; i < 7 ; i++ )
+        for ( int i = 0; i < 6 ; i++ )
         {
             MakeBlade(new Vector2(transform.position.x + i * 1f, 0), temp);
+            MakeBlade(new Vector2(transform.position.x + i * -1f, 0), temp);
         }
 
 
@@ -301,6 +308,7 @@ public class Boss_Knight : PatternEnemyBase
         yield return new WaitForSeconds(1);
         animator.SetTrigger("Attack_3");
         yield return new WaitForSeconds(2);
+        startFight = true;
         State = BossState.Chase;
 
     }
