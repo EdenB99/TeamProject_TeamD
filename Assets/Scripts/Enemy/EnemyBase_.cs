@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 {
     //컴포넌트 불러오기
     protected Rigidbody2D rb;
-    public SpriteRenderer sprite;
+    Collider2D col;
+    SpriteRenderer sprite;
+    Material material;
 
     /// <summary>
     /// 플레이어 불러오기
@@ -49,7 +52,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// <summary>
     /// HP설정용
     /// </summary>
-    protected float hp = 100.0f;
+    protected float hp = 1.0f;
 
     /// <summary>
     /// HP
@@ -63,12 +66,14 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
             hp = Mathf.Max(hp, 0);
             Debug.Log(hp);
             // Hp가 0 이하면 사망
-            if (hp <= 0)
+            if (hp <= 0 && IsLive)
             {
                 Die();
             }
         }
     }
+
+    protected bool IsLive = true;
 
     /// <summary>
     /// 좌우 확인
@@ -83,7 +88,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         get { return checkLR; }
         set
         {
-            if (checkLR != value) // 값이 변경 되었다면
+            if (checkLR != value && IsLive) // 값이 변경 되었다면
             {
                 checkLR = value;
                 // 스프라이트 방향 전환 
@@ -106,12 +111,22 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// 죽음 델리게이트
     /// </summary>
     public Action onDie { get; set; }
-    
+
+    readonly int Texture2DID = Shader.PropertyToID("_Texture2D");
+    readonly int FadeID = Shader.PropertyToID("_Fade");
+    float fade = 0.0f;
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
+        material = sprite.material;
+
+        Sprite sprite2d = sprite.sprite;
+        Texture2D texture = sprite2d.texture;
+
+        material.SetTexture(Texture2DID, texture);
     }
 
     protected virtual void Start()
@@ -121,7 +136,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
     protected virtual void FixedUpdate()
     {
-        if ( playerDetected ) // 플레이어 발견시 행동
+        if ( playerDetected && IsLive) // 플레이어 발견시 행동
         {
             // 플레이어의 위치를 받는다.
             targetPos = player.transform.position;
@@ -136,11 +151,22 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
   
 
         }
-        else // 플레이어 미발견시 행동
+        else if ( IsLive) // 플레이어 미발견시 행동
         {
             
             playerCheck();
             idleAction();
+        }
+
+        if ( !IsLive ) // 죽을시
+        {
+            fade += Time.deltaTime;
+            material.SetFloat(FadeID, 1 - fade);
+
+            if ( fade > 1 )
+            {
+                Destroy(this.gameObject); // 1초후 삭제
+            }
         }
     }
 
@@ -186,7 +212,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
 
         // 플레이어가 있다면
-        if (colliders != null)
+        if (colliders != null && IsLive)
         {
             
 
@@ -208,17 +234,6 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     {
 
     }
-
-    /// <summary>
-    /// 피해를 받았을때 실행할 함수 생성
-    /// </summary>
-    /// <param name="Damage">플레이어에게 받은 피해</param>
-    /// <exception cref="NotImplementedException"></exception>
-    private void Damaged(int Damage)
-    {
-        HP -= Damage;
-    }
-
     /// <summary>
     /// 피해를 주는 메서드
     /// </summary>
@@ -233,6 +248,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
+
         HP -= damage;
     }
 
@@ -267,7 +283,11 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     public void Die()
     {
         Debug.Log("죽었다.");
+        IsLive = false;
         StopAllCoroutines();
         ItemDrop();
+        rb.freezeRotation = false;
+        col.isTrigger = false;
+        
     }
 }

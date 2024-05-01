@@ -32,6 +32,7 @@ public class FlyEnemy_C : EnemyBase_
 
     protected override void attackAction()
     {
+        
         // 플레이어 위치
         startPos = player.transform.position;
         startPos.y += 5;

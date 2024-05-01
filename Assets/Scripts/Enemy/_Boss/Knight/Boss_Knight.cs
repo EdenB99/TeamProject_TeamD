@@ -26,6 +26,7 @@ public class Boss_Knight : PatternEnemyBase
     {
         base.Start();
 
+        State = BossState.Wait;
 
         StartCoroutine(AwakeAction());                      // 개전 시작 
 

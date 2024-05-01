@@ -175,7 +175,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         sprite = GetComponent<SpriteRenderer>();
         InitializePatterns();
 
-        State = BossState.Wait;
+        stateUpdate = Update_Wait;
     }
 
     protected virtual void Start()
@@ -192,8 +192,10 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         if (playerPos.x < rb.position.x) CheckLR = 1;
         else CheckLR = -1;
 
-        // 상태에 따라 할일
+
         stateUpdate();
+
+
     }
 
     protected virtual void Update_Wait()
