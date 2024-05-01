@@ -16,20 +16,6 @@ public class SorcererEnemy : EnemyBase_
         animator = GetComponent<Animator>();
     }
 
-    protected override void FixedUpdate()
-    {
-        if (playerDetected)
-        {
-            targetPos = player.transform.position;
-            if (IsMove)
-            {
-                if (targetPos.x < rb.position.x) CheckLR = -1;
-                else CheckLR = 1;
-            }
-        }
-        attackAction();
-    }
-
     bool playerCheck()
     {
         // 범위 내에

@@ -123,11 +123,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         col = GetComponent<Collider2D>();
 
         // 몹 메테리얼 가져오기
-        sprite.material = GameManager.Instance.Mobmaterial;
-        material = sprite.material;
-        Sprite sprite2d = sprite.sprite;
-        Texture2D texture = sprite2d.texture;
-        material.SetTexture(Texture2DID, texture);
+
     }
 
     protected virtual void Start()
@@ -166,6 +162,8 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
             if ( fade > 1 )
             {
+
+
                 Destroy(this.gameObject); // 1초후 삭제
             }
         }
@@ -289,6 +287,13 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
-        
+
+        // 메테리얼 설정
+        sprite.material = GameManager.Instance.Mobmaterial;
+        material = sprite.material;
+        Sprite sprite2d = sprite.sprite;
+        Texture2D texture = sprite2d.texture;
+        material.SetTexture(Texture2DID, texture);
+
     }
 }

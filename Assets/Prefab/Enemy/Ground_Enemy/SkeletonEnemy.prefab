@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2476543700687747810}
   - component: {fileID: 1933076279677838565}
   - component: {fileID: 4358119447844660619}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SkeletonEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -274,7 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9543a47cc62a934986d6bf948b3fb9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 959199364198085226}
   playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 2.5
@@ -283,4 +282,5 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
+  dropItems: []
   jumpForce: 7
