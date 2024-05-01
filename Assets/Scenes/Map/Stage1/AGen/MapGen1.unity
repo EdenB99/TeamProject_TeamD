@@ -470,6 +470,14 @@ PrefabInstance:
       propertyPath: worldMapSize
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[16]
+      value: 
+      objectReference: {fileID: 4319878848879234760, guid: 502d20032dd3a4045bb2509b53755574, type: 3}
     - target: {fileID: 8895561708166012469, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.208136

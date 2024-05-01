@@ -811,7 +811,7 @@ private void CheckAndDisablePortal(MapData mapData)
         {
 
             Debug.LogWarning($"현재맵에 {direction}방향의 포탈을 찾지 못했습니다.");
-            
+            player.transform.position = new Vector3(2,2,player.transform.position.z);
         }
     }
 

@@ -99,6 +99,7 @@ public class Player : MonoBehaviour
             }
         }
 
+        //땅에 닿으면 대쉬가 초기화되서 쿨타임이 UI와 맞지않음
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             currentdashTime = 0.0f;
