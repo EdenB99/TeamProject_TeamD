@@ -51,15 +51,17 @@ public class UsableUI : MonoBehaviour
             switch (targetItemData.type)
             {
                 case ItemType.Weapon:
-                    EquipUseText.text = "Equip";
+                        if (SlotUI.InvenSlot.IsEquipped) EquipUseText.text = "UnEquip";
+                        else EquipUseText.text = "Equip";
                     break;
                 case ItemType.Accessory:
-                    EquipUseText.text = "Equip";
+                        if (SlotUI.InvenSlot.IsEquipped) EquipUseText.text = "UnEquip";
+                        else EquipUseText.text = "Equip";
                     break;
                 case ItemType.Consumable:
                     EquipUseText.text = "Use";
                     break;
-                default: EquipUseText.text = "None";  break;
+                default: EquipUseText.text = "None"; break;
             }
         }
     }

@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class ItemData_Accessory : ItemData, IAccessory
 {
+    [HideInInspector]
+    public EquipmentSlot_Base AccessorySlot;
     [Header("버프형 아이템 데이터")]
     public PlayerBuff playerBuff;
+    
 
     public float BuffActive()
     {
@@ -21,19 +24,22 @@ public class ItemData_Accessory : ItemData, IAccessory
         return playerBuff.buff_duration;
     }
 
-    public void Equip(GameObject target, InvenSlot slot)
+    public void Equip(EquipmentSlot_Base slot)
     {
-        throw new System.NotImplementedException();
+        AccessorySlot = slot;
+        slot.SlotItemData = this;
+        BuffActive();
     }
 
-    public void ToggleEquip(GameObject target, InvenSlot slot)
+    public void UnEquip()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void UnEquip(GameObject target, InvenSlot slot)
-    {
-        throw new System.NotImplementedException();
+        AccessorySlot.SlotItemData = null;
+        AccessorySlot = null;
+        Player target = GameManager.Instance.Player;
+        if (target != null)
+        {
+            target.PlayerStats.buffs.Remove(playerBuff);
+        }
     }
 
  

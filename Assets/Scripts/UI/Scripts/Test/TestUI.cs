@@ -29,6 +29,7 @@ public class TestUI : MonoBehaviour
         inven.AddItem(ItemCode.Apple);
         inven.AddItem(ItemCode.Sword);
         inven.AddItem(ItemCode.Diamond);
+        inven.AddItem(ItemCode.Helmet);
 
 
     }

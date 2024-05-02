@@ -28,27 +28,18 @@ public class EquipmentSlot_Base : MonoBehaviour
     {
         itemimage = transform.GetChild(0).GetComponent<Image>();
         EquipText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        ItemDataChange += SetSlotItemChange;
     }
-
-
- 
-    /// <summary>
-    /// 해당 슬롯에 아이템을 장착, 
-    /// </summary>
-    /// <param name="itemData">장착할 아이템 데이터</param>
-    public void EquipItemdata(ItemData itemData = null)
+    public virtual void SetSlotItemChange(ItemData slotItemData)
     {
-        if (itemData != null)
+        if (slotItemData != null)
         {
-            SlotItemData = itemData;
-            SetItemImage(itemData.itemIcon);
-            SetEquipmentText(true);
+            SetItemImage(slotItemData.itemIcon);
         } else
         {
             ClearSlot();
         }
     }
-
     /// <summary>
     /// 슬롯 내 이미지 설정
     /// </summary>
@@ -56,15 +47,6 @@ public class EquipmentSlot_Base : MonoBehaviour
     public void SetItemImage(Sprite itemSprite)
     {
         itemimage.sprite = itemSprite;
-    }
-    /// <summary>
-    /// 슬롯 외부 이미지 및 텍스트 초기화
-    /// </summary>
-    public void ClearSlot()
-    {
-        SlotItemData = null;
-        itemimage.sprite = null;
-        SetEquipmentText(false);
     }
     /// <summary>
     /// 텍스트 온오프
@@ -81,5 +63,14 @@ public class EquipmentSlot_Base : MonoBehaviour
             EquipText.text = null;
         }
     }
+    /// <summary>
+    /// 슬롯 외부 이미지 및 텍스트 초기화
+    /// </summary>
+    public void ClearSlot()
+    {
+        itemimage.sprite = null;
+        SetEquipmentText(false);
+    }
+    
 }
 

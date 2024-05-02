@@ -36,7 +36,7 @@ public class InventoryUI : MonoBehaviour
     WeaponSlotUI[] WeaponsSlots;
 
     public Transform Accessoires;
-    AccessoryUI[] AccessoriesSlots;
+    AccessorySlotUI[] AccessoriesSlots;
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
@@ -46,7 +46,7 @@ public class InventoryUI : MonoBehaviour
 
         WeaponsSlots = Weapons.GetComponentsInChildren<WeaponSlotUI>();
 
-        AccessoriesSlots = Accessoires.GetComponentsInChildren<AccessoryUI>();
+        AccessoriesSlots = Accessoires.GetComponentsInChildren<AccessorySlotUI>();
         InventoryInput = new InventoryInput();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -189,18 +189,40 @@ public class InventoryUI : MonoBehaviour
 
     private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
+        Debug.Log("장착시도");
         ItemData itemdata = slotUI.InvenSlot.ItemData;
         if (itemdata != null)
         {
             switch (itemdata.type)
             {
                 case (ItemType.Weapon):
-                    EquipWeapon(itemdata);
-                    slotUI.InvenSlot.EquipItem(true); //텍스트 변경을 위한 슬롯활성화
+                    if (slotUI.InvenSlot.IsEquipped) //선택한 슬롯의 장비가 착용중이면
+                    {   
+                        IEquipable equipable = itemdata as IEquipable;
+                        if (equipable != null)
+                        {
+                            equipable.UnEquip();               //weaponslot에서 삭제
+                        }
+                        else Debug.Log("해당슬롯의 아이템은 착용되지 않음");
+                        slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
+                    } else
+                    {
+                        EquipWeapon(itemdata); //weaponslot과의 상호작용, 착용
+                        slotUI.InvenSlot.EquipItem(true); //텍스트 변경을 위한 슬롯활성화
+                    }
                     break;
                 case (ItemType.Accessory):
-                    EquipAccessory(itemdata);
-                    slotUI.InvenSlot.EquipItem(true);
+                    if (slotUI.InvenSlot.IsEquipped) //선택한 슬롯의 장비가 착용중이면
+                    {
+                        IEquipable equipable = itemdata as IEquipable;
+                        equipable.UnEquip();               //Accessoryslot에서 삭제
+                        slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
+                    }
+                    else
+                    {
+                        EquipAccessory(itemdata); //Accessoryslot에서 상호작용, 착용
+                        slotUI.InvenSlot.EquipItem(true); //텍스트 변경을 위한 슬롯활성화
+                    }
                     break;
                 case (ItemType.Consumable):
                     slotUI.InvenSlot.UseItem();
@@ -218,40 +240,53 @@ public class InventoryUI : MonoBehaviour
     /// <param name="itemData">장착할 무기 아이템 데이터</param>
     private void EquipWeapon(ItemData itemData)
     {
+        IEquipable equipable = itemData as IEquipable;
+        //아이템 데이터 내에 장착 인터페이스 확인
         bool isFull = true;
-        for (int i = 0; i<WeaponsSlots.Length; i++)
+        //웨폰 슬롯의 가득참을 확인하는 변수
+        for (int i = 0; i<WeaponsSlots.Length; i++) //슬롯의 갯수까지
         {
-            if (WeaponsSlots[i].SlotItemData == null)
+            if (WeaponsSlots[i].SlotItemData == null) //현재 슬롯이 비어있으면
             {
-                WeaponsSlots[i].EquipItemdata(itemData);
-                isFull = false;
-                break;
+                if (equipable != null)                  //장착 인터페이스가 있다면
+                {
+                    equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
+                }
+                isFull = false;                         //슬롯이 가득차지 않음
+                break;                                  //반복문 종료
             } else
             {
-                isFull = true;
+                isFull = true;                          //비어있지 않으면 변경없음
             }
         }
-        if (isFull)
+        if (isFull)     //모든 슬롯이 비어있다면
         {
-            for (int i =0; i<WeaponsSlots.Length; i++)
+            for (int i =0; i<WeaponsSlots.Length; i++)      //슬롯의 갯수까지
             {
-                if (!WeaponsSlots[i].Onhand)
+                if (!WeaponsSlots[i].Onhand)                //현재 슬롯이 손에 들려있다면
                 {
-                    WeaponsSlots[i].ClearSlot();
-                    WeaponsSlots[i].EquipItemdata(itemData);
+                    IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;                           //현재 손에 들린 슬롯의 장착함수를 선언
+                    handEquipable.UnEquip();                //손에 들린 무기 해제
+                    equipable.Equip(WeaponsSlots[i]);       //새로운 무기를 장착
+                    break;
                 }
             }
         }
     }
+
     private void EquipAccessory(ItemData itemdata)
     {
+        IEquipable equipable = itemdata as IEquipable;
         bool isFull = false;
         for (int i = 0; i < AccessoriesSlots.Length; i++)
         {
             if (AccessoriesSlots[i].SlotItemData == null)
             {
-                AccessoriesSlots[i].EquipItemdata(itemdata);
-                isFull = false;
+                if (equipable != null)                  //장착 인터페이스가 있다면
+                {
+                    equipable.Equip(AccessoriesSlots[i]);   //아이템 내부 장착 함수를 실행
+                }
+                isFull = false;                         //슬롯이 가득차지 않음
                 break;
             }
             else
@@ -259,13 +294,11 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;
             }
         }
-        if (!isFull)
+        if (!isFull)        //슬롯이 가득찼을 때
         {
-            for (int i = 0; i < AccessoriesSlots.Length; i++)
-            {
-                AccessoriesSlots[i].ClearSlot();
-                AccessoriesSlots[i].EquipItemdata(itemdata);
-            }
+            IEquipable firstAccessory = AccessoriesSlots[0].SlotItemData as IEquipable;
+            firstAccessory.UnEquip(); //첫번째 슬롯의 아이템 해제
+            equipable.Equip(AccessoriesSlots[0]); //빈칸에 아이템 장착
         }
     }
 
@@ -281,3 +314,4 @@ public class InventoryUI : MonoBehaviour
     }
 
 }
+//이미 장착한 아이템을 해제하는것이 필요. Usable과의 연동필요

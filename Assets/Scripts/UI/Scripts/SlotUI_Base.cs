@@ -69,6 +69,9 @@ public class SlotUI_Base : MonoBehaviour
         if (InvenSlot.IsEquipped)
         {
             itemEquip.gameObject.SetActive(true);
+        } else
+        {
+            itemEquip.gameObject.SetActive(false);
         }
         OnRefresh();
     }

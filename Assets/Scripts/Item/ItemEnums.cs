@@ -45,6 +45,7 @@ public enum ItemCode : ushort
     /// <summary>
     /// 장신구 아이템 
     /// </summary>
+    Helmet,
 }
 
 /// <summary>
