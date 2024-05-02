@@ -149,11 +149,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.125, y: 6.625}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5208333, y: -0.65217394}
-    oldSize: {x: 6, y: 5.75}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 3.8333333}
     newSize: {x: 6, y: 5.75}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -199,11 +199,11 @@ MonoBehaviour:
   sightRange: 1
   maxHP: 100
   Attackpower: 1
-  TestPattern: 0
+  TestPattern: 3
   checkLR: 1
   intervalAfterTeleport: 2
   teleportDistance: 2
-  PatternTime: 5
+  PatternTime: 3
   armShootPrefab: {fileID: 3297299060253153627, guid: 2b9f6940ede8d194fb28fd3d20be5d61, type: 3}
 --- !u!1 &5076767773150670168
 GameObject:
@@ -230,7 +230,7 @@ Transform:
   m_GameObject: {fileID: 5076767773150670168}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.88, y: 7.68, z: 0}
+  m_LocalPosition: {x: -1.94, y: 0.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -254,7 +254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3165872475990639352
 Transform:
   m_ObjectHideFlags: 0
@@ -264,7 +264,7 @@ Transform:
   m_GameObject: {fileID: 7206794303639673845}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.19, y: 0.21, z: 0}
+  m_LocalPosition: {x: -12.88, y: -7.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,7 +311,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 3129652804908075008, guid: 90cce6b73f9e3094cb461bbab1baeaa9, type: 3}
+  m_Sprite: {fileID: -5112299791606605788, guid: 15bad875d6cfb444ab63b34f6d091015, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -319,7 +319,7 @@ SpriteRenderer:
   m_Size: {x: 1.25, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &130290124571503854

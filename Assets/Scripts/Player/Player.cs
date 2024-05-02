@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
 
     private PlayerStats playerStats;
 
+
+
     /// <summary>
     /// 외부에서 playerStats 을 읽기위한 프로퍼티
     /// </summary>
@@ -405,4 +407,5 @@ public class Player : MonoBehaviour
         cc.enabled = true;
     }
 
+    // 눌렀을 때 델리게이트 되게끔 수정
 }

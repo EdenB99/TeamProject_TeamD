@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WeaponDataManager : MonoBehaviour
 {
-    public WeaponData[] itemDatas = null;
+    public ItemData_Weapon[] itemDatas = null;
 
-    public WeaponData this[WeaponCode code] => itemDatas[(int)code];
-    public WeaponData this[int index] => itemDatas[index];
+    public ItemData_Weapon this[WeaponCode code] => itemDatas[(int)code];
+    public ItemData_Weapon this[int index] => itemDatas[index];
 }

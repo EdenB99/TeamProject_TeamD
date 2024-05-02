@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface IWeapon
+public interface IWeapon : IEquipable
 {
-    void WeaponAttack();
 }

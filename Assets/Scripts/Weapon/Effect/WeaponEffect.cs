@@ -15,7 +15,7 @@ public class WeaponEffect : RecycleObject, IAttack
 
     public GameObject weapon;
 
-    WeaponData weaponData;
+    ItemData_Weapon weaponData;
 
     protected Vector2 mosPosition;
 
@@ -24,6 +24,9 @@ public class WeaponEffect : RecycleObject, IAttack
     /// </summary>
     public float effectSpeed = 1.0f;
 
+    /// <summary>
+    /// 이펙트의 크기 조절
+    /// </summary>
     public float effectSize = 1.0f;
 
     /// <summary>
@@ -62,7 +65,7 @@ public class WeaponEffect : RecycleObject, IAttack
 
         playerStats = player.PlayerStats;
 
-        transform.localScale = new Vector3(effectSize, effectSize, 1.0f);
+        transform.localScale = new Vector3(effectSize, effectSize, 1.0f);           // 인스펙터 창에서 이펙트의 사이즈 조절
     }
 
     void SetAnimationState()
