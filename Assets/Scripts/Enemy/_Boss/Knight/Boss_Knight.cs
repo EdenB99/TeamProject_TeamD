@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class Boss_Knight : PatternEnemyBase
 {
     readonly int move_temp = Animator.StringToHash("Move");
+    readonly int wait_temp = Animator.StringToHash("Wait");
 
     private float TimeElapsed = 0;
 
@@ -326,34 +330,13 @@ public class Boss_Knight : PatternEnemyBase
 
     public override void Die()
     {
-        
+        base.Die();
+
         //패턴이 스탑되지않음.
         State = BossState.Wait;
         bossDie?.Invoke();
-        StartCoroutine(DieAction());
     }
 
-     IEnumerator DieAction()
-    {
-        Color color = sprite.color;
-        float time = 0f;
-        float colorSpeed = 5f;
-        yield return new WaitForSeconds(2f);
-
-        while(time < 5f)
-        {
-            time += Time.deltaTime;
-            color.r -= Time.deltaTime * colorSpeed;
-            color.g -= Time.deltaTime * colorSpeed;
-            color.b -= Time.deltaTime * colorSpeed;
-            color.a -= Time.deltaTime * 0.5f;
-            sprite.color = color;
-            yield return null;
-        }
-        
-
-        Destroy(gameObject);
-    }
 
 
 }

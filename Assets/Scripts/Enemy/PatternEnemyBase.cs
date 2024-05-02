@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class PatternEnemyBase : MonoBehaviour, IEnemy
@@ -10,7 +11,13 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     Rigidbody2D rb;
     protected Animator animator;
     public SpriteRenderer sprite;
-    
+    Sprite sprite2d;
+    protected Texture2D texture;
+
+    protected readonly int Texture2DID = Shader.PropertyToID("_Texture2D");
+    protected readonly int FadeID = Shader.PropertyToID("_Fade");
+    protected readonly int HitID = Shader.PropertyToID("_Hit");
+    float fade = 0.0f;
 
     /// <summary>
     /// 플레이어 불러오기
@@ -129,6 +136,11 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     public float MaxHP => maxHP;
 
     /// <summary>
+    /// 생존 여부
+    /// </summary>
+    bool IsLive = true;
+
+    /// <summary>
     /// 적 개체의 데미지 ( 부딪히는 경우만 )
     /// </summary>
     public uint Attackpower = 1;
@@ -176,6 +188,12 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         InitializePatterns();
 
         stateUpdate = Update_Wait;
+
+        // 몹 메테리얼 가져오기
+        sprite.material = GameManager.Instance.Mobmaterial; // 메테리얼을 가져온다.
+        sprite2d = sprite.sprite;                           // 스프라이트의 스프라이트를 , 
+        texture = sprite2d.texture;                         // 텍스쳐로 변환
+        sprite.material.SetTexture(Texture2DID, texture);   // 스프라이트의 메테리얼을 현재 스프라이트로 전환
     }
 
     protected virtual void Start()
@@ -186,17 +204,30 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
 
     protected virtual void Update()
     {
-        // 플레이어의 위치를 받는다.
-        playerPos = player.transform.position;
-        // 플레이어의 위치에따라 좌우 
-        if (playerPos.x < rb.position.x) CheckLR = 1;
-        else CheckLR = -1;
+        if (IsLive)
+        {
+            // 플레이어의 위치를 받는다.
+            playerPos = player.transform.position;
+            // 플레이어의 위치에따라 좌우 
+            if (playerPos.x < rb.position.x) CheckLR = 1;
+            else CheckLR = -1;
 
+            stateUpdate();
+        }
+        else // 죽었다면,
+        {
+            fade += Time.deltaTime * 0.25f; // 보스는 느리게 사라짐
+            sprite.material.SetFloat(FadeID, 1 - fade);
 
-        stateUpdate();
-
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 4초후 삭제
+            }
+        }
 
     }
+
+    
 
     protected virtual void Update_Wait()
     {
@@ -331,7 +362,18 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     /// <param name="Damage">플레이어에게 받은 피해</param>
     public void TakeDamage(float damage)
     {
-        HP -= damage;
+        if (IsLive)
+        {
+            sprite.material.SetFloat(HitID, 1);
+            StartCoroutine(onHit());
+            HP -= damage;
+        }
+    }
+
+    IEnumerator onHit()
+    {
+        yield return new WaitForSeconds(0.1f);
+        sprite.material.SetFloat(HitID, 0);
     }
 
     /// <summary>
@@ -339,8 +381,10 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     /// </summary>
     public virtual void Die()
     {
-        Debug.Log("죽었다.");
         StopAllCoroutines();
+
+        IsLive = false;
+        sprite.material.SetFloat(HitID, 0);
     }
 
 

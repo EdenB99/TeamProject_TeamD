@@ -11,7 +11,8 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     protected Rigidbody2D rb;
     Collider2D col;
     SpriteRenderer sprite;
-    Material material;
+    Sprite sprite2d;
+    Texture2D texture;
 
     /// <summary>
     /// 플레이어 불러오기
@@ -117,8 +118,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     readonly int HitID = Shader.PropertyToID("_Hit");
     float fade = 0.0f;
 
-    Sprite sprite2d;
-    Texture2D texture;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -127,10 +127,9 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
         // 몹 메테리얼 가져오기
         sprite.material = GameManager.Instance.Mobmaterial;
-        material = sprite.material;
         sprite2d = sprite.sprite;
         texture = sprite2d.texture;
-        material.SetTexture(Texture2DID, texture);
+        sprite.material.SetTexture(Texture2DID, texture);
 
         HP = MaxHP;
     }
@@ -167,12 +166,10 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         if ( !IsLive ) // 죽을시
         {
             fade += Time.deltaTime * 0.5f;
-            material.SetFloat(FadeID, 1 - fade);
+            sprite.material.SetFloat(FadeID, 1 - fade);
 
             if ( fade > 1 )
             {
-
-
                 Destroy(this.gameObject); // 1초후 삭제
             }
         }
@@ -256,21 +253,24 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
-        Factory.Instance.MakeDamageText((int)damage, transform.position);
-        texture = sprite2d.texture;
-        material.SetTexture(Texture2DID, texture);
-        material.SetFloat(HitID, 1);
+        if ( IsLive )
+        {
+            Factory.Instance.MakeDamageText((int)damage, transform.position);
+            texture = sprite2d.texture;
+            sprite.material.SetTexture(Texture2DID, texture);
+            sprite.material.SetFloat(HitID, 1);
 
-        StartCoroutine(onHit());
+            StartCoroutine(onHit());
 
-        HP -= damage;
+            HP -= damage;
+        }
+
     }
 
     IEnumerator onHit()
     {
-        Debug.Log("작동");
         yield return new WaitForSeconds(0.1f);
-        material.SetFloat(HitID, 0);
+        sprite.material.SetFloat(HitID, 0);
     }
 
     [System.Serializable]
@@ -305,15 +305,13 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     {
         Debug.Log("죽었다.");
         IsLive = false;
-        material.SetFloat(HitID, 0);
+        sprite.material.SetFloat(HitID, 0);
         StopAllCoroutines();
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
 
-        // 메테리얼 설정
-        texture = sprite2d.texture;
-        material.SetTexture(Texture2DID, texture);
+
 
     }
 }

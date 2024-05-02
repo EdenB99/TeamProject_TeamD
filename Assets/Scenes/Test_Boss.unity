@@ -1613,14 +1613,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 870842434298453016, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1296178384445536080, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
-      propertyPath: TestPattern
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3080392467515426430, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -1664,10 +1656,6 @@ PrefabInstance:
     - target: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
       propertyPath: m_Name
       value: Boss_Knight
-      objectReference: {fileID: 0}
-    - target: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

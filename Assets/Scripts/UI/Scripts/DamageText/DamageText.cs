@@ -39,6 +39,7 @@ public class DamageText : RecycleObject
         transform.localScale = Vector3.one;         // 스케일 초기화
         transform.rotation = Quaternion.identity;   // 회전 초기화
         transform.Rotate(0, 0, 30);                 // 30도 회전시켜서 시작
+        transform.position += new Vector3(0, 0.3f, -0.1f);
     }
 
     private void Update()
