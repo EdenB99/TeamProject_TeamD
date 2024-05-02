@@ -15,6 +15,9 @@ public class SkeletonEnemy : EnemyBase_
     /// </summary>
     public float jumpForce = 5.0f;
 
+    Transform AttackRange;
+
+
     readonly int canAttack_Hash = Animator.StringToHash("canAttack");
     readonly int isWalk_Hash = Animator.StringToHash("isWalk");
     readonly int Die_Hash = Animator.StringToHash("Die");
@@ -25,6 +28,7 @@ public class SkeletonEnemy : EnemyBase_
     {
         base.Awake();
         animator = GetComponent<Animator>();
+        AttackRange = transform.GetChild(0);
     }
 
     protected override void FixedUpdate()
@@ -35,7 +39,13 @@ public class SkeletonEnemy : EnemyBase_
             if (IsMove)
             {
                 if (targetPos.x < rb.position.x) CheckLR = -1;
-                else CheckLR = 1;
+
+                else 
+                {
+                    CheckLR = 1;
+                    AttackRange.localScale = new Vector3(-Mathf.Abs(AttackRange.localScale.x), AttackRange.localScale.y);
+
+                }
             }
         }
         attackAction();
@@ -106,5 +116,12 @@ public class SkeletonEnemy : EnemyBase_
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            animator.SetBool(canAttack_Hash, true);
+        }
+    }
 
 }

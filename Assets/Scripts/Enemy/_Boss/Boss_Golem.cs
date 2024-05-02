@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Boss_Golem : PatternEnemyBase
 {
-    float intervalpattern1 = 1.5f;
+    float intervalpattern1 = 2f;
     float intervalpattern2 = 1.0f;
     public float intervalAfterTeleport = 2f; // 레이저 발사 후 순간이동까지의 시간 간격
     public float teleportDistance = 2f; // 플레이어 뒤로 순간이동할 거리
@@ -13,10 +13,14 @@ public class Boss_Golem : PatternEnemyBase
     readonly int isCast_Hash = Animator.StringToHash("isCast");
     readonly int isShoot_Hash = Animator.StringToHash("isShoot");
 
-    public GameObject armShootPrefab;
-    Animator animator;
+    float TimeElapsed = 0;
+    public float PatternTime = 5;
+
+    bool startFight = false;
+
     Transform laser;
     Transform armshoot;
+    public GameObject armShootPrefab;
 
     protected override void Awake()
     {
@@ -25,14 +29,86 @@ public class Boss_Golem : PatternEnemyBase
         armshoot = transform.GetChild(1);
     }
 
-    
+    protected override void Start()
+    {
+        base.Start();
+        State = BossState.Wait;
+        StartCoroutine(AwakeAction());
+    }
+
+    protected override void Update_Wait()
+    {
+        if (startFight)
+        {
+            if (Mathf.Abs(transform.position.y - playerPos.y) < 3.0 && Mathf.Abs(transform.position.x - playerPos.x) > 0.2)
+            {
+                State = BossState.Chase;
+            }
+            if (TimeElapsed < PatternTime)
+            {
+                TimeElapsed += Time.deltaTime;
+            }
+            else
+            {
+                State = BossState.SpAttack;
+                TimeElapsed = 0;
+            }
+        }
+    }
+
+    protected override void State_Chase()
+    {
+        TeleportBehindPlayer();
+    }
+
+    protected override void Update_Chase()
+    {
+        if (playerCheck())
+        {
+            State = BossState.SpAttack;
+            TimeElapsed = 0;
+        }
+
+        if (TimeElapsed < PatternTime)
+        {
+            TimeElapsed += Time.deltaTime;
+        }
+        else 
+        {
+            State = BossState.SpAttack;
+
+            TimeElapsed = 0;
+        }
+    }
+
+    protected override void State_SpAttack()
+    {
+        StartCoroutine(bossActionSelect());
+    }
+
     protected override IEnumerator AwakeAction()
     {
+        animator.SetTrigger(isCast_Hash);
+        yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(true);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(false);
+        startFight = true;
+        State = BossState.Chase;
     }
-  
+
+    protected override void InitializePatterns()
+    {
+        patternActions = new Dictionary<uint, Func<IEnumerator>>()
+        {
+            { 1, BossPattern_1 },
+            {2, BossPattern_2 },
+            {3, BossPattern_3 }
+
+        };
+    }
+
+    // 패턴 --------------------------------------------------------------------------------------------
 
     /// <summary>
     /// 패턴1 : 레이저를 쏘고 플레이어 뒤로 순간이동 한 뒤 2초후에 레이저 또 발사
@@ -47,7 +123,9 @@ public class Boss_Golem : PatternEnemyBase
 
         // 순간이동 후 레이저 다시 발사
         yield return StartCoroutine(FireLaserCoroutine());
-        StartCoroutine(bossActionSelect());
+
+        yield return new WaitForSeconds(intervalpattern2);
+        State = BossState.Chase;
     }
 
     /// <summary>
@@ -56,11 +134,10 @@ public class Boss_Golem : PatternEnemyBase
     /// <returns></returns>
     IEnumerator FireLaserCoroutine()
     {
-        animator.SetBool(isCast_Hash, true);
+        animator.SetTrigger(isCast_Hash);
         laser.gameObject.SetActive(true);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(false);
-        animator.SetBool(isCast_Hash, false);
     }
 
     /// <summary>
@@ -90,12 +167,14 @@ public class Boss_Golem : PatternEnemyBase
         yield return new WaitForSeconds(intervalpattern2);
 
         yield return StartCoroutine(ArmShootingCoroutine());
-        StartCoroutine(bossActionSelect());
+
+        yield return new WaitForSeconds(intervalpattern2);
+        State = BossState.Chase;
     }
 
     IEnumerator ArmShootingCoroutine()
     {
-        animator.SetBool(isShoot_Hash, true);
+        animator.SetTrigger(isShoot_Hash);
         yield return new WaitForSeconds(intervalpattern2);
         armshoot.gameObject.SetActive(true);
     }
@@ -105,7 +184,7 @@ public class Boss_Golem : PatternEnemyBase
     /// </summary>
     void FireArmshoot()
     {
-        Rigidbody2D rb = armshoot.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = armShootPrefab.GetComponent<Rigidbody2D>();
 
         Vector2 shootDirection = -transform.right * CheckLR;
         float shootSpeed = 10f; 
@@ -119,27 +198,21 @@ public class Boss_Golem : PatternEnemyBase
     /// <returns></returns>
     IEnumerator BossPattern_3()
     {
-        animator.SetBool(isCast_Hash, true);
+        animator.SetTrigger(isCast_Hash);
         laser.gameObject.SetActive(true);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(false);
-        animator.SetBool(isCast_Hash, false);
         TeleportBehindPlayer();
 
         yield return new WaitForSeconds(intervalAfterTeleport);
 
-
-        animator.SetBool(isShoot_Hash, true);
+        animator.SetTrigger(isShoot_Hash);
         yield return new WaitForSeconds(intervalpattern2);
 
         FireMultiple();
 
-
         yield return new WaitForSeconds(intervalpattern2);
-
-        animator.SetBool(isShoot_Hash, false);
-        yield return new WaitForSeconds(intervalpattern2);
-
+        State = BossState.Chase;
     }
 
     /// <summary>
@@ -171,21 +244,5 @@ public class Boss_Golem : PatternEnemyBase
         float shootSpeed = 10f;
 
         rb.velocity = shootDirection * shootSpeed;
-    }
-
-    protected override void InitializePatterns()
-    {
-        patternActions = new Dictionary<uint, Func<IEnumerator>>()
-        {
-            { 1, BossPattern_1 },
-                {2, BossPattern_2 },
-                    {3, BossPattern_3 }
-
-        };
-    }
-
-    protected override IEnumerator bossActionSelect(uint pattern = 0)
-    {
-        return base.bossActionSelect(pattern);
     }
 }

@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 8958766941200498215}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.38, y: 0, z: 0}
-  m_LocalScale: {x: 0.9143972, y: 0.9143972, z: 0.9143972}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e4018997c63154ebfb09c6fc82ef08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
   playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 0
@@ -181,6 +180,7 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
+  dropItems: []
   ThunderPrefab: {fileID: 6784313238061595325, guid: 17326fbf328b5934cbe9d7017a1bf019, type: 3}
 --- !u!95 &7317045491588493595
 Animator:

@@ -14,6 +14,7 @@ public class Knight_Shadow : MonoBehaviour
 
     Boss_Knight knight;
 
+    // Start is called before the first frame update
     void Start()
     {
         knight = FindAnyObjectByType<Boss_Knight>();

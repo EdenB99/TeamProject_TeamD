@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDetected: 0
-  mobDamage: 0
+  mobDamage: 10
   mobMoveSpeed: 2.5
   IsMove: 1
   sightRange: 10

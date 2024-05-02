@@ -142,4 +142,12 @@ public class SlimeEnemy : EnemyBase_
             lastJumpTime = Time.time;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Attack();
+        }
+    }
 }
