@@ -5,11 +5,6 @@ using UnityEngine;
 public interface IEquipable
 {
     /// <summary>
-    /// 장착할 장비
-    /// </summary>
-    ItemType ItemType { get; }
-
-    /// <summary>
     /// 아이템을 장착하는 함수
     /// </summary>
     /// <param name="target">장착받을 대상</param>
