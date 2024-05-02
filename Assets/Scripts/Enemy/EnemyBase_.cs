@@ -114,8 +114,11 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
     readonly int Texture2DID = Shader.PropertyToID("_Texture2D");
     readonly int FadeID = Shader.PropertyToID("_Fade");
+    readonly int HitID = Shader.PropertyToID("_Hit");
     float fade = 0.0f;
 
+    Sprite sprite2d;
+    Texture2D texture;
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -123,7 +126,13 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         col = GetComponent<Collider2D>();
 
         // 몹 메테리얼 가져오기
+        sprite.material = GameManager.Instance.Mobmaterial;
+        material = sprite.material;
+        sprite2d = sprite.sprite;
+        texture = sprite2d.texture;
+        material.SetTexture(Texture2DID, texture);
 
+        HP = MaxHP;
     }
 
     protected virtual void Start()
@@ -247,8 +256,21 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
+        Factory.Instance.MakeDamageText((int)damage, transform.position);
+        texture = sprite2d.texture;
+        material.SetTexture(Texture2DID, texture);
+        material.SetFloat(HitID, 1);
+
+        StartCoroutine(onHit());
 
         HP -= damage;
+    }
+
+    IEnumerator onHit()
+    {
+        Debug.Log("작동");
+        yield return new WaitForSeconds(0.1f);
+        material.SetFloat(HitID, 0);
     }
 
     [System.Serializable]
@@ -283,16 +305,14 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     {
         Debug.Log("죽었다.");
         IsLive = false;
+        material.SetFloat(HitID, 0);
         StopAllCoroutines();
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
 
         // 메테리얼 설정
-        sprite.material = GameManager.Instance.Mobmaterial;
-        material = sprite.material;
-        Sprite sprite2d = sprite.sprite;
-        Texture2D texture = sprite2d.texture;
+        texture = sprite2d.texture;
         material.SetTexture(Texture2DID, texture);
 
     }

@@ -35,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 4043499476091298896}
   - {fileID: 3136587867488626729}
+  - {fileID: 7280912448131308060}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4206603368092384262
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d9caa439612424e9ae9dedeea5e065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Mobmaterial: {fileID: 2100000, guid: 99ddd34fdb2461f4b8ca2d70d1f46b4b, type: 2}
 --- !u!114 &6438916761268353703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,3 +191,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalPrefab: {fileID: 8364201525460795230, guid: 3792c8d7775b6d14fa270544062e5493, type: 3}
   poolSize: 64
+--- !u!1 &3977664466586561848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7280912448131308060}
+  - component: {fileID: 290678607731581747}
+  m_Layer: 0
+  m_Name: DamagePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7280912448131308060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977664466586561848}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 904650311627017089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &290678607731581747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977664466586561848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4b38ffa156d83488c63b46b35f8637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalPrefab: {fileID: 2578997542791005608, guid: 8dd65d93c543dc546b68d32d280f93d2, type: 3}
+  poolSize: 128

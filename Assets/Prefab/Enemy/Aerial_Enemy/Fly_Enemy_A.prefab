@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5391362506200357148}
   - component: {fileID: 7670237892692374691}
   - component: {fileID: 8179204721263877801}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fly_Enemy_A
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -171,7 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357a9d109bcbbc04cb314b03696cf06d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
   playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 4
