@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class WeaponBase : MonoBehaviour
+public class WeaponBase : WeaponBase_Call_Swab
 {
     new Rigidbody2D rigidbody;
     Animator animator;
-    WeaponAction inputActions;
+    WeaponAction weaponInputActions;
 
     SpriteRenderer spriteRenderer;
 
@@ -18,7 +18,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     private float weaponLength;
 
-    WeaponData weaponData;
+    ItemData_Weapon weaponData;
 
     protected Player player;
 
@@ -69,14 +69,14 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     private const string attackTrigger = "Attack";
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        inputActions = new WeaponAction();
+        weaponInputActions = new WeaponAction();
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
-    protected virtual void Start()
+    protected override void Start()
     {
         animator = transform.GetChild(0).GetComponent<Animator>();
 
@@ -86,23 +86,23 @@ public class WeaponBase : MonoBehaviour
 
         hinge = player.transform.GetChild(0);
 
-        weaponData = new WeaponData();
+        weaponData = new ItemData_Weapon();
 
         SetAnimationState();
 
         weaponLength = spriteRenderer.sprite.bounds.size.y * transform.localScale.y;
     }
 
-    protected void OnEnable()
+    protected override void OnEnable()
     {
-        inputActions.Weapon.Enable();
-        inputActions.Weapon.Attack.performed += OnAttack;
+        weaponInputActions.Weapon.Enable();
+        weaponInputActions.Weapon.Attack.performed += OnAttack;
     }
 
-    protected void OnDisable()
+    protected override void OnDisable()
     {
-        inputActions.Weapon.Attack.performed -= OnAttack;
-        inputActions.Weapon.Disable();
+        weaponInputActions.Weapon.Attack.performed -= OnAttack;
+        weaponInputActions.Weapon.Disable();
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -196,3 +196,7 @@ public class WeaponBase : MonoBehaviour
         Debug.Log("이펙트 생성");
     }
 }   
+
+
+
+// 플레이어 죽었을 때 무기 동작 불가상태로 만들기
