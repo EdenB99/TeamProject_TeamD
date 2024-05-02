@@ -226,16 +226,16 @@ public class MapUI : MonoBehaviour
         switch (direction)
         {
             case Direction.Up:
-                hasPortal = mapData.hasUpPortal;
+                hasPortal = mapData.HasUpPortal;
                 break;
             case Direction.Down:
-                hasPortal = mapData.hasDownPortal;
+                hasPortal = mapData.HasDownPortal;
                 break;
             case Direction.Left:
-                hasPortal = mapData.hasLeftPortal;
+                hasPortal = mapData.HasLeftPortal;
                 break;
             case Direction.Right:
-                hasPortal = mapData.hasRightPortal;
+                hasPortal = mapData.HasRightPortal;
                 break;
         }
 

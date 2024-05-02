@@ -25,6 +25,7 @@ private Player player;
     [SerializeField] private GameObject[] mapPrefabs;
     [SerializeField] private MapData[] mapScenes;
     private Dictionary<Vector2Int, MapData> worldMap = new Dictionary<Vector2Int, MapData>();
+    private HashSet<string> usedMapScenes = new HashSet<string>();
     private int centerX;
     private int centerY;
     //TODO:: 쓸일있으면 쓰기 MapUIManager mapUIManager;
@@ -60,10 +61,10 @@ private Player player;
             mapX = centerX,
             mapY = centerY,
             sceneName = randomStartMap.sceneName,
-            hasUpPortal = randomStartMap.hasUpPortal,
-            hasDownPortal = randomStartMap.hasDownPortal,
-            hasLeftPortal = randomStartMap.hasLeftPortal,
-            hasRightPortal = randomStartMap.hasRightPortal,
+            HasUpPortal = randomStartMap.HasUpPortal,
+            HasDownPortal = randomStartMap.HasDownPortal,
+            HasLeftPortal = randomStartMap.HasLeftPortal,
+            HasRightPortal = randomStartMap.HasRightPortal,
             upPortalObject = randomStartMap.upPortalObject,
             downPortalObject = randomStartMap.downPortalObject,
             leftPortalObject = randomStartMap.leftPortalObject,
@@ -104,19 +105,19 @@ private Player player;
 
             // 포탈 정보 수집
             Transform upPortalTransform = mapPrefab.transform.Find("UpPortal");
-            mapData.hasUpPortal = upPortalTransform != null;
+            mapData.HasUpPortal = upPortalTransform != null;
             mapData.upPortalObject = upPortalTransform?.gameObject;
 
             Transform downPortalTransform = mapPrefab.transform.Find("DownPortal");
-            mapData.hasDownPortal = downPortalTransform != null;
+            mapData.HasDownPortal = downPortalTransform != null;
             mapData.downPortalObject = downPortalTransform?.gameObject;
 
             Transform leftPortalTransform = mapPrefab.transform.Find("LeftPortal");
-            mapData.hasLeftPortal = leftPortalTransform != null;
+            mapData.HasLeftPortal = leftPortalTransform != null;
             mapData.leftPortalObject = leftPortalTransform?.gameObject;
 
             Transform rightPortalTransform = mapPrefab.transform.Find("RightPortal");
-            mapData.hasRightPortal = rightPortalTransform != null;
+            mapData.HasRightPortal = rightPortalTransform != null;
             mapData.rightPortalObject = rightPortalTransform?.gameObject;
 
             // 다른 포탈 정보도 동일하게 수집
@@ -142,19 +143,19 @@ private Player player;
 
             // 포탈 정보 수집
             Transform upPortalTransform = mapPrefab.transform.Find("UpPortal");
-            mapData.hasUpPortal = upPortalTransform != null;
+            mapData.HasUpPortal = upPortalTransform != null;
             mapData.upPortalObject = upPortalTransform?.gameObject;
 
             Transform downPortalTransform = mapPrefab.transform.Find("DownPortal");
-            mapData.hasDownPortal = downPortalTransform != null;
+            mapData.HasDownPortal = downPortalTransform != null;
             mapData.downPortalObject = downPortalTransform?.gameObject;
 
             Transform leftPortalTransform = mapPrefab.transform.Find("LeftPortal");
-            mapData.hasLeftPortal = leftPortalTransform != null;
+            mapData.HasLeftPortal = leftPortalTransform != null;
             mapData.leftPortalObject = leftPortalTransform?.gameObject;
 
             Transform rightPortalTransform = mapPrefab.transform.Find("RightPortal");
-            mapData.hasRightPortal = rightPortalTransform != null;
+            mapData.HasRightPortal = rightPortalTransform != null;
             mapData.rightPortalObject = rightPortalTransform?.gameObject;
 
             mapScenes[i] = mapData;
@@ -170,7 +171,13 @@ private Player player;
         Queue<MapData> mapQueue = new Queue<MapData>();
         mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
 
-        int maxGenCount = 100; // 최대 반복 횟수 설정
+
+        //한번 사용한 맵 기억하기
+        usedMapScenes = new HashSet<string>();
+        usedMapScenes.Add(worldMap[new Vector2Int(centerX, centerY)].sceneName);
+
+
+        int maxGenCount = 1000; // 최대 반복 횟수 설정
         int genCount = 0;
 
         while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount)
@@ -184,13 +191,15 @@ private Player player;
             GenerateAdditionalMaps();
 
             genCount++;
-        }
+
 
         if (genCount >= maxGenCount)
         {
-            Debug.LogError("맵 생성에 실패했습니다. 무한 루프 발생.");
-            return;
+            Debug.LogError("맵 생성에 실패했습니다. ");
+                break;
         }
+        }
+
 
         //포탈 비활성화
         foreach (var kvp in worldMap)
@@ -216,24 +225,16 @@ private Player player;
         switch (direction)
         {
             case Direction.Up:
-                mapData.hasUpPortal = true;
-                if (mapData.upPortalObject != null)
-                    mapData.upPortalObject.SetActive(true);
+                mapData.HasUpPortal = true;
                 break;
             case Direction.Down:
-                mapData.hasDownPortal = true;
-                if (mapData.downPortalObject != null)
-                    mapData.downPortalObject.SetActive(true);
+                mapData.HasDownPortal = true;
                 break;
             case Direction.Left:
-                mapData.hasLeftPortal = true;
-                if (mapData.leftPortalObject != null)
-                    mapData.leftPortalObject.SetActive(true);
+                mapData.HasLeftPortal = true;
                 break;
             case Direction.Right:
-                mapData.hasRightPortal = true;
-                if (mapData.rightPortalObject != null)
-                    mapData.rightPortalObject.SetActive(true);
+                mapData.HasRightPortal = true;
                 break;
         }
     }
@@ -317,15 +318,21 @@ private Player player;
     //사용 가능한 방향 체크
     private List<Direction> GetAvailableDirections(MapData mapData)
     {
+
+        if (mapData == null)
+        {
+            return new List<Direction>();
+        }
+
         List<Direction> availableDirections = new List<Direction>();
 
-        if (mapData.hasUpPortal)
+        if (mapData.HasUpPortal)
             availableDirections.Add(Direction.Up);
-        if (mapData.hasDownPortal)
+        if (mapData.HasDownPortal)
             availableDirections.Add(Direction.Down);
-        if (mapData.hasLeftPortal)
+        if (mapData.HasLeftPortal)
             availableDirections.Add(Direction.Left);
-        if (mapData.hasRightPortal)
+        if (mapData.HasRightPortal)
             availableDirections.Add(Direction.Right);
 
         return availableDirections;
@@ -335,16 +342,20 @@ private Player player;
 
     private bool IsConnectedToPreviousMap(MapData previousMap, MapData currentMap, Direction direction)
     {
+
+        if (previousMap == null || currentMap == null)
+            return false;
+
         switch (direction)
         {
             case Direction.Up:
-                return previousMap.hasUpPortal && currentMap.hasDownPortal;
+                return previousMap.HasUpPortal && currentMap.HasDownPortal;
             case Direction.Down:
-                return previousMap.hasDownPortal && currentMap.hasUpPortal;
+                return previousMap.HasDownPortal && currentMap.HasUpPortal;
             case Direction.Left:
-                return previousMap.hasLeftPortal && currentMap.hasRightPortal;
+                return previousMap.HasLeftPortal && currentMap.HasRightPortal;
             case Direction.Right:
-                return previousMap.hasRightPortal && currentMap.hasLeftPortal;
+                return previousMap.HasRightPortal && currentMap.HasLeftPortal;
             default:
                 return false;
         }
@@ -369,13 +380,18 @@ private Player player;
     //모든방향의 포탈연결 확인
     private bool HasValidPortalConnections(MapData mapData)
     {
-        if (mapData.hasUpPortal && !IsValidPortalConnection(mapData, Direction.Up))
+        if (mapData == null)
+        {
             return false;
-        if (mapData.hasDownPortal && !IsValidPortalConnection(mapData, Direction.Down))
+        }
+
+        if (mapData.HasUpPortal && !IsValidPortalConnection(mapData, Direction.Up))
             return false;
-        if (mapData.hasLeftPortal && !IsValidPortalConnection(mapData, Direction.Left))
+        if (mapData.HasDownPortal && !IsValidPortalConnection(mapData, Direction.Down))
             return false;
-        if (mapData.hasRightPortal && !IsValidPortalConnection(mapData, Direction.Right))
+        if (mapData.HasLeftPortal && !IsValidPortalConnection(mapData, Direction.Left))
+            return false;
+        if (mapData.HasRightPortal && !IsValidPortalConnection(mapData, Direction.Right))
             return false;
 
         return true;
@@ -384,6 +400,11 @@ private Player player;
     //해당포탈이 있으면 연결 체크
     private bool IsValidPortalConnection(MapData mapData, Direction direction)
     {
+        if (mapData == null)
+        {
+            return false;
+        }
+
         Vector2Int adjacentPosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, direction);
 
         if (!IsValidPosition(adjacentPosition))
@@ -398,13 +419,13 @@ private Player player;
                 switch (direction)
                 {
                     case Direction.Up:
-                        return adjacentMapData.hasDownPortal;
+                        return adjacentMapData.HasDownPortal;
                     case Direction.Down:
-                        return adjacentMapData.hasUpPortal;
+                        return adjacentMapData.HasUpPortal;
                     case Direction.Left:
-                        return adjacentMapData.hasRightPortal;
+                        return adjacentMapData.HasRightPortal;
                     case Direction.Right:
-                        return adjacentMapData.hasLeftPortal;
+                        return adjacentMapData.HasLeftPortal;
                 }
             }
         }
@@ -504,9 +525,14 @@ private Player player;
 private void CheckAndDisablePortal(MapData mapData)
 {
     // 현재 맵의 포탈 방향에 따라 반대 방향의 포탈 체크
-    if (mapData.hasUpPortal)
+    if (mapData.HasUpPortal)
     {
-        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Up);
+            if (mapData == null)
+            {
+                return;
+            }
+
+            Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Up);
         if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
         {
             MapData oppositeMapData = worldMap[oppositePosition];
@@ -521,7 +547,7 @@ private void CheckAndDisablePortal(MapData mapData)
         }
     }
 
-    if (mapData.hasDownPortal)
+    if (mapData.HasDownPortal)
     {
         Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Down);
         if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
@@ -538,7 +564,7 @@ private void CheckAndDisablePortal(MapData mapData)
         }
     }
 
-    if (mapData.hasLeftPortal)
+    if (mapData.HasLeftPortal)
     {
         Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Left);
         if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
@@ -555,7 +581,7 @@ private void CheckAndDisablePortal(MapData mapData)
         }
     }
 
-    if (mapData.hasRightPortal)
+    if (mapData.HasRightPortal)
     {
         Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Right);
         if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
@@ -580,29 +606,29 @@ private void CheckAndDisablePortal(MapData mapData)
             case Direction.Up:
                 if (mapData.upPortalObject != null)
                 {
+                    mapData.HasUpPortal = false;
                     mapData.upPortalObject.SetActive(false);
-                    mapData.hasUpPortal = false;
                 }
                 break;
             case Direction.Down:
                 if (mapData.downPortalObject != null)
                 {
+                    mapData.HasDownPortal = false;
                     mapData.downPortalObject.SetActive(false);
-                    mapData.hasDownPortal = false;
                 }
                 break;
             case Direction.Left:
                 if (mapData.leftPortalObject != null)
                 {
+                    mapData.HasLeftPortal = false;
                     mapData.leftPortalObject.SetActive(false);
-                    mapData.hasLeftPortal = false;
                 }
                 break;
             case Direction.Right:
                 if (mapData.rightPortalObject != null)
                 {
+                    mapData.HasRightPortal = false;
                     mapData.rightPortalObject.SetActive(false);
-                    mapData.hasRightPortal = false;
                 }
                 break;
         }
@@ -613,15 +639,22 @@ private void CheckAndDisablePortal(MapData mapData)
     //-------맵 생성 함수
     private MapData CreateNewMap(Vector2Int position, MapData selectedMap)
     {
+    if (this.usedMapScenes.Contains(selectedMap.sceneName))
+    {
+        return null;
+    }
+
+    this.usedMapScenes.Add(selectedMap.sceneName);
+
         return new MapData
         {
             mapX = position.x,
             mapY = position.y,
             sceneName = selectedMap.sceneName,
-            hasUpPortal = selectedMap.hasUpPortal,
-            hasDownPortal = selectedMap.hasDownPortal,
-            hasLeftPortal = selectedMap.hasLeftPortal,
-            hasRightPortal = selectedMap.hasRightPortal,
+            HasUpPortal = selectedMap.HasUpPortal,
+            HasDownPortal = selectedMap.HasDownPortal,
+            HasLeftPortal = selectedMap.HasLeftPortal,
+            HasRightPortal = selectedMap.HasRightPortal,
             upPortalObject = selectedMap.upPortalObject,
             downPortalObject = selectedMap.downPortalObject,
             leftPortalObject = selectedMap.leftPortalObject,
@@ -636,13 +669,13 @@ private void CheckAndDisablePortal(MapData mapData)
             switch (direction)
             {
                 case Direction.Up:
-                    return mapData.hasDownPortal;
+                    return mapData.HasDownPortal;
                 case Direction.Down:
-                    return mapData.hasUpPortal;
+                    return mapData.HasUpPortal;
                 case Direction.Left:
-                    return mapData.hasRightPortal;
+                    return mapData.HasRightPortal;
                 case Direction.Right:
-                    return mapData.hasLeftPortal;
+                    return mapData.HasLeftPortal;
                 default:
                     return false;
             }
@@ -667,13 +700,13 @@ private void CheckAndDisablePortal(MapData mapData)
             switch (direction)
             {
                 case Direction.Up:
-                    return mapData.hasDownPortal ? mapData : null;
+                    return mapData.HasDownPortal ? mapData : null;
                 case Direction.Down:
-                    return mapData.hasUpPortal ? mapData : null;
+                    return mapData.HasUpPortal ? mapData : null;
                 case Direction.Left:
-                    return mapData.hasRightPortal ? mapData : null;
+                    return mapData.HasRightPortal ? mapData : null;
                 case Direction.Right:
-                    return mapData.hasLeftPortal ? mapData : null;
+                    return mapData.HasLeftPortal ? mapData : null;
                 default:
                     return null;
             }
@@ -850,28 +883,34 @@ private void CheckAndDisablePortal(MapData mapData)
 
     private void ResetPortalObjects(MapData mapData, bool activateMode)
     {
+
+        if (mapData == null)
+        {
+            return;
+        }
+
         if (mapData.upPortalObject != null)
         {
             mapData.upPortalObject.SetActive(activateMode);
-            mapData.hasUpPortal = activateMode;
+            mapData.HasUpPortal = activateMode;
         }
 
         if (mapData.downPortalObject != null)
         {
             mapData.downPortalObject.SetActive(activateMode);
-            mapData.hasDownPortal = activateMode;
+            mapData.HasDownPortal = activateMode;
         }
 
         if (mapData.leftPortalObject != null)
         {
             mapData.leftPortalObject.SetActive(activateMode);
-            mapData.hasLeftPortal = activateMode;
+            mapData.HasLeftPortal = activateMode;
         }
 
         if (mapData.rightPortalObject != null)
         {
             mapData.rightPortalObject.SetActive(activateMode);
-            mapData.hasRightPortal = activateMode;
+            mapData.HasRightPortal = activateMode;
         }
     }
 

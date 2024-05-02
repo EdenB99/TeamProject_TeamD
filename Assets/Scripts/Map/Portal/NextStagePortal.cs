@@ -65,7 +65,7 @@ public class NextStagePortal : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("'PlayerLocation' 태그를 가진 게임 오브젝트나 플레이어 오브젝트를 찾을 수 없습니다.");
+            Debug.Log("'PlayerLocation' 태그를 가진 게임 오브젝트나 플레이어 오브젝트를 찾을 수 없습니다.");
         }
     }
 }
