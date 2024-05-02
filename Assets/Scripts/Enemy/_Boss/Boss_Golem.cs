@@ -50,7 +50,7 @@ public class Boss_Golem : PatternEnemyBase
             }
             else
             {
-                State = BossState.SpAttack;
+                //State = BossState.SpAttack;
                 TimeElapsed = 0;
             }
         }
@@ -91,8 +91,9 @@ public class Boss_Golem : PatternEnemyBase
         animator.SetTrigger(isCast_Hash);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(true);
-        yield return new WaitForSeconds(intervalpattern1);
+        yield return new WaitForSeconds(1.5f);
         laser.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
         startFight = true;
         State = BossState.Chase;
     }
@@ -116,13 +117,13 @@ public class Boss_Golem : PatternEnemyBase
     /// <returns></returns>
     new IEnumerator BossPattern_1()
     {
-        yield return StartCoroutine(FireLaserCoroutine());
+        StartCoroutine(FireLaserCoroutine());
         TeleportBehindPlayer();
 
         yield return new WaitForSeconds(intervalAfterTeleport);
 
         // 순간이동 후 레이저 다시 발사
-        yield return StartCoroutine(FireLaserCoroutine());
+        StartCoroutine(FireLaserCoroutine());
 
         yield return new WaitForSeconds(intervalpattern2);
         State = BossState.Chase;
@@ -161,22 +162,9 @@ public class Boss_Golem : PatternEnemyBase
     /// <returns></returns>
     IEnumerator BossPattern_2()
     {
-        yield return StartCoroutine(ArmShootingCoroutine());
-        FireArmshoot();
-
-        yield return new WaitForSeconds(intervalpattern2);
-
-        yield return StartCoroutine(ArmShootingCoroutine());
-
+        StartCoroutine(ArmShootingCoroutine());
         yield return new WaitForSeconds(intervalpattern2);
         State = BossState.Chase;
-    }
-
-    IEnumerator ArmShootingCoroutine()
-    {
-        animator.SetTrigger(isShoot_Hash);
-        yield return new WaitForSeconds(intervalpattern2);
-        armshoot.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -184,13 +172,22 @@ public class Boss_Golem : PatternEnemyBase
     /// </summary>
     void FireArmshoot()
     {
-        Rigidbody2D rb = armShootPrefab.GetComponent<Rigidbody2D>();
+        GameObject projectile = Instantiate(armShootPrefab, armshoot.position, Quaternion.identity);
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
         Vector2 shootDirection = -transform.right * CheckLR;
         float shootSpeed = 10f; 
 
         rb.velocity = shootDirection * shootSpeed;
     }
+
+    IEnumerator ArmShootingCoroutine()
+    {
+        animator.SetTrigger(isShoot_Hash);
+        yield return new WaitForSeconds(intervalpattern2);
+        FireArmshoot();
+    }
+
 
     /// <summary>
     /// 패턴 3: 레이저를 쏜 다음 플레이어 근처로 이동해 팔을 발사하는 패턴
@@ -224,7 +221,6 @@ public class Boss_Golem : PatternEnemyBase
 
         foreach (float angle in angles)
         {
-            armShootPrefab.SetActive(true);
             FireArmShootAngle(angle);
         }
     }
