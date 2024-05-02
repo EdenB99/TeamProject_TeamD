@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 
-//TODO:: 병합 다음맵넘어가는 포탈 제작, 다음맵에 상점 -> 보스포탈 -> 보스방
+
 public class MapManager : MonoBehaviour
 {
     //TODO :: 집가서 플랫폼 만들기
@@ -161,7 +161,9 @@ private Player player;
         }
     }
 
-    //TODO:: 여전히 맵생성안되는 오류 존재중,GenerateAdditionalMaps인거같음
+    //TODO:: 다음맵에 포탈이없는 오류 4회,존재하지않는맵1회, 지도에는 포탈이 존재하는데 맵에포탈이 없는 버그 2회
+    //TODO:: MapData에 Has가 켜져있으면 포탈OBJ도 켜져있게 만들어야할듯
+    //TODO:: 지도는 잘만들어진듯, 지도 만들어질때를확인해야함
     private void GenerateWorldMap()
     {
         currentMapCount = 1;

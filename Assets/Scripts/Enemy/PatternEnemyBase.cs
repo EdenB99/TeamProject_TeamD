@@ -364,6 +364,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
     {
         if (IsLive)
         {
+            Factory.Instance.MakeDamageText((int)damage, transform.position);
             sprite.material.SetFloat(HitID, 1);
             StartCoroutine(onHit());
             HP -= damage;

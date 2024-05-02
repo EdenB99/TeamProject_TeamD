@@ -130,6 +130,8 @@ public class MapUI : MonoBehaviour
         UpdateMapUI();
         canvasGroupUI.alpha = 1f;
         canvasGroupMini.alpha = 0f;
+        canvasGroupUI.blocksRaycasts = true;
+        canvasGroupUI.interactable = true;
     }
 
     
@@ -137,6 +139,8 @@ public class MapUI : MonoBehaviour
     {
         canvasGroupUI.alpha = 0f;
         canvasGroupUI.blocksRaycasts = false;
+        canvasGroupUI.interactable = false;
+
         canvasGroupMini.alpha = 1f;
 
         UpdateMapUI();

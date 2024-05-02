@@ -171,6 +171,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5215367161854580282, guid: 5fe345aca00b3104183801b287cd463f, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8242037899982489059, guid: 5fe345aca00b3104183801b287cd463f, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8423693350328408842, guid: 5fe345aca00b3104183801b287cd463f, type: 3}
       propertyPath: m_Name
       value: Stage1Map18
