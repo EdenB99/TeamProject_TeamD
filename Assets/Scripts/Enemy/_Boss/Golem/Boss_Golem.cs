@@ -34,6 +34,7 @@ public class Boss_Golem : PatternEnemyBase
         base.Start();
         State = BossState.Wait;
         StartCoroutine(AwakeAction());
+        InitializeArmShootPool();
     }
 
     protected override void Update_Wait()
@@ -73,7 +74,7 @@ public class Boss_Golem : PatternEnemyBase
         {
             TimeElapsed += Time.deltaTime;
         }
-        else 
+        else
         {
             State = BossState.SpAttack;
 
@@ -167,20 +168,6 @@ public class Boss_Golem : PatternEnemyBase
         State = BossState.Chase;
     }
 
-    /// <summary>
-    /// 발사 함수
-    /// </summary>
-    void FireArmshoot()
-    {
-        GameObject projectile = Instantiate(armShootPrefab, armshoot.position, Quaternion.identity);
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-
-        Vector2 shootDirection = -transform.right * CheckLR;
-        float shootSpeed = 10f; 
-
-        rb.velocity = shootDirection * shootSpeed;
-    }
-
     IEnumerator ArmShootingCoroutine()
     {
         animator.SetTrigger(isShoot_Hash);
@@ -188,6 +175,21 @@ public class Boss_Golem : PatternEnemyBase
         FireArmshoot();
     }
 
+    /// <summary>
+    /// 발사 함수
+    /// </summary>
+    void FireArmshoot()
+    {
+        GameObject projectile = GetArmShootFromPool();
+        projectile.transform.position = armshoot.position;
+        projectile.transform.rotation = Quaternion.identity;
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+
+        Vector2 shootDirection = -transform.right * CheckLR;
+        float shootSpeed = 10f;
+
+        rb.velocity = shootDirection * shootSpeed;
+    }
 
     /// <summary>
     /// 패턴 3: 레이저를 쏜 다음 플레이어 근처로 이동해 팔을 발사하는 패턴
@@ -231,7 +233,9 @@ public class Boss_Golem : PatternEnemyBase
     /// <param name="angle">날리는 각도</param>
     void FireArmShootAngle(float angle)
     {
-        GameObject projectile = Instantiate(armShootPrefab, armshoot.position, Quaternion.identity);
+        GameObject projectile = GetArmShootFromPool();
+        projectile.transform.position = armshoot.position;
+        projectile.transform.rotation = Quaternion.identity;
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
         // 기본 발사 방향
@@ -240,5 +244,50 @@ public class Boss_Golem : PatternEnemyBase
         float shootSpeed = 10f;
 
         rb.velocity = shootDirection * shootSpeed;
+    }
+
+    Queue<GameObject> armShootPool = new Queue<GameObject>();
+    public int poolSize = 32;
+
+    /// <summary>
+    /// 풀 생성
+    /// </summary>
+    private void InitializeArmShootPool()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            GameObject obj = Instantiate(armShootPrefab);
+            obj.SetActive(false);
+            armShootPool.Enqueue(obj);
+        }
+    }
+
+    /// <summary>
+    /// 풀 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private GameObject GetArmShootFromPool()
+    {
+        if (armShootPool.Count > 0)
+        {
+            GameObject obj = armShootPool.Dequeue();
+            obj.SetActive(true);
+            return obj;
+        }
+        else
+        {
+            GameObject obj = Instantiate(armShootPrefab);
+            return obj;
+        }
+    }
+
+    /// <summary>
+    /// 풀로 되돌리는 함수
+    /// </summary>
+    /// <param name="projectile">반환할 오브젝트</param>
+    public void ReturnArmShootToPool(GameObject projectile)
+    {
+        projectile.SetActive(false);
+        armShootPool.Enqueue(projectile);
     }
 }
