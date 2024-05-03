@@ -288,10 +288,14 @@ PrefabInstance:
     - target: {fileID: 5334163422574019945, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: ffd325108916efd4081ebf6a45e69e8e, type: 2}
+      objectReference: {fileID: 9100000, guid: 7c84da97a15c04c41a9a6f715e783ae4, type: 2}
     - target: {fileID: 9207812735524971915, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
       propertyPath: m_Name
       value: laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207812735524971915, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
