@@ -92,9 +92,9 @@ public class Boss_Golem : PatternEnemyBase
         animator.SetTrigger(isCast_Hash);
         yield return new WaitForSeconds(intervalpattern1);
         laser.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.2f);
         laser.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.2f);
         startFight = true;
         State = BossState.Chase;
     }
@@ -137,9 +137,11 @@ public class Boss_Golem : PatternEnemyBase
     IEnumerator FireLaserCoroutine()
     {
         animator.SetTrigger(isCast_Hash);
-        laser.gameObject.SetActive(true);
         yield return new WaitForSeconds(intervalpattern1);
+        laser.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.2f);
         laser.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1.2f);
     }
 
     /// <summary>
@@ -199,7 +201,7 @@ public class Boss_Golem : PatternEnemyBase
     {
         animator.SetTrigger(isCast_Hash);
         laser.gameObject.SetActive(true);
-        yield return new WaitForSeconds(intervalpattern1);
+        yield return new WaitForSeconds(1.2f);
         laser.gameObject.SetActive(false);
         TeleportBehindPlayer();
 
