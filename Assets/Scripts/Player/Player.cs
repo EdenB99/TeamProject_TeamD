@@ -214,11 +214,16 @@ public class Player : MonoBehaviour
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음,
     void Jump()
     {
-        // 점프 로직
-        rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
-        Player_ani.SetBool("Jump", true);
-        isJump = true;
-        jumpCount -= 1;
+        if (!isJump) return;  // 이미 점프 중이면 점프하지 않음
+
+        // isGround를 이용하여 지면에 있을 때만 점프를 허용
+        if (isJump)
+        {
+            rigid.velocity = Vector2.up * jumpPower;  // 점프 파워를 적용하여 즉시 점프
+            Player_ani.SetBool("Jump", true);
+            isJump = true;  // 점프 상태를 true로 설정
+            jumpCount -= 1;  // 점프 횟수 감소
+        }
     }
 
 
@@ -297,8 +302,7 @@ public class Player : MonoBehaviour
     /// 맵 체크
     /// </summary>
     private bool isGround;
-    private float checkRadius = 0.1f;
-
+    private float checkDistance = 0.1f;
 
     // Ground Check
     [SerializeField] private Transform groundCheck;
@@ -306,15 +310,20 @@ public class Player : MonoBehaviour
 
     private void CheckGround()
     {
-        isGround = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayerCheck);
+        RaycastHit2D hit = Physics2D.Raycast (groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
 
-        if (rigid.velocity.y <= 0.0f)
+        bool isGround = hit.collider != null;
+
+        if (isGround && rigid.velocity.y <= 0.0f)
         {
-            isJump = false;
+            isJump = false;  // 지면에 있고, 하강 중이거나 정지 상태라면 점프 상태를 해제
         }
+        Debug.DrawRay(groundCheck.position, Vector2.down* checkDistance, Color.red);
     }
 
-    public void OnDownJump(InputAction.CallbackContext context)
+
+
+public void OnDownJump(InputAction.CallbackContext context)
     {
 
     }
