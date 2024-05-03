@@ -12,8 +12,9 @@ using Random = UnityEngine.Random;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO :: 집가서 플랫폼 만들기
+    //TODO::다음스테이지가는 맵 생성, 맵개수 이상한거 고치기,
     //TODO Low:: 에디터로 한글화 추가하기
+    //TODO:: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
     [Header("변수")]
 
 private Player player;
@@ -846,7 +847,7 @@ private void CheckAndDisablePortal(MapData mapData)
         {
 
             Debug.LogWarning($"현재맵에 {direction}방향의 포탈을 찾지 못했습니다.");
-            player.transform.position = new Vector3(2,2,player.transform.position.z);
+            player.transform.position = new Vector3(0,0,player.transform.position.z);
         }
     }
 

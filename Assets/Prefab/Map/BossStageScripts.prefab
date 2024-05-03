@@ -722,6 +722,7 @@ MonoBehaviour:
   bossBoundaryObject: {fileID: 0}
   portalBoundaryObject: {fileID: 0}
   bossPrefab: {fileID: 8914497585585265349, guid: 11ff1618a1ecd2244b57741827bb0501, type: 3}
+  knightboss: {fileID: 0}
 --- !u!50 &8103532360847074159
 Rigidbody2D:
   serializedVersion: 4
@@ -850,7 +851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11.08, y: -12.53}
+  m_AnchoredPosition: {x: 10.88, y: -12.53}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4317133838303137653
@@ -873,7 +874,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3908267709554949723, guid: 4cedee309444c114b93c5181078f5bd8, type: 2}
+  - {fileID: 2100000, guid: e7e505be1b0eb7043bcdd1706e2ed9ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
