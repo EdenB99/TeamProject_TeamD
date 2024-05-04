@@ -374,6 +374,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Tutorial_NPC_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 278
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f69d246e9422e149b9ba1b82473f97d
+      internalID: 233292490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_NPC_1
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 116
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcb940eda18c51645961a204de9c4f01
+      internalID: 108642743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tutorial_NPC_2
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 168
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 978ef1c84fd49b742978cd581854c608
+      internalID: -480723262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -385,7 +448,6 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dungreed_0: -238156541
       Player_Dash: 1363718480
       Player_Dash2: 1979377660
       Player_Dead: 862484587
@@ -398,6 +460,9 @@ TextureImporter:
       Player_Run2: 370778490
       Player_RunT1: -1849069925
       Player_RunT2: 1471231768
+      Tutorial_NPC_0: -238156541
+      Tutorial_NPC_1: 108642743
+      Tutorial_NPC_2: -480723262
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

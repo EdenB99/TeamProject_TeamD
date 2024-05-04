@@ -405,7 +405,8 @@ public void OnDownJump(InputAction.CallbackContext context)
 
     private void OnTriggerEnter2D(Collider2D other)  // NPC 상호작용
     {
-        NPC_Store npc = other.GetComponent<NPC_Store>();
+        //NPC_Store npc = other.GetComponent<NPC_Store>();
+        NPC_Base npc = other.GetComponent<NPC_Base>();
         if (npc != null)
         {
             canInteract = true;
@@ -415,7 +416,7 @@ public void OnDownJump(InputAction.CallbackContext context)
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.GetComponent<NPC_Store>() != null)
+        if (other.GetComponent<NPC_Base>() != null)
         {
             canInteract = false;
             interactingNPC = null;
