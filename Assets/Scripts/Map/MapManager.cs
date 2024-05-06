@@ -84,7 +84,7 @@ public class MapManager : MonoBehaviour
     {
         player = GameObject.FindAnyObjectByType<Player>();
         mapUI = GameObject.FindAnyObjectByType<MapUI>();
-        GenerateWorldMap();
+        StartCoroutine(GenerateWorldMapCoroutine());
     }
 
 
@@ -163,61 +163,52 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    //TODO:: 다음맵에 포탈이없는 오류 4회,존재하지않는맵1회, 지도에는 포탈이 존재하는데 맵에포탈이 없는 버그 2회
-    //TODO:: MapData에 Has가 켜져있으면 포탈OBJ도 켜져있게 만들어야할듯
-    //TODO:: 지도는 잘만들어진듯, 지도 만들어질때를확인해야함
-    private void GenerateWorldMap()
+    private IEnumerator GenerateWorldMapCoroutine()
     {
-        currentMapCount = 1;
-        Queue<MapData> mapQueue = new Queue<MapData>();
-        mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
-
-
-        //한번 사용한 맵 기억하기
-        usedMapScenes = new HashSet<string>();
-        usedMapScenes.Add(worldMap[new Vector2Int(centerX, centerY)].sceneName);
-
-
-        int maxGenCount = 1000; // 최대 반복 횟수 설정
-        int genCount = 0;
-
-        while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount)
+        while (currentMapCount < mapSize)
         {
-            MapData currentMap = mapQueue.Dequeue();
-            GenerateAdjacentMaps(currentMap, mapQueue);
+            currentMapCount = 1;
+            Queue<MapData> mapQueue = new Queue<MapData>();
+            mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
 
-            // 맵 생성 후 맵 체크 및 수정
-            CheckWorldMap();
-            RemoveInvalidMaps();
-            GenerateAdditionalMaps();
+            usedMapScenes = new HashSet<string>();
+            usedMapScenes.Add(worldMap[new Vector2Int(centerX, centerY)].sceneName);
 
-            genCount++;
+            int maxGenCount = 1000;
+            int genCount = 0;
 
-
-            if (genCount >= maxGenCount)
+            while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount)
             {
-                Debug.LogError("맵 생성에 실패했습니다. ");
-                break;
+                MapData currentMap = mapQueue.Dequeue();
+                GenerateAdjacentMaps(currentMap, mapQueue);
+
+                CheckWorldMap();
+                RemoveInvalidMaps();
+                GenerateAdditionalMaps();
+
+                genCount++;
+
+                if (genCount >= maxGenCount)
+                {
+                    Debug.LogError("맵 생성이 중단되었습니다.");
+                    break;
+                }
             }
-            if( currentMapCount >=  mapSize && genCount < maxGenCount && CheckWorldMap())
+
+            if (currentMapCount < mapSize)
             {
-                Debug.Log("맵이 완성되었습니다.");
-                
+                Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
+                yield return new WaitForSeconds(1f);
             }
         }
 
-
-        //포탈 비활성화
         foreach (var kvp in worldMap)
         {
             MapData mapData = kvp.Value;
             CheckAndDisablePortal(mapData);
         }
 
-        // 이어진 포탈 활성화
         CheckAndActivatePortals();
-
-
     }
 
 
