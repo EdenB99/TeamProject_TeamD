@@ -12,12 +12,12 @@ using Random = UnityEngine.Random;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO::다음스테이지가는 맵 생성, 맵개수 이상한거 고치기,
+    //TODO::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO:: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
     [Header("변수")]
 
-private Player player;
+    private Player player;
     [SerializeField] private int mapSize = 20;
     [Header("월드맵크기(MapSize*MapSize)")]
     [SerializeField] private int worldMapSize = 7;
@@ -194,11 +194,16 @@ private Player player;
             genCount++;
 
 
-        if (genCount >= maxGenCount)
-        {
-            Debug.LogError("맵 생성에 실패했습니다. ");
+            if (genCount >= maxGenCount)
+            {
+                Debug.LogError("맵 생성에 실패했습니다. ");
                 break;
-        }
+            }
+            if( currentMapCount >=  mapSize && genCount < maxGenCount && CheckWorldMap())
+            {
+                Debug.Log("맵이 완성되었습니다.");
+                
+            }
         }
 
 
@@ -240,27 +245,32 @@ private Player player;
         }
     }
 
-    private void CheckAndActivatePortals()
+private void CheckAndActivatePortals()
+{
+    foreach (var kvp in worldMap)
     {
-        foreach (var kvp in worldMap)
+        MapData mapData = kvp.Value;
+        if (mapData == null)
         {
-            MapData mapData = kvp.Value;
-            Vector2Int currentPosition = new Vector2Int(mapData.mapX, mapData.mapY);
+            continue;
+        }
 
-            foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+        Vector2Int currentPosition = new Vector2Int(mapData.mapX, mapData.mapY);
+
+        foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+        {
+            Vector2Int adjacentPosition = GetAdjacentPosition(currentPosition.x, currentPosition.y, dir);
+            if (worldMap.ContainsKey(adjacentPosition))
             {
-                Vector2Int adjacentPosition = GetAdjacentPosition(currentPosition.x, currentPosition.y, dir);
-                if (worldMap.ContainsKey(adjacentPosition))
+                MapData adjacentMapData = worldMap[adjacentPosition];
+                if (adjacentMapData != null && IsConnectedToPreviousMap(mapData, adjacentMapData, OppositeDirection(dir)))
                 {
-                    MapData adjacentMapData = worldMap[adjacentPosition];
-                    if (IsConnectedToPreviousMap(mapData, adjacentMapData, OppositeDirection(dir)))
-                    {
-                        ActivatePortal(mapData, OppositeDirection(dir));
-                    }
+                    ActivatePortal(mapData, OppositeDirection(dir));
                 }
             }
         }
     }
+}
 
 
 
@@ -271,7 +281,7 @@ private Player player;
     //실험중---------------------------------------------------------------
 
     //맵 생성을 시작하는 함수
-    private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
+private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
 {
     List<Direction> availableDirections = GetAvailableDirections(currentMap);
 
@@ -287,9 +297,13 @@ private Player player;
             if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
             {
                 MapData newMap = CreateNewMap(newPosition, selectedMap);
-                worldMap[newPosition] = newMap;
-                currentMapCount++;
-                mapQueue.Enqueue(newMap);
+                if (newMap != null)
+                {
+                    worldMap[newPosition] = newMap;
+                    currentMapCount++;
+                    Debug.Log($"GenerateAdjacentMaps에서 맵을 생성: {currentMapCount}");
+                    mapQueue.Enqueue(newMap);
+                }
             }
         }
     }
@@ -442,29 +456,34 @@ private Player player;
     private void RemoveInvalidMaps()
     {
         List<Vector2Int> invalidPositions = new List<Vector2Int>();
+        List<string> invalidSceneNames = new List<string>();
 
         foreach (var kvp in worldMap)
         {
             Vector2Int position = kvp.Key;
             MapData mapData = kvp.Value;
 
-            if (!HasValidPortalConnections(mapData))
+            if (mapData != null && !HasValidPortalConnections(mapData))
             {
                 bool canRemove = true;
                 foreach (Direction dir in Enum.GetValues(typeof(Direction)))
                 {
                     Vector2Int adjacentPosition = GetAdjacentPosition(position.x, position.y, dir);
-                    if (worldMap.ContainsKey(adjacentPosition) && HasValidPortalConnections(worldMap[adjacentPosition]))
+                    if (worldMap.ContainsKey(adjacentPosition))
                     {
-                        canRemove = false;
-                        break;
+                        MapData adjacentMapData = worldMap[adjacentPosition];
+                        if (adjacentMapData != null && HasValidPortalConnections(adjacentMapData))
+                        {
+                            canRemove = false;
+                            break;
+                        }
                     }
                 }
 
                 if (canRemove)
                 {
                     invalidPositions.Add(position);
-                    currentMapCount--;
+                    invalidSceneNames.Add(mapData.sceneName);
                 }
             }
         }
@@ -472,9 +491,15 @@ private Player player;
         foreach (Vector2Int position in invalidPositions)
         {
             worldMap.Remove(position);
+            currentMapCount--;
+            Debug.Log($"RemoveInvalidMaps 에서 맵을 삭제: {currentMapCount}");
+        }
+
+        foreach (string sceneName in invalidSceneNames)
+        {
+            usedMapScenes.Remove(sceneName);
         }
     }
-
 
 
     //-----------맵체크(재생성)
@@ -499,8 +524,12 @@ private Player player;
                     if (selectedMap != null && IsConnectedToPreviousMap(mapData, selectedMap, dir))
                     {
                         MapData newMap = CreateNewMap(newPosition, selectedMap);
-                        newMapPositions.Add(newPosition);
-                        currentMapCount++;
+                        if (newMap != null)
+                        {
+                            newMapPositions.Add(newPosition);
+                            currentMapCount++;
+                            Debug.Log($"GenerateAdditionalMaps에서 맵을 재생성: {currentMapCount}");
+                        }
                     }
                 }
             }
@@ -523,82 +552,84 @@ private Player player;
 
     //----------포탈 끄기
     //TODO::포탈 생성조건을 살짝 완화할필요가있음
-private void CheckAndDisablePortal(MapData mapData)
-{
-    // 현재 맵의 포탈 방향에 따라 반대 방향의 포탈 체크
-    if (mapData.HasUpPortal)
+    private void CheckAndDisablePortal(MapData mapData)
     {
-            if (mapData == null)
-            {
-                return;
-            }
+        if (mapData == null)
+        {
+            return;
+        }
+
+        // 현재 맵의 포탈 방향에 따라 반대 방향의 포탈 체크
+        if (mapData.HasUpPortal)
+        {
+
 
             Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Up);
-        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
-        {
-            MapData oppositeMapData = worldMap[oppositePosition];
-            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Up))
+            if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+            {
+                MapData oppositeMapData = worldMap[oppositePosition];
+                if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Up))
+                {
+                    DisablePortal(mapData, Direction.Up);
+                }
+            }
+            else
             {
                 DisablePortal(mapData, Direction.Up);
             }
         }
-        else
-        {
-            DisablePortal(mapData, Direction.Up);
-        }
-    }
 
-    if (mapData.HasDownPortal)
-    {
-        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Down);
-        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        if (mapData.HasDownPortal)
         {
-            MapData oppositeMapData = worldMap[oppositePosition];
-            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Down))
+            Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Down);
+            if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+            {
+                MapData oppositeMapData = worldMap[oppositePosition];
+                if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Down))
+                {
+                    DisablePortal(mapData, Direction.Down);
+                }
+            }
+            else
             {
                 DisablePortal(mapData, Direction.Down);
             }
         }
-        else
-        {
-            DisablePortal(mapData, Direction.Down);
-        }
-    }
 
-    if (mapData.HasLeftPortal)
-    {
-        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Left);
-        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        if (mapData.HasLeftPortal)
         {
-            MapData oppositeMapData = worldMap[oppositePosition];
-            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Left))
+            Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Left);
+            if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+            {
+                MapData oppositeMapData = worldMap[oppositePosition];
+                if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Left))
+                {
+                    DisablePortal(mapData, Direction.Left);
+                }
+            }
+            else
             {
                 DisablePortal(mapData, Direction.Left);
             }
         }
-        else
-        {
-            DisablePortal(mapData, Direction.Left);
-        }
-    }
 
-    if (mapData.HasRightPortal)
-    {
-        Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Right);
-        if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+        if (mapData.HasRightPortal)
         {
-            MapData oppositeMapData = worldMap[oppositePosition];
-            if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Right))
+            Vector2Int oppositePosition = GetAdjacentPosition(mapData.mapX, mapData.mapY, Direction.Right);
+            if (IsValidPosition(oppositePosition) && worldMap.ContainsKey(oppositePosition))
+            {
+                MapData oppositeMapData = worldMap[oppositePosition];
+                if (!IsConnectedToPreviousMap(mapData, oppositeMapData, Direction.Right))
+                {
+                    DisablePortal(mapData, Direction.Right);
+                }
+            }
+            else
             {
                 DisablePortal(mapData, Direction.Right);
             }
         }
-        else
-        {
-            DisablePortal(mapData, Direction.Right);
-        }
     }
-}
 
     private void DisablePortal(MapData mapData, Direction direction)
     {
@@ -640,12 +671,12 @@ private void CheckAndDisablePortal(MapData mapData)
     //-------맵 생성 함수
     private MapData CreateNewMap(Vector2Int position, MapData selectedMap)
     {
-    if (this.usedMapScenes.Contains(selectedMap.sceneName))
-    {
-        return null;
-    }
+        if (this.usedMapScenes.Contains(selectedMap.sceneName))
+        {
+            return null;
+        }
 
-    this.usedMapScenes.Add(selectedMap.sceneName);
+        this.usedMapScenes.Add(selectedMap.sceneName);
 
         return new MapData
         {
@@ -798,20 +829,21 @@ private void CheckAndDisablePortal(MapData mapData)
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
                     currentMap.isVisited = true;
+                    if(mapUI != null)
+                    {
                     mapUI.UpdateMapUI();
+                    }
                     SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
                 };
             }
             else
             {
                 Debug.LogError($"해당좌표의 맵 데이터를 찾을 수 없습니다.: ({position.x}, {position.y})");
-                LoadMap(new Vector2Int(centerX, centerY),Direction.Right);
             }
         }
         else
         {
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
-            LoadMap(new Vector2Int(centerX, centerY), Direction.Right);
         }
     }
 
@@ -830,6 +862,12 @@ private void CheckAndDisablePortal(MapData mapData)
 
     private void SetPlayerPosition(Direction direction)
     {
+        if (player == null)
+        {
+            Debug.LogError("플레이어 객체가 할당되지 않았습니다.");
+            return;
+        }
+
         GameObject portalObject = GameObject.Find($"{direction}Portal");
         if (portalObject != null)
         {
@@ -847,7 +885,7 @@ private void CheckAndDisablePortal(MapData mapData)
         {
 
             Debug.LogWarning($"현재맵에 {direction}방향의 포탈을 찾지 못했습니다.");
-            player.transform.position = new Vector3(0,0,player.transform.position.z);
+            player.transform.position = new Vector3(0, 0, player.transform.position.z);
         }
     }
 
@@ -873,13 +911,48 @@ private void CheckAndDisablePortal(MapData mapData)
         return null;
     }
 
+    //메모리 누수 발생으로 인한 오류 해결못해서 Claude에게 질문했음, 종료시 모든 객체 파괴 및 정리
     private void OnDisable()
     {
+
+        // 1. 맵 데이터 정리
         foreach (var kvp in worldMap)
         {
             MapData mapData = kvp.Value;
             ResetPortalObjects(mapData, true);
+            if (mapData != null)
+            {
+                // 맵 데이터 내의 게임 오브젝트 및 컴포넌트 정리
+                mapData.upPortalObject = null;
+                mapData.downPortalObject = null;
+                mapData.leftPortalObject = null;
+                mapData.rightPortalObject = null;
+            }
         }
+
+
+                worldMap.Clear();
+
+                // 2. 사용한 에셋 및 리소스 언로드
+                //Resources.UnloadUnusedAssets();
+
+                // 3. 코루틴 정리
+                StopAllCoroutines();
+
+                // 4. 이벤트 리스너 및 콜백 제거
+                // 필요한 경우 이벤트 리스너나 콜백 함수를 제거합니다.
+
+                // 5. 정적 변수 및 싱글톤 객체 정리
+                currentMap = null;
+                player = null;
+                mapUI = null;
+                // 필요한 경우 다른 정적 변수나 싱글톤 객체도 정리합니다.
+
+                // 6. 캐시 데이터 정리
+                usedMapScenes.Clear();
+                // 필요한 경우 다른 캐시 데이터나 임시 데이터도 정리합니다.
+
+
     }
 
     private void ResetPortalObjects(MapData mapData, bool activateMode)
@@ -914,6 +987,10 @@ private void CheckAndDisablePortal(MapData mapData)
             mapData.HasRightPortal = activateMode;
         }
     }
+
+
+
+
 
 
 

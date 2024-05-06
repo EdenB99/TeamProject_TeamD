@@ -18,10 +18,7 @@ public class IngameUI : MonoBehaviour
     /// 최대 체력
     /// </summary>
 	public float maxHitPoint;
-    /// <summary>
-    /// 맵찾는횟수
-    /// </summary>
-    int bigMapCount = 0;
+
     bool mapToggle = false;
 
 	QuickSlotUI[] IngameSlotUIs;

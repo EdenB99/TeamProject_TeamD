@@ -19,8 +19,12 @@ public class MapUI : MonoBehaviour
     [SerializeField] private Sprite portalSprites;
 
     private Image[,] mapTiles;
+    
+    private RectTransform mapPosition;
+    
+    public RectTransform currentMapTileRect;
+    Vector3 currentMapTilePosition;
 
-    private RectTransform MapPosition;
     private bool isDragging = false;
     private Vector2 MousePosition;
     [SerializeField] private float dragSpeed = 2f;
@@ -30,7 +34,7 @@ public class MapUI : MonoBehaviour
         mapManager = GameObject.FindObjectOfType<MapManager>();
         canvasGroupMini = GameObject.FindAnyObjectByType<MiniMap>().GetComponent<CanvasGroup>();
         canvasGroupUI = GetComponent<CanvasGroup>();
-        MapPosition = transform.GetChild(0).GetComponent<RectTransform>();
+        mapPosition = transform.GetChild(0).GetComponent<RectTransform>();
 
         mapTiles = new Image[mapManager.WorldMapSize, mapManager.WorldMapSize];
         GenerateMapUI();
@@ -47,8 +51,8 @@ public class MapUI : MonoBehaviour
     {
         int worldMapSize = mapManager.WorldMapSize;
 
-        float tileWidth = MapPosition.rect.width / worldMapSize;
-        float tileHeight = MapPosition.rect.height / worldMapSize;
+        float tileWidth = mapPosition.rect.width / worldMapSize;
+        float tileHeight = mapPosition.rect.height / worldMapSize;
 
         for (int y = 0; y < worldMapSize; y++)
         {
@@ -57,11 +61,11 @@ public class MapUI : MonoBehaviour
 
 
 
-                GameObject mapTile = Instantiate(mapTilePrefab, MapPosition);
+                GameObject mapTile = Instantiate(mapTilePrefab, mapPosition);
                 RectTransform tileTransform = mapTile.GetComponent<RectTransform>();
 
-                float tilePositionX = -MapPosition.rect.width / 2 + tileWidth * x;
-                float tilePositionY = -MapPosition.rect.height / 2 + tileHeight * y;
+                float tilePositionX = -mapPosition.rect.width / 2 + tileWidth * x;
+                float tilePositionY = -mapPosition.rect.height / 2 + tileHeight * y;
 
                 GameObject currentMapIndicator = new GameObject("CurrentMapIndicator");
                 currentMapIndicator.transform.SetParent(mapTile.transform);
@@ -71,7 +75,7 @@ public class MapUI : MonoBehaviour
                 Outline currentOutline = currentMapImage.AddComponent<Outline>();
                 currentOutline.effectColor = Color.yellow;
                 currentMapImage.enabled = false; // 초기에는 비활성화
-                
+
 
                 // UI 이미지 위치 및 크기 조정
                 RectTransform indicatorRect = currentMapIndicator.GetComponent<RectTransform>();
@@ -113,7 +117,7 @@ public class MapUI : MonoBehaviour
                 Vector2 deltaMousePosition = currentMousePosition - MousePosition;
 
 
-                MapPosition.anchoredPosition += new Vector2(
+                mapPosition.anchoredPosition += new Vector2(
                                  deltaMousePosition.x * dragSpeed,
                                  deltaMousePosition.y * dragSpeed
                              );
@@ -130,11 +134,12 @@ public class MapUI : MonoBehaviour
         UpdateMapUI();
         canvasGroupUI.alpha = 1f;
         canvasGroupMini.alpha = 0f;
+        mapPosition.anchoredPosition = currentMapTilePosition;
         canvasGroupUI.blocksRaycasts = true;
         canvasGroupUI.interactable = true;
     }
 
-    
+
     public void HideMap()
     {
         canvasGroupUI.alpha = 0f;
@@ -158,7 +163,7 @@ public class MapUI : MonoBehaviour
     }
 
     //맵 그리기 관련 함수=======================================================================
-    
+
     //맵 상태 업데이트
     public void UpdateMapUI()
     {
@@ -178,6 +183,10 @@ public class MapUI : MonoBehaviour
                     {
                         Image currentMapImage = mapTiles[x, y].transform.Find("CurrentMapIndicator").GetComponent<Image>();
                         currentMapImage.enabled = true;
+                        //ShowMap시 맵을 플레이어가 있는 곳으로 바꾸기 위한 변수 저장
+                        currentMapTileRect = mapTiles[x, y].GetComponent<RectTransform>();
+                        currentMapTilePosition = -currentMapTileRect.anchoredPosition;
+
                     }
 
                     // 맵에 상호작용 가능한 요소 표시
@@ -194,7 +203,7 @@ public class MapUI : MonoBehaviour
                 {
                     mapTiles[x, y].color = new Color(1f, 1f, 1f, 0f);
                     mapTiles[x, y].transform.Find("CurrentMapIndicator").gameObject.SetActive(false);
-                    
+
                 }
             }
         }

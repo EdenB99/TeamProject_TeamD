@@ -57,16 +57,13 @@ public class NextStagePortal : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 새로운 씬에서 "PlayerLocation" 태그를 가진 오브젝트 찾기
+        // 새로운 씬에서 "PlayerLocation" 태그를 가진 오브젝트 찾아, 있으면 그곳으로 이동.
         GameObject playerLocation = GameObject.FindWithTag("PlayerLocation");
         if (playerLocation != null && player != null)
         {
             player.transform.position = playerLocation.transform.position;
         }
-        else
-        {
-            Debug.Log("'PlayerLocation' 태그를 가진 게임 오브젝트나 플레이어 오브젝트를 찾을 수 없습니다.");
-        }
+
     }
 }
 
