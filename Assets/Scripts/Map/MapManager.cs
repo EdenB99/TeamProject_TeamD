@@ -18,11 +18,13 @@ public class MapManager : MonoBehaviour
     [Header("변수")]
 
     private Player player;
+    [Header("전체 맵 개수(+-1~3)")]
     [SerializeField] private int mapSize = 20;
     [Header("월드맵크기(MapSize*MapSize)")]
     [SerializeField] private int worldMapSize = 7;
     public int WorldMapSize => worldMapSize;
     [SerializeField] private int currentMapCount = 0;
+    [Header("스테이지맵 프리팹")]
     [SerializeField] private GameObject[] mapPrefabs;
     private MapData[] mapScenes;
     private Dictionary<Vector2Int, MapData> worldMap = new Dictionary<Vector2Int, MapData>();
@@ -36,7 +38,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private GameObject[] startMapPrefabs;
     private MapData[] startMapScenes;
     [Header("다음스테이지맵 프리팹")]
-    [SerializeField] private GameObject nextStageMapPrefabs;
+    [SerializeField] private GameObject[] nextStageMapPrefabs;
     private MapData[] nextStageMapScenes;
 
     private MapData currentMap;
@@ -90,10 +92,10 @@ public class MapManager : MonoBehaviour
         StartCoroutine(GenerateWorldMapCoroutine());
     }
 
-
+    //프리팹을 기반으로 자동으로 MapData[] 씬들을 채워넣는 함수
     private void AutoFillMapData()
     {
-        // StartMapScenes 처리
+        // startMapScenes 처리
         startMapScenes = new MapData[startMapPrefabs.Length];
         for (int i = 0; i < startMapPrefabs.Length; i++)
         {
@@ -129,7 +131,7 @@ public class MapManager : MonoBehaviour
             startMapScenes[i] = mapData;
         }
 
-
+        //mapScenes 처리
         mapScenes = new MapData[mapPrefabs.Length];
 
         for (int i = 0; i < mapPrefabs.Length; i++)
@@ -164,6 +166,43 @@ public class MapManager : MonoBehaviour
 
             mapScenes[i] = mapData;
         }
+
+        //nextStageMapScenes 처리
+        nextStageMapScenes = new MapData[nextStageMapPrefabs.Length];
+
+        for (int i = 0; i < nextStageMapPrefabs.Length; i++)
+        {
+            GameObject mapPrefab = nextStageMapPrefabs[i];
+
+            if (mapPrefab == null)
+            {
+                Debug.LogWarning($"MapScenes {i}가 비어있습니다.");
+                continue;
+            }
+
+            MapData mapData = new MapData();
+            mapData.sceneName = mapPrefab.name;
+
+            // 포탈 정보 수집
+            Transform upPortalTransform = mapPrefab.transform.Find("UpPortal");
+            mapData.HasUpPortal = upPortalTransform != null;
+            mapData.upPortalObject = upPortalTransform?.gameObject;
+
+            Transform downPortalTransform = mapPrefab.transform.Find("DownPortal");
+            mapData.HasDownPortal = downPortalTransform != null;
+            mapData.downPortalObject = downPortalTransform?.gameObject;
+
+            Transform leftPortalTransform = mapPrefab.transform.Find("LeftPortal");
+            mapData.HasLeftPortal = leftPortalTransform != null;
+            mapData.leftPortalObject = leftPortalTransform?.gameObject;
+
+            Transform rightPortalTransform = mapPrefab.transform.Find("RightPortal");
+            mapData.HasRightPortal = rightPortalTransform != null;
+            mapData.rightPortalObject = rightPortalTransform?.gameObject;
+
+            nextStageMapScenes[i] = mapData;
+        }
+
     }
 
     private IEnumerator GenerateWorldMapCoroutine()

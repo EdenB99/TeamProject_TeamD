@@ -476,7 +476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: worldMapSize
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: mapPrefabs.Array.size
@@ -502,6 +502,14 @@ PrefabInstance:
       propertyPath: NextStageMapPrefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: nextStageMapPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: nextStageMapPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 6501491251966627282, guid: a6cd3121fb6ac6b46a3590580e2b3180, type: 3}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: NextStageMapPrefabs.Array.data[0].sceneName
       value: 

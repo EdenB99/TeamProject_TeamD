@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//TODO:: 싱글톤 오류, 미니맵카메라가 삭제됨.
 public class MiniMapCamera : Singleton<MiniMapCamera>
 {
     public float cameraSpeed = 5.0f;
@@ -11,15 +12,16 @@ public class MiniMapCamera : Singleton<MiniMapCamera>
     private float cameraHeight;
     private float cameraWidth;
 
-    protected override void OnPreInitialize()
-    {
-        base.OnPreInitialize();
+    //TODO 해당오류가 등장하며 미니맵 카메라 삭제되는중, 싱글톤오류?
+    /*  DontDestroyOnLoad only works for root GameObjects or components on root GameObjects.
+  UnityEngine.StackTraceUtility:ExtractStackTrace()
+  Singleton`1<MiniMapCamera>:Awake() (at Assets/Scripts/Core/Singleton.cs:57)
+  */
 
-    }
 
-    protected override void OnInitialize()
+
+    private void Start()
     {
-        base.OnInitialize();
         player = GameObject.FindObjectOfType<Player>();
         FindBoundaryObject();
         CalculateCameraSize();

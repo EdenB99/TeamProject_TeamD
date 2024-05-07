@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3983208440089788639, guid: 67277c4b6c9db8c40802620089ccd1ac, type: 3}
       propertyPath: m_Name
-      value: NextStagePortal
+      value: "\uD29C\uD1A0\uB9AC\uC5BC\uD3EC\uD0C8"
       objectReference: {fileID: 0}
     - target: {fileID: 4203266710109614602, guid: 67277c4b6c9db8c40802620089ccd1ac, type: 3}
       propertyPath: m_Color.b
@@ -1449,7 +1449,7 @@ GameObject:
   - component: {fileID: 1184496074}
   - component: {fileID: 1184496073}
   m_Layer: 0
-  m_Name: Square
+  m_Name: TextBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1603,7 +1603,7 @@ PrefabInstance:
       objectReference: {fileID: 5203461588430418544}
     - target: {fileID: 3983208440089788639, guid: 67277c4b6c9db8c40802620089ccd1ac, type: 3}
       propertyPath: m_Name
-      value: NextStagePortal (1)
+      value: "\uC2F1\uAE00\uD1A4\uD14C\uC2A4\uD2B8\uC6A9\uD3EC\uD0C8"
       objectReference: {fileID: 0}
     - target: {fileID: 4203266710109614602, guid: 67277c4b6c9db8c40802620089ccd1ac, type: 3}
       propertyPath: m_Color.b
@@ -1682,7 +1682,7 @@ GameObject:
   - component: {fileID: 1557157880}
   - component: {fileID: 1557157879}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: "\uD29C\uD1A0\uB9F5\uB123\uC73C\uBA74 \uC9C0\uC6B0\uAE30"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1708,7 +1708,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC5EC\uAE30 \uD3EC\uD0C8\uC5D0 \n\uD29C\uD1A0\uB9AC\uC5BC \uB9F5 \uB123\uAE30"
+  m_text: "\uC5EC\uAE30 \uD3EC\uD0C8\uC5D0 \n\uD29C\uD1A0\uB9AC\uC5BC \uB9F5 \uB123\uAE30\n\uD29C\uD1A0\uB9AC\uC5BC\uB9F5\uC5D0
+    \uD50C\uB808\uC774\uC5B4\uAC00 \uC774\uB3D9\uB420 \uC88C\uD45C\uC778\nPlayerLocation\uC624\uBE0C\uC81D\uD2B8\uD544\uC694"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4cedee309444c114b93c5181078f5bd8, type: 2}
   m_sharedMaterial: {fileID: 3908267709554949723, guid: 4cedee309444c114b93c5181078f5bd8, type: 2}

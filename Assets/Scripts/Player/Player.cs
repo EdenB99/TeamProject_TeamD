@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+//TODO:: 싱글톤 오류,플레이어가 dontdestroy에 저장되지않음.
 public class Player : Singleton<Player>
 { 
     [Header("이동")]
@@ -72,8 +73,9 @@ public class Player : Singleton<Player>
         // 플레이어 사망시 작동 정지
         PlayerStats.OnDie += inputActions.Player.Disable;
     }
-
     
+
+
     private void Start()
     {
         dialogBox = FindAnyObjectByType<Image>();  // NPC 상호작용
