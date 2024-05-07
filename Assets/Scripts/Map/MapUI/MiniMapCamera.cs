@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MiniMapCamera : MonoBehaviour
+public class MiniMapCamera : Singleton<MiniMapCamera>
 {
     public float cameraSpeed = 5.0f;
     public GameObject boundaryObject; // Boundary 게임 오브젝트 참조
@@ -11,12 +11,15 @@ public class MiniMapCamera : MonoBehaviour
     private float cameraHeight;
     private float cameraWidth;
 
-    private void Awake()
+    protected override void OnPreInitialize()
     {
-        DontDestroyOnLoad(this);
+        base.OnPreInitialize();
+
     }
-    private void Start()
+
+    protected override void OnInitialize()
     {
+        base.OnInitialize();
         player = GameObject.FindObjectOfType<Player>();
         FindBoundaryObject();
         CalculateCameraSize();

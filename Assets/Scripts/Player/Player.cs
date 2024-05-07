@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
-{
+public class Player : Singleton<Player>
+{ 
     [Header("이동")]
     private Vector2 moveInput; // 이동 입력을 저장할 변수
 
@@ -61,7 +61,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         Player_ani = GetComponent<Animator>();

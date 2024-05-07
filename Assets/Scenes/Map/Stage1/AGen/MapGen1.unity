@@ -498,6 +498,14 @@ PrefabInstance:
       propertyPath: mapPrefabs.Array.data[19]
       value: 
       objectReference: {fileID: 7245154200473590969, guid: 0c8de1c214c7ef64497c458c54a3f5a2, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: NextStageMapPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: NextStageMapPrefabs.Array.data[0].sceneName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8895561708166012469, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.208136

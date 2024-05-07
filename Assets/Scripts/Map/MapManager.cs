@@ -24,7 +24,7 @@ public class MapManager : MonoBehaviour
     public int WorldMapSize => worldMapSize;
     [SerializeField] private int currentMapCount = 0;
     [SerializeField] private GameObject[] mapPrefabs;
-    [SerializeField] private MapData[] mapScenes;
+    private MapData[] mapScenes;
     private Dictionary<Vector2Int, MapData> worldMap = new Dictionary<Vector2Int, MapData>();
     private HashSet<string> usedMapScenes = new HashSet<string>();
     private int centerX;
@@ -32,9 +32,12 @@ public class MapManager : MonoBehaviour
     //TODO:: 쓸일있으면 쓰기 MapUIManager mapUIManager;
 
 
-    [Header("시작맵 리스트풀")]
+    [Header("시작맵 프리팹")]
     [SerializeField] private GameObject[] startMapPrefabs;
-    [SerializeField] private MapData[] startMapScenes;
+    private MapData[] startMapScenes;
+    [Header("다음스테이지맵 프리팹")]
+    [SerializeField] private GameObject nextStageMapPrefabs;
+    private MapData[] nextStageMapScenes;
 
     private MapData currentMap;
     public MapData CurrentMap
@@ -169,6 +172,11 @@ public class MapManager : MonoBehaviour
         {
             currentMapCount = 1;
             Queue<MapData> mapQueue = new Queue<MapData>();
+            //TODO:: 오류
+            /*KeyNotFoundException: The given key '(3, 3)' was not present in the dictionary.
+            System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) (at <17d9ce77f27a4bd2afb5ba32c9bea976>:0)
+            MapManager+<GenerateWorldMapCoroutine>d__23.MoveNext () (at Assets/Scripts/Map/MapManager.cs:172)
+            UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <f7237cf7abef49bfbb552d7eb076e422>:0)*/
             mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
 
             usedMapScenes = new HashSet<string>();
@@ -182,9 +190,13 @@ public class MapManager : MonoBehaviour
                 MapData currentMap = mapQueue.Dequeue();
                 GenerateAdjacentMaps(currentMap, mapQueue);
 
-                CheckWorldMap();
-                RemoveInvalidMaps();
-                GenerateAdditionalMaps();
+                //TODO:: 맵큐없으면 이거라도 작동하도록 변경했음, 잘돌아가는지 테스트필요
+                if (currentMapCount > 8 || mapQueue.Count <= 0)
+                {
+                    CheckWorldMap();
+                    RemoveInvalidMaps();
+                    GenerateAdditionalMaps();
+                }
 
                 genCount++;
 
@@ -198,6 +210,7 @@ public class MapManager : MonoBehaviour
             if (currentMapCount < mapSize)
             {
                 Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
+                genCount = 0;
                 yield return new WaitForSeconds(1f);
             }
         }
@@ -236,32 +249,32 @@ public class MapManager : MonoBehaviour
         }
     }
 
-private void CheckAndActivatePortals()
-{
-    foreach (var kvp in worldMap)
+    private void CheckAndActivatePortals()
     {
-        MapData mapData = kvp.Value;
-        if (mapData == null)
+        foreach (var kvp in worldMap)
         {
-            continue;
-        }
-
-        Vector2Int currentPosition = new Vector2Int(mapData.mapX, mapData.mapY);
-
-        foreach (Direction dir in Enum.GetValues(typeof(Direction)))
-        {
-            Vector2Int adjacentPosition = GetAdjacentPosition(currentPosition.x, currentPosition.y, dir);
-            if (worldMap.ContainsKey(adjacentPosition))
+            MapData mapData = kvp.Value;
+            if (mapData == null)
             {
-                MapData adjacentMapData = worldMap[adjacentPosition];
-                if (adjacentMapData != null && IsConnectedToPreviousMap(mapData, adjacentMapData, OppositeDirection(dir)))
+                continue;
+            }
+
+            Vector2Int currentPosition = new Vector2Int(mapData.mapX, mapData.mapY);
+
+            foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+            {
+                Vector2Int adjacentPosition = GetAdjacentPosition(currentPosition.x, currentPosition.y, dir);
+                if (worldMap.ContainsKey(adjacentPosition))
                 {
-                    ActivatePortal(mapData, OppositeDirection(dir));
+                    MapData adjacentMapData = worldMap[adjacentPosition];
+                    if (adjacentMapData != null && IsConnectedToPreviousMap(mapData, adjacentMapData, OppositeDirection(dir)))
+                    {
+                        ActivatePortal(mapData, OppositeDirection(dir));
+                    }
                 }
             }
         }
     }
-}
 
 
 
@@ -272,33 +285,33 @@ private void CheckAndActivatePortals()
     //실험중---------------------------------------------------------------
 
     //맵 생성을 시작하는 함수
-private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
-{
-    List<Direction> availableDirections = GetAvailableDirections(currentMap);
-
-    foreach (Direction direction in availableDirections)
+    private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
     {
-        Vector2Int newPosition = GetAdjacentPosition(currentMap.mapX, currentMap.mapY, direction);
+        List<Direction> availableDirections = GetAvailableDirections(currentMap);
 
-        if (!worldMap.ContainsKey(newPosition))
+        foreach (Direction direction in availableDirections)
         {
-            string randomMapScene = SelectRandomMapScene(direction);
-            MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
+            Vector2Int newPosition = GetAdjacentPosition(currentMap.mapX, currentMap.mapY, direction);
 
-            if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
+            if (!worldMap.ContainsKey(newPosition))
             {
-                MapData newMap = CreateNewMap(newPosition, selectedMap);
-                if (newMap != null)
+                string randomMapScene = SelectRandomMapScene(direction);
+                MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
+
+                if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
                 {
-                    worldMap[newPosition] = newMap;
-                    currentMapCount++;
-                    Debug.Log($"GenerateAdjacentMaps에서 맵을 생성: {currentMapCount}");
-                    mapQueue.Enqueue(newMap);
+                    MapData newMap = CreateNewMap(newPosition, selectedMap);
+                    if (newMap != null)
+                    {
+                        worldMap[newPosition] = newMap;
+                        currentMapCount++;
+                        Debug.Log($"GenerateAdjacentMaps에서 맵을 생성: {currentMapCount}");
+                        mapQueue.Enqueue(newMap);
+                    }
                 }
             }
         }
     }
-}
 
     private bool CanCreateMapAtPosition(Vector2Int position, Direction direction)
     {
@@ -760,7 +773,7 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
     public bool IsValidPosition(Vector2Int position)
     {
         return position.x >= 0 && position.x < worldMapSize &&
-                         position.y >= 0 && position.y < worldMapSize;
+                     position.y >= 0 && position.y < worldMapSize;
     }
 
 
@@ -820,9 +833,9 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
                     currentMap.isVisited = true;
-                    if(mapUI != null)
+                    if (mapUI != null)
                     {
-                    mapUI.UpdateMapUI();
+                        mapUI.UpdateMapUI();
                     }
                     SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
                 };
@@ -835,6 +848,7 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
         else
         {
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
+
         }
     }
 
@@ -922,26 +936,26 @@ private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
         }
 
 
-                worldMap.Clear();
+        worldMap.Clear();
 
-                // 2. 사용한 에셋 및 리소스 언로드
-                //Resources.UnloadUnusedAssets();
+        // 2. 사용한 에셋 및 리소스 언로드
+        //Resources.UnloadUnusedAssets();
 
-                // 3. 코루틴 정리
-                StopAllCoroutines();
+        // 3. 코루틴 정리
+        StopAllCoroutines();
 
-                // 4. 이벤트 리스너 및 콜백 제거
-                // 필요한 경우 이벤트 리스너나 콜백 함수를 제거합니다.
+        // 4. 이벤트 리스너 및 콜백 제거
+        // 필요한 경우 이벤트 리스너나 콜백 함수를 제거합니다.
 
-                // 5. 정적 변수 및 싱글톤 객체 정리
-                currentMap = null;
-                player = null;
-                mapUI = null;
-                // 필요한 경우 다른 정적 변수나 싱글톤 객체도 정리합니다.
+        // 5. 정적 변수 및 싱글톤 객체 정리
+        currentMap = null;
+        player = null;
+        mapUI = null;
+        // 필요한 경우 다른 정적 변수나 싱글톤 객체도 정리합니다.
 
-                // 6. 캐시 데이터 정리
-                usedMapScenes.Clear();
-                // 필요한 경우 다른 캐시 데이터나 임시 데이터도 정리합니다.
+        // 6. 캐시 데이터 정리
+        usedMapScenes.Clear();
+        // 필요한 경우 다른 캐시 데이터나 임시 데이터도 정리합니다.
 
 
     }

@@ -27349,7 +27349,7 @@ PrefabInstance:
     - target: {fileID: 4317133838303137653, guid: 0c594ceb956179c40bf9ebf1ec2cdd68, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c1a8d16ad1ebb5e4fab66db2e0281af9, type: 2}
+      objectReference: {fileID: 3908267709554949723, guid: 4cedee309444c114b93c5181078f5bd8, type: 2}
     - target: {fileID: 7551787162188795611, guid: 0c594ceb956179c40bf9ebf1ec2cdd68, type: 3}
       propertyPath: bossBoundaryObject
       value: 

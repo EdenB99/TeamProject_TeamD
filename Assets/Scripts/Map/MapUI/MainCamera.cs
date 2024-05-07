@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MainCamera : MonoBehaviour
+public class MainCamera : Singleton<MainCamera>
 {
 
 
@@ -13,17 +13,20 @@ public class MainCamera : MonoBehaviour
     private float cameraHeight;
     private float cameraWidth;
 
-    private void Awake()
+
+    protected override void OnPreInitialize()
     {
-        DontDestroyOnLoad(gameObject);
+        base.OnPreInitialize();
+
     }
 
-    private void Start()
+    protected override void OnInitialize()
     {
         player = GameObject.FindObjectOfType<Player>();
         FindBoundaryObject();
         CalculateCameraSize();
     }
+
 
     private void LateUpdate()
     {

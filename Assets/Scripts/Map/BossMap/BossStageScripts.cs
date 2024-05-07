@@ -130,12 +130,12 @@ public class BossStageScripts : MonoBehaviour
     {
         float time = 0.0f;
         player.enabled = false;
+        Vector3 bossPosition = new Vector3(boss.transform.position.x, boss.transform.position.y+2f, -10);
         yield return new WaitForSeconds(2f);
         mainCamera.enabled = false;
         while (time < 2f)
         {
             time += Time.deltaTime;
-            Vector3 bossPosition = new Vector3(boss.transform.position.x, boss.transform.position.y+2f, -10);
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, bossPosition , Time.deltaTime * 5);
             yield return null;
         }
