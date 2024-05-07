@@ -5,19 +5,17 @@ using UnityEngine.InputSystem;
 
 public class WeaponBase_Call_Swab : MonoBehaviour
 {
-    // 공격 스위칭 관련 ----------------------------------------------------------------------------------
     [SerializeField] List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
 
     int currentWeaponIndex = 0;
 
     PlayerAction inputActions;
 
-    GameObject currentWeaponPrefab;
+    GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
 
     protected virtual void Awake()
     {
         inputActions = new PlayerAction();
-        Debug.Log($"{currentWeaponPrefab}");
     }
 
     protected virtual void OnEnable()
@@ -37,7 +35,6 @@ public class WeaponBase_Call_Swab : MonoBehaviour
         InitializeWeapons();
     }
 
-
     public void InitializeWeapons()
     {
         if (weaponsData.Count > 0)
@@ -45,13 +42,8 @@ public class WeaponBase_Call_Swab : MonoBehaviour
             currentWeaponIndex = 0;
             SwitchToWeapon(currentWeaponIndex);
         }
-        Debug.Log($"{currentWeaponPrefab}");
     }
 
-    /// <summary>
-    /// 무기 스위칭 함수
-    /// </summary>
-    /// <param name="context"></param>
     public void SwitchWeapon(InputAction.CallbackContext context)
     {
         if (weaponsData.Count == 0)
@@ -60,36 +52,43 @@ public class WeaponBase_Call_Swab : MonoBehaviour
             return;
         }
 
+        // 다음 무기 인덱스로 변경
         currentWeaponIndex = (currentWeaponIndex + 1) % weaponsData.Count;
         SwitchToWeapon(currentWeaponIndex);
-        Debug.Log($"{currentWeaponPrefab}");
     }
 
-    /// <summary>
-    /// 무기 프리팹 활성화
-    /// </summary>
-    public void ActivateWeaponPrefab()
+    public void ActivateWeaponPrefab(ItemData_Weapon weaponData)
     {
-        if (currentWeaponPrefab != null)
-        {
-            currentWeaponPrefab.SetActive(false);
-        }
+        // 현재 무기 인스턴스를 제거
+        DestroyCurrentWeapon();
 
-        currentWeaponPrefab = weaponsData[currentWeaponIndex].weaponinfo.modelPrefab;
-        currentWeaponPrefab.SetActive(true);
-        Debug.Log($"{currentWeaponPrefab}");
+        // 새로운 무기 프리팹 생성
+        GameObject weaponPrefab = Instantiate(weaponData.weaponinfo.modelPrefab, transform.position, Quaternion.identity);
+        currentWeaponInstance = weaponPrefab;
     }
-
 
     private void SwitchToWeapon(int index)
     {
-        if (currentWeaponPrefab != null)
+        if (weaponsData.Count == 0)
         {
-            currentWeaponPrefab.SetActive(false);
+            Debug.LogWarning("인벤토리에 무기가 없습니다.");
+            return;
         }
 
-        currentWeaponPrefab = weaponsData[currentWeaponIndex].weaponinfo.modelPrefab;
-        currentWeaponPrefab.SetActive(true);
-        Debug.Log("무기를 스왑했습니다.");
+        // 현재 무기 인스턴스를 제거
+        DestroyCurrentWeapon();
+
+        // 다음 무기 프리팹 생성
+        ItemData_Weapon nextWeaponData = weaponsData[currentWeaponIndex];
+        ActivateWeaponPrefab(nextWeaponData);
+    }
+
+    private void DestroyCurrentWeapon()
+    {
+        if (currentWeaponInstance != null)
+        {
+            Destroy(currentWeaponInstance);
+            currentWeaponInstance = null;
+        }
     }
 }
