@@ -5,6 +5,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// 무기의 추가정보
+/// </summary>
+[System.Serializable]
+public struct WeaponInfo
+{
+    public uint attackPower;
+    public float attackSpeed;
+    public GameObject modelPrefab;
+    public WeaponType weaponType;
+}
+
 public class WeaponBase : WeaponBase_Call_Swab
 {
     new Rigidbody2D rigidbody;
@@ -74,6 +86,11 @@ public class WeaponBase : WeaponBase_Call_Swab
         rigidbody = GetComponent<Rigidbody2D>();
         weaponInputActions = new WeaponAction();
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        if (!IsPlayerAlive())
+        {
+            DeactivateWeapon();
+        }
     }
 
     protected override void Start()
@@ -86,33 +103,41 @@ public class WeaponBase : WeaponBase_Call_Swab
 
         hinge = player.transform.GetChild(0);
 
-        weaponData = new ItemData_Weapon();
-
-        SetAnimationState();
-
         weaponLength = spriteRenderer.sprite.bounds.size.y * transform.localScale.y;
     }
 
     protected override void OnEnable()
     {
-        weaponInputActions.Weapon.Enable();
-        weaponInputActions.Weapon.Attack.performed += OnAttack;
+        if (IsPlayerAlive())
+        {
+            weaponInputActions.Weapon.Enable();
+            weaponInputActions.Weapon.Attack.performed += OnAttack;
+        }
     }
 
     protected override void OnDisable()
     {
-        weaponInputActions.Weapon.Attack.performed -= OnAttack;
-        weaponInputActions.Weapon.Disable();
+        if (IsPlayerAlive())
+        {
+            weaponInputActions.Weapon.Attack.performed -= OnAttack;
+            weaponInputActions.Weapon.Disable();
+        }
     }
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        Attack();
+        if (IsPlayerAlive())
+        {
+            Attack();
+        }
     }
 
     protected void Update()
     {
-        UpdateWeaponPosition();
+        if (IsPlayerAlive())
+        {
+            UpdateWeaponPosition();
+        }
     }
 
     protected virtual void UpdateWeaponPosition()
@@ -139,23 +164,6 @@ public class WeaponBase : WeaponBase_Call_Swab
         effectPosition = transform.position + (direction.normalized * weaponLength);
     }
 
-    void SetAnimationState()
-    {
-        switch (weaponData.weaponType)
-        {
-            case WeaponType.Slash:
-                animator.SetTrigger("SlashAttack");
-                Debug.Log("슬래시 어택 트리거");
-                break;
-
-            case WeaponType.Stab:
-                animator.SetTrigger("StabAttack");
-                break;
-            default:
-                break;
-        }
-        Debug.Log($"{weaponData.weaponType}");
-    } 
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
@@ -172,8 +180,8 @@ public class WeaponBase : WeaponBase_Call_Swab
             // 애니메이션이 오른쪽을 향하도록 원래대로 복구
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
+        
 
-        SetAnimationState();
         animator.SetTrigger(attackTrigger);
         Debug.Log("공격트리거 발동");        
 
@@ -195,8 +203,24 @@ public class WeaponBase : WeaponBase_Call_Swab
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, this.effectPosition, rotation);
         Debug.Log("이펙트 생성");
     }
+
+    /// <summary>
+    /// 플레이어가 죽었을 경우 판별
+    /// </summary>
+    /// <returns></returns>
+    protected bool IsPlayerAlive()
+    {
+        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+        return playerStats != null && playerStats.IsAlive;
+    }
+
+
+    /// <summary>
+    /// 무기의 비활성화 함수
+    /// </summary>
+    protected virtual void DeactivateWeapon()
+    {
+        weaponInputActions.Weapon.Disable();
+    }
+
 }   
-
-
-
-// 플레이어 죽었을 때 무기 동작 불가상태로 만들기

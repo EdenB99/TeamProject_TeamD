@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// 이펙트의 추가정보
+/// </summary>
+[System.Serializable]
+public struct EffectInfo
+{
+    public uint effectSize;
+    public float effectSpeed;
+    public uint weaponDamage;
+    public GameObject modelPrefab;
+}
+
 public class WeaponEffect : RecycleObject, IAttack
 {
     Rigidbody2D rigidbody2d;
@@ -13,9 +25,9 @@ public class WeaponEffect : RecycleObject, IAttack
 
     protected PlayerStats playerStats;
 
-    public GameObject weapon;
+    protected ItemData_Weapon weaponData;
 
-    ItemData_Weapon weaponData;
+    public GameObject weapon;
 
     protected Vector2 mosPosition;
 
@@ -66,24 +78,6 @@ public class WeaponEffect : RecycleObject, IAttack
         playerStats = player.PlayerStats;
 
         transform.localScale = new Vector3(effectSize, effectSize, 1.0f);           // 인스펙터 창에서 이펙트의 사이즈 조절
-    }
-
-    void SetAnimationState()
-    {
-        switch (weaponData.weaponType)
-        {
-            case WeaponType.Slash:
-                animator.SetTrigger("SlashAttack");
-                Debug.Log("슬래시 어택 트리거");
-                break;
-
-            case WeaponType.Stab:
-                animator.SetTrigger("StabAttack");
-                break;
-            default:
-                break;
-        }
-        Debug.Log($"{weaponData.weaponType}");
     }
 
     protected override void OnEnable()

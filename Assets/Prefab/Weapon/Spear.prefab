@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7445561625365424312
 Transform:
   m_ObjectHideFlags: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7376c4311735a9a4daac2d9d4aefee46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: []
+  weaponsData: []
   weaponEffectPrefab: {fileID: 7783160304820389056, guid: 0bfc97bb4b6a05245b2aed0f91e1b672, type: 3}
   weaponDamage: 10
   critical: 10

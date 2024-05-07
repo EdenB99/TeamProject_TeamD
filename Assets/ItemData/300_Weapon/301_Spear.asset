@@ -19,13 +19,12 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: ae314b5bc8b68db4a9e7606f7cbbfe06, type: 3}
   price: 0
   cooltime: 5
-  weaponType: 1
   maxStackCount: 1
   weaponinfo:
     attackPower: 0
     attackSpeed: 0
     modelPrefab: {fileID: 3510177746431845488, guid: c6a5d2c6a94138e4196d7dbc9a8b692a, type: 3}
-    weaponType: 0
+    weaponType: 1
   EffectInfo:
     effectSize: 0
     effectSpeed: 0

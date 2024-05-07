@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Scriptable Object/Item Weapon Data", order = 1)]
 public class ItemData_Weapon : ItemData, IWeapon
 {
-    public WeaponType weaponType;
     public uint maxStackCount = 1;
 
     [Header("무기 기본 정보")]
