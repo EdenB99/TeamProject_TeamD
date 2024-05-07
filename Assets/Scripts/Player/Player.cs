@@ -7,9 +7,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-//TODO:: 싱글톤 오류,플레이어가 dontdestroy에 저장되지않음.
-public class Player : Singleton<Player>
-{ 
+public class Player : MonoBehaviour
+{
     [Header("이동")]
     private Vector2 moveInput; // 이동 입력을 저장할 변수
 
@@ -18,8 +17,11 @@ public class Player : Singleton<Player>
     public float downJump;
     public float downJumpTime;
     private bool isJump = true;
-    private int jumpCount;
+    private int jumpCount = 2;
     private bool isJumpOff;
+    private bool isJumping = false;
+    private bool isDownJumping;
+
 
     [Header("대시")]
     private bool canDash = true;
@@ -42,12 +44,7 @@ public class Player : Singleton<Player>
     private int playerLayer;
     private int platformLayer;
 
-    
-
-
     private PlayerStats playerStats;
-
-
 
     /// <summary>
     /// 외부에서 playerStats 을 읽기위한 프로퍼티
@@ -62,6 +59,7 @@ public class Player : Singleton<Player>
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         Player_ani = GetComponent<Animator>();
@@ -73,7 +71,6 @@ public class Player : Singleton<Player>
         // 플레이어 사망시 작동 정지
         PlayerStats.OnDie += inputActions.Player.Disable;
     }
-    
 
 
     private void Start()
@@ -83,6 +80,20 @@ public class Player : Singleton<Player>
 
     private void Update()
     {
+
+        CheckGround();
+
+        // Handle normal jump
+        if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
+        {
+            Jump();
+        }
+        // Handle jump-off (down jump)
+        else if (Input.GetButton("Jump") && Input.GetKey(KeyCode.S) && isGround && !isJumping)
+        {
+            StartCoroutine(DownJump());
+        }
+
 
         if (!isJumpOff)
         {
@@ -108,7 +119,7 @@ public class Player : Singleton<Player>
         //대쉬 쿨타임 관련 조건문
         if (currentdashTime < dashCoolTime)
         {
-            OnDashingCoolChanged?.Invoke(dashCoolTime,currentdashTime);
+            OnDashingCoolChanged?.Invoke(dashCoolTime, currentdashTime);
             currentdashTime += Time.deltaTime;
             if (currentdashTime >= dashCoolTime)
             {
@@ -121,7 +132,7 @@ public class Player : Singleton<Player>
     private void FixedUpdate()
     {
         MovePosition();
-        CheckGround();
+
 
         if (isDashing)
         {
@@ -140,7 +151,7 @@ public class Player : Singleton<Player>
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Dash.performed += OnDash;
-        inputActions.Player.Interaction.performed += PressF; // NPC 상호작용 버튼 F 
+        inputActions.Player.Interaction.performed += PressF; // NPC 상호작용 버튼 F
         inputActions.Player.Esc.performed += ESC;
         inputActions.Player.DownJump.performed += OnDownJump;
     }
@@ -183,10 +194,10 @@ public class Player : Singleton<Player>
 
     protected void MousePosition()
     {
-        if (playerStats != null && playerStats.IsAlive )
+        if (playerStats != null && playerStats.IsAlive)
         {
             // 마우스 포지션 변경
-           // Camera camera = FindAnyObjectByType<Camera>();
+            // Camera camera = FindAnyObjectByType<Camera>();
             //if ( camera != null)
             {
                 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -205,28 +216,54 @@ public class Player : Singleton<Player>
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && jumpCount > 0)
+        if (!Input.GetKey(KeyCode.S) && jumpCount > 0)
         {
             Jump();
         }
     }
 
-    
+    private void CheckInput()
+    {
+
+    }
+
+
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음,
     void Jump()
     {
-        if (!isJump) return;  // 이미 점프 중이면 점프하지 않음
+        //if (isJumping || isDownJumping) return;  // 이미 점프 중이거나 아랫점프 중이면 점프하지 않음
 
-        // isGround를 이용하여 지면에 있을 때만 점프를 허용
-        if (isJump)
+        Debug.Log("윗점프");
+        rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
+        Player_ani.SetBool("Jump", true);
+        isJumping = true; // 점프 상태 설정
+        jumpCount -= 1;
+       
+    }
+
+    
+
+    public void OnDownJump(InputAction.CallbackContext context)
+    {
+        if (Input.GetKey(KeyCode.S) && isGround && !isJumping) // 점프 중이 아니고, 땅에 있을 때만 아랫점프 허용
         {
-            rigid.velocity = Vector2.up * jumpPower;  // 점프 파워를 적용하여 즉시 점프
-            Player_ani.SetBool("Jump", true);
-            isJump = true;  // 점프 상태를 true로 설정
-            jumpCount -= 1;  // 점프 횟수 감소
+            StartCoroutine(DownJump());
+            Debug.Log("아랫점프");
         }
     }
 
+    IEnumerator DownJump()
+    {
+        isJumpOff = true;
+        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
+        //cc.isTrigger = true;
+        rigid.gravityScale = 15f;
+        yield return new WaitForSeconds(0.2f);
+        rigid.gravityScale = 10f;
+        //cc.isTrigger = false;
+        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+        isJumpOff = false;
+    }
 
     private void OnDash(InputAction.CallbackContext context)
     {
@@ -276,7 +313,7 @@ public class Player : Singleton<Player>
 
 
     /// <summary>
-    /// 대시 무적 
+    /// 대시 무적
     /// </summary>
     /// <returns></returns>
     IEnumerator DashinvincibleMode()
@@ -309,26 +346,12 @@ public class Player : Singleton<Player>
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayerCheck;
 
-    private void CheckGround()
+    private bool CheckGround()
     {
-        RaycastHit2D hit = Physics2D.Raycast (groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
-
-        bool isGround = hit.collider != null;
-
-        if (isGround && rigid.velocity.y <= 0.0f)
-        {
-            isJump = false;  // 지면에 있고, 하강 중이거나 정지 상태라면 점프 상태를 해제
-        }
-        Debug.DrawRay(groundCheck.position, Vector2.down* checkDistance, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
+        bool isGrounded = hit.collider != null && (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Platform"));
+        return isGrounded;
     }
-
-
-
-public void OnDownJump(InputAction.CallbackContext context)
-    {
-
-    }
-
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -394,12 +417,13 @@ public void OnDownJump(InputAction.CallbackContext context)
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Platform"))
         {
             if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.S))
             {
                 cc.enabled = false;
-                Invoke("Jumper", 0.4f);
+                Invoke("Jumper", 0.4f);  
+                Debug.Log("아랫점프");
             }
         }
     }
