@@ -15,6 +15,9 @@ public class MapManager : MonoBehaviour
     //TODO::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO:: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
+    //TODO:: 오류:: 맵 생성중, 한번 다시 돌아간 이후 맵큐가 다떨어졌을 때 맵이 무한으로 생성알림만 뜨는 오류와 맵생성중 맵큐가 무한으로 증식되는 오류 발생중,
+    //TODO:: 맵 로딩만들기 
+    
     [Header("변수")]
 
     private Player player;
@@ -207,19 +210,20 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator GenerateWorldMapCoroutine()
     {
+        currentMapCount = 1;
+        Queue<MapData> mapQueue = new Queue<MapData>();
+        mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
+
+        usedMapScenes = new HashSet<string>();
+        usedMapScenes.Add(worldMap[new Vector2Int(centerX, centerY)].sceneName);
+
         while (currentMapCount < mapSize)
         {
-            currentMapCount = 1;
-            Queue<MapData> mapQueue = new Queue<MapData>();
             //TODO:: 오류
             /*KeyNotFoundException: The given key '(3, 3)' was not present in the dictionary.
             System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) (at <17d9ce77f27a4bd2afb5ba32c9bea976>:0)
             MapManager+<GenerateWorldMapCoroutine>d__23.MoveNext () (at Assets/Scripts/Map/MapManager.cs:172)
             UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <f7237cf7abef49bfbb552d7eb076e422>:0)*/
-            mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
-
-            usedMapScenes = new HashSet<string>();
-            usedMapScenes.Add(worldMap[new Vector2Int(centerX, centerY)].sceneName);
 
             int maxGenCount = 1000;
             int genCount = 0;
@@ -250,8 +254,13 @@ public class MapManager : MonoBehaviour
             {
                 Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
                 genCount = 0;
+                if(mapQueue.Count <= 0)
+                {
+                    break;
+                }
                 yield return new WaitForSeconds(1f);
             }
+
         }
 
         foreach (var kvp in worldMap)
@@ -882,6 +891,7 @@ public class MapManager : MonoBehaviour
             else
             {
                 Debug.LogError($"해당좌표의 맵 데이터를 찾을 수 없습니다.: ({position.x}, {position.y})");
+
             }
         }
         else
@@ -908,7 +918,7 @@ public class MapManager : MonoBehaviour
     {
         if (player == null)
         {
-            Debug.LogError("플레이어 객체가 할당되지 않았습니다.");
+            Debug.Log("플레이어 객체가 할당되지 않았습니다.");
             return;
         }
 
