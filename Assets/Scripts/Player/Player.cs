@@ -79,8 +79,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
 
-        CheckGround();
-
        
         if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
         {
@@ -89,6 +87,7 @@ public class Player : MonoBehaviour
        
         else if (Input.GetButton("Jump") && Input.GetKey(KeyCode.S) && isGround && !isJumping)
         {
+            Debug.Log("아랫점프코루틴");
             StartCoroutine(DownJump());
         }
 
@@ -232,30 +231,31 @@ public class Player : MonoBehaviour
         Player_ani.SetBool("Jump", true);
         isJumping = true; // 점프 상태 설정
         jumpCount = -1;
-       
     }
 
     
 
     public void OnDownJump(InputAction.CallbackContext context)
     {
+        
         if (Input.GetKey(KeyCode.S) && isGround && !isJumping) // 점프 중이 아니고, 땅에 있을 때만 아랫점프 허용
         {
-            StartCoroutine(DownJump());
             Debug.Log("아랫점프");
+            StartCoroutine(DownJump());
         }
+
     }
 
     IEnumerator DownJump()
     {
         isJumpOff = true;
         Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
-        //cc.isTrigger = true;
-        rigid.gravityScale = 15f;
+        cc.isTrigger = true;
+        //rigid.gravityScale = 15f;
         yield return new WaitForSeconds(0.2f);
-        rigid.gravityScale = 10f;
-        //cc.isTrigger = false;
-        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+        //rigid.gravityScale = 10f;
+        cc.isTrigger = false;
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), false);
         isJumpOff = false;
     }
 
@@ -340,6 +340,11 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayerCheck;
 
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayerCheck);
+    }
+
     private bool CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
@@ -413,10 +418,12 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Platform"))
         {
-            if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
-                cc.enabled = false;
-                Invoke("Jumper", 0.2f);  
+                Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), true);
+                StartCoroutine(DownJump());
+                //cc.enabled = false;
+                //Invoke("Jumper", 0.2f);  
                 Debug.Log("아랫점프3");
             }
         }
