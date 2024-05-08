@@ -10,6 +10,7 @@ public class MapData
     public int mapY;
     public Direction enteredDirection;
 
+    public bool hasEnemies;
     public bool isVisited;
     public bool hasItem;
     public bool hasBossRoom;

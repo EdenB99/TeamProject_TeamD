@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,7 +51,8 @@ public class MapManager : MonoBehaviour
         get { return currentMap; }
         private set { currentMap = value; }
     }
-    MapUI mapUI;
+    private MapUI mapUI;
+    private GameObject enemyParent;
 
     private void Awake()
     {
@@ -252,12 +254,13 @@ public class MapManager : MonoBehaviour
 
             if (currentMapCount < mapSize)
             {
-                Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
                 genCount = 0;
                 if(mapQueue.Count <= 0)
                 {
+                    Debug.LogWarning($"맵큐가 끝났습니다, 이어질 맵이없어 적게만들어졌습니다. 현재 맵 개수: {currentMapCount}.");
                     break;
                 }
+                Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
                 yield return new WaitForSeconds(1f);
             }
 
@@ -353,7 +356,6 @@ public class MapManager : MonoBehaviour
                     {
                         worldMap[newPosition] = newMap;
                         currentMapCount++;
-                        Debug.Log($"GenerateAdjacentMaps에서 맵을 생성: {currentMapCount}");
                         mapQueue.Enqueue(newMap);
                     }
                 }
@@ -544,7 +546,6 @@ public class MapManager : MonoBehaviour
         {
             worldMap.Remove(position);
             currentMapCount--;
-            Debug.Log($"RemoveInvalidMaps 에서 맵을 삭제: {currentMapCount}");
         }
 
         foreach (string sceneName in invalidSceneNames)
@@ -881,6 +882,7 @@ public class MapManager : MonoBehaviour
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
                     currentMap.isVisited = true;
+                    CheckMonstersInScene();
                     if (mapUI != null)
                     {
                         mapUI.UpdateMapUI();
@@ -899,6 +901,25 @@ public class MapManager : MonoBehaviour
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
 
         }
+    }
+    private void CheckMonstersInScene()
+    {
+        if (enemyParent == null)
+        {
+            enemyParent = GameObject.Find("Enemy");
+        }
+        if (enemyParent != null)
+        {
+            EnemyBase_[] enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+            currentMap.hasEnemies = enemies.Length > 0;
+
+            Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
+        }
+        else
+        {
+            currentMap.hasEnemies = false;
+        }
+
     }
 
     private Direction OppositeDirection(Direction direction)

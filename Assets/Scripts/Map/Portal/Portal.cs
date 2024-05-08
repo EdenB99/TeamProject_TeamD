@@ -49,10 +49,13 @@ public class Portal : MonoBehaviour
     {
         if (collision.CompareTag("Player") && cooldownTime > useCooldown)
         {
-            mapManager.EnterPortal(direction);
-            cooldownTime = 0f;
-            mainCamera.transform.position = new Vector3(0,0,mainCamera.transform.position.z);
-
+            MapData currentMap = mapManager.CurrentMap;
+            if (currentMap != null && !currentMap.hasEnemies)
+            {
+                mapManager.EnterPortal(direction);
+                cooldownTime = 0f;
+                mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+            }
         }
     }
 
