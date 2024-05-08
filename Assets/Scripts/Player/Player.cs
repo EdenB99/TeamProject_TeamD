@@ -17,11 +17,9 @@ public class Player : MonoBehaviour
     public float downJump;
     public float downJumpTime;
     private bool isJump = true;
-    private int jumpCount = 2;
+    private int jumpCount;
     private bool isJumpOff;
-    private bool isJumping = false;
-    private bool isDownJumping;
-
+    private bool isJumping;
 
     [Header("대시")]
     private bool canDash = true;
@@ -83,12 +81,12 @@ public class Player : MonoBehaviour
 
         CheckGround();
 
-        // Handle normal jump
+       
         if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
         {
             Jump();
         }
-        // Handle jump-off (down jump)
+       
         else if (Input.GetButton("Jump") && Input.GetKey(KeyCode.S) && isGround && !isJumping)
         {
             StartCoroutine(DownJump());
@@ -222,22 +220,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void CheckInput()
-    {
-
-    }
-
+   
 
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음,
     void Jump()
     {
-        //if (isJumping || isDownJumping) return;  // 이미 점프 중이거나 아랫점프 중이면 점프하지 않음
+        if (isJumping) return;
 
         Debug.Log("윗점프");
         rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
         Player_ani.SetBool("Jump", true);
         isJumping = true; // 점프 상태 설정
-        jumpCount -= 1;
+        jumpCount = -1;
        
     }
 
@@ -356,12 +350,12 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Platform"))
         {
             jumpCount = 2;
             canDash = true;
             Player_ani.SetBool("Jump", false);
+            isJumping = false;
         }
     }
 
@@ -422,8 +416,8 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.S))
             {
                 cc.enabled = false;
-                Invoke("Jumper", 0.4f);  
-                Debug.Log("아랫점프");
+                Invoke("Jumper", 0.2f);  
+                Debug.Log("아랫점프3");
             }
         }
     }
