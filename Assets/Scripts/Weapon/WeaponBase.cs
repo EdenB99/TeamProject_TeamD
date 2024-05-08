@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public struct WeaponInfo
 {
-    public uint attackPower;
+    public uint weaponDamage;
     public float attackSpeed;
     public GameObject modelPrefab;
     public WeaponType weaponType;
@@ -29,8 +29,6 @@ public class WeaponBase : WeaponBase_Call_Swab
     /// 무기의 세로 길이
     /// </summary>
     private float weaponLength;
-
-    ItemData_Weapon weaponData;
 
     protected Player player;
 
