@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf2903e2ea7c0940a3fa61a980b9c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: ddbd88686100ff4439cd98aee13b7571, type: 2}
   weapon: {fileID: 3510177746431845488, guid: c6a5d2c6a94138e4196d7dbc9a8b692a, type: 3}
   effectSpeed: 1
   effectSize: 1

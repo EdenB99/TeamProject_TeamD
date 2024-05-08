@@ -27,4 +27,15 @@ public class ItemData_Weapon : ItemData, IWeapon
         WeaponSlot.SlotItemData = null;
         WeaponSlot = null;
     }
+
+    public int GetWeaponDamage()
+    {
+        return (int)weaponinfo.weaponDamage;
+    }
+
+    public EffectInfo GetEffectInfo()
+    {
+        return EffectInfo;
+    }
 }
+

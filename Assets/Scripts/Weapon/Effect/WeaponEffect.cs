@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 /// <summary>
 /// 이펙트의 추가정보
@@ -20,12 +21,12 @@ public class WeaponEffect : RecycleObject, IAttack
     Rigidbody2D rigidbody2d;
 
     Animator animator;
-    
+
     protected Player player;
 
     protected PlayerStats playerStats;
 
-    protected ItemData_Weapon weaponData;
+    public ItemData_Weapon weaponData;
 
     public GameObject weapon;
 
@@ -71,8 +72,23 @@ public class WeaponEffect : RecycleObject, IAttack
     {
         animator = GetComponent<Animator>();
     }
+
     protected virtual void Start()
     {
+        if (weaponData != null)
+        {
+            weaponDamage = weaponData.GetWeaponDamage();
+
+            // 무기 이펙트 정보 가져오기
+            EffectInfo effectInfo = weaponData.GetEffectInfo();
+            effectSize = effectInfo.effectSize;
+            effectSpeed = effectInfo.effectSpeed;
+        }
+        else
+        {
+            Debug.LogError("WeaponData is not assigned!");
+        }
+
         player = GameManager.Instance.Player;
 
         playerStats = player.PlayerStats;
@@ -92,22 +108,16 @@ public class WeaponEffect : RecycleObject, IAttack
 
     }
 
-    //public void OnStabAnimationEvent()
-    //{
-    //    stabCollider.enabled = true;
-    //    slashCollider.enabled = false;
-    //}
-
-    //public void OnSlashAnimation()
-    //{
-    //    stabCollider.enabled = false;
-    //    slashCollider.enabled = true;
-    //}
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
+            IEnemy enemy = collision.GetComponent<IEnemy>();
+
+            float totalDamage = AttackPower;
+
+            enemy.TakeDamage(totalDamage);
             /* 추후에 인터페이스로 에너미 찾을 예정
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
@@ -117,7 +127,7 @@ public class WeaponEffect : RecycleObject, IAttack
             }
             */
         }
-    }
+    }   
 
     protected IEnumerator DeactivateEffectAfterAnimation()
     {
