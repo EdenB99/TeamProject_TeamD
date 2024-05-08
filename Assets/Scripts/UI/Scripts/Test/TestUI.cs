@@ -24,12 +24,12 @@ public class TestUI : MonoBehaviour
 
         ingameUI.AddQuickSlotItem(ItemCode.HealingPotion_A, 3);
 
-
-        inven.AddItem(ItemCode.HealingPotion_A);
-        inven.AddItem(ItemCode.Apple);
-        inven.AddItem(ItemCode.Sword);
-        inven.AddItem(ItemCode.Diamond);
         inven.AddItem(ItemCode.Helmet);
+
+        inven.AddItem(ItemCode.Kettle);
+        inven.AddItem(ItemCode.Sword);
+        inven.AddItem(ItemCode.Spear);
+        
 
 
     }

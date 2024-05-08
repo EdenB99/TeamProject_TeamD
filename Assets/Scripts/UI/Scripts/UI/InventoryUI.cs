@@ -104,11 +104,9 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onClick += OnSlotClick;
             slotUIs[i].onPointerEnter += OnItemDetailOn;
             slotUIs[i].onPointerExit += OnItemDetailOff;
-
-            usableUI.ClickedDiscard += DiscardItem;
-            usableUI.ClickedEquip_Use += Eqiup_UseItem;
         }
-
+        usableUI.ClickedDiscard += DiscardItem;
+        usableUI.ClickedEquip_Use += Eqiup_UseItem;
         tempSlotUI.InitializeSlot(inven.TempSlot);  // 임시 슬롯 초기화
         Close();
     }
@@ -189,7 +187,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
-        Debug.Log("장착시도");
         ItemData itemdata = slotUI.InvenSlot.ItemData;
         if (itemdata != null)
         {
@@ -203,7 +200,6 @@ public class InventoryUI : MonoBehaviour
                         {
                             equipable.UnEquip();               //weaponslot에서 삭제
                         }
-                        else Debug.Log("해당슬롯의 아이템은 착용되지 않음");
                         slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
                     } else
                     {
@@ -242,16 +238,13 @@ public class InventoryUI : MonoBehaviour
     {
         IEquipable equipable = itemData as IEquipable;
         //아이템 데이터 내에 장착 인터페이스 확인
-        bool isFull = true;
+        bool isFull = false;
         //웨폰 슬롯의 가득참을 확인하는 변수
         for (int i = 0; i<WeaponsSlots.Length; i++) //슬롯의 갯수까지
         {
             if (WeaponsSlots[i].SlotItemData == null) //현재 슬롯이 비어있으면
             {
-                if (equipable != null)                  //장착 인터페이스가 있다면
-                {
-                    equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
-                }
+                equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
                 isFull = false;                         //슬롯이 가득차지 않음
                 break;                                  //반복문 종료
             } else
@@ -259,7 +252,7 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;                          //비어있지 않으면 변경없음
             }
         }
-        if (isFull)     //모든 슬롯이 비어있다면
+        /*if (isFull)     //모든 슬롯이 비어있다면
         {
             for (int i =0; i<WeaponsSlots.Length; i++)      //슬롯의 갯수까지
             {
@@ -271,7 +264,7 @@ public class InventoryUI : MonoBehaviour
                     break;
                 }
             }
-        }
+        }*/
     }
 
     private void EquipAccessory(ItemData itemdata)
@@ -294,7 +287,7 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;
             }
         }
-        if (!isFull)        //슬롯이 가득찼을 때
+        if (isFull)        //슬롯이 가득찼을 때
         {
             IEquipable firstAccessory = AccessoriesSlots[0].SlotItemData as IEquipable;
             firstAccessory.UnEquip(); //첫번째 슬롯의 아이템 해제
@@ -310,8 +303,11 @@ public class InventoryUI : MonoBehaviour
 
     private void DiscardItem(InvenSlotUI slotUI)
     {
+        if (slotUI.InvenSlot.IsEquipped)
+        {
+            Eqiup_UseItem(slotUI);
+        }
         slotUI.InvenSlot.ClearSlotItem();
     }
 
 }
-//이미 장착한 아이템을 해제하는것이 필요. Usable과의 연동필요

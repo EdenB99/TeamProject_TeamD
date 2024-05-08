@@ -27,13 +27,39 @@ public class UsableUI : MonoBehaviour
     /// </summary>
     public bool isOn = false;
 
-    
+    private Button EquipUseButton;
+    private Button discardButton;
+    private Button ExitButton;
+
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         Close();
+        Transform child = gameObject.transform.GetChild(0);
+        EquipUseButton = child.GetComponent<Button>();
+        child = gameObject.transform.GetChild(1);
+        discardButton = child.GetComponent<Button>();
+        child = gameObject.transform.GetChild(2);
+        ExitButton = child.GetComponent<Button>();
 
+        
     }
+    private void OnEnable()
+    {
+        EquipUseButton.onClick.AddListener(Equip_UseButton);
+        discardButton.onClick.AddListener(DiscardButton);
+        ExitButton.onClick.AddListener(exitButton);
+    }
+
+    private void OnDisable()
+    {
+        EquipUseButton.onClick.RemoveAllListeners();
+        discardButton.onClick.RemoveAllListeners();
+        ExitButton.onClick.RemoveAllListeners();
+    }
+
+    
     public void Open(InvenSlotUI SlotUI)
     {
         isOn = true;

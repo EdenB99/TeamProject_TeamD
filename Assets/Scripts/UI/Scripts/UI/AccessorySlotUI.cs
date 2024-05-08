@@ -10,6 +10,7 @@ public class AccessorySlotUI : EquipmentSlot_Base
         if (slotItemData != null)
         {
             SetEquipmentText(true);
+            Debug.Log(SlotItemData.ToString());
         } else
         {
             SetEquipmentText(false);

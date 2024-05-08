@@ -29,6 +29,7 @@ public class EquipmentSlot_Base : MonoBehaviour
         itemimage = transform.GetChild(0).GetComponent<Image>();
         EquipText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         ItemDataChange += SetSlotItemChange;
+        SetEquipmentText(false);
     }
     public virtual void SetSlotItemChange(ItemData slotItemData)
     {
