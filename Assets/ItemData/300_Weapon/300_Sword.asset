@@ -21,7 +21,7 @@ MonoBehaviour:
   cooltime: 5
   maxStackCount: 1
   Weaponinfo:
-    weaponDamage: 1
+    weaponDamage: 10
     attackSpeed: 0
     modelPrefab: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
     weaponType: 0

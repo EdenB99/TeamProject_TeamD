@@ -902,7 +902,7 @@ public class MapManager : MonoBehaviour
 
         }
     }
-    private void CheckMonstersInScene()
+    public void CheckMonstersInScene()
     {
         if (enemyParent == null)
         {

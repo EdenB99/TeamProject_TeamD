@@ -425,7 +425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: worldMapSize
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: mapPrefabs.Array.size
