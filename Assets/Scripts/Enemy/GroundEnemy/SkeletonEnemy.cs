@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class SkeletonEnemy : EnemyBase_
 { 
     
-    //TODO:: 플레이어와 닿으면 발생하는 애니메이션에서 스프라이트가 과도하게 커지고 잘림, 무적상태임
+
 
     /// <summary>
     /// 레이의 길이
@@ -36,7 +37,7 @@ public class SkeletonEnemy : EnemyBase_
 
     protected override void FixedUpdate()
     {
-        if (playerDetected) 
+        if (playerDetected && IsLive) 
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -52,6 +53,17 @@ public class SkeletonEnemy : EnemyBase_
             }
         }
         attackAction();
+
+        if (!IsLive) // 죽을시
+        {
+            fade += Time.deltaTime * 0.5f;
+            sprite.material.SetFloat(FadeID, 1 - fade);
+
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 1초후 삭제
+            }
+        }
     }
 
     bool playerCheck()

@@ -162,6 +162,10 @@ public class WeaponBase : WeaponBase_Call_Swab
         effectPosition = transform.position + (direction.normalized * weaponLength);
     }
 
+    private void OnDestroy()
+    {
+        weaponInputActions.Weapon.Disable();
+    }
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()

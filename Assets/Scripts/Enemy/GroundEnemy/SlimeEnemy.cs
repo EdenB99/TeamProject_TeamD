@@ -5,9 +5,6 @@ using UnityEngine;
 public class SlimeEnemy : EnemyBase_
 {
 
-    //TODO:: 오류: 슬라임이 죽어도 움직이는녀석이 있으며, 죽어도 애니메이션은 계속 작동, 죽은녀석주변에 움직이는 적이있으면 그 적에 끼어서 같이 움직임,
-    //또한 아군과 닿으면 아군도 공격함, 점프시 슬라임이 잠깐 사라짐
-    //포션에 대한것도 같이 적어놓음, 포션이 왼쪽,오른쪽,아래에서 플레이어에게 닿으면 그냥 벽의역할, 밟아야 먹어짐, 포션을 먹어도 빨간 게이지는 차지만, 피는 그대로임
 
     /// <summary>
     /// 레이의 길이
@@ -39,7 +36,7 @@ public class SlimeEnemy : EnemyBase_
 
     protected override void FixedUpdate()
     {
-        if (playerDetected)
+        if (playerDetected && IsLive)
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -57,6 +54,17 @@ public class SlimeEnemy : EnemyBase_
             {
                 isJumping = false;
                 animator.SetBool(isJump_Hash, false);
+            }
+        }
+
+        if (!IsLive) // 죽을시
+        {
+            fade += Time.deltaTime * 0.5f;
+            sprite.material.SetFloat(FadeID, 1 - fade);
+
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 1초후 삭제
             }
         }
     }
