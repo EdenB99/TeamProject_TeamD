@@ -39,7 +39,7 @@ public class SlimeEnemy : EnemyBase_
 
     protected override void FixedUpdate()
     {
-        if (playerDetected)
+        if (playerDetected && IsLive)
         {
             targetPos = player.transform.position;
             if (IsMove)
@@ -57,6 +57,17 @@ public class SlimeEnemy : EnemyBase_
             {
                 isJumping = false;
                 animator.SetBool(isJump_Hash, false);
+            }
+        }
+
+        if (!IsLive) // 죽을시
+        {
+            fade += Time.deltaTime * 0.5f;
+            sprite.material.SetFloat(FadeID, 1 - fade);
+
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 1초후 삭제
             }
         }
     }

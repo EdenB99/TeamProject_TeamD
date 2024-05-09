@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8821087890819973799}
   - component: {fileID: 7514826088176447188}
   - component: {fileID: 7317045491588493595}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SorcererEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     //컴포넌트 불러오기
     protected Rigidbody2D rb;
     Collider2D col;
-    SpriteRenderer sprite;
+    protected SpriteRenderer sprite;
     Sprite sprite2d;
     Texture2D texture;
 
@@ -114,9 +114,9 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     public Action onDie { get; set; }
 
     readonly int Texture2DID = Shader.PropertyToID("_Texture2D");
-    readonly int FadeID = Shader.PropertyToID("_Fade");
+    protected readonly int FadeID = Shader.PropertyToID("_Fade");
     readonly int HitID = Shader.PropertyToID("_Hit");
-    float fade = 0.0f;
+    protected float fade = 0.0f;
 
 
     protected virtual void Awake()

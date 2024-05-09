@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class SkeletonEnemy : EnemyBase_
 { 
@@ -52,6 +53,17 @@ public class SkeletonEnemy : EnemyBase_
             }
         }
         attackAction();
+
+        if (!IsLive) // 죽을시
+        {
+            fade += Time.deltaTime * 0.5f;
+            sprite.material.SetFloat(FadeID, 1 - fade);
+
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 1초후 삭제
+            }
+        }
     }
 
     bool playerCheck()

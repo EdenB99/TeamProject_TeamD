@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        CheckGround();
+
 
 /*
         if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
@@ -365,8 +365,8 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     private bool CheckGround()  
     {
-        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
-        return hit.collider != null && (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Platform"));
+
+        return false;
     }
 
 

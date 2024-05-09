@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8989326585196112762}
   - component: {fileID: 8807506331804036958}
   - component: {fileID: 7537326202985532171}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SlimeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -193,7 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b793b4a46ff22478526ce5b78dc61e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 2729413241124288706}
   playerDetected: 0
   mobDamage: 0
   mobMoveSpeed: 2.5
@@ -202,4 +201,8 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
+  dropItems:
+  - code: 2
+    dropRatio: 0.233
+    dropCount: 1
   jumpForce: 7
