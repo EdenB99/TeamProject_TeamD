@@ -13,11 +13,11 @@ using Random = UnityEngine.Random;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
+    //TODO H:: 맵상태 해당 스테이지동안 저장하기.
+    //TODO L::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
-    //TODO:: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
-    //TODO:: 오류:: 맵 생성중, 한번 다시 돌아간 이후 맵큐가 다떨어졌을 때 맵이 무한으로 생성알림만 뜨는 오류와 맵생성중 맵큐가 무한으로 증식되는 오류 발생중,
-    //TODO:: 맵 로딩만들기 
+    //TODO:M: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
+    //TODO L:: 맵 로딩만들기 
     
     [Header("변수")]
 
@@ -911,6 +911,7 @@ public class MapManager : MonoBehaviour
         if (enemyParent != null)
         {
             EnemyBase_[] enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+
             currentMap.hasEnemies = enemies.Length > 0;
 
             Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");

@@ -238,7 +238,6 @@ public class Player : MonoBehaviour
     void Jump()
     {
         //if (isJumping) return;
-        Debug.Log("윗점프");
         rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
         Player_ani.SetBool("Jump", true);
         isJumping = true; // 점프 상태 설정

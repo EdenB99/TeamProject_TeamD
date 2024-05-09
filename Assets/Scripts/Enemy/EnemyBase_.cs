@@ -175,6 +175,16 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         }
     }
 
+    private void OnDestroy()
+    {
+        MapManager map = FindAnyObjectByType<MapManager>();
+
+        if (map != null)
+        {
+            map.CheckEnemysInScene();
+        }
+    }
+
     /// <summary>
     /// Update에서 실행될 코드 ( 플레이어 발견 )
     /// </summary>
@@ -306,18 +316,13 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         Debug.Log("죽었다.");
         IsLive = false;
         sprite.material.SetFloat(HitID, 0);
-        this.gameObject.layer = 17;
+        //this.gameObject.layer = 17;
         StopAllCoroutines();
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
 
-        MapManager map = FindAnyObjectByType<MapManager>();
 
-        if ( map != null)
-        {
-            map.CheckEnemysInScene();
-        }
 
     }
 }

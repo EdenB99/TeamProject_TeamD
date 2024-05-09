@@ -162,6 +162,10 @@ public class WeaponBase : WeaponBase_Call_Swab
         effectPosition = transform.position + (direction.normalized * weaponLength);
     }
 
+    private void OnDestroy()
+    {
+        weaponInputActions.Weapon.Disable();
+    }
 
     // 추가된 함수: 공격 입력을 받아 애니메이션을 재생
     protected virtual void Attack()
@@ -181,7 +185,6 @@ public class WeaponBase : WeaponBase_Call_Swab
         
 
         animator.SetTrigger(attackTrigger);
-        Debug.Log("공격트리거 발동");        
 
         ActivateEffect(transform.position);
 
@@ -199,7 +202,6 @@ public class WeaponBase : WeaponBase_Call_Swab
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, this.effectPosition, rotation);
-        Debug.Log("이펙트 생성");
     }
 
     /// <summary>
