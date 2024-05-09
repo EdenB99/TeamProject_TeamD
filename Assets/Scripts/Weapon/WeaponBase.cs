@@ -179,9 +179,7 @@ public class WeaponBase : WeaponBase_Call_Swab
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         
-
         animator.SetTrigger(attackTrigger);
-        Debug.Log("공격트리거 발동");        
 
         ActivateEffect(transform.position);
 
@@ -199,7 +197,6 @@ public class WeaponBase : WeaponBase_Call_Swab
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, this.effectPosition, rotation);
-        Debug.Log("이펙트 생성");
     }
 
     /// <summary>

@@ -143,11 +143,15 @@ public class PlayerStats : MonoBehaviour
 
         if (collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
         {
-            Debug.Log("트리거발견");
+                if(!collision.CompareTag("PlayerAttack"))
+            {
+                Debug.Log("트리거발견");
 
-            IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
+                IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
 
-            TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
+                TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
+            } 
+
         }
     }
 

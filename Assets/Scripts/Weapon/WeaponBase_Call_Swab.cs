@@ -65,8 +65,15 @@ public class WeaponBase_Call_Swab : MonoBehaviour
         DestroyCurrentWeapon();
 
         // 새로운 무기 프리팹 생성
-        GameObject weaponPrefab = Instantiate(weaponData.Weaponinfo.modelPrefab, transform.position, Quaternion.identity);
-        currentWeaponInstance = weaponPrefab;
+        if (weaponData != null)
+        {
+            GameObject weaponPrefab = Instantiate(weaponData.Weaponinfo.modelPrefab, transform.position, Quaternion.identity);
+            currentWeaponInstance = weaponPrefab;
+        }
+        else
+        {
+            Debug.Log("빈손");
+        }
     }
 
     private void SwitchToWeapon(int index)
@@ -95,11 +102,30 @@ public class WeaponBase_Call_Swab : MonoBehaviour
     }
     public void getWeaponData(ItemData_Weapon itemData)
     {
+        // 빈 슬롯이 있으면 해당 슬롯에 무기를 추가하고 함수 종료
+        for (int i = 0; i < weaponsData.Count; i++)
+        {
+            if (weaponsData[i] == null)
+            {
+                weaponsData[i] = itemData;
+                return;
+            }
+        }
+
+        // 빈 슬롯이 없으면 리스트의 끝에 무기 추가
         weaponsData.Add(itemData);
     }
 
     public void deleteWeaponData(ItemData_Weapon itemData)
     {
-        weaponsData.Remove(itemData);
+        // 무기를 찾아서 제거
+        for (int i = 0; i < weaponsData.Count; i++)
+        {
+            if (weaponsData[i] == itemData)
+            {
+                weaponsData.RemoveAt(i);
+                return; // 무기를 찾으면 함수 종료
+            }
+        }
     }
 }

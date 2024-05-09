@@ -28,16 +28,23 @@ public class GameManager : Singleton<GameManager>
 
     public Material Mobmaterial;
 
-    //WeaponEffectDataManager weaponEffectDataManager;
+    WeaponBase_Call_Swab weaponBase_Call_Swab;
 
-    //public WeaponEffectDataManager WeaponEffectData => weaponEffectDataManager;
+    public WeaponBase_Call_Swab WeaponBase_Call_Swab
+    {
+        get
+        {
+            if (weaponBase_Call_Swab == null)
+                FindAnyObjectByType<WeaponBase_Call_Swab>();
+            return weaponBase_Call_Swab;
+        }
+    }
 
     protected override void OnPreInitialize()
     {
         base.OnPreInitialize();
         itemDataManager = GetComponent<ItemDataManager>();
         bulletDataManager = GetComponent<BulletDataManager>();
-        //weaponEffectDataManager = GetComponent<WeaponEffectDataManager>();
     }
 
     protected override void OnInitialize()
@@ -45,5 +52,6 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         inventoryUI = FindAnyObjectByType<InventoryUI>();
         ingameUI = FindAnyObjectByType<IngameUI>();
+        weaponBase_Call_Swab = FindAnyObjectByType<WeaponBase_Call_Swab>();
     }
 }

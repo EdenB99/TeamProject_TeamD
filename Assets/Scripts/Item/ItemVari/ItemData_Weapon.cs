@@ -14,11 +14,10 @@ public class ItemData_Weapon : ItemData, IWeapon
     public EffectInfo EffectInfo;
 
     [HideInInspector]
-    public EquipmentSlot_Base WeaponSlot;    
+    public EquipmentSlot_Base WeaponSlot;
 
     public void Equip(EquipmentSlot_Base slot)
-    {
-
+    {     
         WeaponSlot = slot;
         WeaponSlot.SlotItemData = this;
 
@@ -34,6 +33,7 @@ public class ItemData_Weapon : ItemData, IWeapon
         WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
         if(weaponBase != null)
         {
+            Debug.Log($"{this}");
             weaponBase.deleteWeaponData(this);
         }
 
