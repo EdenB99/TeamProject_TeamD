@@ -78,18 +78,31 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        CheckGround();
 
-       
+/*
         if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
         {
             Jump();
         }
-       
+
         else if (Input.GetButton("Jump") && Input.GetKey(KeyCode.S) && isGround && !isJumping)
         {
             Debug.Log("아랫점프코루틴");
             StartCoroutine(DownJump());
+        }*/
+
+        if (!isJumping && jumpCount > 0 && Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S))
+        {
+            Jump();
         }
+
+        if (CheckGround() && isJumping)
+        {
+            isJumping = false;
+            jumpCount = 2;  // 더블 점프를 위해 점프 카운터를 리셋
+        }
+    
 
 
         if (!isJumpOff)
@@ -212,8 +225,8 @@ public class Player : MonoBehaviour
 
 
     public void OnJump(InputAction.CallbackContext context)
-    {
-        if (!Input.GetKey(KeyCode.S) && jumpCount > 0)
+    {//!Input.GetKey(KeyCode.S)
+        if (context.performed && jumpCount > 0)
         {
             Jump();
         }
@@ -224,21 +237,21 @@ public class Player : MonoBehaviour
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음,
     void Jump()
     {
-        if (isJumping) return;
-
+        //if (isJumping) return;
         Debug.Log("윗점프");
         rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
         Player_ani.SetBool("Jump", true);
         isJumping = true; // 점프 상태 설정
-        jumpCount = -1;
+        jumpCount --;
     }
 
     
 
     public void OnDownJump(InputAction.CallbackContext context)
     {
-        
+
         if (Input.GetKey(KeyCode.S) && isGround && !isJumping) // 점프 중이 아니고, 땅에 있을 때만 아랫점프 허용
+        //if (context.performed && CheckGround() && !isJumping)
         {
             Debug.Log("아랫점프");
             StartCoroutine(DownJump());
@@ -255,7 +268,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         //rigid.gravityScale = 10f;
         cc.isTrigger = false;
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), false);
+        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), false);
+        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
         isJumpOff = false;
     }
 
@@ -345,11 +359,14 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayerCheck);
     }
 
-    private bool CheckGround()
+    /// <summary>
+    /// 그라운드 체크에서 오류가뜨면 플레이어 자식에 그라운드 체크 Transform넣어줘야됨
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckGround()  
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, checkDistance, groundLayerCheck);
-        bool isGrounded = hit.collider != null && (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Platform"));
-        return isGrounded;
+        return hit.collider != null && (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Platform"));
     }
 
 
@@ -360,7 +377,6 @@ public class Player : MonoBehaviour
             jumpCount = 2;
             canDash = true;
             Player_ani.SetBool("Jump", false);
-            isJumping = false;
         }
     }
 
