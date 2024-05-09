@@ -12,7 +12,6 @@ public struct EffectInfo
 {
     public uint effectSize;
     public float effectSpeed;
-    public uint weaponDamage;
     public GameObject modelPrefab;
 }
 
@@ -118,14 +117,10 @@ public class WeaponEffect : RecycleObject, IAttack
             float totalDamage = AttackPower;
 
             enemy.TakeDamage(totalDamage);
-            /* 추후에 인터페이스로 에너미 찾을 예정
-            Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                float totalDamage = weaponDamage + playerStats.attackPower;
-                enemy.Damaged(totalDamage);
-            }
-            */
+        }
+        else if(collision.CompareTag("Player"))
+        {
+
         }
     }   
 
