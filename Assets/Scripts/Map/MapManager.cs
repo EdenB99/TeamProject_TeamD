@@ -18,7 +18,7 @@ public class MapManager : MonoBehaviour
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO:M: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
     //TODO L:: 맵 로딩만들기 
-    
+    //TODO 오늘집가서:: 포탈 사용안되면 색갈 변경하기.
     [Header("변수")]
 
     private Player player;

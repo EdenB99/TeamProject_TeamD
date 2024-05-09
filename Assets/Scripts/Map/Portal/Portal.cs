@@ -10,9 +10,14 @@ public class Portal : MonoBehaviour
     Direction direction;
     MapManager mapManager;
     GameObject mainCamera;
+    SpriteRenderer[] spriteRenderers;
     [SerializeField]private float useCooldown = 1f;
     private float cooldownTime = 0f;
 
+    private void Awake()
+    {
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+    }
 
     private void Start()
     {
@@ -40,6 +45,7 @@ public class Portal : MonoBehaviour
         }
     }
 
+
     private void Update()
     {
         cooldownTime += Time.deltaTime;
@@ -55,6 +61,13 @@ public class Portal : MonoBehaviour
                 mapManager.EnterPortal(direction);
                 cooldownTime = 0f;
                 mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+            }
+            else if(currentMap != null &&  currentMap.hasEnemies) // 플레이어하고 부딫혀야 작동, 안부딫혀도 작동되게 하고싶음,다른 효과를 주고 물리적으로 막는것도 괜찮을듯
+            {
+                for(int i = 0; i <spriteRenderers.Length; i++)
+                {
+                    spriteRenderers[i].color = Color.black;
+                }
             }
         }
     }
