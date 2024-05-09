@@ -120,10 +120,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.018873215, y: 0.094365776}
+  m_Offset: {x: -0.018873215, y: 0.53}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.1875, y: 0.875}
     newSize: {x: 3.2, y: 3.2}
     adaptiveTilingThreshold: 0.5
@@ -201,8 +201,24 @@ MonoBehaviour:
   checkLR: 1
   maxHP: 100
   Attackpower: 1
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  dropItems: []
+=======
+=======
+>>>>>>> b074e6d71e0c41adaf7809ed3476b33ecf5c07e3
+>>>>>>> Stashed changes
   dropItems:
   - code: 2
     dropRatio: 0.233
     dropCount: 1
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> b074e6d71e0c41adaf7809ed3476b33ecf5c07e3
+=======
+>>>>>>> b074e6d71e0c41adaf7809ed3476b33ecf5c07e3
+>>>>>>> Stashed changes
   jumpForce: 7
