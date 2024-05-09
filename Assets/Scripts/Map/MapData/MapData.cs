@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum Direction { Right, Left, Up, Down }
@@ -10,9 +11,10 @@ public class MapData
     public int mapY;
     public Direction enteredDirection;
 
-    public bool hasEnemies;
-    public bool isVisited;
+    public bool hasEnemies = false;
+    public bool isVisited = false;
     public bool hasItem;
+
     public bool hasBossRoom;
     public bool hasShop;
     public bool hasHeal;
@@ -21,6 +23,8 @@ public class MapData
     public GameObject downPortalObject;
     public GameObject leftPortalObject;
     public GameObject rightPortalObject;
+
+    public Dictionary<int, Vector3> itemPositions = new Dictionary<int, Vector3>();
 
     private bool hasUpPortal;
     public bool HasUpPortal
