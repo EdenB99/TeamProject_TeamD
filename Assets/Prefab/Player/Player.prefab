@@ -322,7 +322,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3776167721910377412}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc1e99bc8be1d2c468e3904f56968235, type: 3}
   m_Name: 
@@ -333,7 +333,7 @@ MonoBehaviour:
   dashingPower: 12
   dashingTime: 0.2
   dashCoolTime: 2
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 2133671909137643396}
   groundLayerCheck:
     serializedVersion: 2
     m_Bits: 0

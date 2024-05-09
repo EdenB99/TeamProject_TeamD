@@ -9,33 +9,56 @@ public class ItemData_Weapon : ItemData, IWeapon
     public uint maxStackCount = 1;
 
     [Header("무기 기본 정보")]
-    public WeaponInfo weaponinfo;
+    public WeaponInfo Weaponinfo;
     [Header("무기 이펙트 정보")]
     public EffectInfo EffectInfo;
 
     [HideInInspector]
-    public EquipmentSlot_Base WeaponSlot;
+    public EquipmentSlot_Base WeaponSlot;    
 
     public void Equip(EquipmentSlot_Base slot)
     {
+
         WeaponSlot = slot;
-        slot.SlotItemData = this;
+        WeaponSlot.SlotItemData = this;
+
+        WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
+        if (weaponBase != null)
+        {
+            weaponBase.getWeaponData(this);
+        }
     }
 
     public void UnEquip()
     {
+        WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
+        if(weaponBase != null)
+        {
+            weaponBase.deleteWeaponData(this);
+        }
+
         WeaponSlot.SlotItemData = null;
         WeaponSlot = null;
     }
 
     public int GetWeaponDamage()
     {
-        return (int)weaponinfo.weaponDamage;
+        return (int)Weaponinfo.weaponDamage;
     }
 
     public EffectInfo GetEffectInfo()
     {
         return EffectInfo;
     }
+
+    //public int GetattackSpeed()
+    //{
+    //    return (int)Weaponinfo.attackSpeed;
+    //}
+
+    //public WeaponInfo GetWeaponInfo()
+    //{
+    //    return Weaponinfo;
+    //}
 }
 

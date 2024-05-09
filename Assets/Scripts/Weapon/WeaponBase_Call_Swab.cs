@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,7 +65,7 @@ public class WeaponBase_Call_Swab : MonoBehaviour
         DestroyCurrentWeapon();
 
         // 货肺款 公扁 橇府普 积己
-        GameObject weaponPrefab = Instantiate(weaponData.weaponinfo.modelPrefab, transform.position, Quaternion.identity);
+        GameObject weaponPrefab = Instantiate(weaponData.Weaponinfo.modelPrefab, transform.position, Quaternion.identity);
         currentWeaponInstance = weaponPrefab;
     }
 
@@ -90,5 +92,14 @@ public class WeaponBase_Call_Swab : MonoBehaviour
             Destroy(currentWeaponInstance);
             currentWeaponInstance = null;
         }
+    }
+    public void getWeaponData(ItemData_Weapon itemData)
+    {
+        weaponsData.Add(itemData);
+    }
+
+    public void deleteWeaponData(ItemData_Weapon itemData)
+    {
+        weaponsData.Remove(itemData);
     }
 }
