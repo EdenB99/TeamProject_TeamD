@@ -882,7 +882,7 @@ public class MapManager : MonoBehaviour
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
                     currentMap.isVisited = true;
-                    CheckMonstersInScene();
+                    CheckEnemysInScene();
                     if (mapUI != null)
                     {
                         mapUI.UpdateMapUI();
@@ -902,7 +902,7 @@ public class MapManager : MonoBehaviour
 
         }
     }
-    public void CheckMonstersInScene()
+    public void CheckEnemysInScene()
     {
         if (enemyParent == null)
         {
