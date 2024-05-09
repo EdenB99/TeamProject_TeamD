@@ -306,12 +306,18 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         Debug.Log("ав╬З╢ы.");
         IsLive = false;
         sprite.material.SetFloat(HitID, 0);
+        this.gameObject.layer = 17;
         StopAllCoroutines();
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
 
+        MapManager map = FindAnyObjectByType<MapManager>();
 
+        if ( map != null)
+        {
+            map.CheckEnemysInScene();
+        }
 
     }
 }
