@@ -2,23 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 
 
 public class MapManager : MonoBehaviour
 {
-    //TODO H:: 맵상태 해당 스테이지동안 저장하기.
+    //TODO H:: 맵상태 해당 스테이지동안 저장하기, 한번간맵의 적을 false로 만들었더니 포탈에 오류가등장, destroy됫는데 건든다고함.
     //TODO L::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
-    //TODO:M: 다음스테이지맵 구현: 맵생성사이에 하나만 끼워넣기
+    //TODO:M: 다음스테이지 맵이 만들어졌다곤 하는데 오류로 엄청나게 디버그가 나오고, 만들어지지않음, 맵도 더 많이 안나오게됌,
     //TODO L:: 맵 로딩만들기 
-    //TODO 오늘집가서:: 포탈 사용안되면 색갈 변경하기.
     [Header("변수")]
 
     private Player player;
@@ -52,7 +47,14 @@ public class MapManager : MonoBehaviour
         private set { currentMap = value; }
     }
     private MapUI mapUI;
+    //적관련
     private GameObject enemyParent;
+    EnemyBase_[] enemies;
+
+    //포탈 관련
+    private Portal[] portals;
+    private Dictionary<Portal, SpriteRenderer[]> portalSpriteRenderers = new Dictionary<Portal, SpriteRenderer[]>();
+    private bool previousHasEnemies = false;
 
     private void Awake()
     {
@@ -169,7 +171,9 @@ public class MapManager : MonoBehaviour
             mapData.HasRightPortal = rightPortalTransform != null;
             mapData.rightPortalObject = rightPortalTransform?.gameObject;
 
+            mapData.hasEnemies = false;
             mapScenes[i] = mapData;
+
         }
 
         //nextStageMapScenes 처리
@@ -221,11 +225,6 @@ public class MapManager : MonoBehaviour
 
         while (currentMapCount < mapSize)
         {
-            //TODO:: 오류
-            /*KeyNotFoundException: The given key '(3, 3)' was not present in the dictionary.
-            System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) (at <17d9ce77f27a4bd2afb5ba32c9bea976>:0)
-            MapManager+<GenerateWorldMapCoroutine>d__23.MoveNext () (at Assets/Scripts/Map/MapManager.cs:172)
-            UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <f7237cf7abef49bfbb552d7eb076e422>:0)*/
 
             int maxGenCount = 1000;
             int genCount = 0;
@@ -235,7 +234,7 @@ public class MapManager : MonoBehaviour
                 MapData currentMap = mapQueue.Dequeue();
                 GenerateAdjacentMaps(currentMap, mapQueue);
 
-                //TODO:: 맵큐없으면 이거라도 작동하도록 변경했음, 잘돌아가는지 테스트필요
+
                 if (currentMapCount > 8 || mapQueue.Count <= 0)
                 {
                     CheckWorldMap();
@@ -255,7 +254,7 @@ public class MapManager : MonoBehaviour
             if (currentMapCount < mapSize)
             {
                 genCount = 0;
-                if(mapQueue.Count <= 0)
+                if (mapQueue.Count <= 0)
                 {
                     Debug.LogWarning($"맵큐가 끝났습니다, 이어질 맵이없어 적게만들어졌습니다. 현재 맵 개수: {currentMapCount}.");
                     break;
@@ -278,9 +277,6 @@ public class MapManager : MonoBehaviour
 
 
 
-    //실험중----------------------------------------------------------------
-
-    //TODO::맵끝쪽에서 작동안함
     private void ActivatePortal(MapData mapData, Direction direction)
     {
         switch (direction)
@@ -332,9 +328,6 @@ public class MapManager : MonoBehaviour
 
 
 
-
-    //실험중---------------------------------------------------------------
-
     //맵 생성을 시작하는 함수
     private void GenerateAdjacentMaps(MapData currentMap, Queue<MapData> mapQueue)
     {
@@ -346,22 +339,40 @@ public class MapManager : MonoBehaviour
 
             if (!worldMap.ContainsKey(newPosition))
             {
-                string randomMapScene = SelectRandomMapScene(direction);
-                MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
-
-                if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
+                string randomMapScene;
+                if (currentMapCount >= mapSize * 0.6 && UnityEngine.Random.Range(0f, 1f) < 0.4f && !usedMapScenes.Intersect(nextStageMapScenes.Select(m => m.sceneName)).Any())
                 {
-                    MapData newMap = CreateNewMap(newPosition, selectedMap);
-                    if (newMap != null)
+                    randomMapScene = SelectRandomMapFromNextStageMapScenes();
+                }
+                else
+                {
+                    randomMapScene = SelectRandomMapScene(direction);
+                }
+
+              MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
+
+            if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
+            {
+                MapData newMap = CreateNewMap(newPosition, selectedMap);
+                if (newMap != null)
+                {
+                    worldMap[newPosition] = newMap;
+                    currentMapCount++;
+                    mapQueue.Enqueue(newMap);
+
+                    // nextStageMapScenes에서 맵이 선택되었다면 usedMapScenes에 추가
+                    if (nextStageMapScenes.Any(m => m.sceneName == randomMapScene))
                     {
-                        worldMap[newPosition] = newMap;
-                        currentMapCount++;
-                        mapQueue.Enqueue(newMap);
+                        foreach (var nextStageMap in nextStageMapScenes)
+                        {
+                            usedMapScenes.Add(nextStageMap.sceneName);
+                        }
                     }
                 }
             }
         }
     }
+}
 
     private bool CanCreateMapAtPosition(Vector2Int position, Direction direction)
     {
@@ -428,6 +439,23 @@ public class MapManager : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+
+
+
+
+    //다음스테이지로 가는 씬 불러오는 함수
+    private string SelectRandomMapFromNextStageMapScenes()
+    {
+        if (nextStageMapScenes.Length > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, nextStageMapScenes.Length);
+            Debug.Log("다음맵으로가는 맵이 생성되었습니다.");
+            return nextStageMapScenes[randomIndex].sceneName;
+        }
+
+        return string.Empty;
     }
 
 
@@ -538,6 +566,17 @@ public class MapManager : MonoBehaviour
                 {
                     invalidPositions.Add(position);
                     invalidSceneNames.Add(mapData.sceneName);
+
+                    // nextStageMapScenes에서 선택된 맵이 지워지면 usedMapScenes에서 nextStageMapScenes의 모든 맵 sceneName 제거
+                    if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
+                    {
+                        Debug.Log($"다음스테이지로 이동맵이 RemoveInvalidMaps에서 삭제되었습니다.");
+                        foreach (var nextStageMap in nextStageMapScenes)
+                        {
+                            usedMapScenes.Remove(nextStageMap.sceneName);
+                        }
+
+                    }
                 }
             }
         }
@@ -581,7 +620,6 @@ public class MapManager : MonoBehaviour
                         {
                             newMapPositions.Add(newPosition);
                             currentMapCount++;
-                            Debug.Log($"GenerateAdditionalMaps에서 맵을 재생성: {currentMapCount}");
                         }
                     }
                 }
@@ -881,8 +919,10 @@ public class MapManager : MonoBehaviour
                     Scene loadedScene = SceneManager.GetSceneByName(mapToLoad.sceneName);
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
-                    currentMap.isVisited = true;
+                    FindPortalsAndSpriteRenderers();
                     CheckEnemysInScene();
+                    LoadMapState(mapToLoad);
+                    currentMap.isVisited = true;
                     if (mapUI != null)
                     {
                         mapUI.UpdateMapUI();
@@ -902,25 +942,74 @@ public class MapManager : MonoBehaviour
 
         }
     }
+    private void FindPortalsAndSpriteRenderers()
+    {
+        portals = FindObjectsOfType<Portal>();
+        portalSpriteRenderers.Clear();
+
+        foreach (Portal portal in portals)
+        {
+            SpriteRenderer[] spriteRenderers = portal.GetComponentsInChildren<SpriteRenderer>();
+            portalSpriteRenderers[portal] = spriteRenderers;
+        }
+    }
+    //적 체크 함수
     public void CheckEnemysInScene()
     {
         if (enemyParent == null)
         {
             enemyParent = GameObject.Find("Enemy");
         }
-        if (enemyParent != null)
-        {
-            EnemyBase_[] enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
-
-            currentMap.hasEnemies = enemies.Length > 0;
-
-            Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
-        }
         else
         {
             currentMap.hasEnemies = false;
+            UpdatePortalState(false);
+        }
+        if (enemyParent != null)
+        {
+            enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+
+            bool hasEnemies = enemies.Length > 0;
+
+
+            Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
+
+            if (currentMap.hasEnemies != hasEnemies)
+            {
+                currentMap.hasEnemies = hasEnemies;
+                UpdatePortalState(currentMap.hasEnemies);
+            }
         }
 
+
+    }
+    //포탈 색 변경 함수
+    private void UpdatePortalState(bool hasEnemies)
+    {
+        Color portalColor = Color.white;
+        foreach (Portal portal in portals)
+        {
+            if (portalSpriteRenderers.TryGetValue(portal, out SpriteRenderer[] potalSpriteRenderers))
+            {
+                foreach (SpriteRenderer portalSpriteRenderer in potalSpriteRenderers)
+                {
+                    if (hasEnemies)
+                    {
+
+                        portalColor = Color.black;
+                        portalColor.a = 0.5f;
+                        portalSpriteRenderer.color = portalColor;
+                    }
+                    else
+                    {
+
+                        portalColor = Color.cyan;
+                        portalColor.a = 1f;
+                        portalSpriteRenderer.color = portalColor;
+                    }
+                }
+            }
+        }
     }
 
     private Direction OppositeDirection(Direction direction)
@@ -965,11 +1054,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    //포탈 들어갔을 때
     public void EnterPortal(Direction direction)
     {
+        Vector2Int currentPosition = new Vector2Int(currentMap.mapX, currentMap.mapY);
         Vector2Int MapPosition = GetAdjacentPosition(currentMap.mapX, currentMap.mapY, direction);
         if (IsValidPosition(MapPosition))
         {
+            SaveMapState(currentPosition); // 현재 맵의 상태를 저장
             MapCheck(MapPosition, direction);
 
 
@@ -986,6 +1078,49 @@ public class MapManager : MonoBehaviour
         }
         return null;
     }
+
+    //맵 저장,로드==============================================
+    private void SaveMapState(Vector2Int position)
+    {
+
+
+    }
+
+
+
+    private void LoadMapState(MapData mapData)
+    {
+
+        //적 관련
+
+        //방문했다면(이미 적을 다죽였다면)
+        if (mapData.isVisited)
+        {
+            foreach (EnemyBase_ enemy in enemies)
+            {
+                enemy.gameObject.SetActive(false);
+            }
+            mapData.hasEnemies = false;
+            UpdatePortalState(false);
+        }
+
+        //아이템 관련
+
+
+    }
+
+
+
+    //플레이어 사망시 맵초기화
+    private void ClearMapStates()
+    {
+        foreach (var mapData in worldMap.Values)
+        {
+
+            mapData.itemPositions.Clear();
+        }
+    }
+
 
     //메모리 누수 발생으로 인한 오류 해결못해서 Claude에게 질문했음, 종료시 모든 객체 파괴 및 정리
     private void OnDisable()
