@@ -306,7 +306,6 @@ public class Player : MonoBehaviour
 
         dashDirection.y = 0; // Y축 이동 방지
         rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse); // 계산된 방향으로 대시 힘 적용
-        Debug.Log($"대시 방향: {dashDirection}");
 
         yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원

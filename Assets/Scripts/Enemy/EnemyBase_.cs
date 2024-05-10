@@ -181,7 +181,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
         if (map != null)
         {
-            map.CheckEnemysInScene();
+            map.CheckEnemysInScene(map.CurrentMap);
         }
     }
 
