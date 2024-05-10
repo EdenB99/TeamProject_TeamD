@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3591442900982643817}
   - component: {fileID: 3394081322900774399}
   - component: {fileID: 1002040414221261779}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss_Golem
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5321672360941855262}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: armShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,6 +292,10 @@ PrefabInstance:
     - target: {fileID: 9207812735524971915, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
       propertyPath: m_Name
       value: laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 9207812735524971915, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9207812735524971915, guid: 17fa20e644897f142b9a9a55c4c054ff, type: 3}
       propertyPath: m_IsActive
