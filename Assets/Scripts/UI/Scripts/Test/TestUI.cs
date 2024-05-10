@@ -14,23 +14,12 @@ public class TestUI : MonoBehaviour
 
         player.PlayerStats.TakeDamage(30);
 
-
-        inven = player.PlayerStats.Inventory;
-        ingameUI = player.PlayerStats.IngameUI;
-
-        ingameUI.SetQuickSlotItem(0, ItemCode.HealingPotion_A, 3);
-        ingameUI.SetQuickSlotItem(1, ItemCode.SwiftPotion, 2);
-        ingameUI.SetQuickSlotItem(2, ItemCode.Shiruken, 15);
-
-        ingameUI.AddQuickSlotItem(ItemCode.HealingPotion_A, 3);
-
-        inven.AddItem(ItemCode.Helmet);
-
-        inven.AddItem(ItemCode.Kettle);
-        inven.AddItem(ItemCode.Sword);
-        inven.AddItem(ItemCode.Spear);
-        
-
+        inventoryUI = GameManager.Instance.InventoryUI;
+        inventoryUI.getItem(ItemCode.Helmet);
+        inventoryUI.getItem(ItemCode.HealingPotion_A);
+        inventoryUI.getItem(ItemCode.Helmet);
+        inventoryUI.getItem(ItemCode.HealingPotion_A);
+        inventoryUI.getItem(ItemCode.SwiftPotion);
 
     }
 }

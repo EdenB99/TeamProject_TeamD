@@ -165,7 +165,7 @@ public class IngameUI : MonoBehaviour
         for (int i = 0; i<IngameSlotUIs.Length; i++)
         {
             if (IngameSlotUIs[i].SlotItemData ==  itemData)
-            {
+            { 
                 IngameSlotUIs[i].AddItem(Addnum);
                 isItem = true;
                 break;
@@ -178,6 +178,7 @@ public class IngameUI : MonoBehaviour
                 if (IngameSlotUIs[i].SlotItemData == null)
                 {
                     IngameSlotUIs[i].GetItemdata(itemData, Addnum);
+                    break;
                 }
             }
         }

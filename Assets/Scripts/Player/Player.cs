@@ -38,6 +38,10 @@ public class Player : MonoBehaviour
 
     TrailRenderer tr;
 
+
+    [SerializeField, Range(0.0f, 9999.0f)]
+    private int Gold;
+
     // 레이어 태그
     private int playerLayer;
     private int platformLayer;

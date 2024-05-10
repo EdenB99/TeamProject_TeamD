@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
@@ -308,6 +309,22 @@ public class InventoryUI : MonoBehaviour
             Eqiup_UseItem(slotUI);
         }
         slotUI.InvenSlot.ClearSlotItem();
+    }
+    /// <summary>
+    /// 인벤토리 혹은 퀵슬롯에 아이템을 추가하는 함수
+    /// </summary>
+    /// <param name="itemCode">추가할 아이템</param>
+    /// <param name="Count">추가될 갯수</param>
+    public void getItem(ItemCode itemCode, int Count = 1) {
+
+        ItemData data = GameManager.Instance.ItemData[itemCode];
+        if (data.type == ItemType.Consumable)
+        {
+            ingameUI.AddQuickSlotItem(itemCode, Count);
+        } else
+        {
+            for (int i = 0; i < Count; i++) inven.AddItem(itemCode);
+        }
     }
 
 }

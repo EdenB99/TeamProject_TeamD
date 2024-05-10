@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class BuyTab : MonoBehaviour
 {
-    Inventory inventory;
+    InventoryUI inventoryUI;
     ItemData CurrentItemdata;
     Button yesButton;
     Button noButton;
@@ -30,7 +30,7 @@ public class BuyTab : MonoBehaviour
 
     private void Start()
     {
-        inventory = GameManager.Instance.Player.PlayerStats.Inventory;
+        inventoryUI = GameManager.Instance.InventoryUI;
     }
 
     public void SetItemdata (ItemData itemdata, StoreSlot currentslot)
@@ -43,10 +43,8 @@ public class BuyTab : MonoBehaviour
 
     private void OnBuyButtonClicked()
     {
-        if (inventory.AddItem(CurrentItemdata.code))
-        {
-            slot.ClearSlot();
-        }
+        inventoryUI.getItem(CurrentItemdata.code);
+        slot.ClearSlot();
         this.gameObject.SetActive(false);
     }
 }

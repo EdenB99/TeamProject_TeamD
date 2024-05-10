@@ -259,8 +259,9 @@ public class PlayerStats : MonoBehaviour
             consume.Consume();
             item.itemDel(); // 아이템을 제거
         }
-        else if (Inventory.AddItem(item.ItemData.code)) // 일반 아이템을 인벤토리에 추가
-        {
+        else {
+            InventoryUI invenUI = GameManager.Instance.InventoryUI;
+            invenUI.getItem(item.ItemData.code);
             item.itemDel(); 
         }
     }
