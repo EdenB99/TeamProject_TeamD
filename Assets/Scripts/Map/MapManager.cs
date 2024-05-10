@@ -50,11 +50,11 @@ public class MapManager : MonoBehaviour
     //적관련
     private GameObject enemyParent;
     EnemyBase_[] enemies;
+    protected bool isEnemyDead = false;
 
     //포탈 관련
     private Portal[] portals;
     private Dictionary<Portal, SpriteRenderer[]> portalSpriteRenderers = new Dictionary<Portal, SpriteRenderer[]>();
-    private bool previousHasEnemies = false;
 
     private void Awake()
     {
@@ -235,7 +235,7 @@ public class MapManager : MonoBehaviour
                 GenerateAdjacentMaps(currentMap, mapQueue);
 
 
-                if (currentMapCount > 8 || mapQueue.Count <= 0)
+                if (currentMapCount > mapSize*0.5f && currentMapCount > 5f || mapQueue.Count <= 0)
                 {
                     CheckWorldMap();
                     RemoveInvalidMaps();
@@ -340,7 +340,7 @@ public class MapManager : MonoBehaviour
             if (!worldMap.ContainsKey(newPosition))
             {
                 string randomMapScene;
-                if (currentMapCount >= mapSize * 0.6 && UnityEngine.Random.Range(0f, 1f) < 0.4f && !usedMapScenes.Intersect(nextStageMapScenes.Select(m => m.sceneName)).Any())
+                if (currentMapCount >= mapSize * 0.6f && UnityEngine.Random.Range(0f, 1f) < 0.4f && !usedMapScenes.Intersect(nextStageMapScenes.Select(m => m.sceneName)).Any())
                 {
                     randomMapScene = SelectRandomMapFromNextStageMapScenes();
                 }
@@ -349,30 +349,30 @@ public class MapManager : MonoBehaviour
                     randomMapScene = SelectRandomMapScene(direction);
                 }
 
-              MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
+                MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
 
-            if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
-            {
-                MapData newMap = CreateNewMap(newPosition, selectedMap);
-                if (newMap != null)
+                if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
                 {
-                    worldMap[newPosition] = newMap;
-                    currentMapCount++;
-                    mapQueue.Enqueue(newMap);
-
-                    // nextStageMapScenes에서 맵이 선택되었다면 usedMapScenes에 추가
-                    if (nextStageMapScenes.Any(m => m.sceneName == randomMapScene))
+                    MapData newMap = CreateNewMap(newPosition, selectedMap);
+                    if (newMap != null)
                     {
-                        foreach (var nextStageMap in nextStageMapScenes)
+                        worldMap[newPosition] = newMap;
+                        currentMapCount++;
+                        mapQueue.Enqueue(newMap);
+
+                        // nextStageMapScenes에서 맵이 선택되었다면 usedMapScenes에 추가
+                        if (nextStageMapScenes.Any(m => m.sceneName == randomMapScene))
                         {
-                            usedMapScenes.Add(nextStageMap.sceneName);
+                            foreach (var nextStageMap in nextStageMapScenes)
+                            {
+                                usedMapScenes.Add(nextStageMap.sceneName);
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 
     private bool CanCreateMapAtPosition(Vector2Int position, Direction direction)
     {
@@ -956,29 +956,40 @@ public class MapManager : MonoBehaviour
     //적 체크 함수
     public void CheckEnemysInScene(MapData mapData)
     {
-        if (enemyParent == null && !mapData.isVisited)
+        if (enemyParent == null)
         {
             enemyParent = GameObject.Find("Enemy");
+        }
+        if (enemyParent != null)
+        {
+            enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+            if (mapData.isVisited && !currentMap.hasEnemies)
+            {
+                for (int i = 0; i < enemies.Length; i++)
+                {
+                    Destroy(enemies[i].gameObject);
+                }
+                mapData.hasEnemies = false;
+
+            }
+            else
+            {
+                
+                Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
+                bool hasEnemies = enemies.Length > 0;
+
+                if (currentMap.hasEnemies != hasEnemies)
+                {
+                    currentMap.hasEnemies = hasEnemies;
+                    UpdatePortalState(currentMap.hasEnemies);
+                }
+
+            }
         }
         else
         {
             currentMap.hasEnemies = false;
             UpdatePortalState(false);
-        }
-        if (enemyParent != null)
-        {
-            enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
-
-            bool hasEnemies = enemies.Length > 0;
-
-
-            Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
-
-            if (currentMap.hasEnemies != hasEnemies)
-            {
-                currentMap.hasEnemies = hasEnemies;
-                UpdatePortalState(currentMap.hasEnemies);
-            }
         }
 
 
@@ -1092,16 +1103,6 @@ public class MapManager : MonoBehaviour
     {
 
         //적 관련
-
-        //방문했다면(이미 적을 다죽였다면)
-        if (mapData.isVisited)
-        {
-            foreach (EnemyBase_ enemy in enemies)
-            {
-                enemy.gameObject.SetActive(false);
-            }
-            mapData.hasEnemies = false;
-        }
 
         //아이템 관련
 

@@ -266,7 +266,10 @@ public class Player : MonoBehaviour
     IEnumerator DownCollision(Collider2D platformCollider, Collider2D playerCollider)
     {
         yield return new WaitForSeconds(0.25f);
+        if(platformCollider != null)
+        {
         Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        }
     }
 
     private void OnDash(InputAction.CallbackContext context)

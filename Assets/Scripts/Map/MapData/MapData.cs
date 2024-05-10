@@ -24,6 +24,7 @@ public class MapData
     public GameObject leftPortalObject;
     public GameObject rightPortalObject;
 
+
     public Dictionary<int, Vector3> itemPositions = new Dictionary<int, Vector3>();
 
     private bool hasUpPortal;

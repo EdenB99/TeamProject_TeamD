@@ -74,7 +74,9 @@ public class BulletObject : RecycleObject , IAttack
     {
         data = null;
         base.OnEnable();
-        
+
+
+
     }
 
     private void Start()
@@ -153,6 +155,7 @@ public class BulletObject : RecycleObject , IAttack
                 circleCollider.radius = data.bulletSize; // 피격 범위
                 spriteRenderer.sprite = data.bulletIcon; // 스프라이트
                 isPlayer = data.isPlayer;
+
 
                 if (isPlayer) this.gameObject.layer = 11;
                 else this.gameObject.layer = 12;
