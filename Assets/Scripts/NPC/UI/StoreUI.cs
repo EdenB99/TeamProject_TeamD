@@ -9,16 +9,15 @@ public class StoreUI : MonoBehaviour
     public ItemCode[] allItemCode;
     ItemCode[] StoreItemCode = new ItemCode[4];
 
+    public Transform Content;
     StoreSlot[] storeSlots;
     ItemDataManager itemDataManager;
 
 
     private void Awake()
     {
-        Transform child = gameObject.transform.GetChild(1);
-        child = child.transform.GetChild(0);
-        child = child.transform.GetChild(0);
-        storeSlots = child.GetComponentsInChildren<StoreSlot>(); //상점의 있는 슬롯 초기화
+
+        storeSlots = Content.GetComponentsInChildren<StoreSlot>(); //상점의 있는 슬롯 초기화
     }
 
     private void Start()
@@ -36,7 +35,8 @@ public class StoreUI : MonoBehaviour
         GetItemCodetoRandom(SlotNum); //슬롯의 갯수만큼 아이템 선별
         for (int i = 0; i < storeSlots.Length; i++)
         {
-            ItemData itemData = GameManager.Instance.ItemData[StoreItemCode[i]];
+            Debug.Log(StoreItemCode[i]);
+            ItemData itemData = itemDataManager[StoreItemCode[i]];
             storeSlots[i].SetItemData(itemData);
             //각 슬롯에 선정된 아이템 코드 입력
         }
