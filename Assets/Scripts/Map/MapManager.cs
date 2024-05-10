@@ -920,7 +920,7 @@ public class MapManager : MonoBehaviour
                     SceneManager.SetActiveScene(loadedScene);
                     currentMap = mapToLoad;
                     FindPortalsAndSpriteRenderers();
-                    CheckEnemysInScene();
+                    CheckEnemysInScene(mapToLoad);
                     LoadMapState(mapToLoad);
                     currentMap.isVisited = true;
                     if (mapUI != null)
@@ -954,9 +954,9 @@ public class MapManager : MonoBehaviour
         }
     }
     //적 체크 함수
-    public void CheckEnemysInScene()
+    public void CheckEnemysInScene(MapData mapData)
     {
-        if (enemyParent == null)
+        if (enemyParent == null && !mapData.isVisited)
         {
             enemyParent = GameObject.Find("Enemy");
         }
@@ -1101,7 +1101,6 @@ public class MapManager : MonoBehaviour
                 enemy.gameObject.SetActive(false);
             }
             mapData.hasEnemies = false;
-            UpdatePortalState(false);
         }
 
         //아이템 관련
