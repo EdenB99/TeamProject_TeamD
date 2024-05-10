@@ -16,7 +16,6 @@ public class NPC_Store : NPC_Base
     {
         base.Awake();
 
-        StoreUI = canvas.transform.GetChild(1);
         if (npcType == NPCType.Store)
         {
             dialogues = storeDialogues;

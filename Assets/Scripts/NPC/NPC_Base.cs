@@ -19,17 +19,14 @@ public class NPC_Base : MonoBehaviour
     protected string[] dialogues = new string[] { "" };
     protected uint currentDialogIndex = 0;
 
+    public Transform dialogBox;
     public TextMeshProUGUI dialogText;
+
     public bool IsInteracting;
-    protected Transform dialogBox;
-    protected Canvas canvas;
     Transform key;
 
     protected virtual void Awake()
     {
-        canvas = GetComponentInChildren<Canvas>();
-        dialogBox = canvas.transform.GetChild(0);
-        dialogText = dialogBox.transform.GetComponentInChildren<TextMeshProUGUI>();
         key = transform.GetChild(0);
 
         ShowDialog();
@@ -84,6 +81,12 @@ public class NPC_Base : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             key.gameObject.SetActive(false);
+        }
+        if (IsInteracting)
+        {
+            dialogBox.gameObject.SetActive(false);
+            currentDialogIndex = 0;
+            IsInteracting = false;
         }
     }
 }
