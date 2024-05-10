@@ -83,19 +83,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
 
-
-/*
-        if (Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S) && jumpCount > 0)
-        {
-            Jump();
-        }
-
-        else if (Input.GetButton("Jump") && Input.GetKey(KeyCode.S) && isGround && !isJumping)
-        {
-            Debug.Log("아랫점프코루틴");
-            StartCoroutine(DownJump());
-        }*/
-
         if (!isJumping && jumpCount > 0 && Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S))
         {
             Jump();
@@ -248,32 +235,38 @@ public class Player : MonoBehaviour
         jumpCount --;
     }
 
-    
+
 
     public void OnDownJump(InputAction.CallbackContext context)
     {
-
-        if (Input.GetKey(KeyCode.S) && isGround && !isJumping) // 점프 중이 아니고, 땅에 있을 때만 아랫점프 허용
+        if (Input.GetKey(KeyCode.S)) // 점프 중이 아니고, 땅에 있을 때만 아랫점프 허용
         //if (context.performed && CheckGround() && !isJumping)
         {
-            Debug.Log("아랫점프");
-            StartCoroutine(DownJump());
-        }
 
+        }
     }
 
-    IEnumerator DownJump()
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        isJumpOff = true;
-        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
-        cc.isTrigger = true;
-        //rigid.gravityScale = 15f;
-        yield return new WaitForSeconds(0.2f);
-        //rigid.gravityScale = 10f;
-        cc.isTrigger = false;
-        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), false);
-        Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
-        isJumpOff = false;
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                // 플랫폼 콜라이더를 일시적으로 무시
+                Collider2D platformCollider = collision.collider;
+                Collider2D playerCollider = GetComponent<Collider2D>();
+                Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+                // 콜라이더를 다시 활성화하는 코루틴 호출
+                StartCoroutine(DownCollision(platformCollider, playerCollider));
+                Debug.Log("아랫점프");
+            }
+        }
+    }
+
+    IEnumerator DownCollision(Collider2D platformCollider, Collider2D playerCollider)
+    {
+        yield return new WaitForSeconds(0.25f);
+        Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
     }
 
     private void OnDash(InputAction.CallbackContext context)
@@ -430,24 +423,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
-
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Platform"))
-        {
-            if (Input.GetKey(KeyCode.S))
-            {
-                Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Platform"), true);
-                StartCoroutine(DownJump());
-                //cc.enabled = false;
-                //Invoke("Jumper", 0.2f);  
-                Debug.Log("아랫점프3");
-            }
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)  // NPC 상호작용
     {
         //NPC_Store npc = other.GetComponent<NPC_Store>();
@@ -466,11 +441,6 @@ public class Player : MonoBehaviour
             canInteract = false;
             interactingNPC = null;
         }
-    }
-
-    public void Jumper()
-    {
-        cc.enabled = true;
     }
 
     // 눌렀을 때 델리게이트 되게끔 수정
