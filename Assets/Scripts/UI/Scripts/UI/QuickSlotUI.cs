@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,6 +36,9 @@ public class QuickSlotUI : MonoBehaviour
             }
         }
     }
+
+    public Action<ItemData> ItemUse;
+
     private void Awake()
     {
         itemimage = transform.GetChild(0).GetComponent<Image>();
@@ -116,8 +120,8 @@ public class QuickSlotUI : MonoBehaviour
 
     public void ItemUsed()
     {
+        ItemUse?.Invoke(SlotItemData);
         ItemCount--; //∞πºˆ ¡Ÿ¿”
-
         if ( ItemCount != 0 )
         {
             currentTime = 0.0f;

@@ -86,18 +86,7 @@ public class Inventory
                 slot.AssignSlotItem(data);          // 그대로 아이템 설정
                 result = true;
             }
-            else
-            {
-                //슬롯이 차있으면
-                Debug.Log($"{slotIndex}는 차있습니다.");
-            }
         }
-        else
-        {
-            //인덱스가 틀렸다면
-            Debug.Log($"{slotIndex}는 잘못된 인덱스입니다.");
-        }
-
         return result;
     }
     /// <summary>

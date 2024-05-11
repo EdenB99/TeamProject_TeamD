@@ -41,6 +41,7 @@ public class InventoryUI : MonoBehaviour
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
+
     private void Awake()
     {
         slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
@@ -62,6 +63,14 @@ public class InventoryUI : MonoBehaviour
         InventoryInput.Inventory.Open_Close.performed -= OnInvenstate;
         InventoryInput.Inventory.Disable();
     }
+    private void Start()
+    {
+        for (int i =0; i < ingameUI.IngameSlotUIs.Length; i++)
+        {
+            ingameUI.IngameSlotUIs[i].ItemUse += UseConsumableItem;
+        }
+    }
+
     // UI 온 오프 상태 조절
     private void OnInvenstate(InputAction.CallbackContext obj)
     {
@@ -221,16 +230,38 @@ public class InventoryUI : MonoBehaviour
                         slotUI.InvenSlot.EquipItem(true); //텍스트 변경을 위한 슬롯활성화
                     }
                     break;
-                case (ItemType.Consumable):
-                    slotUI.InvenSlot.UseItem();
+                case (ItemType.Consumable): //소비 아이템의 갯수를 세어서 퀵슬롯 아이템 사용시 줄어들어야함
+                    ingameUI.AddQuickSlotItem(itemdata.code, CountConsumableItem(itemdata));
                     break;
                 default: usableUI.Close(); break;
             }
         }
     }
-
     
-
+    
+    private int CountConsumableItem(ItemData itemData)
+    {
+        int Count = 0;
+        for (int i =0; i<slotUIs.Length; i++)
+        {
+            if (slotUIs[i].InvenSlot.ItemData == itemData)
+            {
+                Count++;
+            }
+        }
+        return Count;
+    }
+    private void UseConsumableItem(ItemData itemData)
+    {
+        for (int i = 0; i < slotUIs.Length; i++)
+        {
+            if (slotUIs[i].InvenSlot.ItemData == itemData)
+            {
+                slotUIs[i].InvenSlot.ClearSlotItem();
+                break;
+            }
+        }
+    }
     /// <summary>
     /// 무기군을 장착하는 함수
     /// </summary>
@@ -318,13 +349,7 @@ public class InventoryUI : MonoBehaviour
     public void getItem(ItemCode itemCode, int Count = 1) {
 
         ItemData data = GameManager.Instance.ItemData[itemCode];
-        if (data.type == ItemType.Consumable)
-        {
-            ingameUI.AddQuickSlotItem(itemCode, Count);
-        } else
-        {
-            for (int i = 0; i < Count; i++) inven.AddItem(itemCode);
-        }
+        for (int i = 0; i < Count; i++) inven.AddItem(itemCode);
     }
 
 }

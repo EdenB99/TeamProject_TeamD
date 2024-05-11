@@ -21,7 +21,7 @@ public class IngameUI : MonoBehaviour
 
     bool mapToggle = false;
 
-	QuickSlotUI[] IngameSlotUIs;
+	public QuickSlotUI[] IngameSlotUIs;
 	float[] IngameSlotCount;
     CanvasGroup QuickSlotGroup;
 
@@ -47,6 +47,7 @@ public class IngameUI : MonoBehaviour
         dashCoolColor = child.GetComponentInChildren<Image>();
         DashCoolSlider.value = 0.0f;
         dashCoolColor.color = Color.HSVToRGB(0, 0, 255f);
+        
     }
 	
   	void Start()
@@ -57,11 +58,12 @@ public class IngameUI : MonoBehaviour
         maxHitPoint = player.PlayerStats.MaxHp;
         
 		hitPoint = player.PlayerStats.CurrentHp;
-        Debug.Log($"{maxHitPoint},{hitPoint}");
         //그래픽 초기화
         UpdateGraphics();
         player.PlayerStats.onHealthChange += SetHpbar;
         player.OnDashingCoolChanged += SetDashCoolTime;
+
+       
     }
     private void OnEnable()
     {

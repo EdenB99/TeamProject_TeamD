@@ -81,7 +81,6 @@ public class InvenSlot
         {
             ItemData = data;
             IsEquipped = isEquipped;
-            Debug.Log($"인벤토리 [{slotIndex}]번 슬롯에 [{ItemData.itemName}]아이템이 설정");
         }
         else
         {
@@ -96,7 +95,6 @@ public class InvenSlot
     {
         ItemData = null;
         isEquipped = false;
-        Debug.Log($"인벤토리 [{slotIndex}]번 슬롯을 비웁니다.");
     }
     /// <summary>
     /// 이 슬롯의 아이템을 사용하는 함수

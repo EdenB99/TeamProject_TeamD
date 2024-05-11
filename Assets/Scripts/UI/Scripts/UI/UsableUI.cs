@@ -85,7 +85,7 @@ public class UsableUI : MonoBehaviour
                         else EquipUseText.text = "Equip";
                     break;
                 case ItemType.Consumable:
-                    EquipUseText.text = "Use";
+                    EquipUseText.text = "Equip";
                     break;
                 default: EquipUseText.text = "None"; break;
             }
