@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 
 
@@ -1091,20 +1092,57 @@ public class MapManager : MonoBehaviour
     }
 
     //맵 저장,로드==============================================
+
+    /// <summary>
+    /// 맵을 저장하기 위해 사용하는 함수
+    /// </summary>
+    /// <param name="position"></param>
     private void SaveMapState(Vector2Int position)
     {
+        // 아이템이 저장되는 맵
+        MapData map = GetMapData(position.x, position.y);
 
+        List<SaveItemData> saveItemDatas = new List<SaveItemData>();
 
+        // 맵에서 아이템 가져오기
+        ItemObject[] itemObjects = FindObjectsOfType<ItemObject>();
+
+        // 아이템으로 리스트 작성
+        for (int i = 0; i < itemObjects.Length; i++)
+        {
+            saveItemDatas.Add(new SaveItemData
+            {
+                itemCode = itemObjects[i].ItemData.code,
+                itemPositions = (Vector2)itemObjects[i].transform.position 
+            });
+
+            // 그 후 비활성화
+            GameObject obj = itemObjects[i].gameObject;
+            obj.SetActive(false);
+        }
+
+        // 맵에 작성한 리스트 넣기
+        map.mapItemDatas = saveItemDatas;
+
+        
+        
     }
 
 
-
+    /// <summary>
+    /// 맵을 불러오기 위해 사용하는 함수
+    /// </summary>
+    /// <param name="mapData"></param>
     private void LoadMapState(MapData mapData)
     {
-
-        //적 관련
-
-        //아이템 관련
+        
+        if ( mapData.mapItemDatas != null)
+        {
+            foreach (SaveItemData itemData in mapData.mapItemDatas)
+            {
+                Factory.Instance.MakeItems(itemData.itemCode, 1, itemData.itemPositions);
+            }
+        }
 
 
     }

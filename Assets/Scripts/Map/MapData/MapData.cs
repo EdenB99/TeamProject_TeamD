@@ -4,6 +4,13 @@ using UnityEngine;
 public enum Direction { Right, Left, Up, Down }
 
 [System.Serializable]
+public class SaveItemData
+{
+    public ItemCode itemCode;
+    public Vector2 itemPositions; // 아이템 위치
+}
+
+[System.Serializable]
 public class MapData
 {
     public string sceneName;
@@ -24,8 +31,11 @@ public class MapData
     public GameObject leftPortalObject;
     public GameObject rightPortalObject;
 
+    public List<SaveItemData> mapItemDatas;
 
     public Dictionary<int, Vector3> itemPositions = new Dictionary<int, Vector3>();
+
+
 
     private bool hasUpPortal;
     public bool HasUpPortal
