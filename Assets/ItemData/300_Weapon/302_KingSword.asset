@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
+  m_Name: 302_KingSword
+  m_EditorClassIdentifier: 
+  code: 8
+  type: 0
+  itemName: "\uC655\uC758 \uAC80"
+  itemDescription: "\uC77C\uBC18 \uAC80\uBCF4\uB2E4 \uD6E8\uC52C \uC384\uB2E4 "
+  itemIcon: {fileID: -207895129, guid: 69f677a7a9bbc814b887485fbd7ad80a, type: 3}
+  price: 1000
+  cooltime: 5
+  maxStackCount: 1
+  Weaponinfo:
+    weaponDamage: 10
+    attackSpeed: 0
+    modelPrefab: {fileID: 2488305193287784195, guid: df3475d38c4235b4e9d2746267c62df8, type: 3}
+    weaponType: 0
+  EffectInfo:
+    effectSize: 1
+    effectSpeed: 1
+    modelPrefab: {fileID: 2548626675060308717, guid: 9da26673c7da5eb42bfffa628e441ae0, type: 3}
