@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WeaponBase_Call_Swab : MonoBehaviour
+public class WeaponManager : MonoBehaviour
 {
     [SerializeField] List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
 

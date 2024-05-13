@@ -17,7 +17,7 @@ public struct WeaponInfo
     public WeaponType weaponType;
 }
 
-public class WeaponBase : WeaponBase_Call_Swab
+public class WeaponBase : WeaponManager
 {
     new Rigidbody2D rigidbody;
     Animator animator;

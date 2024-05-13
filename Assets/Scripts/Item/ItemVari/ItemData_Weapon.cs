@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
+
 using UnityEngine;
 
 // 아이템 한 종류의 정보를 저장하는 스크립터블 오브젝트
@@ -13,35 +13,39 @@ public class ItemData_Weapon : ItemData, IWeapon
     [Header("무기 이펙트 정보")]
     public EffectInfo EffectInfo;
 
+    [HideInInspector]
+    public EquipmentSlot_Base WeaponSlot;
 
     public void Equip(EquipmentSlot_Base slot)
-    {     
-        slot.SlotItemData = this;
+    {
+        if (WeaponSlot != null)
+        {
+            UnEquip();
+        }
 
-        WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
+        WeaponManager weaponBase = FindObjectOfType<WeaponManager>();
+        Debug.Log($"{weaponBase}");
         if (weaponBase != null)
         {
             weaponBase.getWeaponData(this);
         }
+
+        WeaponSlot = slot;
+        WeaponSlot.SlotItemData = this;
     }
 
-    public void UnEquip(EquipmentSlot_Base[] slots)
+    public void UnEquip()
     {
-        WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
-        if(weaponBase != null)
+        WeaponManager weaponBase = FindObjectOfType<WeaponManager>();
+        Debug.Log($"{weaponBase}");
+        if (weaponBase != null)
         {
-            Debug.Log($"{this}");
+
             weaponBase.deleteWeaponData(this);
         }
 
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (slots[i].SlotItemData == this)
-            {
-                slots[i].SlotItemData = null;
-                break;
-            }
-        }
+        WeaponSlot.SlotItemData = null;
+        WeaponSlot = null;
     }
 
     public int GetWeaponDamage()
@@ -54,14 +58,12 @@ public class ItemData_Weapon : ItemData, IWeapon
         return EffectInfo;
     }
 
-    //public int GetattackSpeed()
-    //{
-    //    return (int)Weaponinfo.attackSpeed;
-    //}
-
-    //public WeaponInfo GetWeaponInfo()
-    //{
-    //    return Weaponinfo;
-    //}
+    public void UnEquip(EquipmentSlot_Base[] slots)
+    {
+        throw new System.NotImplementedException();
+    }
 }
-
+//public int GetattackSpeed()
+//{
+//    return (int)Weaponinfo.attackSpeed;
+//}

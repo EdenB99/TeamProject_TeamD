@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -28,15 +26,15 @@ public class GameManager : Singleton<GameManager>
 
     public Material Mobmaterial;
 
-    WeaponBase_Call_Swab weaponBase_Call_Swab;
+    WeaponManager weaponManager;
 
-    public WeaponBase_Call_Swab WeaponBase_Call_Swab
+    public WeaponManager WeaponBase_Call_Swab
     {
         get
         {
-            if (weaponBase_Call_Swab == null)
-                FindAnyObjectByType<WeaponBase_Call_Swab>();
-            return weaponBase_Call_Swab;
+            if (weaponManager == null)
+                FindAnyObjectByType<WeaponManager>();
+            return weaponManager;
         }
     }
 
@@ -52,6 +50,6 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         inventoryUI = FindAnyObjectByType<InventoryUI>();
         ingameUI = FindAnyObjectByType<IngameUI>();
-        weaponBase_Call_Swab = FindAnyObjectByType<WeaponBase_Call_Swab>();
+        weaponManager = FindAnyObjectByType<WeaponManager>();
     }
 }
