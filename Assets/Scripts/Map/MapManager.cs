@@ -10,11 +10,11 @@ using static UnityEditor.Progress;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO H:: 맵상태 해당 스테이지동안 저장하기, 한번간맵의 적을 false로 만들었더니 포탈에 오류가등장, destroy됫는데 건든다고함.
     //TODO L::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
-    //TODO:M: 다음스테이지 맵이 만들어졌다곤 하는데 오류로 엄청나게 디버그가 나오고, 만들어지지않음, 맵도 더 많이 안나오게됌,
     //TODO L:: 맵 로딩만들기 
+    //TODO:: 다음스테이지 넘어가는 맵 안나오는 오류 고치기
+    //TODO:: 오류방 만들기
     [Header("변수")]
 
     private Player player;

@@ -78,6 +78,9 @@ public class MainCamera : Singleton<MainCamera>
     //카메라이동
     private void CameraMove()
     {
+        if(player != null)
+        {
+
         Vector3 playerPosition = player.transform.position;
 
         // 카메라 위치를 플레이어 위치로 설정
@@ -93,4 +96,6 @@ public class MainCamera : Singleton<MainCamera>
 
         transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * cameraSpeed);
     }
+
+        }
 }

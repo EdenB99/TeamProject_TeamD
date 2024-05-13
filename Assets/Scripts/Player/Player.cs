@@ -268,7 +268,6 @@ public class Player : MonoBehaviour
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
                 // 콜라이더를 다시 활성화하는 코루틴 호출
                 StartCoroutine(DownCollision(platformCollider, playerCollider));
-                Debug.Log("아랫점프");
             }
         }
     }
@@ -295,7 +294,6 @@ public class Player : MonoBehaviour
     private IEnumerator Dash()
     {
         if (!canDash || !isJump) yield break; // 대시가 가능한 상태인지 확인
-        Debug.Log("대시");
         StartCoroutine(DashinvincibleMode());
 
         canDash = false;
