@@ -13,13 +13,10 @@ public class ItemData_Weapon : ItemData, IWeapon
     [Header("무기 이펙트 정보")]
     public EffectInfo EffectInfo;
 
-    [HideInInspector]
-    public EquipmentSlot_Base WeaponSlot;
 
     public void Equip(EquipmentSlot_Base slot)
     {     
-        WeaponSlot = slot;
-        WeaponSlot.SlotItemData = this;
+        slot.SlotItemData = this;
 
         WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
         if (weaponBase != null)
@@ -28,7 +25,7 @@ public class ItemData_Weapon : ItemData, IWeapon
         }
     }
 
-    public void UnEquip()
+    public void UnEquip(EquipmentSlot_Base[] slots)
     {
         WeaponBase_Call_Swab weaponBase = FindObjectOfType<WeaponBase_Call_Swab>();
         if(weaponBase != null)
@@ -37,8 +34,14 @@ public class ItemData_Weapon : ItemData, IWeapon
             weaponBase.deleteWeaponData(this);
         }
 
-        WeaponSlot.SlotItemData = null;
-        WeaponSlot = null;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].SlotItemData == this)
+            {
+                slots[i].SlotItemData = null;
+                break;
+            }
+        }
     }
 
     public int GetWeaponDamage()

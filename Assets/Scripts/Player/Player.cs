@@ -40,7 +40,17 @@ public class Player : MonoBehaviour
 
 
     [SerializeField, Range(0.0f, 9999.0f)]
-    private int Gold;
+    private uint gold;
+    public uint Gold
+    {
+        get => gold;
+        set
+        {
+            gold = value;
+            OnGoldChange?.Invoke(gold);
+        }
+    }
+    Action<uint> OnGoldChange;
 
     // 레이어 태그
     private int playerLayer;

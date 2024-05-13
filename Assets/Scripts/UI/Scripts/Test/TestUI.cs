@@ -17,7 +17,6 @@ public class TestUI : MonoBehaviour
         inventoryUI = GameManager.Instance.InventoryUI;
         inventoryUI.getItem(ItemCode.Helmet);
         inventoryUI.getItem(ItemCode.HealingPotion_A);
-        inventoryUI.getItem(ItemCode.Helmet);
         inventoryUI.getItem(ItemCode.HealingPotion_A);
         inventoryUI.getItem(ItemCode.SwiftPotion);
         inventoryUI.getItem(ItemCode.HealingPotion_A);

@@ -8,9 +8,10 @@ using UnityEngine;
 public enum ItemCode : ushort
 {
     /// <summary>
-    /// 소비 아이템 ( 즉발 )
+    /// 필드 아이템 ( 즉발 )
     /// </summary>
     Apple = 0,
+    Coin,
 
 
     /// <summary>

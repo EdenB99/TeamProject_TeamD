@@ -143,19 +143,6 @@ public class InventoryUI : MonoBehaviour
         detail.Close(); // 닫기
     }
 
-
-
-
-
-    /// <summary>
-    /// 슬롯안에서 마우스 커서가 움직였을 때 실행되는 함수
-    /// </summary>
-    /// <param name="screen">마우스 커서의 스크린 좌표</param>
-    private void OnSlotPointerMove(Vector2 screen)
-    {
-        detail.MovePosition(screen);    // 움직이기
-        usableUI.MovePosition(screen);
-    }
     /// <summary>
     /// 슬롯을 클릭했을 때 실행되는 함수
     /// </summary>
@@ -208,7 +195,7 @@ public class InventoryUI : MonoBehaviour
                         IEquipable equipable = itemdata as IEquipable;
                         if (equipable != null)
                         {
-                            equipable.UnEquip();               //weaponslot에서 삭제
+                            equipable.UnEquip(WeaponsSlots);               //weaponslot에서 삭제
                         }
                         slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
                     } else
@@ -221,7 +208,7 @@ public class InventoryUI : MonoBehaviour
                     if (slotUI.InvenSlot.IsEquipped) //선택한 슬롯의 장비가 착용중이면
                     {
                         IEquipable equipable = itemdata as IEquipable;
-                        equipable.UnEquip();               //Accessoryslot에서 삭제
+                        equipable.UnEquip(AccessoriesSlots);               //Accessoryslot에서 삭제
                         slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
                     }
                     else
@@ -284,19 +271,19 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;                          //비어있지 않으면 변경없음
             }
         }
-        /*if (isFull)     //모든 슬롯이 비어있다면
+        if (isFull)     //모든 슬롯이 비어있다면
         {
-            for (int i =0; i<WeaponsSlots.Length; i++)      //슬롯의 갯수까지
+            for (int i = 0; i < WeaponsSlots.Length; i++)      //슬롯의 갯수까지
             {
                 if (!WeaponsSlots[i].Onhand)                //현재 슬롯이 손에 들려있다면
                 {
                     IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;                           //현재 손에 들린 슬롯의 장착함수를 선언
-                    handEquipable.UnEquip();                //손에 들린 무기 해제
+                    handEquipable.UnEquip(WeaponsSlots);                //손에 들린 무기 해제
                     equipable.Equip(WeaponsSlots[i]);       //새로운 무기를 장착
                     break;
                 }
             }
-        }*/
+        }
     }
 
     private void EquipAccessory(ItemData itemdata)
@@ -322,7 +309,7 @@ public class InventoryUI : MonoBehaviour
         if (isFull)        //슬롯이 가득찼을 때
         {
             IEquipable firstAccessory = AccessoriesSlots[0].SlotItemData as IEquipable;
-            firstAccessory.UnEquip(); //첫번째 슬롯의 아이템 해제
+            firstAccessory.UnEquip(AccessoriesSlots); //첫번째 슬롯의 아이템 해제
             equipable.Equip(AccessoriesSlots[0]); //빈칸에 아이템 장착
         }
     }

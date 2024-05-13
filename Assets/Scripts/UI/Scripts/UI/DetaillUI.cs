@@ -54,8 +54,6 @@ public class DetaillUI : MonoBehaviour
             //카테고리가 weapon일때 무기 데미지와 속도값 표시
 
             canvasGroup.alpha = 0.0001f; // MovePosition이 alpha가 0보다 클때만 실행되니 미리 조금만 올리기
-            MovePosition(Mouse.current.position.ReadValue()); // 보이기 전에 커서 위치와 상세 정보창 옮기기
-
             // 알파 변경 시작(0->1)
             StopAllCoroutines();
             StartCoroutine(FadeIn());
@@ -68,22 +66,6 @@ public class DetaillUI : MonoBehaviour
             // 알파 변경 시작(1->0)
             StopAllCoroutines();
             StartCoroutine(FadeOut());
-        }
-    }
-    /// <summary>
-    /// 상세 정보창을 움직이는 함수
-    /// </summary>
-    /// <param name="screenPos">스크린 좌표</param>
-    public void MovePosition(Vector2 screenPos)
-    {
-        // Screen.width;   // 화면의 가로 해상도
-
-        if (canvasGroup.alpha > 0.0f)  // 보이는 상황인지 확인
-        {
-            RectTransform rect = (RectTransform)transform;
-            int over = (int)(screenPos.x + rect.sizeDelta.x) - Screen.width;    // 얼마나 넘쳤는지 확인            
-            screenPos.x -= Mathf.Max(0, over);  // over를 양수로만 사용(음수일때는 별도 처리 필요없음)
-            rect.position = screenPos;
         }
     }
     /// <summary>

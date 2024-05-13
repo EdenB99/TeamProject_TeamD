@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class ItemData_Accessory : ItemData, IAccessory
 {
-    [HideInInspector]
-    public EquipmentSlot_Base AccessorySlot;
     [Header("버프형 아이템 데이터")]
     public PlayerBuff playerBuff;
     
@@ -26,15 +24,20 @@ public class ItemData_Accessory : ItemData, IAccessory
 
     public void Equip(EquipmentSlot_Base slot)
     {
-        AccessorySlot = slot;
         slot.SlotItemData = this;
         BuffActive();
     }
 
-    public void UnEquip()
+    public void UnEquip(EquipmentSlot_Base[] slots)
     {
-        AccessorySlot.SlotItemData = null;
-        AccessorySlot = null;
+        for (int i =0; i < slots.Length; i++)
+        {
+            if (slots[i].SlotItemData == this)
+            {
+                slots[i].SlotItemData = null;
+                break;
+            }
+        }
         Player target = GameManager.Instance.Player;
         if (target != null)
         {

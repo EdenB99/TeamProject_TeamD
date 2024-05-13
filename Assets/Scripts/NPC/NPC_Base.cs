@@ -9,7 +9,8 @@ public class NPC_Base : MonoBehaviour
     public enum NPCType
     {
         Store,
-        Tutorial
+        Tutorial,
+        Event
         
     }
 
@@ -33,7 +34,7 @@ public class NPC_Base : MonoBehaviour
         dialogBox.gameObject.SetActive(false);
     }
 
-    public void StartDialog()
+    public virtual void StartDialog()
     {
         currentDialogIndex = 0;
         dialogBox.gameObject.SetActive(true);
@@ -46,10 +47,14 @@ public class NPC_Base : MonoBehaviour
         if (IsInteracting && currentDialogIndex < dialogues.Length)
         {
             ShowDialog();
+        } else if (IsInteracting&& currentDialogIndex == dialogues.Length)
+        {
+            EndDialog();
         }
+        
     }
 
-    public void ShowDialog()
+    public virtual void ShowDialog()
     {
         if (currentDialogIndex < dialogues.Length)
         {
@@ -58,7 +63,7 @@ public class NPC_Base : MonoBehaviour
         }
     }
 
-    public void EndDialog()
+    public virtual void EndDialog()
     {
         if(IsInteracting)
         {
