@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map/Stage1/StartMap/StartMap3.unity
     guid: 5b89f11713174dd469d896d6543b7015
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/NextStageRoom/NextStageRoom1.unity
+    guid: 115fdb1f1c009034e8bed8de6ff00cf1
   - enabled: 1
     path: Assets/Scenes/Map/Stage1/RestAndBossRoom/RestMap1.unity
     guid: 9a1d899614db4d84d92e8f2c4d19ad72
@@ -89,4 +92,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map/Stage1/Stage1Map20.unity
     guid: eb972a256069efb41895605675b23652
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/Stage1Map21.unity
+    guid: 5b0e3e58a07aa9a459935610e58ffc16
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/Stage1Map22.unity
+    guid: 4b680a85a88ec2e43a66c4f4f22433e8
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/Stage1Map23.unity
+    guid: a0361e0293145454385da053de5dfeaf
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/Stage1Map24.unity
+    guid: 15fa880c39d1f8c4cab2a30bb0aa6ea5
+  - enabled: 1
+    path: Assets/Scenes/Map/Stage1/Stage1Map25.unity
+    guid: 44a2c18da2e96624fa45a51d5a569ffb
   m_configObjects: {}

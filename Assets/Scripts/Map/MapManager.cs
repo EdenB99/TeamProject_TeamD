@@ -341,9 +341,10 @@ public class MapManager : MonoBehaviour
             if (!worldMap.ContainsKey(newPosition))
             {
                 string randomMapScene;
-                if (currentMapCount >= mapSize * 0.6f && UnityEngine.Random.Range(0f, 1f) < 0.4f && !usedMapScenes.Intersect(nextStageMapScenes.Select(m => m.sceneName)).Any())
+                if (currentMapCount >= mapSize * 0.6f && UnityEngine.Random.Range(0f, 1f) < 0.4f)
                 {
                     randomMapScene = SelectRandomMapFromNextStageMapScenes();
+                    Debug.Log("랜덤맵이 추가함수에서생성");
                 }
                 else
                 {
@@ -364,6 +365,7 @@ public class MapManager : MonoBehaviour
                         // nextStageMapScenes에서 맵이 선택되었다면 usedMapScenes에 추가
                         if (nextStageMapScenes.Any(m => m.sceneName == randomMapScene))
                         {
+                            Debug.Log($"다음스테이지 맵이 추가함수의 랜덤맵 생성에서 처리되었습니다..");
                             foreach (var nextStageMap in nextStageMapScenes)
                             {
                                 usedMapScenes.Add(nextStageMap.sceneName);
@@ -481,6 +483,14 @@ public class MapManager : MonoBehaviour
         if (mapData == null)
         {
             return false;
+        }
+
+        //다음맵으로 가는 맵의 포탈은 열어놓기
+        //TODO:: 작동안함
+        if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
+        {
+            Debug.Log("다음맵으로 가는 맵의 포탈체크 트루");
+            return true;
         }
 
         if (mapData.HasUpPortal && !IsValidPortalConnection(mapData, Direction.Up))
