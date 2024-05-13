@@ -54,7 +54,7 @@ public class SorcererEnemy : EnemyBase_
 
 
         yield return new WaitForSeconds(1f);
-        Vector3 spawnPosition = new Vector3(targetPos.x, targetPos.y + 5f, targetPos.z);
+        Vector3 spawnPosition = new Vector3(targetPos.x, targetPos.y + 4f, targetPos.z);
         GameObject thunderInstance = Instantiate(ThunderPrefab, spawnPosition, Quaternion.identity);
         Destroy(thunderInstance, 2f);
 
