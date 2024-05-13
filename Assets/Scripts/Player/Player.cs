@@ -82,11 +82,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-
+/*
         if (!isJumping && jumpCount > 0 && Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S))
         {
             Jump();
-        }
+        }*/
 
         if (CheckGround() && isJumping)
         {
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour
 
     protected void MousePosition()
     {
-        if (playerStats != null && playerStats.IsAlive)
+        if (playerStats != null && !playerStats.isDead)
         {
             // 마우스 포지션 변경
             // Camera camera = FindAnyObjectByType<Camera>();

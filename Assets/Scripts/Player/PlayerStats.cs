@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 플레이어에 대한 버프 구조체 
@@ -46,6 +47,11 @@ public class PlayerStats : MonoBehaviour
 
     public List<PlayerBuff> buffs;
 
+
+    [Header("플레이어 부활")]
+    public Transform respawnPoint; // 플레이어가 부활할 위치
+    public bool isDead = false;
+
     private void Awake()
     {
         ani = GetComponent<Animator>();
@@ -68,6 +74,17 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         pickupItem();
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Die();
+        }
+
+        if (isDead && Input.GetKeyDown(KeyCode.R))
+        {
+            Respawn();
+            Destroy(this.gameObject);
+        }
     }
 
     SpriteRenderer spriteRenderer;
@@ -155,6 +172,22 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    void Respawn()
+    {
+        Debug.Log("플레이어 부활");
+        SceneManager.LoadScene("Town", LoadSceneMode.Single);
+        StartCoroutine(RespawnPlayer());
+    }
+
+    private IEnumerator RespawnPlayer()
+    {
+        // 씬 로드가 완료될 때까지 대기
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Town");
+
+        // 지정된 부활 위치로 플레이어 이동
+        transform.position = respawnPoint.position;
+    }
+
     /// <summary>
     /// 체력이 변경되었을때 호출되는 함수
     /// </summary>
@@ -163,6 +196,7 @@ public class PlayerStats : MonoBehaviour
         // 캐릭터가 사망했을 때의 로직 처리
         Debug.Log("플레이어가 죽었다.");
         ani.SetTrigger("Die");
+        isDead = true;
         OnDie?.Invoke();
         //Player_ani.SetTrigger("Die");
     }
@@ -265,6 +299,7 @@ public class PlayerStats : MonoBehaviour
             item.itemDel(); 
         }
     }
+
 
     /// <summary>
     /// 버프를 추가하는 함수
