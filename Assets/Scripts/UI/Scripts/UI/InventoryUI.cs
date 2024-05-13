@@ -265,6 +265,7 @@ public class InventoryUI : MonoBehaviour
             {
                 equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
                 isFull = false;                         //슬롯이 가득차지 않음
+                Debug.Log("비공간찾음");
                 break;                                  //반복문 종료
             } else
             {

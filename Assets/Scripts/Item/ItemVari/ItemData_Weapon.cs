@@ -13,39 +13,33 @@ public class ItemData_Weapon : ItemData, IWeapon
     [Header("무기 이펙트 정보")]
     public EffectInfo EffectInfo;
 
-    [HideInInspector]
-    public EquipmentSlot_Base WeaponSlot;
-
     public void Equip(EquipmentSlot_Base slot)
     {
-        if (WeaponSlot != null)
-        {
-            UnEquip();
-        }
+        slot.SlotItemData = this;
 
-        WeaponManager weaponBase = FindObjectOfType<WeaponManager>();
-        Debug.Log($"{weaponBase}");
-        if (weaponBase != null)
+        WeaponManager weaponmanager = FindObjectOfType<WeaponManager>();
+        Debug.Log($"{slot.SlotItemData}");
+        if (weaponmanager != null)
         {
-            weaponBase.getWeaponData(this);
+            weaponmanager.GetWeaponData(this);
         }
-
-        WeaponSlot = slot;
-        WeaponSlot.SlotItemData = this;
     }
-
-    public void UnEquip()
+    public void UnEquip(EquipmentSlot_Base[] slots)
     {
-        WeaponManager weaponBase = FindObjectOfType<WeaponManager>();
-        Debug.Log($"{weaponBase}");
-        if (weaponBase != null)
+        for (int i = 0; i < slots.Length; i++)
         {
-
-            weaponBase.deleteWeaponData(this);
+            if (slots[i].SlotItemData == this)
+            {
+                slots[i].SlotItemData = null;
+                break;
+            }
         }
 
-        WeaponSlot.SlotItemData = null;
-        WeaponSlot = null;
+        WeaponManager weaponmanager = FindObjectOfType<WeaponManager>();
+        if (weaponmanager != null)
+        {
+            weaponmanager.DeleteWeaponData(this);
+        }
     }
 
     public int GetWeaponDamage()
@@ -58,10 +52,7 @@ public class ItemData_Weapon : ItemData, IWeapon
         return EffectInfo;
     }
 
-    public void UnEquip(EquipmentSlot_Base[] slots)
-    {
-        throw new System.NotImplementedException();
-    }
+   
 }
 //public int GetattackSpeed()
 //{
