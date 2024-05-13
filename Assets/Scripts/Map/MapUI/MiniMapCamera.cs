@@ -33,6 +33,10 @@ public class MiniMapCamera : Singleton<MiniMapCamera>
         {
             FindBoundaryObject();
         }
+        if (player == null)
+        {
+            player = GameObject.FindObjectOfType<Player>();
+        }
 
         CameraMove();
     }
@@ -58,6 +62,8 @@ public class MiniMapCamera : Singleton<MiniMapCamera>
 
     private void CameraMove()
     {
+        if(player != null)
+        {
         Vector3 playerPosition = player.transform.position;
 
         // 카메라 위치를 플레이어 위치로 설정
@@ -72,5 +78,7 @@ public class MiniMapCamera : Singleton<MiniMapCamera>
         }
 
         transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * cameraSpeed);
+
+        }
     }
 }

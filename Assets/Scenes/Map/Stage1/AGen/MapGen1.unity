@@ -476,11 +476,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: worldMapSize
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: mapPrefabs.Array.size
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: mapPrefabs.Array.data[16]
@@ -498,6 +498,26 @@ PrefabInstance:
       propertyPath: mapPrefabs.Array.data[19]
       value: 
       objectReference: {fileID: 7245154200473590969, guid: 0c8de1c214c7ef64497c458c54a3f5a2, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[20]
+      value: 
+      objectReference: {fileID: 8583955025778470719, guid: 7d8610540090e4d4299497647ae8d1b2, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[21]
+      value: 
+      objectReference: {fileID: 249021532620854842, guid: 5df71dbb1e8e3df47983935397913dbc, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[22]
+      value: 
+      objectReference: {fileID: 4341103893948794123, guid: b44c1aa2491c23f4a9e3c082733e0082, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[23]
+      value: 
+      objectReference: {fileID: 898555068955159649, guid: 773597a62985aae44a23459372910011, type: 3}
+    - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
+      propertyPath: mapPrefabs.Array.data[24]
+      value: 
+      objectReference: {fileID: 1008614953247811888, guid: 649404056d46ddd44addd61e46f67456, type: 3}
     - target: {fileID: 8739993864134140158, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
       propertyPath: NextStageMapPrefabs.Array.size
       value: 1

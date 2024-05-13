@@ -12,6 +12,11 @@ public class Spike : MonoBehaviour
         ps = GetComponent<PlayerStats>();
     }
 
+    private void OnEnable()
+    {
+        ps = FindAnyObjectByType<PlayerStats>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
