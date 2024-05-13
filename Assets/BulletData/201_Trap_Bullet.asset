@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletIcon: {fileID: 21300000, guid: 43540ce4bb150ec4884aa00b9a0e99d1, type: 3}
   code: 3
-  bulletType: 0
+  bulletType: 2
   moveSpeed: 5
   bulletDamage: 1
   bulletSize: 0.3
   lifeTime: 10
+  floatDir: 0
   isThrougt: 0
   isParring: 0
   isPlayer: 0

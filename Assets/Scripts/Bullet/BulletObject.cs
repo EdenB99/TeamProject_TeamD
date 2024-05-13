@@ -47,6 +47,8 @@ public class BulletObject : RecycleObject , IAttack
     /// </summary>
     public float LifeTime = 1;
 
+    public float floatDir;
+
     /// <summary>
     /// 탄이 벽을 넘는지 못넘는지 여부
     /// </summary>
@@ -92,6 +94,12 @@ public class BulletObject : RecycleObject , IAttack
                 transform.Translate(Time.deltaTime * moveSpeed * moveDir);
                 break;
             case BulletType.Bullet_Chase:
+                moveDir = (player.transform.position - transform.position).normalized;
+                transform.Translate(Time.deltaTime * moveSpeed * moveDir);
+                break;
+            case BulletType.Bullet_Straight_Dir:
+                float radians = floatDir * Mathf.Deg2Rad;
+                Vector3 direction = new Vector3(Mathf.Cos(radians), 0, Mathf.Sin(radians));
                 moveDir = (player.transform.position - transform.position).normalized;
                 transform.Translate(Time.deltaTime * moveSpeed * moveDir);
                 break;
@@ -152,6 +160,7 @@ public class BulletObject : RecycleObject , IAttack
                 isParring = data.isParring;
                 isThrought = data.isThrougt;
                 LifeTime = data.lifeTime;
+                floatDir = data.floatDir;
                 circleCollider.radius = data.bulletSize; // 피격 범위
                 spriteRenderer.sprite = data.bulletIcon; // 스프라이트
                 isPlayer = data.isPlayer;

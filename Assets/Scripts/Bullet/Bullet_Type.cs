@@ -13,4 +13,9 @@ public enum BulletType
     /// 플레이어를 쫓아 이동하는 불릿타입
     /// </summary>
     Bullet_Chase,
+
+    /// <summary>
+    /// 0~360을 받아 이동하는 불릿타입
+    /// </summary>
+    Bullet_Straight_Dir,
 }
