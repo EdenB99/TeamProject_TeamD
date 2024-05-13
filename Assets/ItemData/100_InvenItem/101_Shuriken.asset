@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b919da6daaa1a17468a479f1942c2cfd, type: 3}
   m_Name: 101_Shuriken
   m_EditorClassIdentifier: 
-  code: 2
+  code: 3
   type: 2
   itemName: "\uC218\uB9AC\uAC80"
   itemDescription: "\uD45C\uCC3D\uC744 \uB358\uC9C4\uB2E4."

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3953e81c7efcfb04fa0bdc22283782a1, type: 3}
   m_Name: 100_redPotion
   m_EditorClassIdentifier: 
-  code: 1
+  code: 2
   type: 2
   itemName: "\uD3EC\uC158"
   itemDescription: "20\uD68C\uBCF5"

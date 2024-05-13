@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
   m_Name: 300_Sword
   m_EditorClassIdentifier: 
-  code: 5
+  code: 6
   type: 0
   itemName: "\uCE7C"
   itemDescription: "\uC801\uB4E4\uC744 \uBCA0\uC5B4\uB0B8\uB2E4."
@@ -29,4 +29,3 @@ MonoBehaviour:
     effectSize: 1
     effectSpeed: 1
     modelPrefab: {fileID: 2548626675060308717, guid: 9da26673c7da5eb42bfffa628e441ae0, type: 3}
-  WeaponSlot: {fileID: 0}

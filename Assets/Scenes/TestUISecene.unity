@@ -1240,6 +1240,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManger
       objectReference: {fileID: 0}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e5e812ae9cf451149818a150550bde2e, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6c4e0fc168813ae47990bb1e2f3c0eb8, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5ba62330611122f4cb22489a0e0668a5, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4fae4f775cd45284e8085fc8deffa2f3, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6081316966289714abdb117a16e8fc5c, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: ddbd88686100ff4439cd98aee13b7571, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: b2a90ab59fc81894fa8d86486e523b4b, type: 2}
+    - target: {fileID: 2455975342732269250, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
+      propertyPath: itemDatas.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: cd0fa7394cbe3754ca07235d17df3fa1, type: 2}
     - target: {fileID: 3711933021081820604, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
       propertyPath: weaponsData.Array.size
       value: 2

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17e85675c4969e49a18d6bffb5d2e13, type: 3}
   m_Name: 102_SwiftPotion
   m_EditorClassIdentifier: 
-  code: 3
+  code: 4
   type: 2
   itemName: "\uC18D\uB3C4 \uBB3C\uC57D"
   itemDescription: "\uC18D\uB3C4\uAC00 \uC99D\uAC00\uD55C\uB2E4"
@@ -20,7 +20,7 @@ MonoBehaviour:
   price: 0
   cooltime: 0
   playerBuff:
-    code: 3
+    code: 4
     buff_attackPower: 0
     buff_Defense: 0
     buff_hp: 0
