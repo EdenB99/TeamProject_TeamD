@@ -28,6 +28,7 @@ public enum ItemCode : ushort
     /// 소비 아이템 ( 버프 )
     /// </summary>
     SwiftPotion,
+    Beer,
 
 
     /// <summary>
