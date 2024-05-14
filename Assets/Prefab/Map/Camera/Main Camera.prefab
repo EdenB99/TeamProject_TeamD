@@ -98,6 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 5943276400705695675}
+  backgrounds:
+  - {fileID: 21300000, guid: 9abc0c18682762a4b831c2e99c2e67a1, type: 3}
+  - {fileID: -44259460, guid: 5fe5454ec8605de43809133b020d1b69, type: 3}
 --- !u!1 &6376835683217115513
 GameObject:
   m_ObjectHideFlags: 0
