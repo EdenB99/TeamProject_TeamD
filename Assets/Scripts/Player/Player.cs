@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
         }
 
         //땅에 닿으면 대쉬가 초기화되서 쿨타임이 UI와 맞지않음
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (Input.GetMouseButtonDown(1) && canDash)
         {
             currentdashTime = 0.0f;
             StartCoroutine(Dash());
@@ -316,7 +316,8 @@ public class Player : MonoBehaviour
         }
 
         dashDirection.y = 0; // Y축 이동 방지
-        rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse); // 계산된 방향으로 대시 힘 적용
+        //rigid.AddForce(dashDirection * dashingPower, ForceMode2D.Impulse); // 계산된 방향으로 대시 힘 적용
+        rigid.velocity = dashDirection * dashingPower;
 
         yield return new WaitForSeconds(dashingTime); // 대시 지속 시간 동안 기다림
         rigid.gravityScale = originalGravity; // 대시가 끝난 후 중력 설정 복원
@@ -378,7 +379,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Platform"))
+        if ((collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Platform") && !isDashing))
         {
             jumpCount = 2;
             canDash = true;

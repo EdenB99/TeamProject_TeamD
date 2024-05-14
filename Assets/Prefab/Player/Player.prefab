@@ -314,6 +314,7 @@ MonoBehaviour:
   buffs: []
   respawnPoint: {fileID: 0}
   isDead: 0
+  playerPrefab: {fileID: 3776167721910377412}
   invincible: 0
   PickSpeed: 0
   pickupRange: 1

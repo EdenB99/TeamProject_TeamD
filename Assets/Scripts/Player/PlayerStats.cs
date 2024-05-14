@@ -49,8 +49,10 @@ public class PlayerStats : MonoBehaviour
 
 
     [Header("플레이어 부활")]
-    public Transform respawnPoint; // 플레이어가 부활할 위치
+   
     public bool isDead = false;
+    public GameObject prefab;
+
 
     private void Awake()
     {
@@ -68,6 +70,7 @@ public class PlayerStats : MonoBehaviour
         }
         ingameUI = GameManager.Instance.IngameUI; //ingameUI 연결
 
+       
         RefreshStats();
     }
 
@@ -82,8 +85,15 @@ public class PlayerStats : MonoBehaviour
 
         if (isDead && Input.GetKeyDown(KeyCode.R))
         {
-            Respawn();
-            Destroy(this.gameObject);
+            GameObject respawnerObj = GameObject.Find("Respawner");
+            if (respawnerObj != null)
+            {
+                PlayerRespawner respawner = respawnerObj.GetComponent<PlayerRespawner>();
+                if (respawner != null)
+                {
+                    respawner.Respawn();
+                }
+            }
         }
     }
 
@@ -172,21 +182,18 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    void Respawn()
+    public void SetInitialState()
     {
-        Debug.Log("플레이어 부활");
-        SceneManager.LoadScene("Town", LoadSceneMode.Single);
-        StartCoroutine(RespawnPlayer());
+        hp = maxHp; // HP 초기화
+        Debug.Log("HP : " + hp);
+      /*  // 애니메이터 상태 초기화
+        if (ani != null)
+        {
+            ani.Rebind();
+            ani.Update(0f);
+        }*/
     }
 
-    private IEnumerator RespawnPlayer()
-    {
-        // 씬 로드가 완료될 때까지 대기
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Town");
-
-        // 지정된 부활 위치로 플레이어 이동
-        transform.position = respawnPoint.position;
-    }
 
     /// <summary>
     /// 체력이 변경되었을때 호출되는 함수
