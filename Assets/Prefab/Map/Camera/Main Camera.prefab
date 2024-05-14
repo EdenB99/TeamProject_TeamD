@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 234733674714258136}
   - component: {fileID: 4390197447615550465}
   - component: {fileID: 5303272804034342764}
-  - component: {fileID: 7146826797336417234}
+  - component: {fileID: 2908198378796071050}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraSpeed: 5
   boundaryObject: {fileID: 0}
---- !u!114 &7146826797336417234
+--- !u!114 &2908198378796071050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
