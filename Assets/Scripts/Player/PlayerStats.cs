@@ -151,7 +151,6 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage(float damage)
     {
         CurrentHp -= damage;
-        Debug.Log(hp);
 
         if (hp > 0) // 체력이 남아있을 때만 무적 모드를 활성화
         {

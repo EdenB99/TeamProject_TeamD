@@ -65,8 +65,6 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         {
             hp = value;
             hp = Mathf.Max(hp, 0);
-            Debug.Log(hp);
-            // Hp가 0 이하면 사망
             if (hp <= 0 && IsLive)
             {
                 Die();

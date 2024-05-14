@@ -19,6 +19,7 @@ public class MapManager : MonoBehaviour
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
     //플레이어가 대시로 적을 밀칠시 적이 날라감
     //적을 매우 빠르게 계속 공격할경우 무기 이펙트에서 null 발생
+    //다음맵으로 가는 씬이 존재한다고 하지만 맵에 없는 오류 발생
     
     [Header("변수")]
 
@@ -281,7 +282,16 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        hasNextStageMap = worldMap.Values.Any(mapData => nextStageMapScenes.Contains(mapData));
+        foreach (var mapData in worldMap.Values)
+        {
+            if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
+            {
+                Debug.Log("현재 다음맵으로 가는 씬이 존재합니다.");
+                hasNextStageMap = true;
+                break;
+            }
+        }
+
 
         if (!hasNextStageMap)
         {
@@ -290,6 +300,7 @@ public class MapManager : MonoBehaviour
             if (lastMapData != null)
             {
                 nextStageMapScenes = new MapData[] { lastMapData };
+                hasNextStageMap = true;
                 Debug.Log($"NextStageMap이 없어 {lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
             }
         }
@@ -379,7 +390,6 @@ public class MapManager : MonoBehaviour
                 if (currentMapCount >= mapSize * 0.6f && UnityEngine.Random.Range(0f, 1f) < 0.4f)
                 {
                     randomMapScene = SelectRandomMapFromNextStageMapScenes();
-                    Debug.Log("랜덤맵이 추가함수에서선택됨");
                 }
                 else
                 {
@@ -490,7 +500,6 @@ public class MapManager : MonoBehaviour
         if (nextStageMapScenes.Length > 0)
         {
             int randomIndex = UnityEngine.Random.Range(0, nextStageMapScenes.Length);
-            Debug.Log("다음맵으로가는 맵이 선택되었습니다.");
             return nextStageMapScenes[randomIndex].sceneName;
         }
 
@@ -525,7 +534,6 @@ public class MapManager : MonoBehaviour
         //TODO:: 작동안함
         if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
         {
-            Debug.Log("다음맵으로 가는 맵의 포탈체크 트루");
             return true;
         }
 
@@ -1032,7 +1040,6 @@ public class MapManager : MonoBehaviour
             else
             {
                 
-                Debug.Log($"해당맵에 적이 {enemies.Length}마리 있습니다.");
                 bool hasEnemies = enemies.Length > 0;
 
                 if (currentMap.hasEnemies != hasEnemies)
