@@ -17,7 +17,7 @@ public struct WeaponInfo
     public WeaponType weaponType;
 }
 
-public class WeaponBase : WeaponManager
+public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
     Animator animator;
@@ -79,7 +79,9 @@ public class WeaponBase : WeaponManager
     /// </summary>
     private const string attackTrigger = "Attack";
 
-    protected override void Awake()
+    protected WeaponManager weaponManager;
+
+    protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         weaponInputActions = new WeaponAction();
@@ -91,7 +93,7 @@ public class WeaponBase : WeaponManager
         }
     }
 
-    protected override void Start()
+    protected virtual void Start()
     {
         animator = transform.GetChild(0).GetComponent<Animator>();
 
@@ -102,9 +104,12 @@ public class WeaponBase : WeaponManager
         hinge = player.transform.GetChild(0);
 
         weaponLength = spriteRenderer.sprite.bounds.size.y * transform.localScale.y;
+
+        weaponManager = GameManager.Instance.WeaponManager;
+        weaponManager.currentWeaponindexChange += Switchweapon;
     }
 
-    protected override void OnEnable()
+    protected virtual void OnEnable()
     {
         if (IsPlayerAlive())
         {
@@ -113,7 +118,7 @@ public class WeaponBase : WeaponManager
         }
     }
 
-    protected override void OnDisable()
+    protected virtual void OnDisable()
     {
         if (IsPlayerAlive())
         {
@@ -222,4 +227,15 @@ public class WeaponBase : WeaponManager
         weaponInputActions.Weapon.Disable();
     }
 
+    public void Switchweapon(int index)
+    {
+        if (GameManager.Instance.WeaponManager.weaponsData[weaponManager.CurrentWeaponIndex] != null)
+        {
+            GameManager.Instance.WeaponManager.ActivateWeaponPrefab(GameManager.Instance.WeaponManager.weaponsData[weaponManager.CurrentWeaponIndex]);
+        }
+        else
+        {
+            Debug.Log("빈손");
+        }
+    }
 }   

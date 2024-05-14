@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>
 
     WeaponManager weaponManager;
 
-    public WeaponManager WeaponBase_Call_Swab
+    public WeaponManager WeaponManager
     {
         get
         {

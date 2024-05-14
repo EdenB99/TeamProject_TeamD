@@ -25,7 +25,7 @@ public class WeaponManager : MonoBehaviour
     //index값의 무기데이터가 null, 현재 clone만 파괴하고, 무기 clone생성 하지않음
 
 
-    [SerializeField] List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
+    [SerializeField] public List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
 
     private int currentWeaponIndex = 0;
 
@@ -43,30 +43,30 @@ public class WeaponManager : MonoBehaviour
 
     GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
 
-    protected virtual void Awake()
+    public void Awake()
     {
         inputActions = new PlayerAction();
         currentWeaponindexChange += Switchweapon;
     }
 
-    protected virtual void OnEnable()
+    public void OnEnable()
     {
         inputActions.Player.Enable();
-        inputActions.Player.SwitchWeapon.performed += keyinput;
+        inputActions.Player.SwitchWeapon.performed += KeyInput;
     }
 
-    protected virtual void OnDisable()
+    public void OnDisable()
     {
-        inputActions.Player.SwitchWeapon.performed -= keyinput;
+        inputActions.Player.SwitchWeapon.performed -= KeyInput;
         inputActions.Player.Disable();
     }
 
-    protected virtual void Start()
+    public void Start()
     {
 
     }
 
-    public void keyinput(InputAction.CallbackContext context)
+    public void KeyInput(InputAction.CallbackContext context)
     {
         Debug.Log("스왑입력");
         CurrentWeaponIndex = (CurrentWeaponIndex + 1) % weaponsData.Count;
@@ -78,7 +78,12 @@ public class WeaponManager : MonoBehaviour
         {
             ActivateWeaponPrefab(weaponsData[currentWeaponIndex]);
         }
-        else Debug.Log("현재 인덱스에 아이템 데이터 없음");
+        else
+        {
+            Debug.Log("현재 인덱스에 아이템 데이터 없음");
+            DestroyCurrentWeapon();
+        }
+
     }
 
     public void ActivateWeaponPrefab(ItemData_Weapon weaponData)
@@ -147,6 +152,3 @@ public class WeaponManager : MonoBehaviour
         }
     }
 }
-
-
-//
