@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
   m_Name: 302_KingSword
   m_EditorClassIdentifier: 
-  code: 8
+  code: 9
   type: 0
   itemName: "\uC655\uC758 \uAC80"
   itemDescription: "\uC77C\uBC18 \uAC80\uBCF4\uB2E4 \uD6E8\uC52C \uC384\uB2E4 "

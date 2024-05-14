@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
   m_Name: 301_Spear
   m_EditorClassIdentifier: 
-  code: 7
+  code: 8
   type: 0
   itemName: "\uCC3D"
   itemDescription: "\uC801\uC744 \uCC0C\uB978\uB2E4"

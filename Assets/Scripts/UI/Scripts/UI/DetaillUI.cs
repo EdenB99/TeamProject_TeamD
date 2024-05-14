@@ -9,7 +9,9 @@ public class DetaillUI : MonoBehaviour
 {
     Image icon;
     TextMeshProUGUI itemName;
+    Image damageIcon;
     TextMeshProUGUI damageText;
+    Image SpeedIcon;
     TextMeshProUGUI speedText;
     TextMeshProUGUI DescriptionText;
     TextMeshProUGUI ItemCategory;
@@ -31,8 +33,12 @@ public class DetaillUI : MonoBehaviour
         itemName = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(2);
         ItemCategory = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(3);
+        damageIcon = child.GetComponent<Image>();
         child = transform.GetChild(4);
         damageText = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(5);
+        SpeedIcon = child.GetComponent<Image>();
         child = transform.GetChild(6);
         speedText = child.GetComponent<TextMeshProUGUI>();
         child = transform.GetChild(7);
@@ -52,7 +58,22 @@ public class DetaillUI : MonoBehaviour
             ItemCategory.text = itemData.type.ToString();
             DescriptionText.text = itemData.itemDescription;
             //카테고리가 weapon일때 무기 데미지와 속도값 표시
-
+            Color setColor = new Color(255,255,255,255);
+            if (itemData.type == ItemType.Weapon)
+            {
+                IWeapon weapon = itemData as IWeapon;
+                damageText.text = weapon.GetWeaponDamage().ToString();
+                damageIcon.color = setColor;
+                speedText.text = weapon.GetWeaponSpeed().ToString();
+                SpeedIcon.color = setColor;
+            } else
+            {
+                setColor = new Color(255, 255, 255, 0);
+                damageText.text = null;
+                damageIcon.color = setColor;
+                speedText.text = null;
+                SpeedIcon.color = setColor;
+            }
             canvasGroup.alpha = 0.0001f; // MovePosition이 alpha가 0보다 클때만 실행되니 미리 조금만 올리기
             // 알파 변경 시작(0->1)
             StopAllCoroutines();

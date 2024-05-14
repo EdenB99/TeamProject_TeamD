@@ -5,4 +5,5 @@ using System.Text;
 public interface IWeapon : IEquipable
 {
     int GetWeaponDamage();
+    int GetWeaponSpeed();
 }

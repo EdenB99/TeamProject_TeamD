@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184436e5d28974b41ba0723fa345511f, type: 3}
   m_Name: 200_Diamond
   m_EditorClassIdentifier: 
-  code: 5
+  code: 6
   type: 3
   itemName: "\uB2E4\uC774\uC544\uBAAC\uB4DC"
   itemDescription: "\uD314\uBA74 \uB3C8\uC774 \uB420 \uAC83\uC774\uB2E4."

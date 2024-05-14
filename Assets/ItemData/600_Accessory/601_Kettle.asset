@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9d29dfef03ff04da381bb5a8d4804d, type: 3}
   m_Name: 601_Kettle
   m_EditorClassIdentifier: 
-  code: 9
+  code: 11
   type: 1
   itemName: "\uB0A1\uC740 \uBCD1"
   itemDescription: "\uC870\uAE08 \uAE68\uC838\uC788\uB294 \uBCD1.  hp +10"
@@ -20,7 +20,7 @@ MonoBehaviour:
   price: 0
   cooltime: 0
   playerBuff:
-    code: 8
+    code: 11
     buff_attackPower: 0
     buff_Defense: 0
     buff_hp: 10

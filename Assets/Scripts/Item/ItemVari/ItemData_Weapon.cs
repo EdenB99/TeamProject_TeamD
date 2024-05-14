@@ -46,13 +46,17 @@ public class ItemData_Weapon : ItemData, IWeapon
     {
         return (int)Weaponinfo.weaponDamage;
     }
+    
+    public int GetWeaponSpeed()
+    {
+        return (int)Weaponinfo.attackSpeed;
+    }
 
     public EffectInfo GetEffectInfo()
     {
         return EffectInfo;
     }
 
-   
 }
 //public int GetattackSpeed()
 //{
