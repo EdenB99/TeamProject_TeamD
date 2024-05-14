@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9d29dfef03ff04da381bb5a8d4804d, type: 3}
   m_Name: 603_Ring
   m_EditorClassIdentifier: 
-  code: 0
-  type: 0
-  itemName: "\uC544\uC774\uD15C"
-  itemDescription: "\uC124\uBA85"
-  itemIcon: {fileID: 0}
+  code: 13
+  type: 1
+  itemName: "\uC808\uB300\uBC18\uC9C0"
+  itemDescription: "\uD798, \uC774\uB3D9\uC18D\uB3C4\uAC00 \uC99D\uAC00\uD55C\uB2E4"
+  itemIcon: {fileID: 541664604, guid: 0532ff3fb6f168444874e12b5888b74a, type: 3}
   price: 0
   cooltime: 0
   playerBuff:
-    code: 0
-    buff_attackPower: 0
+    code: 13
+    buff_attackPower: 5
     buff_Defense: 0
     buff_hp: 0
     buff_criticalChance: 0
-    buff_speed: 0
-    buff_duration: 0
+    buff_speed: 5
+    buff_duration: -1

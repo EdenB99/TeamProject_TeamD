@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184436e5d28974b41ba0723fa345511f, type: 3}
   m_Name: 202_Sapphire
   m_EditorClassIdentifier: 
-  code: 0
-  type: 0
-  itemName: "\uC544\uC774\uD15C"
-  itemDescription: "\uC124\uBA85"
-  itemIcon: {fileID: 0}
+  code: 8
+  type: 3
+  itemName: "\uC0AC\uD30C\uC774\uC5B4"
+  itemDescription: "\uD314\uBA74 \uB3C8\uC774 \uB420 \uAC83\uC774\uB2E4."
+  itemIcon: {fileID: 493307352, guid: 0532ff3fb6f168444874e12b5888b74a, type: 3}
   price: 0
   cooltime: 0
