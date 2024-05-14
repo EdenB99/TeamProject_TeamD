@@ -308,6 +308,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 857334062019298728, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1035102386598803338, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
       propertyPath: m_text
       value: "\uB2E4\uC74C\uC2A4\uD14C\uC774\uC9C0\uC774\uB3D9\nF"
@@ -431,7 +435,7 @@ PrefabInstance:
     - target: {fileID: 4071943922899920015, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
       propertyPath: nextStageMap
       value: 
-      objectReference: {fileID: 2721809930114162992, guid: 54fd20e016032874d9b53bfc92867fd8, type: 3}
+      objectReference: {fileID: 2673228991887311974, guid: de36fc907a0f0e641a58683581319006, type: 3}
     - target: {fileID: 4649515930419623583, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
       propertyPath: m_Tiles.Array.size
       value: 51
@@ -27291,6 +27295,10 @@ PrefabInstance:
     - target: {fileID: 6162530867113388814, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7065426562629246360, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 19.68
       objectReference: {fileID: 0}
     - target: {fileID: 8343227222229447751, guid: 20db6b4b283b7004c9bfc0f3393da2d9, type: 3}
       propertyPath: m_Name

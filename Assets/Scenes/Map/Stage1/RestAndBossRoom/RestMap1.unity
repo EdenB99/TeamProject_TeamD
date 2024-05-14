@@ -15498,6 +15498,14 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[3].Y
       value: -70000000
       objectReference: {fileID: 0}
+    - target: {fileID: 7624914102362071473, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7624914102362071473, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.62
+      objectReference: {fileID: 0}
     - target: {fileID: 8776540121911514891, guid: f7a719f23edb85843856754d739fb096, type: 3}
       propertyPath: m_TagString
       value: Platform
@@ -15519,7 +15527,8 @@ PrefabInstance:
       value: RestMap1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2940770524511084205, guid: f7a719f23edb85843856754d739fb096, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3353114896216978932, guid: f7a719f23edb85843856754d739fb096, type: 3}
@@ -15534,9 +15543,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8776540121911514891, guid: f7a719f23edb85843856754d739fb096, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1979509963}
-    - targetCorrespondingSourceObject: {fileID: 8928684950476103059, guid: f7a719f23edb85843856754d739fb096, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f7a719f23edb85843856754d739fb096, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

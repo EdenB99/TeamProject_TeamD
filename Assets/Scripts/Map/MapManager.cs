@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
 
@@ -13,8 +14,9 @@ public class MapManager : MonoBehaviour
     //TODO L::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO L:: 맵 로딩만들기 
-    //TODO:: 다음스테이지 넘어가는 맵 안나오는 오류 고치기
+    //TODO:H: 다음스테이지 넘어가는 맵 안나오는 오류 고치기
     //TODO:: 오류방 만들기
+    //TODO:M: 엔드씬 만들기 (흑백 패널띄워서 텍스트, 그냥 키넣어서 작동하게)
     [Header("변수")]
 
     private Player player;
@@ -39,7 +41,7 @@ public class MapManager : MonoBehaviour
     private MapData[] startMapScenes;
     [Header("다음스테이지맵 프리팹")]
     [SerializeField] private GameObject[] nextStageMapPrefabs;
-    private MapData[] nextStageMapScenes;
+    [SerializeField] private MapData[] nextStageMapScenes;
 
     private MapData currentMap;
     public MapData CurrentMap
@@ -258,9 +260,11 @@ public class MapManager : MonoBehaviour
                 if (mapQueue.Count <= 0)
                 {
                     Debug.LogWarning($"맵큐가 끝났습니다, 이어질 맵이없어 적게만들어졌습니다. 현재 맵 개수: {currentMapCount}.");
+                    //TODO:: 마지막 맵을 다음 스테이지 맵으로 만들기
                     break;
                 }
                 Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
+                //TODO:: 만들어진 맵 다 지우고 다시 생성하기
                 yield return new WaitForSeconds(1f);
             }
 
@@ -344,13 +348,14 @@ public class MapManager : MonoBehaviour
                 if (currentMapCount >= mapSize * 0.6f && UnityEngine.Random.Range(0f, 1f) < 0.4f)
                 {
                     randomMapScene = SelectRandomMapFromNextStageMapScenes();
-                    Debug.Log("랜덤맵이 추가함수에서생성");
+                    Debug.Log("랜덤맵이 추가함수에서선택됨");
                 }
                 else
                 {
                     randomMapScene = SelectRandomMapScene(direction);
                 }
 
+                
                 MapData selectedMap = FindMapWithPortal(randomMapScene, direction);
 
                 if (selectedMap != null && IsConnectedToPreviousMap(currentMap, selectedMap, direction))
@@ -454,7 +459,7 @@ public class MapManager : MonoBehaviour
         if (nextStageMapScenes.Length > 0)
         {
             int randomIndex = UnityEngine.Random.Range(0, nextStageMapScenes.Length);
-            Debug.Log("다음맵으로가는 맵이 생성되었습니다.");
+            Debug.Log("다음맵으로가는 맵이 선택되었습니다.");
             return nextStageMapScenes[randomIndex].sceneName;
         }
 
@@ -827,7 +832,17 @@ public class MapManager : MonoBehaviour
 
     private MapData FindMapWithPortal(string sceneName, Direction direction)
     {
-        MapData mapData = mapScenes.FirstOrDefault(m => m.sceneName == sceneName);
+        MapData mapData;
+        //TODO:: null 등장
+        if (nextStageMapScenes.Any(m => m.sceneName == sceneName))
+        {
+            mapData = nextStageMapScenes.FirstOrDefault(m => m.sceneName == sceneName);
+        }
+        else
+        {
+
+        mapData = mapScenes.FirstOrDefault(m => m.sceneName == sceneName);
+        }
 
         if (mapData != null)
         {
