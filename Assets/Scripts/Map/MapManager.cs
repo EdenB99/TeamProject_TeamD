@@ -11,12 +11,15 @@ using static UnityEditor.Progress;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO L::맵개수가 1~3개정도 먹히는중, 끝쪽으로 갈 수록 포탈 연결이 빈약해지는중,SetActive관련한거 손봐야할듯
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO L:: 맵 로딩만들기 
-    //TODO:H: 다음스테이지 넘어가는 맵 안나오는 오류 고치기
     //TODO:: 오류방 만들기
     //TODO:M: 엔드씬 만들기 (흑백 패널띄워서 텍스트, 그냥 키넣어서 작동하게)
+
+    //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
+    //플레이어가 대시로 적을 밀칠시 적이 날라감
+    //적을 매우 빠르게 계속 공격할경우 무기 이펙트에서 null 발생
+    
     [Header("변수")]
 
     private Player player;
@@ -33,7 +36,9 @@ public class MapManager : MonoBehaviour
     private HashSet<string> usedMapScenes = new HashSet<string>();
     private int centerX;
     private int centerY;
-    //TODO:: 쓸일있으면 쓰기 MapUIManager mapUIManager;
+
+    //특수 맵 관련
+    private bool hasNextStageMap = false;
 
 
     [Header("시작맵 프리팹")]
@@ -64,7 +69,6 @@ public class MapManager : MonoBehaviour
         centerX = worldMapSize / 2;
         centerY = worldMapSize / 2;
         AutoFillMapData();
-        LoadStartMap();
     }
 
     //시작맵 랜덤으로 하나 정하기
@@ -89,6 +93,8 @@ public class MapManager : MonoBehaviour
 
         worldMap[new Vector2Int(centerX, centerY)] = startMap;
         MapCheck(new Vector2Int(centerX, centerY));
+
+        currentMapCount++;
     }
 
 
@@ -219,7 +225,12 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator GenerateWorldMapCoroutine()
     {
-        currentMapCount = 1;
+        worldMap.Clear();
+        usedMapScenes.Clear();
+        currentMapCount = 0;
+
+        LoadStartMap();
+
         Queue<MapData> mapQueue = new Queue<MapData>();
         mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
 
@@ -256,18 +267,31 @@ public class MapManager : MonoBehaviour
 
             if (currentMapCount < mapSize)
             {
-                genCount = 0;
-                if (mapQueue.Count <= 0)
+                if (currentMapCount < mapSize - 2 || mapQueue.Count <= 0)
                 {
-                    Debug.LogWarning($"맵큐가 끝났습니다, 이어질 맵이없어 적게만들어졌습니다. 현재 맵 개수: {currentMapCount}.");
-                    //TODO:: 마지막 맵을 다음 스테이지 맵으로 만들기
-                    break;
+                    Debug.LogWarning("맵의 개수가 부족하거나 맵큐가 비어있어 모든 맵을 삭제하고 다시 생성합니다.");
+                    yield return ResetGenerateWorldMap();
+                    genCount = 0; 
                 }
-                Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
-                //TODO:: 만들어진 맵 다 지우고 다시 생성하기
-                yield return new WaitForSeconds(1f);
+                else
+                {
+                    Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
+                    yield return new WaitForSeconds(1f);
+                }
             }
+        }
 
+        hasNextStageMap = worldMap.Values.Any(mapData => nextStageMapScenes.Contains(mapData));
+
+        if (!hasNextStageMap)
+        {
+            // nextStageMap이 없다면 마지막으로 생성된 맵을 nextStageMap으로 변경
+            MapData lastMapData = worldMap.Values.LastOrDefault();
+            if (lastMapData != null)
+            {
+                nextStageMapScenes = new MapData[] { lastMapData };
+                Debug.Log($"NextStageMap이 없어 {lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
+            }
         }
 
         foreach (var kvp in worldMap)
@@ -279,7 +303,14 @@ public class MapManager : MonoBehaviour
         CheckAndActivatePortals();
     }
 
-
+    //리셋
+    private IEnumerator ResetGenerateWorldMap()
+    {
+        worldMap.Clear();
+        usedMapScenes.Clear();
+        currentMapCount = 0;
+        yield return StartCoroutine(GenerateWorldMapCoroutine());
+    }
 
 
     private void ActivatePortal(MapData mapData, Direction direction)
