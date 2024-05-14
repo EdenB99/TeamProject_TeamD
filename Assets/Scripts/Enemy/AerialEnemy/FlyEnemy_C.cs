@@ -8,6 +8,7 @@ public class FlyEnemy_C : EnemyBase_
     private float idle_speed = 2.0f; // 속도
     private float height = 0.8f; // 왕복 높이
     private Vector3 startPos; // 초기 위치
+    private float timeElapsed = 0.0f; // 시간 경과
 
     public BulletCode bullet;
 
@@ -36,12 +37,14 @@ public class FlyEnemy_C : EnemyBase_
         // 플레이어 위치
         startPos = player.transform.position;
         startPos.y += 5;
+        timeElapsed += Time.deltaTime * idle_speed;
+
 
         // 자기 위치
         Vector3 currentPos = transform.position;
 
         // 양 옆으로 흔들린다.
-        float newX = Mathf.Lerp(currentPos.x, startPos.x + Mathf.Sin(Time.time * idle_speed) * height * 5 , mobMoveSpeed * Time.deltaTime);
+        float newX = Mathf.Lerp(currentPos.x, startPos.x + Mathf.Sin(timeElapsed) * height * 5 , mobMoveSpeed * Time.deltaTime);
 
         // 플레이어 + 4 좌표에 대기한다.
 

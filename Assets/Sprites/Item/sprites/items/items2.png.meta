@@ -139,7 +139,7 @@ TextureImporter:
         width: 21
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,6 +147,48 @@ TextureImporter:
       bones: []
       spriteID: 7aca74dcfd75243439c3b7fe74b761ea
       internalID: 541664604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sapphire
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 163
+        width: 24
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b41a2bd6f4069174bbe3875872dbdb81
+      internalID: 493307352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ruby
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 164
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 442de7db02595bb44b4b29b3125c557a
+      internalID: 1433128209
       vertices: []
       indices: 
       edges: []
@@ -163,6 +205,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Ring: 541664604
+      Ruby: 1433128209
+      Sapphire: 493307352
       SpeedShoes: 639676771
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

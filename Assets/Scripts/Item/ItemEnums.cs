@@ -35,6 +35,8 @@ public enum ItemCode : ushort
     /// 판매 전용 아이템 ( 다이아몬드 )
     /// </summary>
     Diamond,
+    Ruby,
+    Sapphire,
 
 
 
