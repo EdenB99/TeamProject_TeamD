@@ -19,7 +19,7 @@ MonoBehaviour:
   bulletDamage: 1
   bulletSize: 0.3
   lifeTime: 10
-  floatDir: 0
+  floatDir: 90
   isThrougt: 0
   isParring: 0
   isPlayer: 0

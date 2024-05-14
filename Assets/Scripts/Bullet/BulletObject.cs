@@ -100,7 +100,7 @@ public class BulletObject : RecycleObject , IAttack
             case BulletType.Bullet_Straight_Dir:
                 float radians = floatDir * Mathf.Deg2Rad;
                 Vector3 direction = new Vector3(Mathf.Cos(radians), 0, Mathf.Sin(radians));
-                moveDir = (player.transform.position - transform.position).normalized;
+                moveDir = new Vector2(direction.x, direction.z);
                 transform.Translate(Time.deltaTime * moveSpeed * moveDir);
                 break;
 
