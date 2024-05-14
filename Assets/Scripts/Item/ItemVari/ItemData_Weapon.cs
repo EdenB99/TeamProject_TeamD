@@ -26,6 +26,7 @@ public class ItemData_Weapon : ItemData, IWeapon
     }
     public void UnEquip(EquipmentSlot_Base[] slots)
     {
+
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].SlotItemData == this)
