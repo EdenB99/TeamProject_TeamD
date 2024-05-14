@@ -358,7 +358,7 @@ public class PlayerStats : MonoBehaviour
         MaxHp = BaseMaxHp + temp_hp;
         criticalChance = BaseCriticalChance + temp_criticalChance;
         Speed = BaseSpeed + temp_speed;
-
+        itemRange = BaseItemRange;
     }
 
     void RefreshStats()
@@ -368,6 +368,7 @@ public class PlayerStats : MonoBehaviour
         MaxHp = BaseMaxHp;
         criticalChance = BaseCriticalChance;
         Speed = BaseSpeed;
+        itemRange = BaseItemRange;
     }
 
     IEnumerator Corutine_buffEnd(PlayerBuff buff)
