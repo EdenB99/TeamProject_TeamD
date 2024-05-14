@@ -7,7 +7,7 @@ public class ItemObject : RecycleObject
     /// <summary>
     /// 이 오브젝트가 가질 아이템 데이터
     /// </summary>
-    ItemData data = null;
+    public ItemData data = null;
 
     /// <summary>
     /// 스프라이트 ( ItemData 에서 가져온다 )

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class NPC_Event : NPC_Base
 {
@@ -10,18 +11,15 @@ public class NPC_Event : NPC_Base
     {
         [TextArea(3,5)]
         public string[] newDialogues;
+        public bool eventToggle;
+
+        public ItemData[] eventItemData;
     }
 
     [SerializeField]
     public EventDialogues[] DialoguesCategory;
 
     private int currentCategory = 0;
-
-    [SerializeField]
-    public ItemData[] ItemdataCategory;
-
-    private int SendItemCategory;
-
 
     protected override void Awake()
     {
@@ -33,11 +31,14 @@ public class NPC_Event : NPC_Base
         }
     }
 
-    int currentindex = 0;
     public override void EndDialog()
     {
         if (IsInteracting)
         {
+            if (DialoguesCategory[currentCategory].eventToggle)
+            {
+                DropItem(DialoguesCategory[currentCategory].eventItemData);
+            }
             dialogBox.gameObject.SetActive(false);
             IsInteracting = false;
             currentDialogIndex = 0;
@@ -48,16 +49,12 @@ public class NPC_Event : NPC_Base
             }
         }
     }
-    private void DropItem()
+    private void DropItem(ItemData[] itemdatas)
     {
-        //프리팹 생성후 아이템을 드랍하는 기능 구현
-       /*if (itemObjectPrefab != null)
+        for (int i = 0; i < itemdatas.Length; i++)
         {
-            GameObject newItemObject = Instantiate(itemObjectPrefab, transform.position, Quaternion.identity);
-            newItemObject.AddComponent<ItemObject>();
-            ItemObject obj = newItemObject.GetComponent<ItemObject>();
-            obj.ItemData = ItemdataCategory[0];
-        }*/
+            Factory.Instance.MakeItems(ItemCode.Coin, 1, transform.position);
+        }
     }
     
 }

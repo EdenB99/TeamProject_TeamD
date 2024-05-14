@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -172,6 +172,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: coinIcon1
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 289
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31a317318ab2b794e9b2d1f4debd2f97
+      internalID: -35447164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coinIcon2
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 272
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c454391a8bd319b48969b80ed1ed9ff8
+      internalID: -1770456319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coinIcon3
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 256
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1bf0f1a3ab12ce44b84f4483823177b
+      internalID: -2084461715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -187,6 +250,9 @@ TextureImporter:
       UI books & more_0: 1394752418
       UI books & more_1: -1101820612
       UI books & more_3: -1334704829
+      coinIcon1: -35447164
+      coinIcon2: -1770456319
+      coinIcon3: -2084461715
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

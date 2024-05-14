@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 2
   itemName: "\uB3D9\uC804"
   itemDescription: "\uC124\uBA85"
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -2084461715, guid: afa94dec5c742a545bf554a56d584de1, type: 3}
   price: 0
   cooltime: 0
   Itemgold: 100
