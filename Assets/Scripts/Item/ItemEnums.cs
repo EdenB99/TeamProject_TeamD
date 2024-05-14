@@ -50,6 +50,8 @@ public enum ItemCode : ushort
     /// </summary>
     Helmet,
     Kettle,
+    SpeedShoes,
+    Ring,
 
 }
 
