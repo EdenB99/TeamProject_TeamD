@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -65,10 +66,9 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public float totalDamage => weaponDamage + playerStats.AttackPower;
 
-    /// <summary>
-    /// 무기의 공격 속도
-    /// </summary>
-    public float weaponSpeed = 10.0f;
+    public float weaponSpeed = 1.0f;
+
+    public float attackSpeed => weaponSpeed + playerStats.AttackSpeed;
 
     public float attackCooldown = 0.5f; // 공격 간격
 
@@ -190,11 +190,11 @@ public class WeaponBase : MonoBehaviour
         
         animator.SetTrigger(attackTrigger);
 
-        ActivateEffect(transform.position);
-
         //// 공격 속도에 따라 애니메이션 속도 조절
-        //float attackAnimationSpeed = playerStats.attackSpeed;
-        //animator.SetFloat("weaponSpeed", attackAnimationSpeed);
+        float attackAnimationSpeed = attackSpeed;
+        animator.speed = attackAnimationSpeed;
+        Debug.Log($"{animator.speed}");
+        ActivateEffect(transform.position);     
     }
 
     /// <summary>

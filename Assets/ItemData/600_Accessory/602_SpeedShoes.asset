@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9d29dfef03ff04da381bb5a8d4804d, type: 3}
   m_Name: 602_SpeedShoes
   m_EditorClassIdentifier: 
-  code: 12
+  code: 15
   type: 1
   itemName: "\uC2E0\uC18D\uC758 \uC2E0\uBC1C"
   itemDescription: "\uC2E0\uC73C\uBA74 \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9C4\uB2E4,

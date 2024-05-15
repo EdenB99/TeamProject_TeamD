@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
   m_Name: 302_KingSword
   m_EditorClassIdentifier: 
-  code: 9
+  code: 11
   type: 0
   itemName: "\uC655\uC758 \uAC80"
   itemDescription: "\uC77C\uBC18 \uAC80\uBCF4\uB2E4 \uD6E8\uC52C \uC384\uB2E4 "
@@ -21,8 +21,8 @@ MonoBehaviour:
   cooltime: 5
   maxStackCount: 1
   Weaponinfo:
-    weaponDamage: 10
-    attackSpeed: 0
+    weaponDamage: 20
+    attackSpeed: 1
     modelPrefab: {fileID: 2488305193287784195, guid: df3475d38c4235b4e9d2746267c62df8, type: 3}
     weaponType: 0
   EffectInfo:

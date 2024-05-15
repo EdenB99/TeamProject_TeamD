@@ -36,6 +36,7 @@ public class GameManager : Singleton<GameManager>
                 FindAnyObjectByType<WeaponManager>();
             return weaponManager;
         }
+        private set { weaponManager = value; }
     }
 
     protected override void OnPreInitialize()

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baed04706190904ebf89dd69f5f79a8, type: 3}
   m_Name: 301_Spear
   m_EditorClassIdentifier: 
-  code: 8
+  code: 10
   type: 0
   itemName: "\uCC3D"
   itemDescription: "\uC801\uC744 \uCC0C\uB978\uB2E4"
@@ -21,11 +21,11 @@ MonoBehaviour:
   cooltime: 5
   maxStackCount: 1
   Weaponinfo:
-    weaponDamage: 1
+    weaponDamage: 15
     attackSpeed: 0
     modelPrefab: {fileID: 3510177746431845488, guid: c6a5d2c6a94138e4196d7dbc9a8b692a, type: 3}
     weaponType: 1
   EffectInfo:
-    effectSize: 10
+    effectSize: 1
     effectSpeed: 1
     modelPrefab: {fileID: 7783160304820389056, guid: 0bfc97bb4b6a05245b2aed0f91e1b672, type: 3}

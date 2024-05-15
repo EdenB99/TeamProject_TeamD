@@ -46,6 +46,7 @@ public enum ItemCode : ushort
     Sword,
     Spear,
     KingSword,
+    Rafeier,
 
     /// <summary>
     /// 장신구 아이템 

@@ -106,6 +106,8 @@ public class PlayerStats : MonoBehaviour
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float AttackPower { get { return attackPower; } set { attackPower = value; } }
 
+    public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value;  } }
+
     // 피격 , HP 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     public bool invincible;             // 무적상태

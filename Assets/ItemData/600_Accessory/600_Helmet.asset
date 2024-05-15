@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9d29dfef03ff04da381bb5a8d4804d, type: 3}
   m_Name: 600_Helmet
   m_EditorClassIdentifier: 
-  code: 10
+  code: 13
   type: 1
   itemName: "\uAC15\uCCA0 \uD22C\uAD6C"
   itemDescription: "\uB2E8\uB2E8\uD558\uB2E4. \uBC29\uC5B4 +5"

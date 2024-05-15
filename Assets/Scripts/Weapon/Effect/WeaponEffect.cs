@@ -36,6 +36,7 @@ public class WeaponEffect : RecycleObject, IAttack
     /// </summary>
     public float effectSpeed = 1.0f;
 
+
     /// <summary>
     /// 이펙트의 크기 조절
     /// </summary>

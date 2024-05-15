@@ -48,9 +48,9 @@ public class ItemData_Weapon : ItemData, IWeapon
         return (int)Weaponinfo.weaponDamage;
     }
     
-    public int GetWeaponSpeed()
+    public float GetWeaponSpeed()
     {
-        return (int)Weaponinfo.attackSpeed;
+        return (float)Weaponinfo.attackSpeed;
     }
 
     public EffectInfo GetEffectInfo()
@@ -58,8 +58,14 @@ public class ItemData_Weapon : ItemData, IWeapon
         return EffectInfo;
     }
 
+    public float GetEffectSpeed()
+    {
+        return (float)EffectInfo.effectSpeed;
+    }
+
+    public float GetAttackSpeed()
+    {
+        return (float)Weaponinfo.attackSpeed;
+    }
 }
-//public int GetattackSpeed()
-//{
-//    return (int)Weaponinfo.attackSpeed;
-//}
+
