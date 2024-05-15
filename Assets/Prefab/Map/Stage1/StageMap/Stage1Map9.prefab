@@ -19384,6 +19384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 8313079917646101802, guid: 1ad009cca275aa54cb9ba71912d0d21d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

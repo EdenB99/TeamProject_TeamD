@@ -18,8 +18,10 @@ public class MapManager : MonoBehaviour
 
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
     //플레이어가 대시로 적을 밀칠시 적이 날라감
-    //적을 매우 빠르게 계속 공격할경우 무기 이펙트에서 null 발생
-    //다음맵으로 가는 씬이 존재한다고 하지만 맵에 없는 오류 발생
+    //적을 공격하는 도중 무기 이펙트에서 null 발생하는 경우
+    //적을 다 죽여 포탈색이 돌아와도 다른맵갔다 돌아오면 다시 바뀜
+    //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
+    //테스트중 적들을 전부 찾아서 죽이는 테스트코드, 지도를 전부 밝히는 테스트코드 필요
     
     [Header("변수")]
 
@@ -40,6 +42,7 @@ public class MapManager : MonoBehaviour
 
     //특수 맵 관련
     private bool hasNextStageMap = false;
+    MapData startMapData;
 
 
     [Header("시작맵 프리팹")]
@@ -70,6 +73,7 @@ public class MapManager : MonoBehaviour
         centerX = worldMapSize / 2;
         centerY = worldMapSize / 2;
         AutoFillMapData();
+        LoadStartMap();
     }
 
     //시작맵 랜덤으로 하나 정하기
@@ -93,9 +97,9 @@ public class MapManager : MonoBehaviour
         };
 
         worldMap[new Vector2Int(centerX, centerY)] = startMap;
+        startMapData = startMap;
         MapCheck(new Vector2Int(centerX, centerY));
 
-        currentMapCount++;
     }
 
 
@@ -228,9 +232,14 @@ public class MapManager : MonoBehaviour
     {
         worldMap.Clear();
         usedMapScenes.Clear();
-        currentMapCount = 0;
+        hasNextStageMap = false;
 
-        LoadStartMap();
+
+        currentMapCount = 1;
+        Debug.Log("맵생성을 시작");
+
+        //시작맵 데이터 초기화하고 넣기
+        worldMap[new Vector2Int(centerX, centerY)] = startMapData;
 
         Queue<MapData> mapQueue = new Queue<MapData>();
         mapQueue.Enqueue(worldMap[new Vector2Int(centerX, centerY)]);
@@ -317,9 +326,22 @@ public class MapManager : MonoBehaviour
     //리셋
     private IEnumerator ResetGenerateWorldMap()
     {
+        // 모든 포탈 객체 활성화
+        foreach (var kvp in worldMap)
+        {
+            MapData mapData = kvp.Value;
+            ResetPortalObjects(mapData, true);
+        }
+
+        // worldMap과 usedMapScenes 초기화
         worldMap.Clear();
         usedMapScenes.Clear();
         currentMapCount = 0;
+        
+
+        worldMap[new Vector2Int(centerX, centerY)] = startMapData;
+        usedMapScenes.Add(startMapData.sceneName);
+
         yield return StartCoroutine(GenerateWorldMapCoroutine());
     }
 
@@ -411,7 +433,6 @@ public class MapManager : MonoBehaviour
                         // nextStageMapScenes에서 맵이 선택되었다면 usedMapScenes에 추가
                         if (nextStageMapScenes.Any(m => m.sceneName == randomMapScene))
                         {
-                            Debug.Log($"다음스테이지 맵이 추가함수의 랜덤맵 생성에서 처리되었습니다..");
                             foreach (var nextStageMap in nextStageMapScenes)
                             {
                                 usedMapScenes.Add(nextStageMap.sceneName);
@@ -951,14 +972,30 @@ public class MapManager : MonoBehaviour
 
     private IEnumerator UnloadAndLoadMap(Vector2Int position, Direction direction)
     {
-        AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(currentMap.sceneName);
-        while (!unloadOperation.isDone)
+   AsyncOperation unloadOperation = null;
+    
+    // 기존 맵 언로드
+    if (currentMap != null)
+    {
+        unloadOperation = SceneManager.UnloadSceneAsync(currentMap.sceneName);
+        
+        // unloadOperation이 null이 아닌 경우에만 진행
+        if (unloadOperation != null)
         {
-            yield return null;
+            while (!unloadOperation.isDone)
+            {
+                yield return null;
+            }
         }
-
-        LoadMap(position, direction);
+        else
+        {
+            Debug.LogError($"씬 언로드에 실패: {currentMap.sceneName}");
+        }
     }
+
+    // 새 맵 로드
+    LoadMap(position, direction);
+}
 
 
 

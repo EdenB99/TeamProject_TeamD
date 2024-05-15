@@ -15325,6 +15325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 8313079917646101802, guid: 9001995b20bd16949b8cdc500ef9f9d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
