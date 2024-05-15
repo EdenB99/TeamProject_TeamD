@@ -7,17 +7,30 @@ using UnityEngine.U2D;
 public class SkeletonEnemy : EnemyBase_
 { 
     
-
-
     /// <summary>
     /// 레이의 길이
     /// </summary>
-    float rayLength = 3.0f;
+    float rayLength = 2.0f;
 
     /// <summary>
     /// 점프 높이
     /// </summary>
     public float jumpForce = 5.0f;
+
+    /// <summary>
+    /// 칼질범위
+    /// </summary>
+    public float bladeRange = 4.0f;
+
+    /// <summary>
+    /// 스피드
+    /// </summary>
+    public float speed = 3.0f;
+
+    /// <summary>
+    /// 공격중인지
+    /// </summary>
+    bool IsAttack = true;
 
     Transform AttackRange;
 
@@ -35,108 +48,65 @@ public class SkeletonEnemy : EnemyBase_
         AttackRange = transform.GetChild(0);
     }
 
-    protected override void FixedUpdate()
-    {
-        if (playerDetected && IsLive) 
-        {
-            targetPos = player.transform.position;
-            if (IsMove)
-            {
-                if (targetPos.x < rb.position.x) CheckLR = -1;
-
-                else 
-                {
-                    CheckLR = 1;
-                    AttackRange.localScale = new Vector3(-Mathf.Abs(AttackRange.localScale.x), AttackRange.localScale.y);
-
-                }
-            }
-        }
-        attackAction();
-
-        if (!IsLive) // 죽을시
-        {
-            fade += Time.deltaTime * 0.5f;
-            sprite.material.SetFloat(FadeID, 1 - fade);
-
-            if (fade > 1)
-            {
-                Destroy(this.gameObject); // 1초후 삭제
-            }
-        }
-    }
-
-    bool playerCheck()
-    {
-        // 범위 내에
-        Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
-
-        // 플레이어가 있다면
-        if (colliders != null)
-        {
-
-
-            if (!playerDetected)
-            {
-                playerDetected = true;
-                firstAction();
-            }
-
-            return true;
-        }
-        return false;
-    }
-
     protected override void attackAction()
     {
-        //  플레이어가 감지되었는지 확인
-        if (playerCheck())
+        Vector2 direction = new Vector2(-CheckLR, 0);
+        float distanceToPlayerSqr = (transform.position - targetPos).sqrMagnitude;
+
+        // 플레이어와의 거리가 칼질 범위 밖이다.
+        if (distanceToPlayerSqr > bladeRange && IsAttack)
         {
-            float distanceToPlayerSqr = (transform.position - targetPos).sqrMagnitude;
+            transform.Translate(Time.fixedDeltaTime * speed * direction); // 이동
+            animator.SetBool(isWalk_Hash, true);
+        }
+        else if (IsAttack) // 칼질 범위 내부다
+        {
+            StartCoroutine(CoAttack());
+        }
 
-            // 플레이어와의 거리가 4f 이상이면 실행 
-            if (distanceToPlayerSqr > 4f)
+        
+        // 벽을 만나면 점프하는 함수
+        Vector3 up = new Vector2(0,0.2f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + up, direction, rayLength, LayerMask.GetMask("Wall"));
+        if (hit.collider != null)
+        {
+            Jump();
+        }
+    }
+
+    protected override void spriteDirection()
+    {
+        if (playerDetected && IsLive && IsAttack)
+        {
+            if (IsRight)
             {
-                animator.SetBool(isWalk_Hash, true);
-
-                float step = mobMoveSpeed * Time.deltaTime;
-                Vector2 currentPosition = (Vector2)transform.position;
-                Vector2 targetPosition = new Vector2(targetPos.x, transform.position.y);
-
-                //목표위치까지 이동
-                Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
-                transform.position = newPosition;
+                if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
             }
             else
             {
-                animator.SetBool(isWalk_Hash, false);
-            }
-
-            Vector2 direction = new Vector2(CheckLR, 0);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, rayLength, LayerMask.GetMask("Wall"));
-
-            if (hit.collider != null)
-            {
-                Jump();
+                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
             }
         }
     }
 
-    /// <summary>
-    /// 점프
-    /// </summary>
-    void Jump()
+
+
+
+/// <summary>
+/// 점프
+/// </summary>
+void Jump()
     {
         animator.SetTrigger(canJump_Hash);
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator CoAttack()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            animator.SetBool(canAttack_Hash, true);
-        }
+        IsAttack = false;
+        animator.SetBool(canAttack_Hash, true);
+        yield return new WaitForSeconds(1.0f);
+        IsAttack = true;
     }
 
 }

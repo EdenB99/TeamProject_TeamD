@@ -1061,27 +1061,15 @@ public class MapManager : MonoBehaviour
     //포탈 색 변경 함수
     private void UpdatePortalState(bool hasEnemies)
     {
-        Color portalColor = Color.white;
+        
         foreach (Portal portal in portals)
         {
-            if (portalSpriteRenderers.TryGetValue(portal, out SpriteRenderer[] potalSpriteRenderers))
+            if (portalSpriteRenderers.TryGetValue(portal, out SpriteRenderer[] portalSp))
             {
-                foreach (SpriteRenderer portalSpriteRenderer in potalSpriteRenderers)
+                foreach (SpriteRenderer portalSpriteRenderer in portalSp)
                 {
-                    if (hasEnemies)
-                    {
+                    portal.PortalColorChange(hasEnemies);
 
-                        portalColor = Color.black;
-                        portalColor.a = 0.5f;
-                        portalSpriteRenderer.color = portalColor;
-                    }
-                    else
-                    {
-
-                        portalColor = Color.cyan;
-                        portalColor.a = 1f;
-                        portalSpriteRenderer.color = portalColor;
-                    }
                 }
             }
         }

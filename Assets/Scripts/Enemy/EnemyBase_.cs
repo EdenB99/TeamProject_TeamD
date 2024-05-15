@@ -51,6 +51,11 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     public float sightRange = 1.0f;
 
     /// <summary>
+    /// 적의 스프라이트가 우측을 보고있을때
+    /// </summary>
+    public bool IsRight;
+
+    /// <summary>
     /// HP설정용
     /// </summary>
     protected float hp = 1.0f;
@@ -90,8 +95,6 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
             if (checkLR != value && IsLive) // 값이 변경 되었다면
             {
                 checkLR = value;
-                // 스프라이트 방향 전환 
-                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
             }
 
         }
@@ -139,6 +142,8 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
 
     protected virtual void FixedUpdate()
     {
+        spriteDirection();
+
         if ( playerDetected && IsLive) // 플레이어 발견시 행동
         {
             // 플레이어의 위치를 받는다.
@@ -184,6 +189,24 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     }
 
     /// <summary>
+    /// 스프라이트 방향관련
+    /// </summary>
+    protected virtual void spriteDirection()
+    {
+        if ( playerDetected && IsLive)
+        {
+            if (IsRight)
+            {
+                if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
+            }
+            else
+            {
+                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
+            }
+        }
+    }
+
+    /// <summary>
     /// Update에서 실행될 코드 ( 플레이어 발견 )
     /// </summary>
     protected virtual void attackAction()
@@ -219,7 +242,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// 플레이어를 탐지하는 불을 리턴하는 메서드 SightRange 안에 들어오면 플레이어가 있는것.
     /// </summary>
     /// <returns>리턴 true = 플레이어가 범위내에 있다.</returns>
-    private bool playerCheck()
+    protected bool playerCheck()
     {
         // 범위 내에
         Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));

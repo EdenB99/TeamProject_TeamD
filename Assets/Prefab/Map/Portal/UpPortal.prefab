@@ -31,7 +31,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4456758598948098244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7500514910329919153
+--- !u!1 &4681394524355888183
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,9 +39,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6620432662476479991}
-  - component: {fileID: 4899637747559091586}
-  - component: {fileID: 3523736817553117817}
+  - component: {fileID: 209873370161846192}
+  - component: {fileID: 2448199229482268814}
+  - component: {fileID: 3062111888929996386}
   m_Layer: 0
   m_Name: PortalSprite
   m_TagString: Untagged
@@ -49,13 +49,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6620432662476479991
+--- !u!4 &209873370161846192
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7500514910329919153}
+  m_GameObject: {fileID: 4681394524355888183}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -64,13 +64,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4456758598948098244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4899637747559091586
+--- !u!212 &2448199229482268814
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7500514910329919153}
+  m_GameObject: {fileID: 4681394524355888183}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9286b5c1e76fe7b4db09868e8d169371, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,14 +116,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &3523736817553117817
+--- !u!95 &3062111888929996386
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7500514910329919153}
+  m_GameObject: {fileID: 4681394524355888183}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: bc9245e1f685a7344904437ef995fd90, type: 2}
@@ -171,7 +171,7 @@ Transform:
   m_Children:
   - {fileID: 1679521321611868962}
   - {fileID: 3821370720405503583}
-  - {fileID: 6620432662476479991}
+  - {fileID: 209873370161846192}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2012700792076452245
