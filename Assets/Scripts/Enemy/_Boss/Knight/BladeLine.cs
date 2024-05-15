@@ -18,6 +18,7 @@ public class BladeLine : MonoBehaviour, IAttack
     {
         animator = GetComponent<Animator>();
         knight = FindAnyObjectByType<Boss_Knight>();
+        knight.bossDie += returnPool;
     }
 
     private void OnEnable()
@@ -38,6 +39,11 @@ public class BladeLine : MonoBehaviour, IAttack
         gameObject.layer = LayerMask.NameToLayer("Enemy_Attack");
         animator.SetTrigger("shot");
         yield return new WaitForSeconds(0.2f);
+        returnPool();
+    }
+
+    void returnPool()
+    {
         knight.ReturnToPool(this.gameObject);
     }
 
