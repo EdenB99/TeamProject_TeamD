@@ -120,8 +120,6 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
             hp = value;
             hp = Mathf.Max(hp, 0);
 
-            Debug.Log(hp);
-
             // Hp가 0 이하면 사망
             if (hp <= 0)
             {

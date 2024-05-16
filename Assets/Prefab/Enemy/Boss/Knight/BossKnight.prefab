@@ -323,6 +323,6 @@ MonoBehaviour:
   speed: 1
   startFight: 0
   obj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
-  shadow: {fileID: 5259075507484147006, guid: c8d8b91106361df448061e9689bd377f, type: 3}
+  shadow: {fileID: 6376766474965090444, guid: 4aa04a9329e13bb47b8d0e9100597342, type: 3}
   bladeObj: {fileID: 3912785869098775826, guid: 5900548725d341446ac2f5f6012feae4, type: 3}
   poolSize: 32
