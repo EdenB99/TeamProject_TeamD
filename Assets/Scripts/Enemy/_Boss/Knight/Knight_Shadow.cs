@@ -53,12 +53,12 @@ public class Knight_Shadow : MonoBehaviour
 
         if ( fadeAction )
         {
-            fade += Time.deltaTime * 0.4f;
+            fade += Time.deltaTime * 0.6f;
             sprite.material.SetFloat(FadeID, 1 - fade);
         }
         else
         {
-            if ( fade > 0 ) fade -= Time.deltaTime * 0.8f;
+            if ( fade > 0 ) fade -= Time.deltaTime * 0.9f;
             sprite.material.SetFloat(FadeID, 1 - fade);
         }
 
@@ -77,7 +77,7 @@ public class Knight_Shadow : MonoBehaviour
         knight.MakeBlade(pos, dirBlade);
         fadeAction = true;
 
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
 
 
