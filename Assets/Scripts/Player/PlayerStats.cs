@@ -48,13 +48,6 @@ public class PlayerStats : MonoBehaviour
 
     public List<PlayerBuff> buffs;
 
-
-    [Header("플레이어 부활")]
-   
-    public bool isDead = false;
-    public GameObject prefab;
-
-
     private void Awake()
     {
         ani = GetComponent<Animator>();
@@ -110,7 +103,7 @@ public class PlayerStats : MonoBehaviour
     /// <summary>
     /// 살았는지 죽었는지 확인하기 위한 프로퍼티
     /// </summary>
-    public bool IsAlive => hp > 0;
+    public bool IsAlive = true;
 
     /// <summary>
     /// 무적시간
@@ -133,7 +126,9 @@ public class PlayerStats : MonoBehaviour
                 hp = Mathf.Clamp(value, 0, MaxHp);
                 if (hp <= 0.0f)
                 {
-                    Die();
+                    Player player = GameManager.Instance.Player;    
+                    player.Die();
+                    
                 }
                 onHealthChange?.Invoke(hp, MaxHp); //델리게이트로 hp와 Maxhp 전달
             }
@@ -150,32 +145,14 @@ public class PlayerStats : MonoBehaviour
         }
         else if (hp <= 0)
         {
-            Die();
-            GameObject myInstance = Instantiate(prefab);
-            Destroy(this.gameObject);
-            SceneManager.LoadScene("Town");
+            
+            
         }
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "Town")
-        {
-            hp = MaxHp;
-            gameObject.layer = LayerMask.NameToLayer("Player");
-            spriteRenderer.color = Color.white;
-            isDead = false;
-        }
-    }
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -194,18 +171,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 체력이 변경되었을때 호출되는 함수
-    /// </summary>
-    void Die()
-    {
-        // 캐릭터가 사망했을 때의 로직 처리
-        Debug.Log("플레이어가 죽었다.");
-        //ani.SetTrigger("Die");
-        isDead = true;
-        //OnDie?.Invoke();
-        //Player_ani.SetTrigger("Die");
-    }
+
 
     /// <summary>
     /// 무적 코루틴

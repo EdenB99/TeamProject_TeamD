@@ -1394,6 +1394,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1735203097}
     - target: {fileID: 7149890173894313670, guid: d1b45ff530af34341911c84e7998171c, type: 3}
+      propertyPath: IsAlive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7149890173894313670, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: pickupRange
       value: 1.5
       objectReference: {fileID: 0}

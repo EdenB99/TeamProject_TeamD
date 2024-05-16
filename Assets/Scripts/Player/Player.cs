@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -97,6 +99,10 @@ public class Player : MonoBehaviour
         {
             Jump();
         }*/
+        if ( !playerStats.IsAlive ) // 죽었을때 입력 받기
+        {
+            revivePlayer();
+        }
 
         if (CheckGround() && isJumping)
         {
@@ -157,6 +163,16 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        inputEnable();
+    }
+
+    private void OnDisable()
+    {
+        inputDisable();
+    }
+
+    void inputEnable()
+    {
         inputActions.Player.Enable();
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
@@ -167,7 +183,7 @@ public class Player : MonoBehaviour
         inputActions.Player.DownJump.performed += OnDownJump;
     }
 
-    private void OnDisable()
+    void inputDisable()
     {
         inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Move.performed -= OnMove;
@@ -178,6 +194,9 @@ public class Player : MonoBehaviour
         inputActions.Player.DownJump.performed -= OnDownJump;
         inputActions.Player.Disable();
     }
+
+
+
 
 
     // 이동 , 애니메이션 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -456,4 +475,48 @@ public class Player : MonoBehaviour
     }
 
     // 눌렀을 때 델리게이트 되게끔 수정
+
+    // 죽음 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    void revivePlayer()
+    {
+        if ( !PlayerStats.IsAlive)
+        {
+            if (Input.GetKey(KeyCode.R)) // 죽었을때 R키를 입력받았다면
+            {
+                // 플레이어 초기화 ( Hp , 다시 인풋매니저 입력 받도록 )
+                Revive();
+
+                // 씬 이동
+                SceneManager.LoadScene("Town");
+                transform.position = new Vector3(0, 0, 0);
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 생명력이 0이 되었을때 호출되는 함수
+    /// </summary>
+    public void Die()
+    {
+        // 캐릭터가 사망했을 때의 로직 처리
+        Player_ani.SetTrigger("Die");
+        playerStats.OnDie?.Invoke();
+        moveInput = Vector2.zero;
+        playerStats.IsAlive = false;
+        OnDisable();
+    }
+
+    /// <summary>
+    /// 플레이어 초기화 함수
+    /// </summary>
+    public void Revive()
+    {
+        playerStats.IsAlive = true;
+        playerStats.CurrentHp = playerStats.MaxHp;
+        Player_ani.SetTrigger("Revive");
+        OnEnable();
+    }
+
 }

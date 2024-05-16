@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -53,4 +54,10 @@ public class GameManager : Singleton<GameManager>
         ingameUI = FindAnyObjectByType<IngameUI>();
         weaponManager = FindAnyObjectByType<WeaponManager>();
     }
+
+    // 睡�� 天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天 
+
+
+
+
 }
