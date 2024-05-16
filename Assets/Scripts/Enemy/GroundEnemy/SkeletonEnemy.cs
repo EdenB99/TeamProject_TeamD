@@ -6,7 +6,6 @@ using UnityEngine.U2D;
 
 public class SkeletonEnemy : EnemyBase_
 { 
-    
     /// <summary>
     /// 레이의 길이
     /// </summary>
@@ -34,10 +33,8 @@ public class SkeletonEnemy : EnemyBase_
 
     Transform AttackRange;
 
-
     readonly int canAttack_Hash = Animator.StringToHash("canAttack");
     readonly int isWalk_Hash = Animator.StringToHash("isWalk");
-    readonly int Die_Hash = Animator.StringToHash("Die");
     readonly int canJump_Hash = Animator.StringToHash("canJump");
     Animator animator;
 
@@ -64,7 +61,6 @@ public class SkeletonEnemy : EnemyBase_
             StartCoroutine(CoAttack());
         }
 
-        
         // 벽을 만나면 점프하는 함수
         Vector3 up = new Vector2(0,0.2f);
         RaycastHit2D hit = Physics2D.Raycast(transform.position + up, direction, rayLength, LayerMask.GetMask("Wall"));
@@ -78,24 +74,14 @@ public class SkeletonEnemy : EnemyBase_
     {
         if (playerDetected && IsLive && IsAttack)
         {
-            if (IsRight)
-            {
-                if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
-            }
-            else
-            {
-                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
-            }
+            gameObject.transform.localScale = new Vector3(1.0f * -CheckLR, 1.0f, 1.0f);
         }
     }
 
-
-
-
-/// <summary>
-/// 점프
-/// </summary>
-void Jump()
+    /// <summary>
+    /// 점프
+    /// </summary>
+    void Jump()
     {
         animator.SetTrigger(canJump_Hash);
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -105,7 +91,7 @@ void Jump()
     {
         IsAttack = false;
         animator.SetBool(canAttack_Hash, true);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.1f);
         IsAttack = true;
     }
 

@@ -27,13 +27,9 @@ public class Boss_Knight : PatternEnemyBase
     protected override void Start()
     {
         base.Start();
-
         State = BossState.Wait;
-
         StartCoroutine(AwakeAction());                      // 개전 시작 
-
         GenerateObj();
-
         mapCoroutine = StartCoroutine(Map_Pattern());
     }
     
@@ -168,8 +164,6 @@ public class Boss_Knight : PatternEnemyBase
         animator.SetTrigger("Attack_3");
         yield return new WaitForSeconds(0.1f);
 
-
-        // 임시코드 , 팩토리 쓸지 고민중
         for ( int i = 0; i < 6 ; i++ )
         {
             MakeBlade(new Vector2(transform.position.x + i * 1f, 0), temp);
@@ -195,8 +189,6 @@ public class Boss_Knight : PatternEnemyBase
         animator.SetTrigger("Attack_3");
         yield return new WaitForSeconds(0.1f);
 
-
-        // 임시코드 , 팩토리 쓸지 고민중
         for (int i = 0; i < 8; i++)
         {
             MakeBlade(new Vector2(transform.position.x + i * 1f + 3.0f, 0.8f), temp);
@@ -216,8 +208,6 @@ public class Boss_Knight : PatternEnemyBase
         animator.SetTrigger("Attack_2");
         yield return new WaitForSeconds(1.5f);
 
-
-        // 임시코드 , 팩토리 쓸지 고민중
         for (int i = 0; i < 7; i++)
         {
             Instantiate(shadow);
@@ -279,14 +269,6 @@ public class Boss_Knight : PatternEnemyBase
         pool.Enqueue(obj);
     }
 
-    void OnDestroy()
-    {
-        // A 오브젝트가 파괴될 때 풀 정리
-        while (pool.Count > 0)
-        {
-            Destroy(pool.Dequeue());
-        }
-    }
 
     IEnumerator Map_Pattern()
     {
@@ -330,6 +312,12 @@ public class Boss_Knight : PatternEnemyBase
         //패턴이 스탑되지않음.
         State = BossState.Wait;
         bossDie?.Invoke();
+
+        // A 오브젝트가 파괴될 때 풀 정리
+        while (pool.Count > 0)
+        {
+            Destroy(pool.Dequeue());
+        }
     }
 
 

@@ -241,7 +241,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 5
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 5
@@ -312,9 +312,8 @@ MonoBehaviour:
   BaseSpeed: 5
   hp: 100
   buffs: []
-  respawnPoint: {fileID: 0}
   isDead: 0
-  playerPrefab: {fileID: 3776167721910377412}
+  prefab: {fileID: 0}
   invincible: 0
   PickSpeed: 0
   pickupRange: 1

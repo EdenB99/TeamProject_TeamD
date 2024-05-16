@@ -120,8 +120,6 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
             hp = value;
             hp = Mathf.Max(hp, 0);
 
-            Debug.Log(hp);
-
             // Hp가 0 이하면 사망
             if (hp <= 0)
             {
@@ -365,6 +363,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         if (IsLive)
         {
             Factory.Instance.MakeDamageText((int)damage, transform.position);
+            texture = sprite2d.texture;
             sprite.material.SetFloat(HitID, 1);
             StartCoroutine(onHit());
             HP -= damage;
