@@ -15,8 +15,8 @@ public class MapManager : MonoBehaviour
     //TODO:: 오류방 만들기
     //TODO:: 월드맵 좌표를 마지막에서 몇번째 앞의 좌표를 받아야할듯, 안나오는경우 존재함
     //TODO:: 빠른이동구현
-    //TODO:: 마지막 맵의 좌표가 5,4 3,1 3,4 이렇게 나오는데, 해당맵 전맵에 그 곳으로 향하는 포탈이 존재하지않아 그 맵으로 갈 수 없는 현상 발생, 포탈을 가져와 타면 이동되긴함.
-    //TODO:: 함정 제작해야함.
+   //TODO:: 함정 제작해야함.
+    //TODO:: 맵ui에 보스맵 기록, 아이템떨어져 있으면 기록
 
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
     //플레이어가 대시가 끝나 레이어가 다시 돌아왔는데 대쉬가 끝나지않은 경우 적과 부딫혀서 적을 멀리 밀 수 있음.
@@ -281,6 +281,7 @@ public class MapManager : MonoBehaviour
                 if (currentMapCount < mapSize || mapQueue.Count <= 0)
                 {
                     //맵 무한 재생성 오류날 대 currentMapCount가 14, mapSize가 14에 QueCount는 계속증가하고있지만 CheckAndActivatePortals를 하고 여기로 돌아옴,currentMapCount는 1이됨.
+                    //일단 수정해놨음, 나오면 다시 해결할 것
                     Debug.LogWarning("맵의 개수가 부족하거나 맵큐가 비어있어 모든 맵을 삭제하고 다시 생성합니다.");
                     yield return ResetGenerateWorldMap();
                     currentMapCount = 1;
@@ -289,22 +290,40 @@ public class MapManager : MonoBehaviour
 
             }
         }
-
         if (!hasNextStageMap)
         {
-            MapData lastMapData = worldMap.Values.LastOrDefault();
-            Vector2Int lastMapPosition = new Vector2Int(lastMapData.mapX, lastMapData.mapY);
-            if (lastMapData != null)
+            // worldMap을 역순으로 순회
+            var reversedWorldMap = worldMap.Reverse();
+            int mapIndex = 1;
+
+            foreach (var kvp in reversedWorldMap)
             {
-                Debug.Log($"{lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
-                Debug.Log($"NextMap의 좌표:{lastMapPosition}");
-                lastMapData = SelectRandomMapFromNextStageMapScenes();
-                lastMapData.mapX = lastMapPosition.x;
-                lastMapData.mapY = lastMapPosition.y;
-                worldMap[lastMapPosition] = lastMapData;
+                MapData mapData = kvp.Value;
 
-                hasNextStageMap = true;
+                if (HasValidPortalConnections(mapData))
+                {
+                    // 유효성 검사를 통과한 첫 번째 맵에 NextStageMap 배치
+                    Vector2Int position = new Vector2Int(mapData.mapX, mapData.mapY);
+                    Debug.Log($"뒤에서 {mapIndex}번째 맵,  {mapData.sceneName}씬에 NextStageMap 할당."); // 맵 인덱스 출력
+                    Debug.Log($"NextMap의 좌표:{position}");
+                    mapData = SelectRandomMapFromNextStageMapScenes();
+                    mapData.mapX = position.x;
+                    mapData.mapY = position.y;
+                    worldMap[position] = mapData;
 
+                    hasNextStageMap = true;
+                    CheckAndActivatePortals(); 
+                    break;
+                }
+
+                mapIndex++; // 맵 인덱스 증가
+            }
+
+            // 유효성 검사를 통과하는 맵을 찾지 못한 경우
+            if (!hasNextStageMap)
+            {
+                Debug.LogWarning("유효성 검사를 통과하는 맵을 찾지 못했습니다. 맵을 다시 생성합니다.");
+                yield return ResetGenerateWorldMap();
             }
         }
 
@@ -932,8 +951,6 @@ public class MapManager : MonoBehaviour
 
 
     //---------맵 로드 함수
-    //TODO:: 이쪽에서 맵 생성시 일반맵,보스맵(1개만),이벤트맵(2개만)나오게 하되
-    //보스맵과 이벤트맵의 개수는 무조건 채워져야함.
     public void MapCheck(Vector2Int position, Direction direction = Direction.Right)
     {
         if (currentMap != null)

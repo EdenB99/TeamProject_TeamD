@@ -48,7 +48,10 @@ public class BossStageScripts : MonoBehaviour
         collider.enabled = true;
         bossInfo.alpha = 0.0f;
         //카메라경계변경
+        if(bossBoundaryObject != null)
+        {
         mainCamera.UpdateBoundaryObject(bossBoundaryObject);
+        }
         StopAllCoroutines();
     }
 
