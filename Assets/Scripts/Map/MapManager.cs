@@ -13,14 +13,14 @@ public class MapManager : MonoBehaviour
 {
     //TODO L:: 맵 로딩만들기 
     //TODO:: 오류방 만들기
-    //TODO:: Mapx,MapY에 월드맵 좌표 넣기
-    //TODO:: 맵 오류 월드맵 좌표 받아서 그 맵을 다음스테이지맵으로 만들기
-
+    //TODO:: 월드맵 좌표를 마지막에서 몇번째 앞의 좌표를 받아야할듯, 안나오는경우 존재함
+    //TODO:: 빠른이동구현
+    //TODO:: 마지막 맵의 좌표가 5,4 3,1 3,4 이렇게 나오는데, 해당맵 전맵에 그 곳으로 향하는 포탈이 존재하지않아 그 맵으로 갈 수 없는 현상 발생, 포탈을 가져와 타면 이동되긴함.
+    //TODO:: 함정 제작해야함.
 
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
-    //플레이어가 대시로 적을 밀칠시 적이 날라감
-    //적을 공격하는 도중 무기 이펙트에서 null 발생하는 경우
-    //적을 다 죽여 포탈색이 돌아와도 다른맵갔다 돌아오면 다시 바뀜
+    //플레이어가 대시가 끝나 레이어가 다시 돌아왔는데 대쉬가 끝나지않은 경우 적과 부딫혀서 적을 멀리 밀 수 있음.
+    //적을 빠르게 공격하면 무기 이펙트에서 null 발생하는 경우가 존재(주로 스켈레톤을 공격 시 발생)
     //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
     //지도를 전부 밝히는 테스트코드 필요
 
@@ -234,7 +234,7 @@ public class MapManager : MonoBehaviour
         worldMap.Clear();
         usedMapScenes.Clear();
         hasNextStageMap = false;
-
+        StopCoroutine(ResetGenerateWorldMap());
 
         currentMapCount = 1;
         Debug.Log("맵생성을 시작");
@@ -280,6 +280,7 @@ public class MapManager : MonoBehaviour
             {
                 if (currentMapCount < mapSize || mapQueue.Count <= 0)
                 {
+                    //맵 무한 재생성 오류날 대 currentMapCount가 14, mapSize가 14에 QueCount는 계속증가하고있지만 CheckAndActivatePortals를 하고 여기로 돌아옴,currentMapCount는 1이됨.
                     Debug.LogWarning("맵의 개수가 부족하거나 맵큐가 비어있어 모든 맵을 삭제하고 다시 생성합니다.");
                     yield return ResetGenerateWorldMap();
                     currentMapCount = 1;
@@ -288,15 +289,6 @@ public class MapManager : MonoBehaviour
 
             }
         }
-
-        foreach (var kvp in worldMap)
-        {
-            MapData mapData = kvp.Value;
-            CheckAndDisablePortal(mapData);
-        }
-
-        CheckAndActivatePortals();
-
 
         if (!hasNextStageMap)
         {
@@ -307,6 +299,8 @@ public class MapManager : MonoBehaviour
                 Debug.Log($"{lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
                 Debug.Log($"NextMap의 좌표:{lastMapPosition}");
                 lastMapData = SelectRandomMapFromNextStageMapScenes();
+                lastMapData.mapX = lastMapPosition.x;
+                lastMapData.mapY = lastMapPosition.y;
                 worldMap[lastMapPosition] = lastMapData;
 
                 hasNextStageMap = true;
@@ -1140,6 +1134,7 @@ public class MapManager : MonoBehaviour
             if (portalObject != null)
             {
                 Debug.LogWarning($"현재맵에 {direction}방향의 포탈이 있지만 꺼져있었습니다.");
+                UpdatePortalState(currentMap.hasEnemies);
                 Transform playerSpawnPoint = portalObject.transform.GetChild(0); 
                 if (playerSpawnPoint != null)
                 {
