@@ -13,16 +13,21 @@ public class MapManager : MonoBehaviour
 {
     //TODO L:: 맵 로딩만들기 
     //TODO:: 오류방 만들기
-    //TODO:: 월드맵 좌표를 마지막에서 몇번째 앞의 좌표를 받아야할듯, 안나오는경우 존재함
     //TODO:: 빠른이동구현
-   //TODO:: 함정 제작해야함.
-    //TODO:: 맵ui에 보스맵 기록, 아이템떨어져 있으면 기록
+    //TODO:: 함정 제작해야함.
 
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
     //플레이어가 대시가 끝나 레이어가 다시 돌아왔는데 대쉬가 끝나지않은 경우 적과 부딫혀서 적을 멀리 밀 수 있음.
     //적을 빠르게 공격하면 무기 이펙트에서 null 발생하는 경우가 존재(주로 스켈레톤을 공격 시 발생)
     //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
-    //지도를 전부 밝히는 테스트코드 필요
+    //아이템이 맵을 나갔다 돌아올때마다 다른아이템이 되어있음(먹었을 땐 같은아이템이였음.)
+    
+    //계속 나갔다 들어오면 이상한곳으로 이동되며 아이템이 몇개 먹어지며 
+    //indexOutOfRangeException: Index was outside the bounds of the array., Assets/Scripts/Core/Factory.cs:76 
+    //Assets/Scripts/Map/MapManager.cs:1251)  (at Assets/Scripts/Map/MapManager.cs:1026)
+    //오류가 생김
+
+
 
     [Header("변수")]
 
@@ -40,6 +45,8 @@ public class MapManager : MonoBehaviour
     private HashSet<string> usedMapScenes = new HashSet<string>();
     private int centerX;
     private int centerY;
+    Vector2Int currentPosition;
+
 
     //특수 맵 관련
     private bool hasNextStageMap = false;
@@ -309,6 +316,7 @@ public class MapManager : MonoBehaviour
                     mapData = SelectRandomMapFromNextStageMapScenes();
                     mapData.mapX = position.x;
                     mapData.mapY = position.y;
+                    mapData.isNextStageRoom = true;
                     worldMap[position] = mapData;
 
                     hasNextStageMap = true;
@@ -964,6 +972,9 @@ public class MapManager : MonoBehaviour
         else
         {
             Debug.LogError($"유효하지 않은 맵 위치입니다. 위치: ({position.x}, {position.y})");
+            SceneManager.UnloadSceneAsync(currentMap.sceneName);
+            SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
+            //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
         }
     }
 
@@ -1010,7 +1021,8 @@ public class MapManager : MonoBehaviour
                 if (asyncLoad == null)
                 {
                     Debug.LogError($"불러오는데 실패한 맵: {mapToLoad.sceneName}");
-                    return;
+                    SceneManager.LoadScene("ErrorMap",LoadSceneMode.Additive);
+                    //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
                 }
 
                 asyncLoad.completed += _ =>
@@ -1032,13 +1044,16 @@ public class MapManager : MonoBehaviour
             else
             {
                 Debug.LogError($"해당좌표의 맵 데이터를 찾을 수 없습니다.: ({position.x}, {position.y})");
-
+                SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
+                //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
             }
         }
         else
         {
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
-
+            SceneManager.UnloadSceneAsync(currentMap.sceneName);
+            SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
+            //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
         }
     }
     private void FindPortalsAndSpriteRenderers()
@@ -1169,7 +1184,7 @@ public class MapManager : MonoBehaviour
     //포탈 들어갔을 때
     public void EnterPortal(Direction direction)
     {
-        Vector2Int currentPosition = new Vector2Int(currentMap.mapX, currentMap.mapY);
+        currentPosition = new Vector2Int(currentMap.mapX, currentMap.mapY);
         Vector2Int MapPosition = GetAdjacentPosition(currentMap.mapX, currentMap.mapY, direction);
         if (IsValidPosition(MapPosition))
         {
@@ -1192,6 +1207,7 @@ public class MapManager : MonoBehaviour
     }
 
     //맵 저장,로드==============================================
+
 
     /// <summary>
     /// 맵을 저장하기 위해 사용하는 함수

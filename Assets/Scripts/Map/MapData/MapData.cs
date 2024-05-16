@@ -22,8 +22,7 @@ public class MapData
     public bool isVisited = false;
     public bool hasItem;
 
-    public bool hasBossRoom;
-    public bool hasShop;
+    public bool isNextStageRoom;
     public bool hasHeal;
 
     public GameObject upPortalObject;

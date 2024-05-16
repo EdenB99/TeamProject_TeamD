@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //빠른이동은 canvasGroup레이캐스트 활용해서 만들기
@@ -14,8 +15,7 @@ public class MapUI : MonoBehaviour
     [SerializeField] private Sprite currentMapSprite;
     [SerializeField] private Sprite itemSprite;
     [SerializeField] private Sprite healSprite;
-    [SerializeField] private Sprite shopSprite;
-    [SerializeField] private Sprite bossSprite;
+    [SerializeField] private Sprite nextStageSprite;
     [SerializeField] private Sprite portalSprites;
 
     private Image[,] mapTiles;
@@ -31,8 +31,8 @@ public class MapUI : MonoBehaviour
 
     private void Start()
     {
-        mapManager = GameObject.FindObjectOfType<MapManager>();
-        canvasGroupMini = GameObject.FindAnyObjectByType<MiniMap>().GetComponent<CanvasGroup>();
+        mapManager = FindObjectOfType<MapManager>();
+        canvasGroupMini = FindAnyObjectByType<MiniMap>().GetComponent<CanvasGroup>();
         canvasGroupUI = GetComponent<CanvasGroup>();
         mapPosition = transform.GetChild(0).GetComponent<RectTransform>();
 
@@ -190,20 +190,23 @@ public class MapUI : MonoBehaviour
                     }
 
                     // 맵에 상호작용 가능한 요소 표시
-                    ShowInteractiveIcon(mapData, mapData.hasItem, itemSprite, new Vector2(-10f, -10f));
-                    ShowInteractiveIcon(mapData, mapData.hasShop, shopSprite, new Vector2(10f, -10f));
-                    ShowInteractiveIcon(mapData, mapData.hasBossRoom, bossSprite, new Vector2(0f, 10f));
+                    ShowInteractiveIcon(mapData, mapData.isNextStageRoom, nextStageSprite, new Vector2(0f, 10f));
 
                     ShowPortalIcon(mapData, Direction.Up, new Vector2(0f, 275f));
                     ShowPortalIcon(mapData, Direction.Down, new Vector2(0f, -265f));
                     ShowPortalIcon(mapData, Direction.Left, new Vector2(-480f, 0f));
                     ShowPortalIcon(mapData, Direction.Right, new Vector2(480f, 0f));
+
+
+                    // 아이템 아이콘 표시
+                    ShowItemIcons(mapData);
+
+
                 }
                 else
                 {
                     mapTiles[x, y].color = new Color(1f, 1f, 1f, 0f);
                     mapTiles[x, y].transform.Find("CurrentMapIndicator").gameObject.SetActive(false);
-
                 }
             }
         }
@@ -211,18 +214,37 @@ public class MapUI : MonoBehaviour
     //아이콘 생성
     private void ShowInteractiveIcon(MapData mapData, bool hasInteractive, Sprite iconSprite, Vector2 iconPosition)
     {
+        Transform iconTransform = mapTiles[mapData.mapX, mapData.mapY].transform.Find("InteractiveIcon");
+
         if (hasInteractive)
         {
-            GameObject iconObject = new GameObject("InteractiveIcon");
-            iconObject.transform.SetParent(mapTiles[mapData.mapX, mapData.mapY].transform);
+            if (iconTransform == null)
+            {
+                // 아이콘 GameObject 생성
+                GameObject iconObject = new GameObject("InteractiveIcon");
+                iconObject.transform.SetParent(mapTiles[mapData.mapX, mapData.mapY].transform);
 
-            Image iconImage = iconObject.AddComponent<Image>();
-            iconImage.sprite = iconSprite;
+                Image iconImage = iconObject.AddComponent<Image>();
+                iconImage.sprite = iconSprite;
 
-            RectTransform iconRect = iconObject.GetComponent<RectTransform>();
-            iconRect.anchorMin = new Vector2(0.5f, 0.5f);
-            iconRect.anchorMax = new Vector2(0.5f, 0.5f);
-            iconRect.anchoredPosition = iconPosition;
+                RectTransform iconRect = iconObject.GetComponent<RectTransform>();
+                iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+                iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+                iconRect.anchoredPosition = iconPosition;
+            }
+            else
+            {
+                // 기존 아이콘 GameObject 재사용
+                Image iconImage = iconTransform.GetComponent<Image>();
+                iconImage.sprite = iconSprite;
+                iconTransform.GetComponent<RectTransform>().anchoredPosition = iconPosition;
+                iconTransform.gameObject.SetActive(true);
+            }
+        }
+        else if (iconTransform != null)
+        {
+            // 기존 아이콘 GameObject 비활성화
+            iconTransform.gameObject.SetActive(false);
         }
     }
 
@@ -272,13 +294,50 @@ public class MapUI : MonoBehaviour
         }
     }
 
+
+
+    // 아이템 아이콘 표시
+    private void ShowItemIcons(MapData mapData)
+    {
+        Transform iconTransform = mapTiles[mapData.mapX, mapData.mapY].transform.Find("ItemIcon");
+
+        if (mapData.mapItemDatas != null && mapData.mapItemDatas.Count > 0)
+        {
+            if (iconTransform == null)
+            {
+                // 아이콘 GameObject 생성
+                GameObject iconObject = new GameObject("ItemIcon");
+                iconObject.transform.SetParent(mapTiles[mapData.mapX, mapData.mapY].transform);
+
+                Image iconImage = iconObject.AddComponent<Image>();
+                iconImage.sprite = itemSprite;
+
+                RectTransform iconRect = iconObject.GetComponent<RectTransform>();
+                iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+                iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+                iconRect.anchoredPosition = new Vector2(0f, 0f);
+            }
+            else
+            {
+                // 기존 아이콘 GameObject 재사용
+                Image iconImage = iconTransform.GetComponent<Image>();
+                iconImage.sprite = itemSprite;
+                iconTransform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
+                iconTransform.gameObject.SetActive(true);
+            }
+        }
+        else if (iconTransform != null)
+        {
+            // 기존 아이콘 GameObject 비활성화
+            iconTransform.gameObject.SetActive(false);
+        }
+    }
+
     /// <summary>
     /// TODO:: 빠른이동 구현
     /// </summary>
-    public void FastTravel()
-    {
 
 
-    }
+
 
 }

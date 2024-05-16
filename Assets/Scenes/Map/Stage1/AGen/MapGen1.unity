@@ -395,6 +395,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 898700179743173665, guid: 5bd9d85ff0da6dd46bea86d015e03363, type: 3}
     - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
+      propertyPath: nextStageSprite
+      value: 
+      objectReference: {fileID: 21300260, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+    - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
       propertyPath: portalSprites.Array.size
       value: 1
       objectReference: {fileID: 0}
