@@ -51,11 +51,6 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     public float sightRange = 1.0f;
 
     /// <summary>
-    /// 적의 스프라이트가 우측을 보고있을때
-    /// </summary>
-    public bool IsRight;
-
-    /// <summary>
     /// HP설정용
     /// </summary>
     protected float hp = 1.0f;
@@ -82,7 +77,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// <summary>
     /// 좌우 확인
     /// </summary>
-    public int checkLR = 1;
+    private int checkLR = 1;
 
     /// <summary>
     /// 좌우 변경용 프로퍼티
@@ -152,8 +147,11 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
             if (IsMove)
             {
                 // 플레이어의 위치에 따라 CheckLR 을 변경한다.
+
                 if (targetPos.x < rb.position.x) CheckLR = 1;
                 else CheckLR = -1;
+
+
             }
             attackAction();
   
@@ -195,14 +193,8 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     {
         if ( playerDetected && IsLive)
         {
-            if (IsRight)
-            {
-                if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
-            }
-            else
-            {
-                if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
-            }
+            if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
+            if (checkLR == -1) sprite.flipX = false; else { sprite.flipX = true; }
         }
     }
 
@@ -337,6 +329,7 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
         Debug.Log("죽었다.");
         IsLive = false;
         sprite.material.SetFloat(HitID, 0);
+
         this.gameObject.layer = 17;
         StopAllCoroutines();
         ItemDrop();

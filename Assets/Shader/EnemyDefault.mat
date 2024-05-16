@@ -46,6 +46,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fade: 1
+    - _Hit: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &6286511767116815295
