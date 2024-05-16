@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerRespawner : MonoBehaviour
@@ -54,3 +54,4 @@ public class PlayerRespawner : MonoBehaviour
         SceneManager.LoadScene("Town", LoadSceneMode.Single);
     }
 }
+*/

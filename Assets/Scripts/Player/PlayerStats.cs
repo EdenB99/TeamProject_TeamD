@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -80,21 +81,10 @@ public class PlayerStats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Die();
+            TakeDamage(50);
         }
 
-        if (isDead && Input.GetKeyDown(KeyCode.R))
-        {
-            GameObject respawnerObj = GameObject.Find("Respawner");
-            if (respawnerObj != null)
-            {
-                PlayerRespawner respawner = respawnerObj.GetComponent<PlayerRespawner>();
-                if (respawner != null)
-                {
-                    respawner.Respawn();
-                }
-            }
-        }
+       
     }
 
     SpriteRenderer spriteRenderer;
@@ -161,13 +151,34 @@ public class PlayerStats : MonoBehaviour
         else if (hp <= 0)
         {
             Die();
+            GameObject myInstance = Instantiate(prefab);
+            Destroy(this.gameObject);
+            SceneManager.LoadScene("Town");
+        }
+    }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Town")
+        {
+            hp = MaxHp;
+            gameObject.layer = LayerMask.NameToLayer("Player");
+            spriteRenderer.color = Color.white;
+            isDead = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
 
         if (collision.GetComponent<IAttack>() != null && !invincible)            // IAttack을 가지고 있고, 무적상태가 아닐때만
         {
@@ -183,19 +194,6 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void SetInitialState()
-    {
-        hp = maxHp; // HP 초기화
-        Debug.Log("HP : " + hp);
-      /*  // 애니메이터 상태 초기화
-        if (ani != null)
-        {
-            ani.Rebind();
-            ani.Update(0f);
-        }*/
-    }
-
-
     /// <summary>
     /// 체력이 변경되었을때 호출되는 함수
     /// </summary>
@@ -203,9 +201,9 @@ public class PlayerStats : MonoBehaviour
     {
         // 캐릭터가 사망했을 때의 로직 처리
         Debug.Log("플레이어가 죽었다.");
-        ani.SetTrigger("Die");
+        //ani.SetTrigger("Die");
         isDead = true;
-        OnDie?.Invoke();
+        //OnDie?.Invoke();
         //Player_ani.SetTrigger("Die");
     }
 

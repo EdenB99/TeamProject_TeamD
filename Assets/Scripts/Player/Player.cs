@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         tr = GetComponent<TrailRenderer>();
 
         // 플레이어 사망시 작동 정지
-        PlayerStats.OnDie += inputActions.Player.Disable;
+        //PlayerStats.OnDie += inputActions.Player.Disable;
     }
 
 
@@ -205,7 +205,8 @@ public class Player : MonoBehaviour
 
     protected void MousePosition()
     {
-        if (playerStats != null && !playerStats.isDead)
+        if (playerStats != null )
+            //&& !playerStats.isDead
         {
             // 마우스 포지션 변경
             // Camera camera = FindAnyObjectByType<Camera>();
