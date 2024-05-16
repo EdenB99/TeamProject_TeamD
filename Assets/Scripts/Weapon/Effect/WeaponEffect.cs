@@ -108,18 +108,6 @@ public class WeaponEffect : RecycleObject, IAttack
     }
 
 
-    protected void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
-        {
-            IEnemy enemy = collision.GetComponent<IEnemy>();
-
-            float totalDamage = AttackPower;
-
-            enemy.TakeDamage(totalDamage);
-        }
-    }   
-
     protected IEnumerator DeactivateEffectAfterAnimation()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
