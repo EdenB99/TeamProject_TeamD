@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Map/NonStage/Town.unity
+    path: Assets/Scenes/Map/Town/Town.unity
     guid: 5a813369b33d88d4b8716ed3ff1687dd
   - enabled: 1
     path: Assets/Scenes/Map/Stage1/AGen/MapGen1.unity

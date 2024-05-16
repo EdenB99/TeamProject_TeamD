@@ -14,15 +14,21 @@ public class MapManager : MonoBehaviour
     //TODO Low:: 에디터로 한글화 추가하기
     //TODO L:: 맵 로딩만들기 
     //TODO:: 오류방 만들기
-    //TODO:M: 엔드씬 만들기 (흑백 패널띄워서 텍스트, 그냥 키넣어서 작동하게)
 
     //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
     //플레이어가 대시로 적을 밀칠시 적이 날라감
     //적을 공격하는 도중 무기 이펙트에서 null 발생하는 경우
     //적을 다 죽여 포탈색이 돌아와도 다른맵갔다 돌아오면 다시 바뀜
     //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
-    //테스트중 적들을 전부 찾아서 죽이는 테스트코드, 지도를 전부 밝히는 테스트코드 필요
+    // 게임 재 시작시 백그라운드 쪽에 'BackgroundFollow'가 파괴되었는데 엑세스시도 했다는 미싱레퍼런스가 맵넘어갈 때마다 뜸
     
+    //맵쪽오류:
+    //가끔 맵이 무한 재생성하는 오류
+    //맵에 nextMap이 있다고하는데도 안나오는 오류
+    //포탈이 꺼진 오류(고쳣지만 확인아직임)
+    //테스트중 맵데이터가 없는경우 1회확인, 오류방만들어서 해결예정
+    //지도를 전부 밝히는 테스트코드 필요
+
     [Header("변수")]
 
     private Player player;
@@ -189,7 +195,7 @@ public class MapManager : MonoBehaviour
             mapScenes[i] = mapData;
 
         }
-
+        
         //nextStageMapScenes 처리
         nextStageMapScenes = new MapData[nextStageMapPrefabs.Length];
 
@@ -277,42 +283,25 @@ public class MapManager : MonoBehaviour
 
             if (currentMapCount < mapSize)
             {
-                if (currentMapCount < mapSize - 2 || mapQueue.Count <= 0)
+                if (currentMapCount < mapSize || mapQueue.Count <= 0)
                 {
                     Debug.LogWarning("맵의 개수가 부족하거나 맵큐가 비어있어 모든 맵을 삭제하고 다시 생성합니다.");
                     yield return ResetGenerateWorldMap();
+                    currentMapCount = 1;
                     genCount = 0; 
                 }
-                else
-                {
-                    Debug.LogWarning($"맵 생성에 실패했습니다. 현재 맵 개수: {currentMapCount}. 1초 후 다시 시도합니다.");
-                    yield return new WaitForSeconds(1f);
-                }
-            }
-        }
 
-        foreach (var mapData in worldMap.Values)
-        {
-            if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
-            {
-                Debug.Log("현재 다음맵으로 가는 씬이 존재합니다.");
-                hasNextStageMap = true;
-                break;
             }
         }
 
 
-        if (!hasNextStageMap)
-        {
-            // nextStageMap이 없다면 마지막으로 생성된 맵을 nextStageMap으로 변경
             MapData lastMapData = worldMap.Values.LastOrDefault();
             if (lastMapData != null)
             {
                 nextStageMapScenes = new MapData[] { lastMapData };
                 hasNextStageMap = true;
-                Debug.Log($"NextStageMap이 없어 {lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
+                Debug.Log($"{lastMapData.sceneName}을 NextStageMap으로 설정합니다.");
             }
-        }
 
         foreach (var kvp in worldMap)
         {
@@ -1148,9 +1137,18 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-
-            Debug.LogWarning($"현재맵에 {direction}방향의 포탈을 찾지 못했습니다.");
+            GameObject.FindAnyObjectByType<ReturnZone>().transform.parent.Find($"{direction}Portal").gameObject.SetActive(true);
+            portalObject = GameObject.Find($"{direction}Portal");
+            if (portalObject != null)
+            {
+                Debug.LogWarning($"현재맵에 {direction}방향의 포탈이 있지만 꺼져있었습니다.");
+                Transform playerSpawnPoint = portalObject.transform.GetChild(0);
+            }
+            else
+            {
+            Debug.LogWarning($"현재맵에 {direction}방향의 포탈이 없습니다.");
             player.transform.position = new Vector3(0, 0, player.transform.position.z);
+            }
         }
     }
 
@@ -1245,10 +1243,14 @@ public class MapManager : MonoBehaviour
 
             mapData.itemPositions.Clear();
         }
+    
     }
 
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+    }
 
-    //메모리 누수 발생으로 인한 오류 해결못해서 Claude에게 질문했음, 종료시 모든 객체 파괴 및 정리
     private void OnDisable()
     {
 
@@ -1269,26 +1271,11 @@ public class MapManager : MonoBehaviour
 
 
         worldMap.Clear();
-
-        // 2. 사용한 에셋 및 리소스 언로드
-        //Resources.UnloadUnusedAssets();
-
-        // 3. 코루틴 정리
         StopAllCoroutines();
-
-        // 4. 이벤트 리스너 및 콜백 제거
-        // 필요한 경우 이벤트 리스너나 콜백 함수를 제거합니다.
-
-        // 5. 정적 변수 및 싱글톤 객체 정리
         currentMap = null;
         player = null;
         mapUI = null;
-        // 필요한 경우 다른 정적 변수나 싱글톤 객체도 정리합니다.
-
-        // 6. 캐시 데이터 정리
         usedMapScenes.Clear();
-        // 필요한 경우 다른 캐시 데이터나 임시 데이터도 정리합니다.
-
 
     }
 
