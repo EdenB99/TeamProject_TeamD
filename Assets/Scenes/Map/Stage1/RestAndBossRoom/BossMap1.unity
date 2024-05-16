@@ -27363,6 +27363,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3908267709554949723, guid: 4cedee309444c114b93c5181078f5bd8, type: 2}
     - target: {fileID: 7551787162188795611, guid: 0c594ceb956179c40bf9ebf1ec2cdd68, type: 3}
+      propertyPath: bossPrefab
+      value: 
+      objectReference: {fileID: 8830622752427753489, guid: 7f3a9688e9f68624a91b3c620bbc7252, type: 3}
+    - target: {fileID: 7551787162188795611, guid: 0c594ceb956179c40bf9ebf1ec2cdd68, type: 3}
       propertyPath: bossBoundaryObject
       value: 
       objectReference: {fileID: 1242595341}
