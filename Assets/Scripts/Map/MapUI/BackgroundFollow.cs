@@ -67,7 +67,7 @@ public class BackgroundFollow : MonoBehaviour
     {
         Vector3 deltaPosition = mainCamera.transform.position - preCameraPosition;
 
-        Vector2 backgroundPosition = new Vector2(background.position.x + deltaPosition.x * 0.7f, background.position.y + deltaPosition.y);
+        Vector2 backgroundPosition = new Vector2(background.position.x + deltaPosition.x * 0.8f, background.position.y + deltaPosition.y);
 
         if (boundaryCollider != null)
         {
