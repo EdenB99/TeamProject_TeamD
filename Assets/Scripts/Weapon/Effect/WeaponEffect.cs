@@ -19,7 +19,7 @@ public class WeaponEffect : RecycleObject, IAttack
 {
     Rigidbody2D rigidbody2d;
 
-    Animator animator;
+    protected Animator animator;
 
     protected Player player;
 
