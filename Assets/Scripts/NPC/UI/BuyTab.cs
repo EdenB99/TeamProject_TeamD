@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class BuyTab : MonoBehaviour
 {
+    Player player;
     InventoryUI inventoryUI;
     ItemData CurrentItemdata;
     Button yesButton;
@@ -31,6 +32,7 @@ public class BuyTab : MonoBehaviour
     private void Start()
     {
         inventoryUI = GameManager.Instance.InventoryUI;
+        player = GameManager.Instance.Player;
     }
 
     public void SetItemdata (ItemData itemdata, StoreSlot currentslot)
@@ -38,13 +40,21 @@ public class BuyTab : MonoBehaviour
         slot = currentslot;
         this.gameObject.SetActive(true);
         CurrentItemdata = itemdata;
-        text.text = $"{CurrentItemdata.itemName}을 구매하시겠습니까?";
+        text.text = $"{CurrentItemdata.itemName}을(를)\n구매하시겠습니까?";
     }
 
     private void OnBuyButtonClicked()
     {
-        inventoryUI.getItem(CurrentItemdata.code);
-        slot.ClearSlot();
-        this.gameObject.SetActive(false);
+       if (player.Gold < CurrentItemdata.price)
+        {
+            text.text = "소지 금액이\n부족합니다!";
+        } else
+        {
+            player.Gold -= CurrentItemdata.price;
+            inventoryUI.getItem(CurrentItemdata.code);
+            slot.ClearSlot();
+            this.gameObject.SetActive(false);
+        }
+        
     }
 }
