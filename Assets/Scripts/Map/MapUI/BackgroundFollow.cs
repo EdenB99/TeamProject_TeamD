@@ -9,12 +9,18 @@ public class BackgroundFollow : MonoBehaviour
     public Sprite[] backgrounds;
     public GameObject boundaryObject;
     BoxCollider2D boundaryCollider;
-    MainCamera maincamera;
+    Camera mainCamera;
+
+    Vector2 cameraSize;
+    Vector3 preCameraPosition;
 
     private void Awake()
     {
-        maincamera = GetComponentInParent<MainCamera>();
+        mainCamera = Camera.main;
         SceneManager.sceneLoaded += OnSceneLoaded; // 씬이 로딩될 때마다 함수 호출
+
+        cameraSize = new Vector2(mainCamera.orthographicSize * mainCamera.aspect, mainCamera.orthographicSize);
+        preCameraPosition = mainCamera.transform.position;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -55,24 +61,26 @@ public class BackgroundFollow : MonoBehaviour
         }
     }
 
-    public float lerpSpeed = 2.0f;
-
-    float backgroundWidth = 22;
-    float backgroundHeight = 10;
+    public float lerpSpeed = 2f;
 
     void UpdateBackgroundPosition()
     {
-        Vector2 backgroundPosition = new Vector2(maincamera.transform.position.x * 0.8f, maincamera.transform.position.y);
+        Vector3 deltaPosition = mainCamera.transform.position - preCameraPosition;
 
-        if (boundaryCollider != null) 
+        Vector2 backgroundPosition = new Vector2(background.position.x + deltaPosition.x * 0.8f, background.position.y + deltaPosition.y);
+
+        if (boundaryCollider != null)
         {
+            Vector2 backgroundSize = background.GetComponent<Renderer>().bounds.size;
             Bounds bounds = boundaryCollider.bounds;
-            backgroundPosition.x = Mathf.Clamp(backgroundPosition.x, bounds.min.x + backgroundWidth / 2, bounds.max.x - backgroundWidth / 2);
-            backgroundPosition.y = Mathf.Clamp(backgroundPosition.y, bounds.min.y + backgroundHeight / 2, bounds.max.y - backgroundHeight / 2);
+
+            backgroundPosition.x = Mathf.Clamp(backgroundPosition.x, bounds.min.x + cameraSize.x, bounds.max.x - cameraSize.x);
+            backgroundPosition.y = Mathf.Clamp(backgroundPosition.y, bounds.min.y + cameraSize.y, bounds.max.y - cameraSize.y);
         }
 
-        background.position = backgroundPosition;
-        background.transform.position = Vector2.Lerp(background.transform.position, backgroundPosition, lerpSpeed * Time.deltaTime);
+        background.position = Vector2.Lerp(background.position, backgroundPosition, lerpSpeed * Time.deltaTime);
+
+        preCameraPosition = mainCamera.transform.position;
     }
 
     private void OnDestroy()
