@@ -790,6 +790,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Platform
       objectReference: {fileID: 0}
+    - target: {fileID: 821425027672172923, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 821425027672172923, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.29
+      objectReference: {fileID: 0}
     - target: {fileID: 1515196789271786746, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -8698,6 +8706,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage1Map2
       objectReference: {fileID: 0}
+    - target: {fileID: 5315592389613670295, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315592389613670295, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.36
+      objectReference: {fileID: 0}
     - target: {fileID: 6074673083623206692, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -14649,6 +14665,14 @@ PrefabInstance:
     - target: {fileID: 7556017433042625559, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
       propertyPath: m_Tiles.Array.data[405].second.m_TileSpriteIndex
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777669303709451870, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777669303709451870, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.65
       objectReference: {fileID: 0}
     - target: {fileID: 8324111373860669265, guid: e6e5bfa329cb0ca46ba13616edc055e5, type: 3}
       propertyPath: m_Layer

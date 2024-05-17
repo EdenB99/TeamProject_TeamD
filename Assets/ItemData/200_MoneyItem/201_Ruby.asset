@@ -17,5 +17,5 @@ MonoBehaviour:
   itemName: "\uB8E8\uBE44"
   itemDescription: "\uD314\uBA74 \uB3C8\uC774 \uB420 \uAC83\uC774\uB2E4."
   itemIcon: {fileID: 1433128209, guid: 0532ff3fb6f168444874e12b5888b74a, type: 3}
-  price: 0
+  price: 700
   cooltime: 0

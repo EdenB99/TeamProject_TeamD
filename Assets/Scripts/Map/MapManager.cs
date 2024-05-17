@@ -76,6 +76,9 @@ public class MapManager : MonoBehaviour
     private Portal[] portals;
     private Dictionary<Portal, SpriteRenderer[]> portalSpriteRenderers = new Dictionary<Portal, SpriteRenderer[]>();
 
+    // 카메라
+    private MainCamera mainCamera;
+
     private void Awake()
     {
         centerX = worldMapSize / 2;
@@ -116,8 +119,10 @@ public class MapManager : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindAnyObjectByType<Player>();
+        player = GameManager.Instance.Player;
+        mainCamera = GameManager.Instance.MainCamera;
         mapUI = GameObject.FindAnyObjectByType<MapUI>();
+
         StartCoroutine(GenerateWorldMapCoroutine());
     }
 
@@ -1039,6 +1044,8 @@ public class MapManager : MonoBehaviour
                         mapUI.UpdateMapUI();
                     }
                     SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
+                    mainCamera = GameManager.Instance.MainCamera;
+                    mainCamera.cameraReturn = true;
                 };
             }
             else
@@ -1255,7 +1262,7 @@ public class MapManager : MonoBehaviour
     /// <param name="mapData"></param>
     private void LoadMapState(MapData mapData)
     {
-
+        // 아이템 불러오기
         if (mapData.mapItemDatas != null)
         {
             foreach (SaveItemData itemData in mapData.mapItemDatas)
@@ -1264,6 +1271,14 @@ public class MapManager : MonoBehaviour
             }
         }
 
+
+
+        /*
+        player = GameManager.Instance.Player;
+        mainCamera = GameManager.Instance.MainCamera;
+        // 카메라 위치조정
+        mainCamera.transform.position = player.transform.position;
+        */
 
     }
 

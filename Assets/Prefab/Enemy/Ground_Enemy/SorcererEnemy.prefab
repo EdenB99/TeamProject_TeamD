@@ -179,7 +179,25 @@ MonoBehaviour:
   sightRange: 20
   maxHP: 100
   Attackpower: 1
-  dropItems: []
+  dropItems:
+  - code: 0
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 6
+    dropRatio: 0.2
+    dropCount: 1
+  - code: 15
+    dropRatio: 0.05
+    dropCount: 1
+  - code: 4
+    dropRatio: 0.2
+    dropCount: 1
+  - code: 2
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 12
+    dropRatio: 0.05
+    dropCount: 1
   ThunderPrefab: {fileID: 6784313238061595325, guid: 17326fbf328b5934cbe9d7017a1bf019, type: 3}
 --- !u!95 &7317045491588493595
 Animator:

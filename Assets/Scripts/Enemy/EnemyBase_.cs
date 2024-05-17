@@ -193,8 +193,8 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     {
         if ( playerDetected && IsLive)
         {
-            if (checkLR == 1) sprite.flipX = true; else { sprite.flipX = false; }
-            if (checkLR == -1) sprite.flipX = false; else { sprite.flipX = true; }
+            if (checkLR == 1) sprite.flipX = false; else { sprite.flipX = true; }
+            if (checkLR == -1) sprite.flipX = true; else { sprite.flipX = false; }
         }
     }
 
@@ -226,6 +226,11 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
             IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
 
             TakeDamage(attack.AttackPower);                         // 해당 컴포넌트의 AttackPower만큼 피해를 받음.
+
+            if ( !playerDetected )                              // 발견하지 못했어도 피해를 받으면 발견처리
+            {
+                playerDetected = true;
+            }
         }
     }
 

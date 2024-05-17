@@ -281,7 +281,22 @@ MonoBehaviour:
   sightRange: 5
   maxHP: 100
   Attackpower: 1
-  dropItems: []
+  dropItems:
+  - code: 10
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 4
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 2
+    dropRatio: 0.2
+    dropCount: 1
+  - code: 1
+    dropRatio: 0.2
+    dropCount: 3
+  - code: 1
+    dropRatio: 0.5
+    dropCount: 1
   jumpForce: 5
   bladeRange: 4
   speed: 3

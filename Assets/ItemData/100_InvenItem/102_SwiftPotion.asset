@@ -26,4 +26,4 @@ MonoBehaviour:
     buff_hp: 0
     buff_criticalChance: 0
     buff_speed: 5
-    buff_duration: 5
+    buff_duration: 15

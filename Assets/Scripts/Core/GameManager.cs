@@ -3,6 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    MainCamera mainCamera;
+
+    public MainCamera MainCamera
+    { 
+        get
+        {
+            if (mainCamera == null)
+                mainCamera = FindAnyObjectByType<MainCamera>();
+            return mainCamera;
+        } 
+    }
+
+
+
     Player player;
     public Player Player
     {

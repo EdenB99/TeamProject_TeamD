@@ -40,6 +40,6 @@ public class BackgroundFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        background.transform.position = new Vector2(mainCam.transform.position.x * 0.8f, mainCam.transform.position.y * 0.9f);
+        background.transform.position = new Vector2(mainCam.transform.position.x * 0.8f, mainCam.transform.position.y * 0.9f + 1.5f);
     }
 }

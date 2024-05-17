@@ -12,7 +12,7 @@ public class MainCamera : Singleton<MainCamera>
     private BoxCollider2D boundaryCollider;
     private float cameraHeight;
     private float cameraWidth;
-
+    public bool cameraReturn = false;
 
     protected override void OnPreInitialize()
     {
@@ -28,7 +28,7 @@ public class MainCamera : Singleton<MainCamera>
     }
 
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (boundaryCollider == null)
         {
@@ -78,24 +78,33 @@ public class MainCamera : Singleton<MainCamera>
     //카메라이동
     private void CameraMove()
     {
-        if(player != null)
+        if(player != null )
         {
+            Vector3 playerPosition = player.transform.position;
 
-        Vector3 playerPosition = player.transform.position;
+            // 카메라 위치를 플레이어 위치로 설정
+            cameraPosition = new Vector3(playerPosition.x, playerPosition.y, transform.position.z);
 
-        // 카메라 위치를 플레이어 위치로 설정
-        cameraPosition = new Vector3(playerPosition.x, playerPosition.y, transform.position.z);
+            // BoxCollider2D의 bounds 정보를 사용하여 카메라 위치를 제한된 범위 내로 조정
+            if (boundaryCollider != null)
+            {
+                Bounds bounds = boundaryCollider.bounds;
+                cameraPosition.x = Mathf.Clamp(cameraPosition.x, bounds.min.x + cameraWidth / 2, bounds.max.x - cameraWidth / 2);
+                cameraPosition.y = Mathf.Clamp(cameraPosition.y, bounds.min.y + cameraHeight / 2, bounds.max.y - cameraHeight / 2);
+            }
 
-        // BoxCollider2D의 bounds 정보를 사용하여 카메라 위치를 제한된 범위 내로 조정
-        if (boundaryCollider != null)
-        {
-            Bounds bounds = boundaryCollider.bounds;
-            cameraPosition.x = Mathf.Clamp(cameraPosition.x, bounds.min.x + cameraWidth / 2, bounds.max.x - cameraWidth / 2);
-            cameraPosition.y = Mathf.Clamp(cameraPosition.y, bounds.min.y + cameraHeight / 2, bounds.max.y - cameraHeight / 2);
+            if ( !cameraReturn )
+            {
+                transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * cameraSpeed);
+            }
+            else
+            {
+                transform.position = cameraPosition;
+                cameraReturn = false;
+            }
+
         }
 
-        transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * cameraSpeed);
     }
 
-        }
 }

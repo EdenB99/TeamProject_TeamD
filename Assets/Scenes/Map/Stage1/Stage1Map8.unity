@@ -12668,6 +12668,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2911881332976133298, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2911881332976133298, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.87
+      objectReference: {fileID: 0}
     - target: {fileID: 3522134281624069299, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
       propertyPath: m_Size.x
       value: 49
@@ -21560,6 +21568,14 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -176410697
       objectReference: {fileID: 0}
+    - target: {fileID: 5527523109898079082, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527523109898079082, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.58
+      objectReference: {fileID: 0}
     - target: {fileID: 5712794845518645159, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -21575,6 +21591,14 @@ PrefabInstance:
     - target: {fileID: 7327422354387135318, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
       propertyPath: m_Name
       value: Stage1Map8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924981612962153988, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924981612962153988, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 9166593603686083606, guid: e05372798fbbd4a4e81d28c977573e4a, type: 3}
       propertyPath: m_TileSpriteArray.Array.size

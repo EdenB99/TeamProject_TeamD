@@ -73,9 +73,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 142316005
+  m_SortingLayer: 4
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9dc5304f01fdb9b4598a978fe7634f46, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -173,10 +173,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDetected: 0
   mobDamage: 0
-  mobMoveSpeed: 4
+  mobMoveSpeed: 5
   IsMove: 1
-  sightRange: 5
-  checkLR: 1
+  sightRange: 6
   maxHP: 100
   Attackpower: 1
-  dropItems: []
+  dropItems:
+  - code: 3
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 2
+    dropRatio: 0.1
+    dropCount: 1
+  - code: 13
+    dropRatio: 0.1
+    dropCount: 1
