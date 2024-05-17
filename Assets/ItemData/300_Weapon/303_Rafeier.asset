@@ -26,6 +26,6 @@ MonoBehaviour:
     modelPrefab: {fileID: 191526208845029812, guid: 5318bd39aea88c449a25160eb74af8bb, type: 3}
     weaponType: 1
   EffectInfo:
-    effectSize: 1
-    effectSpeed: 1
+    effectSize: 10
+    effectSpeed: 2
     modelPrefab: {fileID: 7783160304820389056, guid: 0bfc97bb4b6a05245b2aed0f91e1b672, type: 3}

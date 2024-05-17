@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2605570400711447683}
   - component: {fileID: 8714831726052709359}
   - component: {fileID: 9089648416542843352}
-  - component: {fileID: 2005221937752940612}
   - component: {fileID: 3940828716308771193}
+  - component: {fileID: -3219615640739585734}
   m_Layer: 11
   m_Name: SlashEffect
   m_TagString: PlayerAttack
@@ -129,25 +129,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2005221937752940612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2548626675060308717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ba560c3c3721d4c9130c0db4dedc96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
-  weapon: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
-  effectSpeed: 1
-  effectSize: 1
-  weaponDamage: 10
-  effectTick: 0.5
-  enemies: []
 --- !u!212 &3940828716308771193
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -200,3 +181,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3219615640739585734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548626675060308717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b368f80b6e98dff49a66721de3c82e65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapondata:
+  - {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
+  - {fileID: 11400000, guid: f3e8a22bffe5d3543b018ef8ef793e3c, type: 2}
+  weaponData: {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
+  weapon: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
+  effectSpeed: 1
+  effectSize: 1
+  weaponDamage: 10
+  effectTick: 0.5
+  enemies: []

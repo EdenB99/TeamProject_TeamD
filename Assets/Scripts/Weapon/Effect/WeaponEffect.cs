@@ -25,6 +25,8 @@ public class WeaponEffect : RecycleObject, IAttack
 
     protected PlayerStats playerStats;
 
+
+    public List<ItemData_Weapon> weapondata;
     public ItemData_Weapon weaponData;
 
     public GameObject weapon;
@@ -35,7 +37,6 @@ public class WeaponEffect : RecycleObject, IAttack
     /// 이펙트의 공격 속도
     /// </summary>
     public float effectSpeed = 1.0f;
-
 
     /// <summary>
     /// 이펙트의 크기 조절
@@ -77,12 +78,7 @@ public class WeaponEffect : RecycleObject, IAttack
     {
         if (weaponData != null)
         {
-            weaponDamage = weaponData.GetWeaponDamage();
-
-            // 무기 이펙트 정보 가져오기
-            EffectInfo effectInfo = weaponData.GetEffectInfo();
-            effectSize = effectInfo.effectSize;
-            effectSpeed = effectInfo.effectSpeed;
+            ApplyWeaponData(weaponData);
         }
         else
         {
@@ -94,6 +90,17 @@ public class WeaponEffect : RecycleObject, IAttack
         playerStats = player.PlayerStats;
 
         transform.localScale = new Vector3(effectSize, effectSize, 1.0f);           // 인스펙터 창에서 이펙트의 사이즈 조절
+    }
+
+    protected void ApplyWeaponData(ItemData_Weapon data)
+    {
+        weaponDamage = data.GetWeaponDamage();
+        Debug.Log($"{weaponDamage}");
+        EffectInfo effectInfo = data.GetEffectInfo();
+        effectSize = effectInfo.effectSize;
+        Debug.Log($"{effectSize}");
+        effectSpeed = effectInfo.effectSpeed;
+        Debug.Log($"{effectSpeed}");
     }
 
     protected override void OnEnable()
@@ -114,7 +121,9 @@ public class WeaponEffect : RecycleObject, IAttack
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
 
-        float animationLength = currentClipLength * effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
+        animator.speed = effectSpeed;
+
+        float animationLength = currentClipLength / effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
 
         yield return new WaitForSeconds(animationLength);
 

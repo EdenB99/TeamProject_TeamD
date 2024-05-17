@@ -36,6 +36,11 @@ public class WeaponBase : MonoBehaviour
     protected PlayerStats playerStats;
 
     /// <summary>
+    /// 무기 데이터
+    /// </summary>
+    public ItemData_Weapon weaponData;
+    
+    /// <summary>
     /// 공격 이펙트 오브젝트
     /// </summary>
     public GameObject weaponEffectPrefab;
@@ -55,7 +60,7 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 무기 공격력
     /// </summary>
-   public  int weaponDamage = 10;
+    public int weaponDamage = 10;
 
     public float critical = 10.0f;
 
@@ -66,9 +71,10 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public float totalDamage => weaponDamage + playerStats.AttackPower;
 
+    /// <summary>
+    /// 무기 공격속도
+    /// </summary>
     public float weaponSpeed = 1.0f;
-
-    public float attackSpeed => weaponSpeed + playerStats.AttackSpeed;
 
     public float attackCooldown = 0.5f; // 공격 간격
 
@@ -107,6 +113,17 @@ public class WeaponBase : MonoBehaviour
 
         weaponManager = GameManager.Instance.WeaponManager;
         weaponManager.currentWeaponindexChange += Switchweapon;
+
+        if (weaponData != null)
+        {
+            WeaponInfo weaponInfo = weaponData.GetWeaponInfo();
+            weaponSpeed = weaponInfo.attackSpeed;
+            Debug.Log($"{weaponSpeed}");
+        }
+        else
+        {
+            Debug.LogError("WeaponData is not assigned!");
+        }
     }
 
     protected virtual void OnEnable()
@@ -187,14 +204,14 @@ public class WeaponBase : MonoBehaviour
             // 애니메이션이 오른쪽을 향하도록 원래대로 복구
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        
+
         animator.SetTrigger(attackTrigger);
 
-        //// 공격 속도에 따라 애니메이션 속도 조절
+        float attackSpeed = weaponSpeed;
+        Debug.Log($"{playerStats.AttackSpeed}");
         float attackAnimationSpeed = attackSpeed;
         animator.speed = attackAnimationSpeed;
-        Debug.Log($"{animator.speed}");
-        ActivateEffect(transform.position);     
+        ActivateEffect(transform.position);
     }
 
     /// <summary>
@@ -238,4 +255,4 @@ public class WeaponBase : MonoBehaviour
             Debug.Log("빈손");
         }
     }
-}   
+}
