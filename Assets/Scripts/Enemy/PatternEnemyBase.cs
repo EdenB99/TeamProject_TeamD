@@ -200,7 +200,7 @@ public class PatternEnemyBase : MonoBehaviour, IEnemy
         player = GameManager.Instance.Player;   
     }
 
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         if (IsLive)
         {
