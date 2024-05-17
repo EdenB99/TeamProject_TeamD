@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7376c4311735a9a4daac2d9d4aefee46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: ffb875710aa04c449bac52bece0ed964, type: 2}
   weaponEffectPrefab: {fileID: 7783160304820389056, guid: 0bfc97bb4b6a05245b2aed0f91e1b672, type: 3}
   weaponDamage: 10
   critical: 10

@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 
 using UnityEngine;
@@ -17,11 +18,11 @@ public class ItemData_Weapon : ItemData, IWeapon
     {
         slot.SlotItemData = this;
 
-        WeaponManager weaponmanager = FindObjectOfType<WeaponManager>();
+        WeaponManager weaponManager = FindObjectOfType<WeaponManager>();
         Debug.Log($"{slot.SlotItemData}");
-        if (weaponmanager != null)
+        if (weaponManager != null)
         {
-            weaponmanager.GetWeaponData(this);
+            weaponManager.GetWeaponData(this);
         }
     }
     public void UnEquip(EquipmentSlot_Base[] slots)
@@ -36,12 +37,13 @@ public class ItemData_Weapon : ItemData, IWeapon
             }
         }
 
-        WeaponManager weaponmanager = FindObjectOfType<WeaponManager>();
-        if (weaponmanager != null)
+        WeaponManager weaponManager = FindObjectOfType<WeaponManager>();
+        if (weaponManager != null)
         {
-            weaponmanager.DeleteWeaponData(this);
+            weaponManager.DeleteWeaponData(this);
         }
     }
+
 
     public int GetWeaponDamage()
     {
@@ -66,6 +68,11 @@ public class ItemData_Weapon : ItemData, IWeapon
     public float GetAttackSpeed()
     {
         return (float)Weaponinfo.attackSpeed;
+    }
+
+    public WeaponInfo GetWeaponInfo()
+    {
+        return Weaponinfo;
     }
 }
 

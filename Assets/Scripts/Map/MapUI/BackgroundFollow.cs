@@ -9,11 +9,11 @@ public class BackgroundFollow : MonoBehaviour
     public Sprite[] backgrounds;
     public GameObject boundaryObject;
     BoxCollider2D boundaryCollider;
-    Camera maincamera;
+    MainCamera maincamera;
 
     private void Awake()
     {
-        maincamera = Camera.main;
+        maincamera = GetComponentInParent<MainCamera>();
         SceneManager.sceneLoaded += OnSceneLoaded; // 씬이 로딩될 때마다 함수 호출
     }
 
@@ -57,12 +57,12 @@ public class BackgroundFollow : MonoBehaviour
 
     public float lerpSpeed = 2.0f;
 
-    float backgroundWidth = 3;
-    float backgroundHeight = 5;
+    float backgroundWidth = 22;
+    float backgroundHeight = 10;
 
     void UpdateBackgroundPosition()
     {
-        Vector2 backgroundPosition = background.position;
+        Vector2 backgroundPosition = new Vector2(maincamera.transform.position.x * 0.8f, maincamera.transform.position.y);
 
         if (boundaryCollider != null) 
         {

@@ -593,6 +593,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5510382441765092197, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+      propertyPath: goldPanel
+      value: 
+      objectReference: {fileID: 3735791435716891339}
     - target: {fileID: 5510382441765092198, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -738,6 +742,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+--- !u!114 &3735791435716891339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 340928035785529548, guid: da07eb67027e69d4895bbaec960596f1, type: 3}
+  m_PrefabInstance: {fileID: 3991045491078842887}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aeaa83438d54b9488388aafe8795426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8870900598910284129 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5510382441765092198, guid: da07eb67027e69d4895bbaec960596f1, type: 3}

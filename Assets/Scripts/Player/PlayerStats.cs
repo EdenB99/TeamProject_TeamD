@@ -341,6 +341,7 @@ public class PlayerStats : MonoBehaviour
         criticalChance = BaseCriticalChance;
         Speed = BaseSpeed;
         itemRange = BaseItemRange;
+        attackSpeed = BaseAttackSpeed;
     }
 
     IEnumerator Corutine_buffEnd(PlayerBuff buff)
