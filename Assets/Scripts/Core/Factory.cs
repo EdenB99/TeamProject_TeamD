@@ -75,7 +75,7 @@ public class Factory : Singleton<Factory>
         {
             items[i] = MakeItem(code);
             createPos.x = pos.x + -widthLeft + i * 0.5f; // 왼쪽부터 1,2,3...
-            items[i].transform.position = pos;
+            items[i].transform.position = createPos;
         }
         return items;
     }

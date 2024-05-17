@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDatas:
   - {fileID: 11400000, guid: db377d5ebff177a4c8459fdf3195ca28, type: 2}
+  - {fileID: 11400000, guid: e5e812ae9cf451149818a150550bde2e, type: 2}
   - {fileID: 11400000, guid: 6c4e0fc168813ae47990bb1e2f3c0eb8, type: 2}
   - {fileID: 11400000, guid: 5ba62330611122f4cb22489a0e0668a5, type: 2}
   - {fileID: 11400000, guid: 4fae4f775cd45284e8085fc8deffa2f3, type: 2}
@@ -89,6 +90,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
   - {fileID: 11400000, guid: ddbd88686100ff4439cd98aee13b7571, type: 2}
   - {fileID: 11400000, guid: f3e8a22bffe5d3543b018ef8ef793e3c, type: 2}
+  - {fileID: 11400000, guid: ffb875710aa04c449bac52bece0ed964, type: 2}
   - {fileID: 11400000, guid: b2a90ab59fc81894fa8d86486e523b4b, type: 2}
   - {fileID: 11400000, guid: cd0fa7394cbe3754ca07235d17df3fa1, type: 2}
   - {fileID: 11400000, guid: 3b0fedd1214574a4695951085997ea6a, type: 2}

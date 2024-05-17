@@ -361,6 +361,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[0].dropCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[0].dropRatio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[1].dropCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[1].dropRatio
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[2].dropCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[2].dropRatio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[3].dropRatio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[4].dropCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537326202985532171, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
+      propertyPath: dropItems.Array.data[4].dropRatio
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7800130697480371387, guid: 7a184eafe82d4444995c56e464f36f3c, type: 3}
       propertyPath: m_Name
       value: SlimeEnemy

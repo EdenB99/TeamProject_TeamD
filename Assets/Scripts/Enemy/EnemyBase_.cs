@@ -317,11 +317,16 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
     /// </summary>
     public void ItemDrop()
     {
-        foreach(var item in dropItems)
+        Vector2 dropPosition = transform.position;
+        float dropY = 0.4f; 
+
+        foreach (var item in dropItems)
         {
             if ( item.dropRatio > Random.value )
             {
-                Factory.Instance.MakeItems(item.code,item.dropCount,transform.position);
+                Factory.Instance.MakeItems(item.code, item.dropCount, new Vector2(dropPosition.x, dropPosition.y + dropY));
+                dropY += 0.4f; // 다음 아이템 드롭 위치를 위로 조금 이동
+
             }
         }
     }
