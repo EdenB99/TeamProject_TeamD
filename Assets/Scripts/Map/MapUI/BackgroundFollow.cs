@@ -64,10 +64,12 @@ public class BackgroundFollow : MonoBehaviour
     {
         Vector2 backgroundPosition = background.position;
 
-        Bounds bounds = boundaryCollider.bounds;
-
-        backgroundPosition.x = Mathf.Clamp(backgroundPosition.x, bounds.min.x + backgroundWidth / 2, bounds.max.x - backgroundWidth / 2);
-        backgroundPosition.y = Mathf.Clamp(backgroundPosition.y, bounds.min.y + backgroundHeight / 2, bounds.max.y - backgroundHeight / 2);
+        if (boundaryCollider != null) 
+        {
+            Bounds bounds = boundaryCollider.bounds;
+            backgroundPosition.x = Mathf.Clamp(backgroundPosition.x, bounds.min.x + backgroundWidth / 2, bounds.max.x - backgroundWidth / 2);
+            backgroundPosition.y = Mathf.Clamp(backgroundPosition.y, bounds.min.y + backgroundHeight / 2, bounds.max.y - backgroundHeight / 2);
+        }
 
         background.position = backgroundPosition;
         background.transform.position = Vector2.Lerp(background.transform.position, backgroundPosition, lerpSpeed * Time.deltaTime);

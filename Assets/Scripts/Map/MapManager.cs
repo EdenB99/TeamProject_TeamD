@@ -16,18 +16,7 @@ public class MapManager : MonoBehaviour
     //TODO:: 빠른이동구현
     //TODO:: 함정 제작해야함.
 
-    //찾은 오류 :: 집컴퓨터에서 보스가 빠르게 움직이는 경우가있음
-    //플레이어가 대시가 끝나 레이어가 다시 돌아왔는데 대쉬가 끝나지않은 경우 적과 부딫혀서 적을 멀리 밀 수 있음.
-    //적을 빠르게 공격하면 무기 이펙트에서 null 발생하는 경우가 존재(주로 스켈레톤을 공격 시 발생)
     //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
-    //아이템이 맵을 나갔다 돌아올때마다 다른아이템이 되어있음(먹었을 땐 같은아이템이였음.)
-    
-    //계속 나갔다 들어오면 이상한곳으로 이동되며 아이템이 몇개 먹어지며 
-    //indexOutOfRangeException: Index was outside the bounds of the array., Assets/Scripts/Core/Factory.cs:76 
-    //Assets/Scripts/Map/MapManager.cs:1251)  (at Assets/Scripts/Map/MapManager.cs:1026)
-    //오류가 생김
-
-
 
     [Header("변수")]
 
