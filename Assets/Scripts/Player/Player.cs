@@ -375,7 +375,6 @@ public class Player : MonoBehaviour
     /// 맵 체크
     /// </summary>
     private bool isGround;
-    private float checkDistance = 0.1f;
 
     // Ground Check
     [SerializeField] private Transform groundCheck;

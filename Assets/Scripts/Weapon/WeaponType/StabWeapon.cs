@@ -8,8 +8,6 @@ public class StabWeapon : WeaponBase
 {
     public float attackAnimationSpeed = 1.0f; // 공격 애니메이션 속도
 
-    private Animator animator;
-
     protected override void Awake()
     {
         base.Awake();

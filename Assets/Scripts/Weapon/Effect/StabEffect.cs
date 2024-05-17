@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StabEffect : WeaponEffect
 {
-    Animator animator;
     BoxCollider2D stabCollider;
 
     protected override void Awake()

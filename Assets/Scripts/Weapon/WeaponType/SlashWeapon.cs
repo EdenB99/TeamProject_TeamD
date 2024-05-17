@@ -6,9 +6,6 @@ public class SlashWeapon : WeaponBase
 {
     public float attackAnimationSpeed = 1.0f; // 공격 애니메이션 속도
 
-    private Animator animator;
-
-    private float lastAttackTime = 0f; // 마지막 공격 시간
 
     protected override void Awake()
     {

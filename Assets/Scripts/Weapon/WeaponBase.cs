@@ -21,7 +21,7 @@ public struct WeaponInfo
 public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
-    Animator animator;
+    protected Animator animator;
     WeaponAction weaponInputActions;
 
     SpriteRenderer spriteRenderer;
