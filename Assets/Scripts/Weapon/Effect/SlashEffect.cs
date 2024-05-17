@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class SlashEffect : WeaponEffect
 {
-    Animator animator;
     BoxCollider2D slashCollider;
 
     protected override void Awake()
