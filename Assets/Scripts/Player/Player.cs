@@ -144,6 +144,7 @@ public class Player : MonoBehaviour
             }
         }
 
+        Debug.Log(currentdashTime);
     }
 
     private void FixedUpdate()
@@ -205,6 +206,7 @@ public class Player : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>(); // 입력 값을 읽어 moveInput에 저장
         UpdateAnimation();
+        
     }
 
     private void UpdateAnimation()

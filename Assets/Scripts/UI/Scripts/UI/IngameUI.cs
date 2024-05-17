@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
+using Slider = UnityEngine.UI.Slider;
 
 public class IngameUI : MonoBehaviour
 {
@@ -47,7 +50,10 @@ public class IngameUI : MonoBehaviour
         dashCoolColor = child.GetComponentInChildren<Image>();
         DashCoolSlider.value = 0.0f;
         dashCoolColor.color = Color.HSVToRGB(0, 0, 255f);
-        
+
+        Navigation navigation = DashCoolSlider.navigation;
+        navigation.mode = Navigation.Mode.None;
+
     }
 	
   	void Start()
@@ -84,7 +90,10 @@ public class IngameUI : MonoBehaviour
     }
 
 
-    
+    private void Update()
+    {
+        DashCoolSlider.value = sliderValue;
+    }
 
     private void SetHpbar(float currentHp, float MaxHp)
     {
@@ -229,14 +238,15 @@ public class IngameUI : MonoBehaviour
 			QuickSlotGroup.alpha = 0.0f;
 		}
 	}
+
+    float sliderValue;
     //대쉬 쿨타임을 받아서 해당 입력을 받으면 색상과 쿨타임 바가 초기화 되게
     public void SetDashCoolTime(float coolTime, float currentTime)
     {
-        
-        float sliderValue = Mathf.Lerp(0.0f,1.0f, currentTime/coolTime);
+        sliderValue = Mathf.Lerp(0.0f,1.0f, currentTime/coolTime);
         float colorValue = Mathf.Lerp(0.0f, 255.0f, currentTime / coolTime);
-        DashCoolSlider.value = sliderValue;
         dashCoolColor.color = new Color(colorValue / 255f, colorValue / 255f, 255f);
+        
         //float colorValue = Mathf.Lerp(0f, 255f, currentTime / coolTime); // 시간비레한 값으로 0부터 255값 사이값 계산
         //Color newColor = new Color(colorValue / 255f, colorValue / 255f, colorValue / 255f);
     }
