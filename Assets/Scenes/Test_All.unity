@@ -1072,6 +1072,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7149890173894313670, guid: d1b45ff530af34341911c84e7998171c, type: 3}
+      propertyPath: BaseAttackSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8079836896781649412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4
@@ -2105,7 +2109,7 @@ PrefabInstance:
     - target: {fileID: 3711933021081820604, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
       propertyPath: weaponsData.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: ffb875710aa04c449bac52bece0ed964, type: 2}
     - target: {fileID: 3711933021081820604, guid: f3456277a92010c48bbfdb07f5e3b81d, type: 3}
       propertyPath: weaponsData.Array.data[1]
       value: 

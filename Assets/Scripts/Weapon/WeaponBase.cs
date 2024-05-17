@@ -36,14 +36,16 @@ public class WeaponBase : MonoBehaviour
     protected PlayerStats playerStats;
 
     /// <summary>
-    /// 무기 데이터
+    /// 무기 이펙트에 적용할 무기 데이터
     /// </summary>
-    public ItemData_Weapon weaponData;
-    
+    [SerializeField]
+    private ItemData_Weapon weaponData;
+
     /// <summary>
-    /// 공격 이펙트 오브젝트
+    /// 무기 이펙트 프리팹
     /// </summary>
-    public GameObject weaponEffectPrefab;
+    [SerializeField]
+    private GameObject weaponEffectPrefab;
 
     /// <summary>
     /// 이펙트 생성좌표
@@ -78,14 +80,14 @@ public class WeaponBase : MonoBehaviour
 
     public float attackCooldown = 0.5f; // 공격 간격
 
-    private float lastAttackTime; // 마지막 공격 시간
-
     /// <summary>
     /// 공격 애니메이션을 제어하기 위한 트리거
     /// </summary>
     private const string attackTrigger = "Attack";
 
     protected WeaponManager weaponManager;
+
+
 
     protected virtual void Awake()
     {
@@ -124,6 +126,7 @@ public class WeaponBase : MonoBehaviour
         {
             Debug.LogError("WeaponData is not assigned!");
         }
+        Debug.Log($"{weaponData}");
     }
 
     protected virtual void OnEnable()
@@ -208,21 +211,28 @@ public class WeaponBase : MonoBehaviour
         animator.SetTrigger(attackTrigger);
 
         float attackSpeed = weaponSpeed;
-        Debug.Log($"{playerStats.AttackSpeed}");
-        float attackAnimationSpeed = attackSpeed;
+        float attackAnimationSpeed = playerStats.AttackSpeed * attackSpeed;
         animator.speed = attackAnimationSpeed;
-        ActivateEffect(transform.position);
+        ActivateEffect(transform.position, weaponData);
     }
 
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected virtual void ActivateEffect(Vector2 effectPosition)
+    protected virtual void ActivateEffect(Vector2 effectPosition, ItemData_Weapon weaponData)
     {
         float angle = MathF.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
         GameObject weaponEffectInstance = Instantiate(weaponEffectPrefab, this.effectPosition, rotation);
+
+        WeaponEffect weaponEffect = weaponEffectInstance.GetComponent<WeaponEffect>();
+        if (weaponEffect != null)
+        {
+            weaponEffect.weaponData = weaponData;
+            weaponEffect.ApplyWeaponData(weaponData);
+        }
+
     }
 
     /// <summary>

@@ -14,14 +14,4 @@ public class SlashEffect : WeaponEffect
         slashCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
     }
-
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
 }

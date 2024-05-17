@@ -25,11 +25,9 @@ public class WeaponEffect : RecycleObject, IAttack
 
     protected PlayerStats playerStats;
 
-
-    public List<ItemData_Weapon> weapondata;
     public ItemData_Weapon weaponData;
 
-    public GameObject weapon;
+    protected GameObject weapon;
 
     protected Vector2 mosPosition;
 
@@ -52,16 +50,6 @@ public class WeaponEffect : RecycleObject, IAttack
     /// 공격할 때 데미지의 총합 ( IAttack )
     /// </summary>
     public uint AttackPower => (uint)(weaponDamage + playerStats.AttackPower);
-
-    /// <summary>
-    /// 이펙트가 데미지를 주는 간격
-    /// </summary>
-    public float effectTick = 0.5f;
-
-    /// <summary>
-    /// 데미지 쿨 타임
-    /// </summary>
-    float coolTime = 0.0f;
 
     protected bool isDestroyed = false;
 
@@ -92,14 +80,13 @@ public class WeaponEffect : RecycleObject, IAttack
         transform.localScale = new Vector3(effectSize, effectSize, 1.0f);           // 인스펙터 창에서 이펙트의 사이즈 조절
     }
 
-    protected void ApplyWeaponData(ItemData_Weapon data)
+    public void ApplyWeaponData(ItemData_Weapon data)
     {
         weaponDamage = data.GetWeaponDamage();
         Debug.Log($"{weaponDamage}");
         EffectInfo effectInfo = data.GetEffectInfo();
         effectSize = effectInfo.effectSize;
-        Debug.Log($"{effectSize}");
-        effectSpeed = effectInfo.effectSpeed;
+        float effectSpeed = effectInfo.effectSpeed;
         Debug.Log($"{effectSpeed}");
     }
 
@@ -108,26 +95,20 @@ public class WeaponEffect : RecycleObject, IAttack
         StartCoroutine(DeactivateEffectAfterAnimation());
     }
 
-    private void Update()
-    {
-        coolTime = -Time.deltaTime;
-
-    }
-
-
     protected IEnumerator DeactivateEffectAfterAnimation()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
+        Debug.Log($"{currentClipLength}");
 
         animator.speed = effectSpeed;
 
         float animationLength = currentClipLength / effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
-
+        Debug.Log($"{animationLength}");
         yield return new WaitForSeconds(animationLength);
 
         isDestroyed = true;
-        Destroy(this.gameObject);
+        Destroy(this.gameObject);   
     }
 }

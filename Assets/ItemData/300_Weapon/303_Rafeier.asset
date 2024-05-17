@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 12
   type: 0
-  itemName: "\uC544\uC774\uD15C"
-  itemDescription: "\uC124\uBA85"
+  itemName: "\uB808\uC774\uD53C\uC5B4"
+  itemDescription: "\uBE60\uB974\uAC8C \uC801\uC744 \uCC0C\uB978\uB2E4."
   itemIcon: {fileID: 21300000, guid: 5a16e7c878a72b14fb4384f9f76d9dbd, type: 3}
   price: 0
   cooltime: 0
@@ -26,6 +26,6 @@ MonoBehaviour:
     modelPrefab: {fileID: 191526208845029812, guid: 5318bd39aea88c449a25160eb74af8bb, type: 3}
     weaponType: 1
   EffectInfo:
-    effectSize: 10
-    effectSpeed: 2
+    effectSize: 1
+    effectSpeed: 100
     modelPrefab: {fileID: 7783160304820389056, guid: 0bfc97bb4b6a05245b2aed0f91e1b672, type: 3}
