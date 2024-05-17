@@ -35,7 +35,7 @@ public class IngameUI : MonoBehaviour
     /// </summary>
     Image dashCoolColor;
 
-
+    public GoldPanel goldPanel;
 
 	void Awake()
 	{
@@ -63,7 +63,6 @@ public class IngameUI : MonoBehaviour
         player.PlayerStats.onHealthChange += SetHpbar;
         player.OnDashingCoolChanged += SetDashCoolTime;
 
-       
     }
     private void OnEnable()
     {

@@ -45,10 +45,9 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
-
         WeaponsSlots = Weapons.GetComponentsInChildren<WeaponSlotUI>();
-
         AccessoriesSlots = Accessoires.GetComponentsInChildren<AccessorySlotUI>();
+
         InventoryInput = new InventoryInput();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -90,6 +89,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         ingameUI.SetQuickSlotOnOff(false);
+        ingameUI.goldPanel.PanelToggle(true);
         
     }
 
@@ -99,6 +99,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         ingameUI.SetQuickSlotOnOff(true);
+        ingameUI.goldPanel.PanelToggle(false);
     }
     /// <summary>
     /// 인벤토리 초기화용 함수
@@ -315,12 +316,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-
-    private void WeaponDataToPlayer(ItemData itemdata)
-    {
-
-    }
-
     private void DiscardItem(InvenSlotUI slotUI)
     {
         if (slotUI.InvenSlot.IsEquipped)
@@ -339,5 +334,4 @@ public class InventoryUI : MonoBehaviour
         ItemData data = GameManager.Instance.ItemData[itemCode];
         for (int i = 0; i < Count; i++) inven.AddItem(itemCode);
     }
-
 }

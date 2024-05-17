@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
             OnGoldChange?.Invoke(gold);
         }
     }
-    Action<uint> OnGoldChange;
+    public Action<uint> OnGoldChange;
 
     // 레이어 태그
     private int playerLayer;

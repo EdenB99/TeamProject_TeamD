@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+using Random = UnityEngine.Random;
+
 
 public class NPC_Event : NPC_Base
 {
@@ -27,7 +28,6 @@ public class NPC_Event : NPC_Base
         if (npcType == NPCType.Event)
         {
             dialogues = DialoguesCategory[0].newDialogues;
-            Debug.Log(dialogues[0]);
         }
     }
 
@@ -53,7 +53,9 @@ public class NPC_Event : NPC_Base
     {
         for (int i = 0; i < itemdatas.Length; i++)
         {
-            Factory.Instance.MakeItems(ItemCode.Coin, 1, transform.position);
+            float rand = Random.Range(-1, 1);
+            Vector2 itempos = (Vector2)transform.position + new Vector2(rand, 1);
+            Factory.Instance.MakeItems(ItemCode.Coin, 1, itempos);
         }
     }
     
