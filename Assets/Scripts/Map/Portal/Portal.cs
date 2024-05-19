@@ -78,11 +78,22 @@ public class Portal : MonoBehaviour
         if (collision.CompareTag("Player") && cooldownTime > useCooldown)
         {
             MapData currentMap = mapManager.CurrentMap;
-            if (currentMap != null && !currentMap.hasEnemies)
+            if (currentMap != null)
             {
-                mapManager.EnterPortal(direction);
-                cooldownTime = 0f;
-                mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+                //에러방이면 바로 맵체크
+                if (currentMap.sceneName == "ErrorScene")
+                {
+                   
+                    Vector2Int startMapPosition = new Vector2Int(mapManager.WorldMapSize / 2, mapManager.WorldMapSize / 2);
+
+                    mapManager.MapCheck(startMapPosition);
+                }
+                else if (!currentMap.hasEnemies)
+                {
+                    mapManager.EnterPortal(direction);
+                    cooldownTime = 0f;
+                    mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+                }
             }
         }
     }

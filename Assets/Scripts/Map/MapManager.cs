@@ -970,9 +970,16 @@ public class MapManager : MonoBehaviour
         else
         {
             Debug.LogError($"유효하지 않은 맵 위치입니다. 위치: ({position.x}, {position.y})");
-            SceneManager.UnloadSceneAsync(currentMap.sceneName);
-            SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
-            //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
+            // 사용 중인 포탈 비활성화
+            GameObject portalObject = GetPortalObject(direction);
+            if (portalObject != null)
+            {
+                portalObject.SetActive(false);
+            }
+
+            player.transform.position = new Vector2(-9f, -8f);
+            SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
+            
         }
     }
 
@@ -1019,7 +1026,9 @@ public class MapManager : MonoBehaviour
                 if (asyncLoad == null)
                 {
                     Debug.LogError($"불러오는데 실패한 맵: {mapToLoad.sceneName}");
-                    SceneManager.LoadScene("ErrorMap",LoadSceneMode.Additive);
+
+                    player.transform.position = new Vector2(-9f, -8f);
+                    SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
                     //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
                 }
 
@@ -1044,18 +1053,32 @@ public class MapManager : MonoBehaviour
             else
             {
                 Debug.LogError($"해당좌표의 맵 데이터를 찾을 수 없습니다.: ({position.x}, {position.y})");
-                SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
-                //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
+                // 사용 중인 포탈 비활성화
+                GameObject portalObject = GetPortalObject(direction);
+                if (portalObject != null)
+                {
+                    portalObject.SetActive(false);
+                }
+
+                player.transform.position = new Vector2(-9f, -8f);
+                SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
             }
         }
+
         else
         {
             Debug.LogError($"해당좌표에 맵이 없습니다.: ({position.x}, {position.y})");
-            SceneManager.UnloadSceneAsync(currentMap.sceneName);
-            SceneManager.LoadScene("ErrorMap", LoadSceneMode.Additive);
-            //TODO:: 해당 맵에 들어오는데 사용한 포탈 제거, 나갈수잇게하기
+            // 사용 중인 포탈 비활성화
+            GameObject portalObject = GetPortalObject(direction);
+            if (portalObject != null)
+            {
+                portalObject.SetActive(false);
+            }
+
+            player.transform.position = new Vector2(-9f, -8f);
+            SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
         }
-    }
+}
     private void FindPortalsAndSpriteRenderers()
     {
         portals = FindObjectsOfType<Portal>();
@@ -1106,7 +1129,27 @@ public class MapManager : MonoBehaviour
         }
 
 
+
     }
+
+    //에러맵의 포탈 지우기용 함수
+    private GameObject GetPortalObject(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return currentMap.upPortalObject;
+            case Direction.Down:
+                return currentMap.downPortalObject;
+            case Direction.Left:
+                return currentMap.leftPortalObject;
+            case Direction.Right:
+                return currentMap.rightPortalObject;
+            default:
+                return null;
+        }
+    }
+
     //포탈 색 변경 함수
     private void UpdatePortalState(bool hasEnemies)
     {
