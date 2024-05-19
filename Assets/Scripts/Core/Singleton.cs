@@ -43,7 +43,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
                     singleton = obj.AddComponent<T>();          // 싱글톤 컴포넌트 만들어서 추가
                 }
                 instance = singleton;   // 다른 게임오브젝트에 있는 싱글톤이나 새로만든 싱글톤을 저장
-                DontDestroyOnLoad(instance.gameObject);         // 씬이 사라질 때 게임오브젝트가 삭제되지 않도록 설정
+                Remover.RemoveObjMark(instance.gameObject);         // 씬이 사라질 때 게임오브젝트가 삭제되지 않도록 설정
             }
             return instance;
         }
@@ -54,7 +54,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         if(instance == null)        // 씬에 이미 배치된 다른 싱글톤이 없다.
         {
             instance = this as T;   // 첫번째를 저장
-            DontDestroyOnLoad(instance.gameObject); // 씬이 사라질 때 게임오브젝트가 삭제되지 않도록 설정
+            Remover.RemoveObjMark(instance.gameObject); // 씬이 사라질 때 게임오브젝트가 삭제되지 않도록 설정
         }
         else
         {

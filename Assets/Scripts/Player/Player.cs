@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        Remover.RemoveObjMark(this.gameObject);
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         Player_ani = GetComponent<Animator>();

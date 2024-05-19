@@ -23,6 +23,7 @@ public class MainCamera : Singleton<MainCamera>
     protected override void OnInitialize()
     {
         player = GameObject.FindObjectOfType<Player>();
+        Remover.RemoveObjMark(this.gameObject);
         FindBoundaryObject();
         CalculateCameraSize();
     }

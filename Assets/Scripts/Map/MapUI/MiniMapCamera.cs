@@ -22,6 +22,7 @@ public class MiniMapCamera : Singleton<MiniMapCamera>
 
     private void Start()
     {
+        Remover.RemoveObjMark(this.gameObject);
         player = GameObject.FindObjectOfType<Player>();
         FindBoundaryObject();
         CalculateCameraSize();

@@ -6,7 +6,7 @@ public class UICanvas : MonoBehaviour
 {
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        Remover.RemoveObjMark(gameObject);
     }
 
 }
