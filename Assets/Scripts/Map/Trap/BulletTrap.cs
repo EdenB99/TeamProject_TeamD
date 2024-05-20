@@ -12,15 +12,11 @@ public class BulletTrap : MonoBehaviour
 
     public BulletCode bullet;
 
-
-
-    [SerializeField] private Direction fireDir = Direction.Down;
-    private Vector2 fireVector = Vector2.zero;
+    [SerializeField] private float fireDir = 0; 
 
 
     private void OnEnable()
     {
-        SelectDir();
         StartCoroutine(Fire());
     }
 
@@ -30,35 +26,15 @@ public class BulletTrap : MonoBehaviour
     }
 
 
-    private void SelectDir()
-    {
-        switch (fireDir)
-        {
-            case Direction.Up:
-                fireVector = Vector2.up;
-                break;
-            case Direction.Down:
-                fireVector = Vector2.down;
-                break;
-            case Direction.Left:
-                fireVector = Vector2.left;
-                break;
-            case Direction.Right:
-                fireVector = Vector2.right;
-                break;
-            default:
-                fireVector = Vector2.down;
-                break;
-        }
-    }
-
     
     private IEnumerator Fire()
     {
         yield return new WaitForSeconds(fireDelay);
         while (true)
         {
-            Factory.Instance.MakeBullet(transform.position, fireVector, bullet);
+            Factory.Instance.MakeBullet(transform.position, fireDir, bullet);
+
+
             yield return new WaitForSeconds(fireInterval);
         }
     }
