@@ -16,49 +16,65 @@ public class SorcererEnemy : EnemyBase_
         animator = GetComponent<Animator>();
     }
 
-    bool playerCheck()
+    protected override void FixedUpdate()
     {
-        // 범위 내에
-        Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
+        spriteDirection();
 
-
-        // 플레이어가 있다면
-        if (colliders != null)
+        if (playerDetected && IsLive) // 플레이어 발견시 행동
         {
-            if (!playerDetected)
+            // 플레이어의 위치를 받는다.
+            targetPos = player.transform.position;
+            if (!IsMove)
             {
-                playerDetected = true;
-                firstAction();
-            }
+                // 플레이어의 위치에 따라 CheckLR 을 변경한다.
 
-            return true;
+                if (targetPos.x < rb.position.x) CheckLR = -1;
+                else CheckLR = 1;
+
+            }
+            attackAction();
         }
-        return false;
+
+        else if (IsLive) // 플레이어 미발견시 행동
+        {
+
+            playerCheck();
+            idleAction();
+        }
+
+        if (!IsLive) // 죽을시
+        {
+            fade += Time.deltaTime * 0.5f;
+            sprite.material.SetFloat(FadeID, 1 - fade);
+
+            if (fade > 1)
+            {
+                Destroy(this.gameObject); // 1초후 삭제
+            }
+        }
     }
 
     protected override void attackAction()
     {
-        //  플레이어가 감지되었는지 확인
-        if (playerCheck() && !isAttacking)
-        {
-            StartCoroutine(AttackCoroutine());
-
-
-        }
+        StartCoroutine(AttackCoroutine());
     }
 
     IEnumerator AttackCoroutine()
     {
-        isAttacking = true;
-        animator.SetTrigger(isAttack_Hash);
+        if(playerCheck() && !isAttacking)
+        {
+            isAttacking = true;
+            animator.SetTrigger(isAttack_Hash);
 
 
-        yield return new WaitForSeconds(1f);
-        Vector3 spawnPosition = new Vector3(targetPos.x, targetPos.y + 4f, targetPos.z);
-        GameObject thunderInstance = Instantiate(ThunderPrefab, spawnPosition, Quaternion.identity);
-        Destroy(thunderInstance, 2f);
+            yield return new WaitForSeconds(1f);
+            Vector3 spawnPosition = new Vector3(targetPos.x, targetPos.y + 4f, targetPos.z);
+            GameObject thunderInstance = Instantiate(ThunderPrefab, spawnPosition, Quaternion.identity);
+            Destroy(thunderInstance, 2f);
 
-        yield return new WaitForSeconds(3f);
-        isAttacking = false;
+            yield return new WaitForSeconds(3f);
+            isAttacking = false;
+        }
+        
     }
 }
