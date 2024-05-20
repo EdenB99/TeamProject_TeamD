@@ -148,8 +148,13 @@ public class EnemyBase_ : MonoBehaviour, IEnemy , IAttack
             {
                 // 플레이어의 위치에 따라 CheckLR 을 변경한다.
 
-                if (targetPos.x < rb.position.x) CheckLR = 1;
-                else CheckLR = -1;
+                if (Mathf.Abs(transform.position.x - player.transform.position.x) > 0.3) 
+                {
+                    if (targetPos.x < rb.position.x) CheckLR = 1;
+                    else CheckLR = -1;
+
+                }
+
 
 
             }

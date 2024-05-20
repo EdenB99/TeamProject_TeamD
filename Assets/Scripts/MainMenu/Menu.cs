@@ -9,6 +9,18 @@ public class Menu : MonoBehaviour
 {
     TextMeshProUGUI[] menuText;
     public Image selecter;
+    public Image Fade;
+
+    /// <summary>
+    /// 연출중인지 확인하는 코드
+    /// </summary>
+    bool fadeEffect;
+
+    /// <summary>
+    /// 현재 연출 값
+    /// </summary>
+    private float fadeFloat = 0.0f;
+
     private int menuIndex = 0;
     Vector3 selectPos = new Vector3(200, 0, 0);
 
@@ -16,11 +28,16 @@ public class Menu : MonoBehaviour
     void Start()
     {
         menuText = GetComponentsInChildren<TextMeshProUGUI>();
+        Remover remover = FindAnyObjectByType<Remover>();
+        remover.ClearAllDontDestroyOnLoadObjects();
         UpdateMenu();
     }
 
     void Update()
     {
+       
+           
+
         selecter.transform.position = menuText[menuIndex].transform.position - selectPos;
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -38,7 +55,11 @@ public class Menu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
-            SelectMenuItem();
+            if (!fadeEffect)
+            {
+                fadeEffect = true;
+                StartCoroutine(SelectMenuItem());
+            }
         }
     }
 
@@ -63,11 +84,19 @@ public class Menu : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 선택시 실행될 메서드
-    /// </summary>
-    void SelectMenuItem()
+    IEnumerator SelectMenuItem()
     {
+        while (fadeEffect)
+        {
+            Debug.Log(fadeFloat);
+            fadeFloat += Time.deltaTime * 0.5f;
+            Fade.color = new Color(0, 0, 0, fadeFloat);
+            if (fadeFloat > 1) fadeEffect = false;
+            yield return new WaitForSeconds(0.0f);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
         switch (menuIndex)
         {
             case 0:
