@@ -20,6 +20,7 @@ public class BossStageScripts : MonoBehaviour
     private TextMeshPro bossInfo;
     private Transform bossTransform;
     private MainCamera mainCamera;
+    private BackgroundFollow background;
     private Player player;
 
     private void Awake()
@@ -40,6 +41,7 @@ public class BossStageScripts : MonoBehaviour
     private void Start()
     {
         mainCamera = FindAnyObjectByType<MainCamera>();
+        background = FindAnyObjectByType<BackgroundFollow>();
         player = GameObject.FindAnyObjectByType<Player>();
     }
 
@@ -153,6 +155,8 @@ public class BossStageScripts : MonoBehaviour
         yield return null;
         animator.SetBool("IsClose", false);
         mainCamera.UpdateBoundaryObject(portalBoundaryObject);
+        background.UpdateBoundaryObject(portalBoundaryObject);
+        
     }
 
 }

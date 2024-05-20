@@ -83,6 +83,13 @@ public class BackgroundFollow : MonoBehaviour
         preCameraPosition = mainCamera.transform.position;
     }
 
+    public void UpdateBoundaryObject(GameObject newBoundaryObject)
+    {
+        Debug.Log("¹Ù²ñ");
+        boundaryObject = newBoundaryObject;
+        boundaryCollider = boundaryObject.GetComponent<BoxCollider2D>();
+    }
+
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;

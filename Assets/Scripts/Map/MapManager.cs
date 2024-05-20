@@ -23,6 +23,7 @@ public class MapManager : MonoBehaviour
 
     //에러방에서 스타트맵으로 이동되지 않음.
     //씬변경시 총알 지우기
+    //맵 최대 생성시도횟수 만들기
 
     [Header("변수")]
 
