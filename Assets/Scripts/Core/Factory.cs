@@ -46,6 +46,23 @@ public class Factory : Singleton<Factory>
     }
 
     /// <summary>
+    /// Bullet을 만드는 메서드
+    /// </summary>
+    /// <param name="position">위치 지정</param>
+    /// <param name="Dir">방향지정</param>
+    /// <param name="type">여기에 넣은 불릿 스크립트대로 이동한다.</param>
+    /// <returns></returns>
+    public GameObject MakeBullet(Vector2 position, float dir, BulletCode code)
+    {
+        BulletObject obj = bulletPool.GetObject(position);
+        BulletData data = GameManager.Instance.BulletData[code];
+        obj.BulletData = data;
+        obj.floatDir = dir;          // 이동 방향 설정
+
+        return obj.gameObject;
+    }
+
+    /// <summary>
     /// 아이템 단일 생성 메서드
     /// </summary>
     /// <param name="code">아이템 코드</param>
