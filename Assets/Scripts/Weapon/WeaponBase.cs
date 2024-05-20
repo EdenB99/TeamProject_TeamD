@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -74,11 +75,15 @@ public class WeaponBase : MonoBehaviour
     public float totalDamage => weaponDamage + playerStats.AttackPower;
 
     /// <summary>
-    /// 무기 공격속도
+    /// 무기 공격속도, 배수로 적용됨. 높을수록 빠른값
     /// </summary>
     public float weaponSpeed = 1.0f;
 
     public float attackCooldown = 0.5f; // 공격 간격
+
+    public float currentCoolTime = 0.0f;
+
+    public bool CanAttack = true;
 
     /// <summary>
     /// 공격 애니메이션을 제어하기 위한 트리거
@@ -126,7 +131,10 @@ public class WeaponBase : MonoBehaviour
         {
             Debug.LogError("WeaponData is not assigned!");
         }
-        Debug.Log($"{weaponData}");
+
+        currentCoolTime = attackCooldown;
+        CanAttack = true;
+
     }
 
     protected virtual void OnEnable()
@@ -149,9 +157,12 @@ public class WeaponBase : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (IsPlayerAlive())
+        if (IsPlayerAlive() && CanAttack)
         {
+            Debug.Log("공격");
             Attack();
+            currentCoolTime = 0.0f;
+            CanAttack = false;
         }
     }
 
@@ -160,6 +171,15 @@ public class WeaponBase : MonoBehaviour
         if (IsPlayerAlive())
         {
             UpdateWeaponPosition();
+        }
+        
+        if (currentCoolTime < attackCooldown)
+        {
+            currentCoolTime += Time.deltaTime * weaponSpeed;
+           
+        } else
+        {
+            CanAttack = true;
         }
     }
 

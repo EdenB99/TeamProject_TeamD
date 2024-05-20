@@ -42,6 +42,7 @@ public class InventoryUI : MonoBehaviour
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
 
+    public bool isStore = false;
     private void Awake()
     {
         slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
@@ -158,7 +159,7 @@ public class InventoryUI : MonoBehaviour
         {
             usableUI.Close();
         }
-        usableUI.Open(slotUIs[index]);
+        usableUI.Open(slotUIs[index], isStore);
 
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
@@ -322,6 +323,11 @@ public class InventoryUI : MonoBehaviour
         {
             Eqiup_UseItem(slotUI);
         }
+        if (isStore)
+        {
+            Player player = GameManager.Instance.Player;
+            player.Gold = slotUI.InvenSlot.ItemData.price;
+        }
         slotUI.InvenSlot.ClearSlotItem();
     }
     /// <summary>
@@ -333,5 +339,16 @@ public class InventoryUI : MonoBehaviour
 
         ItemData data = GameManager.Instance.ItemData[itemCode];
         for (int i = 0; i < Count; i++) inven.AddItem(itemCode);
+    }
+
+    /// <summary>
+    /// 인벤토리 내의 모든 아이템 삭제
+    /// </summary>
+    public void ClearAllItem()
+    {
+        for (int i = 0; i < slotUIs.Length; i++)
+        {
+            DiscardItem(slotUIs[i]);
+        }
     }
 }
