@@ -14,16 +14,15 @@ public class MapManager : MonoBehaviour
     //TODO L:: 맵 로딩만들기 
     //TODO:: 빠른이동구현
 
-    //15번맵 수정
-    //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
-    //무한재귀하면서 맵이 다만들어졌는데도 지우고 하며 게임이 망가지는 오류, 로딩과 함께 해야할듯
+
     // 피격무적, 대쉬 무적 시간중 하나만 끝나도 플레이어는 무적상태가 풀리는 오류
     //스파이크의 대미지 방식 변경 필요
     //대쉬가 땅에 닿을 때마다 초기화되는 오류
 
-    //에러방에서 스타트맵으로 이동되지 않음.
-    //씬변경시 총알 지우기
-    //맵 최대 생성시도횟수 만들기
+
+
+    //TODO?::맵이 조건만족시에도 이상하게 작동하는 경우 Town으로 다시보내버리도록만들었음, 다른 스크립트를 하나 더만들어 Town대신 해당스크립트에 신호를보내
+    //해당 스크립트를 초기화,재시작시키는 것으로 해결하는것도 괜찮을듯.
 
     [Header("변수")]
 
@@ -34,6 +33,8 @@ public class MapManager : MonoBehaviour
     [SerializeField] private int worldMapSize = 7;
     public int WorldMapSize => worldMapSize;
     [SerializeField] private int currentMapCount = 0;
+
+    private int regenerateMapCount = 0;
     [Header("스테이지맵 프리팹")]
     [SerializeField] private GameObject[] mapPrefabs;
     private MapData[] mapScenes;
@@ -354,6 +355,7 @@ public class MapManager : MonoBehaviour
             MapData mapData = kvp.Value;
             ResetPortalObjects(mapData, true);
         }
+        
 
         // worldMap과 usedMapScenes 초기화
         worldMap.Clear();
@@ -364,7 +366,19 @@ public class MapManager : MonoBehaviour
         worldMap[new Vector2Int(centerX, centerY)] = startMapData;
         usedMapScenes.Add(startMapData.sceneName);
 
+        regenerateMapCount++;
+        if(regenerateMapCount >= 12)
+        {
+            Debug.LogError($"맵 리셋횟수가 12회 이상 반복되어 맵생성을 종료");
+            StopAllCoroutines();
+            regenerateMapCount = 0;
+            SceneManager.LoadScene("Town");
+            yield return null;
+        }
+        else
+        {
         yield return StartCoroutine(GenerateWorldMapCoroutine());
+        }
     }
 
 
@@ -1290,15 +1304,26 @@ public class MapManager : MonoBehaviour
         }
 
 
+        BulletObject[] bulletObjects = FindObjectsOfType<BulletObject>();
+
+        if (bulletObjects != null && bulletObjects.Length > 0)
+        {
+            // 모든 총알 비활성화
+            foreach (BulletObject bulletObject in bulletObjects)
+            {
+                bulletObject.gameObject.SetActive(false);
+            }
+        }
 
     }
 
 
-    /// <summary>
-    /// 맵을 불러오기 위해 사용하는 함수
-    /// </summary>
-    /// <param name="mapData"></param>
-    private void LoadMapState(MapData mapData)
+
+/// <summary>
+/// 맵을 불러오기 위해 사용하는 함수
+/// </summary>
+/// <param name="mapData"></param>
+private void LoadMapState(MapData mapData)
     {
         // 아이템 불러오기
         if (mapData.mapItemDatas != null)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
 
@@ -80,19 +81,21 @@ public class Portal : MonoBehaviour
             MapData currentMap = mapManager.CurrentMap;
             if (currentMap != null)
             {
-                //에러방이면 바로 맵체크
-                if (currentMap.sceneName == "ErrorScene")
-                {
-                   
-                    Vector2Int startMapPosition = new Vector2Int(mapManager.WorldMapSize / 2, mapManager.WorldMapSize / 2);
-
-                    mapManager.MapCheck(startMapPosition);
-                }
-                else if (!currentMap.hasEnemies)
+                if (!currentMap.hasEnemies)
                 {
                     mapManager.EnterPortal(direction);
                     cooldownTime = 0f;
                     mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+                }
+            }
+            else
+            {
+                // currentMap이 null인 경우 (ErrorScene일 가능성이 있음)
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                if (currentSceneName == "ErrorScene")
+                {
+                    Vector2Int startMapPosition = new Vector2Int(mapManager.WorldMapSize / 2, mapManager.WorldMapSize / 2);
+                    mapManager.MapCheck(startMapPosition);
                 }
             }
         }
