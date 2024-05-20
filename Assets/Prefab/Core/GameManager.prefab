@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponsData:
-  - {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
-  - {fileID: 11400000, guid: ddbd88686100ff4439cd98aee13b7571, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &3375321561296586607
 MonoBehaviour:
   m_ObjectHideFlags: 0
