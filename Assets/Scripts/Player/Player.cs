@@ -144,7 +144,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        Debug.Log(currentdashTime);
     }
 
     private void FixedUpdate()
