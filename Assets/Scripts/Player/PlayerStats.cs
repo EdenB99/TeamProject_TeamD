@@ -161,7 +161,6 @@ public class PlayerStats : MonoBehaviour
         {
                 if(!collision.CompareTag("PlayerAttack"))
             {
-                Debug.Log("트리거발견");
 
                 IAttack attack = collision.GetComponent<IAttack>();     // 컴포넌트 가져와서
 

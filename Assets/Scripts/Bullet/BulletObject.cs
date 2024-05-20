@@ -107,22 +107,22 @@ public class BulletObject : RecycleObject , IAttack
         }
     }
 
-
-
     /// <summary>
-    /// 충돌을 검출하는 메서드
+    /// 충돌을 검사하는 메서드
     /// </summary>
     /// <param name="collision"></param>
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ( collision.gameObject.CompareTag("Platform") ) // 지형이라면 
+        if (collision.gameObject.CompareTag("Wall")) // 지형이라면 
         {
-            if ( isThrought )
+            if (!isThrought)
             {
                 Die();
             }
         }
     }
+
+
 
     /// <summary>
     /// 일정 시간후 사라지도록 하는 메서드
@@ -148,7 +148,6 @@ public class BulletObject : RecycleObject , IAttack
         get => data;
         set
         {
-            Debug.Log("Create");
 
             if (data != value)
             {
