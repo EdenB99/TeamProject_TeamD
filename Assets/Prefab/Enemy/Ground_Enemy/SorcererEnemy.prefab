@@ -176,7 +176,7 @@ MonoBehaviour:
   mobDamage: 0
   mobMoveSpeed: 0
   IsMove: 0
-  sightRange: 20
+  sightRange: 10
   maxHP: 100
   Attackpower: 1
   dropItems:
