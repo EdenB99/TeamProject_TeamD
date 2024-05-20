@@ -20,6 +20,8 @@ public class UsableUI : MonoBehaviour
     public Action ClickedExit;
 
     public TextMeshProUGUI EquipUseText;
+    
+    public TextMeshProUGUI DiscardSellText;
     CanvasGroup canvasGroup;
 
     /// <summary>
@@ -60,7 +62,7 @@ public class UsableUI : MonoBehaviour
     }
 
     
-    public void Open(InvenSlotUI SlotUI)
+    public void Open(InvenSlotUI SlotUI, bool isStore)
     {
         isOn = true;
         canvasGroup.alpha = 0.0001f;
@@ -89,7 +91,13 @@ public class UsableUI : MonoBehaviour
                     break;
                 default: EquipUseText.text = "None"; break;
             }
+            if (isStore)
+            {
+                DiscardSellText.text = "Sell";
+            }
+            else DiscardSellText.text = "Discard";
         }
+        
     }
     /// <summary>
     /// 해당 창을 종료하는 함수
