@@ -28,8 +28,7 @@ public class Menu : MonoBehaviour
     void Start()
     {
         menuText = GetComponentsInChildren<TextMeshProUGUI>();
-        Remover remover = FindAnyObjectByType<Remover>();
-        remover.ClearAllDontDestroyOnLoadObjects();
+        Remover.ClearAllDontDestroyOnLoadObjects();
         UpdateMenu();
     }
 

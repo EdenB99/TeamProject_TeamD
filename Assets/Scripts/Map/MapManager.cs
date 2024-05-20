@@ -12,9 +12,7 @@ using static UnityEditor.Progress;
 public class MapManager : MonoBehaviour
 {
     //TODO L:: 맵 로딩만들기 
-    //TODO:: 오류방 만들기
     //TODO:: 빠른이동구현
-    //TODO:: 함정 제작해야함.
 
     //15번맵 수정
     //적이 플레이어밑에있거나 파란해골이 플레이어에게 붙을 경우 무한 도리도리
@@ -22,6 +20,9 @@ public class MapManager : MonoBehaviour
     // 피격무적, 대쉬 무적 시간중 하나만 끝나도 플레이어는 무적상태가 풀리는 오류
     //스파이크의 대미지 방식 변경 필요
     //대쉬가 땅에 닿을 때마다 초기화되는 오류
+
+    //에러방에서 스타트맵으로 이동되지 않음.
+    //씬변경시 총알 지우기
 
     [Header("변수")]
 
@@ -1185,7 +1186,6 @@ public class MapManager : MonoBehaviour
     {
         if (player == null)
         {
-            Debug.Log("플레이어 객체가 할당되지 않았습니다.");
             return;
         }
 
