@@ -69,7 +69,7 @@ public class SlimeEnemy : EnemyBase_
         }
     }
 
-    bool playerCheck()
+    new bool playerCheck()
     {
         // 범위 내에
         Collider2D colliders = Physics2D.OverlapCircle(transform.position, sightRange, LayerMask.GetMask("Player"));
