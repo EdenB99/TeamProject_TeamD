@@ -338,7 +338,7 @@ MonoBehaviour:
   groundCheck: {fileID: 2133671909137643396}
   groundLayerCheck:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!96 &7290192330274884213
 TrailRenderer:
   serializedVersion: 3
