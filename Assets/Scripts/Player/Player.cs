@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public float dashingPower = 5.0f;
     public float dashingTime = 0.2f;
     public float dashCoolTime = 2.0f;
+    private float dashInvinciblecool = 0.5f;
     private Vector2 lastDashDirection;
     private bool dashInvincible;
     private float currentdashTime = 0.0f;
@@ -39,6 +40,14 @@ public class Player : MonoBehaviour
     private Vector2 mousePos;               // 플레이어 마우스 회전
 
     TrailRenderer tr;
+
+
+    // 플레이어 각도
+    private float dis = 1.0f;
+    private float angle;
+    private float maxAngle = 45.0f;
+    private bool isSlope = false;
+    private Vector2 prep;
 
 
     [SerializeField, Range(0.0f, 9999.0f)]
@@ -94,12 +103,17 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-/*
-        if (!isJumping && jumpCount > 0 && Input.GetButtonDown("Jump") && !Input.GetKey(KeyCode.S))
+        isGrounded = CheckGround();
+        if (isGrounded && !isJumping)
         {
-            Jump();
-        }*/
-        if ( !playerStats.IsAlive ) // 죽었을때 입력 받기
+            //1
+            jumpCount = 1;
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, Vector2.down, dis, groundLayerCheck);
+        CheckSlope(hit);
+
+        if (!playerStats.IsAlive) // 죽었을때 입력 받기
         {
             revivePlayer();
         }
@@ -109,12 +123,12 @@ public class Player : MonoBehaviour
             isJumping = false;
             jumpCount = 2;  // 더블 점프를 위해 점프 카운터를 리셋
         }
-    
+
 
 
         if (!isJumpOff)
         {
-            if (!isGround)
+            if (!isGrounded)
             {
                 //Player_anim.SetBool("Jump", true);
                 Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
@@ -150,7 +164,7 @@ public class Player : MonoBehaviour
     {
         MovePosition();
 
-
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, Vector2.down, dis, groundLayerCheck);
         if (isDashing)
         {
             return;
@@ -205,7 +219,7 @@ public class Player : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>(); // 입력 값을 읽어 moveInput에 저장
         UpdateAnimation();
-        
+
     }
 
     private void UpdateAnimation()
@@ -225,8 +239,8 @@ public class Player : MonoBehaviour
 
     protected void MousePosition()
     {
-        if (playerStats != null )
-            //&& !playerStats.isDead
+        if (playerStats != null)
+        //&& !playerStats.isDead
         {
             // 마우스 포지션 변경
             // Camera camera = FindAnyObjectByType<Camera>();
@@ -254,7 +268,7 @@ public class Player : MonoBehaviour
         }
     }
 
-   
+
 
     //TODO:: 플레이어가 계단식 그라운드타일을 올라갈 때 붙어서 떨어지지않고 올라가면 점프횟수가 돌아오지않음,
     void Jump()
@@ -263,7 +277,7 @@ public class Player : MonoBehaviour
         rigid.velocity = Vector2.up * jumpPower; // 점프 파워를 적용하여 즉시 점프
         Player_ani.SetBool("Jump", true);
         isJumping = true; // 점프 상태 설정
-        jumpCount --;
+        jumpCount--;
     }
 
 
@@ -296,9 +310,9 @@ public class Player : MonoBehaviour
     IEnumerator DownCollision(Collider2D platformCollider, Collider2D playerCollider)
     {
         yield return new WaitForSeconds(0.25f);
-        if(platformCollider != null)
+        if (platformCollider != null)
         {
-        Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
         }
     }
 
@@ -358,13 +372,10 @@ public class Player : MonoBehaviour
         dashInvincible = true;
 
         float timeElapsed = 0.0f;
-        while (timeElapsed < dashCoolTime) // 2초동안 계속하기
-        {
+        while (timeElapsed < dashInvinciblecool) {
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-
-        // 2초가 지난후
         dashInvincible = false;
         gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
     }
@@ -375,34 +386,63 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 맵 체크
     /// </summary>
-    private bool isGround;
-
+    private bool isGrounded;
+    private float checkRadius = 0.2f;
     // Ground Check
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayerCheck;
 
-    private bool IsGrounded()
+
+    private void IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayerCheck);
+        Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayerCheck);
+        if (isGrounded == true && rigid.velocity.y <= 0)
+        {
+            isJump = false;
+            isJumping = false;
+            jumpCount = 0;
+
+        }
     }
 
     /// <summary>
     /// 그라운드 체크에서 오류가뜨면 플레이어 자식에 그라운드 체크 Transform넣어줘야됨
     /// </summary>
     /// <returns></returns>
-    private bool CheckGround()  
+    private bool CheckGround()
     {
+        return Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayerCheck);
+    }
 
-        return false;
+    private void CheckSlope(RaycastHit2D hit)
+    {
+        if (hit)
+        {
+            prep = Vector2.Perpendicular(hit.normal).normalized;
+            angle = Vector2.Angle(hit.normal, Vector2.up);
+
+            // 각도가 0이 아니면 경사로 간주
+            isSlope = angle != 0;
+
+            Debug.DrawLine(hit.point, hit.point + hit.normal, Color.green);
+            Debug.DrawLine(hit.point, hit.point + prep, Color.red);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(groundCheck.position, checkRadius);
     }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Platform") && !isDashing))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Spike") || collision.gameObject.CompareTag("Platform"))
         {
+            isJumping = false;
             jumpCount = 2;
-            canDash = true;
+            //canDash = true;
             Player_ani.SetBool("Jump", false);
         }
     }
@@ -480,7 +520,7 @@ public class Player : MonoBehaviour
 
     void revivePlayer()
     {
-        if ( !PlayerStats.IsAlive)
+        if (!PlayerStats.IsAlive)
         {
             if (Input.GetKey(KeyCode.R)) // 죽었을때 R키를 입력받았다면
             {
