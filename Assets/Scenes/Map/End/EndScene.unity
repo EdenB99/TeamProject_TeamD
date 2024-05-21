@@ -977,7 +977,7 @@ GameObject:
   - component: {fileID: 2140601051}
   - component: {fileID: 2140601050}
   m_Layer: 5
-  m_Name: EndButton
+  m_Name: TitleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

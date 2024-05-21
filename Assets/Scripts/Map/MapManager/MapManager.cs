@@ -11,23 +11,22 @@ using static UnityEditor.Progress;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO L:: 맵 로딩만들기 
+    //TODO L:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
     //TODO:: 빠른이동구현
     //TODO:: 보상 상자 구현
-    //플레이어 사망시,클리어시 UI캔버스로 결산한번 하기
     //end씬 패널대신 마을로 가는 포탈을 통해 결산한번 한 후 마을로 가기
-    
-    // 피격무적, 대쉬 무적 시간중 하나만 끝나도 플레이어는 무적상태가 풀리는 오류
-    //스파이크의 대미지 방식 변경 필요
-    //상점에서 아이템을 사고팔 수 없는 오류
-    //무기 교체시 시도가 너무 많이일어나는 문제
     //플레이어 사망시, 게임 클리어 시 보상 결산 필요
-    //아이템창이 MapGen맵에서만 열리는 오류
+    
 
+    //오류
 
+    //다른걸 눌러도 페이드인,아웃 발생, 이후 스타트시 플레이어가 땅에박힘,그냥도 발생함
+    //스타트시 인게임슬롯에서 워닝발생
 
-    //TODO?::맵이 조건만족시에도 이상하게 작동하는 경우 Town으로 다시보내버리도록만들었음, 다른 스크립트를 하나 더만들어 Town대신 해당스크립트에 신호를보내
-    //해당 스크립트를 초기화,재시작시키는 것으로 해결하는것도 괜찮을듯.
+    //npc가있으면 맵이동시 화면에 대화창이 나오고 넘어가짐
+
+    //무기 교체시 시도가 너무 많이일어나는 문제
+
 
     [Header("변수")]
 
@@ -374,10 +373,11 @@ public class MapManager : MonoBehaviour
         regenerateMapCount++;
         if(regenerateMapCount >= 12)
         {
-            Debug.LogError($"맵 리셋횟수가 12회 이상 반복되어 맵생성을 종료");
+            Debug.LogError($"맵 리셋횟수가 12회 이상 반복되어 스크립트를 재시작합니다.");
+            GeneratorRestart restarter = FindAnyObjectByType<GeneratorRestart>();
+            restarter.RestartGen();
             StopAllCoroutines();
             regenerateMapCount = 0;
-            SceneManager.LoadScene("Town");
             yield return null;
         }
         else

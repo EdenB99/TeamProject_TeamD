@@ -85,7 +85,6 @@ public class BackgroundFollow : MonoBehaviour
 
     public void UpdateBoundaryObject(GameObject newBoundaryObject)
     {
-        Debug.Log("¹Ù²ñ");
         boundaryObject = newBoundaryObject;
         boundaryCollider = boundaryObject.GetComponent<BoxCollider2D>();
     }

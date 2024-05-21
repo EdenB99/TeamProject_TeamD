@@ -40,13 +40,13 @@ public class BossStageScripts : MonoBehaviour
 
     private void Start()
     {
-        mainCamera = FindAnyObjectByType<MainCamera>();
-        background = FindAnyObjectByType<BackgroundFollow>();
-        player = GameObject.FindAnyObjectByType<Player>();
     }
 
     private void OnEnable()
     {
+        mainCamera = FindAnyObjectByType<MainCamera>();
+        background = FindAnyObjectByType<BackgroundFollow>();
+        player = GameObject.FindAnyObjectByType<Player>();
         collider.enabled = true;
         bossInfo.alpha = 0.0f;
         //카메라경계변경
