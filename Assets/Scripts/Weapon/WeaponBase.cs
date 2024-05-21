@@ -159,7 +159,6 @@ public class WeaponBase : MonoBehaviour
     {
         if (IsPlayerAlive() && CanAttack)
         {
-            Debug.Log("공격");
             Attack();
             currentCoolTime = 0.0f;
             CanAttack = false;

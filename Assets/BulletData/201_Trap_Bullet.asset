@@ -16,7 +16,7 @@ MonoBehaviour:
   code: 3
   bulletType: 2
   moveSpeed: 5
-  bulletDamage: 1
+  bulletDamage: 8
   bulletSize: 0.3
   lifeTime: 10
   floatDir: 0

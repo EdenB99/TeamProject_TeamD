@@ -31,8 +31,8 @@ public class EndScene : MonoBehaviour
         MainCamera maincamera = FindAnyObjectByType<MainCamera>();
         BackgroundFollow background = FindAnyObjectByType<BackgroundFollow>();
         player.transform.position = Vector3.zero;
-        maincamera.transform.position = new Vector3(0, 0, maincamera.transform.position.z);
-        background.transform.position = new Vector3(0, 0, background.transform.position.z);
+        maincamera.transform.position = new Vector3(0, -5f, maincamera.transform.position.z);
+        background.transform.position = new Vector3(0, -5f, background.transform.position.z);
         SceneManager.LoadScene("Town",LoadSceneMode.Single);
 
     }
