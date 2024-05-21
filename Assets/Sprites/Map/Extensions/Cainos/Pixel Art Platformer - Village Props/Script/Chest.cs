@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cainos.LucidEditor;
+using static UnityEditor.Progress;
 
 namespace Cainos.PixelArtPlatformer_VillageProps
 {
-    public class Chest : MonoBehaviour
+    public class Chest : NPC_Base
     {
+        /// <summary>
+        /// 아이템이 나올 확률 : 현재 퍼센티지 100
+        /// </summary>
+        public float totalValue = 100.0f;
         [System.Serializable]
         public struct Itemvalue
         {
             public ItemData itemData;
+            /// <summary>
+            /// 아이템이 퍼센티지 내에서 등장할 확률
+            /// </summary>
             [SerializeField, Range(1.0f, 100.0f)]
             public float value;
         }
@@ -33,10 +41,18 @@ namespace Cainos.PixelArtPlatformer_VillageProps
         }
         private bool isOpened;
 
+        Transform Key;
+
+        protected override void Awake()
+        {
+            Key = transform.GetChild(1);
+        }
+
         [FoldoutGroup("Runtime"), Button("Open"), HorizontalGroup("Runtime/Button")]
         public void Open()
         {
             IsOpened = true;
+            Key.gameObject.SetActive(false);
             DropItem();  // 상자가 열릴 때 아이템을 드랍
         }
 
@@ -45,28 +61,41 @@ namespace Cainos.PixelArtPlatformer_VillageProps
         {
             IsOpened = false;
         }
+        public override void StartDialog()
+        {
+            if (!isOpened)
+            {
+                Open();
+            }
+        }
+
 
         public void DropItem()
         {
-            float totalValue = 0;
-            foreach (var item in items)
-            {
-                totalValue += item.value;
-            }
 
-            float randomValue = Random.Range(0, totalValue);
-            float cumulativeValue = 0;
-
-            foreach (var item in items)
+            for (int i  = 0; i < items.Length; i++)
             {
-                cumulativeValue += item.value;
-                if (randomValue <= cumulativeValue)
+                float randomValue = Random.Range(0, totalValue);
+                if (items[i].value > randomValue)
                 {
                     float rand = Random.Range(-0.5f, 0.5f);
                     Vector2 itempos = (Vector2)transform.position + new Vector2(rand, 2);
-                    Factory.Instance.MakeItems(item.itemData.code, 1,itempos);
-                    break;
+                    Factory.Instance.MakeItems(items[i].itemData.code, 1, itempos);
                 }
+            }
+        }
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player") && !isOpened)
+            {
+                Key.gameObject.SetActive(true);
+            }
+        }
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player") && !isOpened)
+            {
+                Key.gameObject.SetActive(false);
             }
         }
     }
