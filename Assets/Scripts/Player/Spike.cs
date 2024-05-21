@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spike : MonoBehaviour
 {
     public PlayerStats ps;
-    float Sp = 10.0f;
+    float Sp = 5.0f;
 
     private void Awake()
     {
@@ -19,9 +19,11 @@ public class Spike : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             ps.TakeDamage(Sp);
+
         }
     }
 }
