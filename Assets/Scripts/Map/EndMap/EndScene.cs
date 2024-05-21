@@ -20,7 +20,7 @@ public class EndScene : MonoBehaviour
         quitButton = child.GetComponent<Button>();
 
         restartButton.onClick.AddListener(RestartGame);
-        quitButton.onClick.AddListener(EndGame);
+        quitButton.onClick.AddListener(ReturnTitle);
     }
 
 
@@ -37,9 +37,9 @@ public class EndScene : MonoBehaviour
 
     }
 
-    private void EndGame()
+    private void ReturnTitle()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Title", LoadSceneMode.Single);
     }
 
 
