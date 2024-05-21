@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
     public float dashCoolTime = 2.0f;
     private float dashInvinciblecool = 0.5f;
     private Vector2 lastDashDirection;
-    private bool dashInvincible;
     private float currentdashTime = 0.0f;
     public Action<float, float> OnDashingCoolChanged;
 
@@ -45,7 +44,7 @@ public class Player : MonoBehaviour
     // 플레이어 각도
     private float dis = 1.0f;
     private float angle;
-    private float maxAngle = 45.0f;
+    //private float maxAngle = 45.0f;
     private bool isSlope = false;
     private Vector2 prep;
 
@@ -369,14 +368,12 @@ public class Player : MonoBehaviour
     IEnumerator DashinvincibleMode()
     {
         gameObject.layer = LayerMask.NameToLayer("Player_Invincible"); // 레이어를 무적 레이어로 변경
-        dashInvincible = true;
 
         float timeElapsed = 0.0f;
         while (timeElapsed < dashInvinciblecool) {
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        dashInvincible = false;
         gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어를 다시 플레이어로 되돌리기
     }
 
