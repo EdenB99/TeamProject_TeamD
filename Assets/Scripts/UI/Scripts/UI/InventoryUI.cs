@@ -69,6 +69,7 @@ public class InventoryUI : MonoBehaviour
         {
             ingameUI.IngameSlotUIs[i].ItemUse += UseConsumableItem;
         }
+        
     }
 
     // UI 온 오프 상태 조절
@@ -351,4 +352,5 @@ public class InventoryUI : MonoBehaviour
             DiscardItem(slotUIs[i]);
         }
     }
+    
 }
