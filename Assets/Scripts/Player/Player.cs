@@ -509,8 +509,15 @@ public class Player : MonoBehaviour
     {
         if (other.GetComponent<NPC_Base>() != null)
         {
-            canInteract = false;
-            interactingNPC = null;
+            if (interactingNPC.IsInteracting)
+            {
+                canInteract = true;
+            }
+            else
+            {
+                canInteract = false;
+                interactingNPC = null;
+            }
         }
     }
 
