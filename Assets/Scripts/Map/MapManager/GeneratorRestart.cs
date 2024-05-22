@@ -22,6 +22,8 @@ public class GeneratorRestart : MonoBehaviour
         mapmanger.gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
         mapmanger.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(mapmanger.GenerateWorldMapCoroutine());
 
     }
 

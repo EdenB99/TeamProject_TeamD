@@ -164,11 +164,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 137149406754697891, guid: dac00178959b5bd4bb4ce2c3316e2029, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.942955
+      value: -2.55
       objectReference: {fileID: 0}
     - target: {fileID: 137149406754697891, guid: dac00178959b5bd4bb4ce2c3316e2029, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.574127
+      value: -4.96
       objectReference: {fileID: 0}
     - target: {fileID: 137149406754697891, guid: dac00178959b5bd4bb4ce2c3316e2029, type: 3}
       propertyPath: m_LocalPosition.z
@@ -240,8 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e25faef845e2e9459bfa3402187e7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3776167721910377412, guid: d1b45ff530af34341911c84e7998171c, type: 3}
-  respawnPoint: {fileID: 893121693}
 --- !u!4 &770600857
 Transform:
   m_ObjectHideFlags: 0
@@ -429,6 +427,18 @@ PrefabInstance:
     - target: {fileID: 5284084199047376149, guid: 54fd20e016032874d9b53bfc92867fd8, type: 3}
       propertyPath: m_Size.x
       value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284084199047376149, guid: 54fd20e016032874d9b53bfc92867fd8, type: 3}
+      propertyPath: m_Size.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284084199047376149, guid: 54fd20e016032874d9b53bfc92867fd8, type: 3}
+      propertyPath: m_Offset.x
+      value: 2.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284084199047376149, guid: 54fd20e016032874d9b53bfc92867fd8, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.96
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

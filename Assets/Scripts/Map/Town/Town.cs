@@ -11,9 +11,10 @@ public class Town : MonoBehaviour
     {
         Player player = FindAnyObjectByType<Player>();
         MainCamera mainCamera = FindAnyObjectByType<MainCamera>();
-
-        mainCamera.transform.position = new Vector3(0, 0, mainCamera.transform.position.z);
+        BackgroundFollow background = FindAnyObjectByType<BackgroundFollow>();
         player.transform.position = new Vector3(-9.57425f, -5.144983f, 0);
+        mainCamera.transform.position = new Vector3(player.transform.position.x, 1, mainCamera.transform.position.z);
+        background.transform.position = new Vector3(player.transform.position.x, 1, background.transform.position.z);
 
     }
 

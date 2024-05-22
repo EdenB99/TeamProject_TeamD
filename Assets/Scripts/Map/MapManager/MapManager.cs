@@ -11,21 +11,26 @@ using static UnityEditor.Progress;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO L:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
-    //TODO:: 빠른이동구현
     //TODO:: 보상 상자 구현
-    //end씬 패널대신 마을로 가는 포탈을 통해 결산한번 한 후 마을로 가기
-    //플레이어 사망시, 게임 클리어 시 보상 결산 필요
+    //TODO:: 빠른이동구현
+    //TODO L:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
+
+    //플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
     
 
     //오류
 
-    //다른걸 눌러도 페이드인,아웃 발생, 이후 스타트시 플레이어가 땅에박힘,그냥도 발생함
+    //스타트시 플레이어가 땅에박힘,
     //스타트시 인게임슬롯에서 워닝발생
 
     //npc가있으면 맵이동시 화면에 대화창이 나오고 넘어가짐
 
+    //인벤토리창에 클릭도 플레이어에 간섭됨
     //무기 교체시 시도가 너무 많이일어나는 문제
+
+    //머리위에 있는 아이템으로 제기차기가 가능한 오류
+    //왕의검 오른쪽으로 휘두를 때 이펙트(마우스 위치)와 검이 휘둘러지는 곳에 차이가 큼
+
 
 
     [Header("변수")]
@@ -47,6 +52,7 @@ public class MapManager : MonoBehaviour
     private int centerX;
     private int centerY;
     Vector2Int currentPosition;
+    [SerializeField] GameObject chest;
 
 
     //특수 맵 관련
@@ -242,7 +248,7 @@ public class MapManager : MonoBehaviour
 
     }
 
-    private IEnumerator GenerateWorldMapCoroutine()
+    public IEnumerator GenerateWorldMapCoroutine()
     {
         worldMap.Clear();
         usedMapScenes.Clear();
@@ -273,7 +279,7 @@ public class MapManager : MonoBehaviour
                 GenerateAdjacentMaps(currentMap, mapQueue);
 
 
-                if (currentMapCount > mapSize * 0.5f && currentMapCount > 5f || mapQueue.Count <= 0)
+                if (currentMapCount > mapSize * 0.5f && currentMapCount > 5f)
                 {
                     CheckWorldMap();
                     RemoveInvalidMaps();
@@ -305,6 +311,7 @@ public class MapManager : MonoBehaviour
         }
         if (!hasNextStageMap)
         {
+            
             // worldMap을 역순으로 순회
             var reversedWorldMap = worldMap.Reverse();
             int mapIndex = 1;
@@ -1122,6 +1129,9 @@ public class MapManager : MonoBehaviour
         if (enemyParent != null)
         {
             enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+
+            //추가코드,고쳐야함
+            Transform chestTransform = enemies[0].transform;
             if (mapData.isVisited && !currentMap.hasEnemies)
             {
                 for (int i = 0; i < enemies.Length; i++)
@@ -1139,6 +1149,8 @@ public class MapManager : MonoBehaviour
                 if (currentMap.hasEnemies != hasEnemies)
                 {
                     currentMap.hasEnemies = hasEnemies;
+                    //추가코드,고쳐야함
+                    Instantiate(chest, chestTransform.transform);
                     UpdatePortalState(currentMap.hasEnemies);
                 }
 
