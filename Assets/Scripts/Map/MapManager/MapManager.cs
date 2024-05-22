@@ -6,18 +6,22 @@ using UnityEngine;
 using UnityEngine.InputSystem.iOS;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
+using Random = UnityEngine.Random;
 
 
 
 public class MapManager : MonoBehaviour
 {
-    //TODO:: 보상 상자 구현
     //TODO:: 빠른이동구현
     //TODO:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
     //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
     
+    
 
     //오류
+
+    //보상 상자가 맵나갔다오면 사라짐, 열린상태도 저장, 상자열면 미니맵마커 제거,
+    //아이템에도 미니맵 마커 달기
 
     //스타트시 플레이어가 땅에박힘,
     //스타트시 인게임슬롯에서 워닝발생
@@ -29,6 +33,7 @@ public class MapManager : MonoBehaviour
 
     //머리위에 있는 아이템으로 제기차기가 가능한 오류
     //왕의검 오른쪽으로 휘두를 때 이펙트(마우스 위치)와 검이 휘둘러지는 곳에 차이가 큼
+    //아이템을 장착해제해도 손에 들고있으면 사용가능함
 
 
     //해결
@@ -55,7 +60,6 @@ public class MapManager : MonoBehaviour
     private int centerX;
     private int centerY;
     Vector2Int currentPosition;
-    [SerializeField] GameObject chest;
 
 
     //특수 맵 관련
@@ -1133,8 +1137,6 @@ public class MapManager : MonoBehaviour
         {
             enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
 
-            //추가코드,고쳐야함
-            Transform chestTransform = enemies[0].transform;
             if (mapData.isVisited && !currentMap.hasEnemies)
             {
                 for (int i = 0; i < enemies.Length; i++)
@@ -1152,8 +1154,10 @@ public class MapManager : MonoBehaviour
                 if (currentMap.hasEnemies != hasEnemies)
                 {
                     currentMap.hasEnemies = hasEnemies;
-                    //추가코드,고쳐야함
-                    Instantiate(chest, chestTransform.transform);
+                    if (!hasEnemies)
+                    {
+                        ActivateRandomChest();
+                    }
                     UpdatePortalState(currentMap.hasEnemies);
                 }
 
@@ -1164,10 +1168,37 @@ public class MapManager : MonoBehaviour
             currentMap.hasEnemies = false;
             UpdatePortalState(false);
         }
-
-
-
     }
+
+    //보상 상자 활성화 함수
+    private void ActivateRandomChest()
+    {
+        //TODO:: 시간남으면 FindanyObject로 바꾸기,
+        GameObject chestsParent = GameObject.Find("Chests");
+        if (chestsParent != null)
+        {
+            GameObject[] chests = new GameObject[chestsParent.transform.childCount];
+            for (int i = 0; i < chestsParent.transform.childCount; i++)
+            {
+                chests[i] = chestsParent.transform.GetChild(i).gameObject;
+            }
+
+            if (chests.Length > 0)
+            {
+                // 랜덤으로 하나의 상자 선택
+                int randomIndex = Random.Range(0, chests.Length);
+                GameObject selectedChest = chests[randomIndex];
+
+                // 선택된 상자 활성화
+                selectedChest.SetActive(true);
+
+                // 필요한 경우 애니메이션이나 이펙트 재생
+                // ...
+            }
+        }
+    }
+
+
 
     //에러맵의 포탈 지우기용 함수
     private GameObject GetPortalObject(Direction direction)

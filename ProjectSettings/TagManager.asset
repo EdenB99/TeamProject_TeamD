@@ -17,6 +17,7 @@ TagManager:
   - Spike
   - BigMap
   - Wall
+  - Chest
   layers:
   - Default
   - TransparentFX
@@ -57,6 +58,9 @@ TagManager:
   - name: Ground
     uniqueID: 4118556599
     locked: 0
+  - name: Item
+    uniqueID: 337598327
+    locked: 0
   - name: Enemy
     uniqueID: 142316005
     locked: 0
@@ -65,7 +69,4 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2400153797
-    locked: 0
-  - name: Item
-    uniqueID: 337598327
     locked: 0
