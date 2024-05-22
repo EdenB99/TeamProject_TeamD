@@ -41,14 +41,14 @@ public class NPC_Store : NPC_Base
 
     void ShowStore()
     {
-        inven.isStore = true;
+        inven.IsStore = true;
         dialogBox.gameObject.SetActive(false);
         StoreUI.gameObject.SetActive(true);
     }
 
     public void DisableStore()
     {
-        inven.isStore = false;
+        inven.IsStore = false;
         StoreUI.gameObject.SetActive(false);
     }
 }

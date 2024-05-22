@@ -20,7 +20,7 @@ MonoBehaviour:
   price: 0
   cooltime: 0
   playerBuff:
-    code: 10
+    code: 13
     buff_attackPower: 0
     buff_Defense: 5
     buff_hp: 0

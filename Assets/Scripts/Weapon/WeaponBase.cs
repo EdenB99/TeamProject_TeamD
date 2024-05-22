@@ -135,6 +135,7 @@ public class WeaponBase : MonoBehaviour
         currentCoolTime = attackCooldown;
         CanAttack = true;
 
+        GameManager.Instance.InventoryUI.PlayerMoveToggle += WeaponToggle;
     }
 
     protected virtual void OnEnable()
@@ -153,6 +154,14 @@ public class WeaponBase : MonoBehaviour
             weaponInputActions.Weapon.Attack.performed -= OnAttack;
             weaponInputActions.Weapon.Disable();
         }
+    }
+    private void WeaponToggle(bool Toggle)
+    {
+        if (Toggle)
+        {
+            weaponInputActions.Weapon.Attack.performed -= OnAttack;
+        }
+        else weaponInputActions.Weapon.Attack.performed += OnAttack;
     }
 
     private void OnAttack(InputAction.CallbackContext context)

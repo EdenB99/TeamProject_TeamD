@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     private bool isSlope = false;
     private Vector2 prep;
 
-
+    //골드 관련 변수
     [SerializeField, Range(0.0f, 9999.0f)]
     private uint gold;
     public uint Gold
@@ -61,6 +61,8 @@ public class Player : MonoBehaviour
         }
     }
     public Action<uint> OnGoldChange;
+
+    
 
     // 레이어 태그
     private int playerLayer;
@@ -98,6 +100,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         dialogBox = FindAnyObjectByType<Image>();  // NPC 상호작용
+        GameManager.Instance.InventoryUI.PlayerMoveToggle += PlayerMoveToggle;
     }
 
     private void Update()
@@ -206,6 +209,26 @@ public class Player : MonoBehaviour
         inputActions.Player.Esc.performed -= ESC;
         inputActions.Player.DownJump.performed -= OnDownJump;
         inputActions.Player.Disable();
+    }
+    void PlayerMoveToggle(bool toggle)
+    {
+        if (toggle)
+        {
+            moveInput = new Vector2(0,0);
+            UpdateAnimation();
+            inputActions.Player.Move.canceled -= OnMove;
+            inputActions.Player.Move.performed -= OnMove;
+            inputActions.Player.Jump.performed -= OnJump;
+            inputActions.Player.Dash.performed -= OnDash;
+            inputActions.Player.DownJump.performed -= OnDownJump;
+        } else
+        {
+            inputActions.Player.Move.performed += OnMove;
+            inputActions.Player.Move.canceled += OnMove;
+            inputActions.Player.Jump.performed += OnJump;
+            inputActions.Player.Dash.performed += OnDash;
+            inputActions.Player.DownJump.performed += OnDownJump;
+        }
     }
 
 

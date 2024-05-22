@@ -42,7 +42,35 @@ public class InventoryUI : MonoBehaviour
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
 
-    public bool isStore = false;
+    private bool isStore;
+    public bool IsStore {
+        get => isStore;
+        set
+        {
+            isStore = value;
+            if (isInvenOn || isStore)
+            {
+                PlayerMoveToggle?.Invoke(true);
+            }
+            else PlayerMoveToggle?.Invoke(false);
+        }
+    }
+    private bool isInvenOn;
+    public bool IsInvenOn
+    {
+        get => isInvenOn;
+        set
+        {
+            isInvenOn = value;
+            if (isInvenOn || isStore)
+            {
+                PlayerMoveToggle?.Invoke(true);
+            } 
+            else PlayerMoveToggle?.Invoke(false);
+        }
+    }
+
+    public  Action<bool> PlayerMoveToggle;
     private void Awake()
     {
         slotUIs = InvenSlotsTransform.GetComponentsInChildren<InvenSlotUI>();
@@ -87,6 +115,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Open()
     {
+        IsInvenOn = true;
         canvasGroup.alpha = 1.0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
@@ -97,6 +126,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Close()
     {
+        IsInvenOn = false;
         canvasGroup.alpha = 0.0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
@@ -160,7 +190,7 @@ public class InventoryUI : MonoBehaviour
         {
             usableUI.Close();
         }
-        usableUI.Open(slotUIs[index], isStore);
+        usableUI.Open(slotUIs[index], IsStore);
 
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
@@ -268,7 +298,6 @@ public class InventoryUI : MonoBehaviour
             {
                 equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
                 isFull = false;                         //슬롯이 가득차지 않음
-                Debug.Log("비공간찾음");
                 break;                                  //반복문 종료
             } else
             {
@@ -324,7 +353,7 @@ public class InventoryUI : MonoBehaviour
         {
             Eqiup_UseItem(slotUI);
         }
-        if (isStore)
+        if (IsStore)
         {
             Player player = GameManager.Instance.Player;
             player.Gold = slotUI.InvenSlot.ItemData.price;
