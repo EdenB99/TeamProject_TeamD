@@ -92,6 +92,8 @@ public class WeaponBase : MonoBehaviour
 
     protected WeaponManager weaponManager;
 
+
+
     protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -122,7 +124,7 @@ public class WeaponBase : MonoBehaviour
         if (weaponData != null)
         {
             WeaponInfo weaponInfo = weaponData.GetWeaponInfo();
-            weaponSpeed = weaponInfo.attackSpeed * playerStats.AttackSpeed;
+            weaponSpeed = weaponInfo.attackSpeed;
             Debug.Log($"{weaponSpeed}");
         }
         else
@@ -261,6 +263,7 @@ public class WeaponBase : MonoBehaviour
         PlayerStats playerStats = FindObjectOfType<PlayerStats>();
         return playerStats != null && playerStats.IsAlive;
     }
+
 
     /// <summary>
     /// 무기의 비활성화 함수

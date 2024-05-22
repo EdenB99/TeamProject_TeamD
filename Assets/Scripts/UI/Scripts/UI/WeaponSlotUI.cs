@@ -12,11 +12,11 @@ public class WeaponSlotUI : EquipmentSlot_Base
         set
         {
             onhand = value;
-            OnHandChange?.Invoke(onhand);
+            OnHandChange(onhand);
             SetEquipmentText(onhand);
         }
     }
-    public Action<bool> OnHandChange;
+    Action<bool> OnHandChange;
 
     //1. 현재 슬롯이 손에 들려있는지
 
