@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 public class NextStagePortal : MonoBehaviour
 {
     [SerializeField] private GameObject nextStageMap;
-
-    
-    
-    private GameObject text; 
-    private bool isInsideTrigger = false;
-    private GameObject player; 
+    private GameObject text;
+    public bool isInsideTrigger;
+    Player player;
 
     private void Awake()
     {
@@ -18,17 +15,16 @@ public class NextStagePortal : MonoBehaviour
         text = child.gameObject;
         text.SetActive(false);
         SceneManager.sceneLoaded += OnSceneLoaded;
-
+        player = GameManager.Instance.Player;
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            text.gameObject.SetActive(true); // 텍스트 메시 활성화
+            text.SetActive(true); // 텍스트 메시 활성화
             isInsideTrigger = true; // 트리거 영역 내부로 설정
-            player = other.gameObject; // 플레이어 오브젝트 저장
+            player.interactingPortal = this; 
         }
     }
 
@@ -36,20 +32,13 @@ public class NextStagePortal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            text.gameObject.SetActive(false); // 텍스트 메시 비활성화
+            text.SetActive(false); // 텍스트 메시 비활성화
             isInsideTrigger = false; // 트리거 영역 외부로 설정
+            player.interactingPortal = null; 
         }
     }
 
-    private void Update()
-    {
-        if (isInsideTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            LoadNextStage();
-        }
-    }
-
-    private void LoadNextStage()
+    public void LoadNextStage()
     {
         SceneManager.LoadScene(nextStageMap.name);
 

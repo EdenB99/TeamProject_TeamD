@@ -91,6 +91,7 @@ public class Player : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         inputActions = new PlayerAction();
         tr = GetComponent<TrailRenderer>();
+        interactingPortal = FindAnyObjectByType<NextStagePortal>();
 
         // 플레이어 사망시 작동 정지
         //PlayerStats.OnDie += inputActions.Player.Disable;
@@ -475,22 +476,32 @@ public class Player : MonoBehaviour
     Image dialogBox;
     bool canInteract = false;
     NPC_Base interactingNPC;
+    public NextStagePortal interactingPortal;
 
     /// <summary>
-    /// NPC 상호작용 전용
+    /// 상호작용 전용
     /// </summary>
     /// <param name="context"></param>
     private void PressF(InputAction.CallbackContext context)
     {
-        if (canInteract && interactingNPC != null)
+        if (canInteract)
         {
-            if (!interactingNPC.IsInteracting)
+            if (interactingPortal != null && interactingPortal.isInsideTrigger)
             {
-                interactingNPC.StartDialog();
+                interactingPortal.LoadNextStage();
+                return; 
             }
-            else
+
+            if (interactingNPC != null)
             {
-                interactingNPC.NextDialog();
+                if (!interactingNPC.IsInteracting)
+                {
+                    interactingNPC.StartDialog();
+                }
+                else
+                {
+                    interactingNPC.NextDialog();
+                }
             }
         }
     }
@@ -516,7 +527,6 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)  // NPC 상호작용
     {
-        //NPC_Store npc = other.GetComponent<NPC_Store>();
         NPC_Base npc = other.GetComponent<NPC_Base>();
         if (npc != null)
         {
