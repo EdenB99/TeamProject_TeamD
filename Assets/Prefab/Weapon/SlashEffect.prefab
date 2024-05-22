@@ -194,7 +194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 0}
-  weapon: {fileID: 0}
   effectSpeed: 1
   effectSize: 1
   weaponDamage: 10

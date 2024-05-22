@@ -10,7 +10,6 @@ public class WeaponManager : MonoBehaviour
 {
 
 
-
     //weaponManager는  list=> null값 2개로 세팅된 lsit
     //currentweaponindex
     //currentWeaponInstance
@@ -43,6 +42,14 @@ public class WeaponManager : MonoBehaviour
 
     GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
 
+    private bool isWeaponEquipped = false;
+
+    public float switchCooldown = 3.0f;
+
+    float currentSwitchCoolTime = 0.0f;
+
+    bool canSwitch = true;
+
     public void Awake()
     {
         inputActions = new PlayerAction();
@@ -63,13 +70,38 @@ public class WeaponManager : MonoBehaviour
 
     public void Start()
     {
+        currentSwitchCoolTime = switchCooldown;
+        canSwitch = true;
+    }
 
+    public void Update()
+    {
+        if (currentSwitchCoolTime < switchCooldown)
+        {
+            currentSwitchCoolTime += Time.deltaTime;
+            canSwitch = false;
+        }
+        else
+        {
+            canSwitch = true;
+        }
+    }
+
+    protected bool IsPlayerAlive()
+    {
+        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+        return playerStats != null && playerStats.IsAlive;
     }
 
     public void KeyInput(InputAction.CallbackContext context)
     {
-        Debug.Log("스왑입력");
-        CurrentWeaponIndex = (CurrentWeaponIndex + 1) % weaponsData.Count;
+
+        if (IsPlayerAlive() && canSwitch)
+        {   
+            CurrentWeaponIndex = (CurrentWeaponIndex + 1) % weaponsData.Count;
+            currentSwitchCoolTime = 0.0f;
+            canSwitch = false;
+        }
     }
 
     public void Switchweapon(int index)
@@ -79,22 +111,29 @@ public class WeaponManager : MonoBehaviour
             ActivateWeaponPrefab(weaponsData[currentWeaponIndex]);
         }
         else
-        {
-            Debug.Log("현재 인덱스에 아이템 데이터 없음");
+        { 
             DestroyCurrentWeapon();
         }
 
     }
 
+    public void CheckEquipWeapon()
+    {
+        if(isWeaponEquipped && weaponsData[currentWeaponIndex] != null)
+        {
+            ActivateWeaponPrefab(weaponsData[currentWeaponIndex]);
+        }
+    }
+
     public void ActivateWeaponPrefab(ItemData_Weapon weaponData)
     {
-        Debug.Log("기존 오브젝트 파괴");
         DestroyCurrentWeapon();
         if (weaponData != null)
         {
-            Debug.Log("오브젝트 생성");
             GameObject weaponPrefab = Instantiate(weaponData.Weaponinfo.modelPrefab, transform.position, Quaternion.identity);
             currentWeaponInstance = weaponPrefab;
+
+            isWeaponEquipped = true;
         }
         else
         {
@@ -108,8 +147,9 @@ public class WeaponManager : MonoBehaviour
         {
             Destroy(currentWeaponInstance);
             currentWeaponInstance = null;
-            Debug.Log("파괴 완료");
         }
+
+        isWeaponEquipped = false;
     }
 
     public void GetWeaponData(ItemData_Weapon itemData)
@@ -119,7 +159,6 @@ public class WeaponManager : MonoBehaviour
         {
             if (weaponsData[i] == null)
             {
-                Debug.Log("아이템 착용");
                 weaponsData[i] = itemData;
                 isfull = false;
                 break;

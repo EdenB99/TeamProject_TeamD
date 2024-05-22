@@ -53,10 +53,6 @@ public class WeaponEffect : RecycleObject, IAttack
 
     protected bool isDestroyed = false;
 
-    public List<EnemyBase_> enemies = new List<EnemyBase_>(1);
-
-    protected EnemyBase_ enemy;
-
     protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
@@ -80,13 +76,13 @@ public class WeaponEffect : RecycleObject, IAttack
         transform.localScale = new Vector3(effectSize, effectSize, 1.0f);           // 인스펙터 창에서 이펙트의 사이즈 조절
     }
 
-    public void ApplyWeaponData(ItemData_Weapon data)
+    public void ApplyWeaponData(ItemData_Weapon weapondata)
     {
-        weaponDamage = data.GetWeaponDamage();
+        weaponDamage = weapondata.GetWeaponDamage();
         Debug.Log($"{weaponDamage}");
-        EffectInfo effectInfo = data.GetEffectInfo();
-        effectSize = effectInfo.effectSize;
-        float effectSpeed = effectInfo.effectSpeed;
+        EffectInfo effectInfo = weapondata.GetEffectInfo();
+        float effectSize = effectInfo.effectSize;
+        float effectSpeed = weapondata.GetEffectSpeed();
         Debug.Log($"{effectSpeed}");
     }
 
@@ -102,7 +98,7 @@ public class WeaponEffect : RecycleObject, IAttack
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
         Debug.Log($"{currentClipLength}");
 
-        animator.speed = effectSpeed;
+        animator.speed = animator.speed * effectSpeed;
 
         float animationLength = currentClipLength / effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
         Debug.Log($"{animationLength}");
