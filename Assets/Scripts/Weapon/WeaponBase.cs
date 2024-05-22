@@ -226,7 +226,7 @@ public class WeaponBase : MonoBehaviour
             // 애니메이션이 오른쪽을 향하도록 원래대로 복구
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-
+            
         animator.SetTrigger(attackTrigger);
 
         float attackSpeed = weaponSpeed;
