@@ -37,6 +37,7 @@ namespace Cainos.PixelArtPlatformer_VillageProps
             {
                 isOpened = value;
                 animator.SetBool("IsOpened", isOpened);
+                
             }
         }
         private bool isOpened;
@@ -54,6 +55,7 @@ namespace Cainos.PixelArtPlatformer_VillageProps
             IsOpened = true;
             Key.gameObject.SetActive(false);
             DropItem();  // 상자가 열릴 때 아이템을 드랍
+            transform.GetChild(2).gameObject.SetActive(false); //미니맵 마커 제거
         }
 
         [FoldoutGroup("Runtime"), Button("Close"), HorizontalGroup("Runtime/Button")]

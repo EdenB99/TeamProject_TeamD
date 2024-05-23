@@ -1,3 +1,4 @@
+using Cainos.PixelArtPlatformer_VillageProps;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,32 +16,39 @@ public class MapManager : MonoBehaviour
     //TODO:: 빠른이동구현
     //TODO:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
     //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
-    
-    
+    //TODO:: 아이템에도 미니맵 마커 달기
 
-    //오류
+
+
+    //발생한 오류---
 
     //보상 상자가 맵나갔다오면 사라짐, 열린상태도 저장, 상자열면 미니맵마커 제거,
-    //아이템에도 미니맵 마커 달기
 
-    //스타트시 플레이어가 땅에박힘,
     //스타트시 인게임슬롯에서 워닝발생
-
-    //npc가있으면 맵이동시 화면에 대화창이 나오고 넘어가짐
-
-    //인벤토리창에 클릭도 플레이어에 간섭됨
-    //무기 교체시 시도가 너무 많이일어나는 문제
-
-    //머리위에 있는 아이템으로 제기차기가 가능한 오류
     //왕의검 오른쪽으로 휘두를 때 이펙트(마우스 위치)와 검이 휘둘러지는 곳에 차이가 큼
     //아이템을 장착해제해도 손에 들고있으면 사용가능함
+    //백그라운드가 가끔 메인카메라 밖으로 나가짐
 
 
-    //해결
-    //Town에서 백그라운드가 밖에 나가있는 오류
-    //맵이 안만들어지는 오류
+    //오류 해결 - 5월 22일부터 작성시작
+    //내가 해결한 것
+    /*
+    1.스타트시 플레이어가 땅에박히는 오류
+    2.Town에서 백그라운드가 밖에 나가있는 오류
+    3.맵이 안만들어지는 오류
+    Town,BossMap에서 백그라운드가 밖으로 튀어나가는 오류
 
 
+    */
+
+    /*
+    1.무기 교체시 시도가 너무 많이일어나는 문제
+    2. 무기 장비중 손에 있는 무기 E 표시
+    3. 무기 2개 착용시 새로운 무기 착용하면 손에 들지 않은 무기를 해제하고 인벤에도 표시
+    4. 비어있는 슬롯 클릭시 버튼 표시하지 않음
+    5. 머리 중앙에 있는 아이템은 안먹어지는 오류
+
+    */
     [Header("변수")]
 
     private Player player;
@@ -60,7 +68,9 @@ public class MapManager : MonoBehaviour
     private int centerX;
     private int centerY;
     Vector2Int currentPosition;
-
+    //활성화된 상자 변수
+    Chest selectedChest;
+    bool isOpen = false;
 
     //특수 맵 관련
     private bool hasNextStageMap = false;
@@ -318,7 +328,7 @@ public class MapManager : MonoBehaviour
         }
         if (!hasNextStageMap)
         {
-            
+
             // worldMap을 역순으로 순회
             var reversedWorldMap = worldMap.Reverse();
             int mapIndex = 1;
@@ -340,7 +350,7 @@ public class MapManager : MonoBehaviour
                     worldMap[position] = mapData;
 
                     hasNextStageMap = true;
-                    CheckAndActivatePortals(); 
+                    CheckAndActivatePortals();
                     break;
                 }
 
@@ -373,7 +383,7 @@ public class MapManager : MonoBehaviour
             MapData mapData = kvp.Value;
             ResetPortalObjects(mapData, true);
         }
-        
+
 
         // worldMap과 usedMapScenes 초기화
         worldMap.Clear();
@@ -385,7 +395,7 @@ public class MapManager : MonoBehaviour
         usedMapScenes.Add(startMapData.sceneName);
 
         regenerateMapCount++;
-        if(regenerateMapCount >= 12)
+        if (regenerateMapCount >= 12)
         {
             Debug.LogError($"맵 리셋횟수가 12회 이상 반복되어 스크립트를 재시작합니다.");
             GeneratorRestart restarter = FindAnyObjectByType<GeneratorRestart>();
@@ -396,7 +406,7 @@ public class MapManager : MonoBehaviour
         }
         else
         {
-        yield return StartCoroutine(GenerateWorldMapCoroutine());
+            yield return StartCoroutine(GenerateWorldMapCoroutine());
         }
     }
 
@@ -515,6 +525,7 @@ public class MapManager : MonoBehaviour
             return new List<Direction>();
         }
 
+        //TODO:: 맵을 재생성할때 hasPortal이 전부 꺼져있어서 다시 만들지 못함
         List<Direction> availableDirections = new List<Direction>();
 
         if (mapData.HasUpPortal)
@@ -1015,7 +1026,7 @@ public class MapManager : MonoBehaviour
 
             player.transform.position = new Vector2(-9f, -8f);
             SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
-            
+
         }
     }
 
@@ -1114,7 +1125,7 @@ public class MapManager : MonoBehaviour
             player.transform.position = new Vector2(-9f, -8f);
             SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
         }
-}
+    }
     private void FindPortalsAndSpriteRenderers()
     {
         portals = FindObjectsOfType<Portal>();
@@ -1187,10 +1198,11 @@ public class MapManager : MonoBehaviour
             {
                 // 랜덤으로 하나의 상자 선택
                 int randomIndex = Random.Range(0, chests.Length);
-                GameObject selectedChest = chests[randomIndex];
+                selectedChest = chests[randomIndex].GetComponent<Chest>();
 
                 // 선택된 상자 활성화
-                selectedChest.SetActive(true);
+                selectedChest.gameObject.SetActive(true);
+
 
                 // 필요한 경우 애니메이션이나 이펙트 재생
                 // ...
@@ -1277,7 +1289,7 @@ public class MapManager : MonoBehaviour
             {
                 Debug.LogWarning($"현재맵에 {direction}방향의 포탈이 있지만 꺼져있었습니다.");
                 UpdatePortalState(currentMap.hasEnemies);
-                Transform playerSpawnPoint = portalObject.transform.GetChild(0); 
+                Transform playerSpawnPoint = portalObject.transform.GetChild(0);
                 if (playerSpawnPoint != null)
                 {
                     player.transform.position = playerSpawnPoint.position;
@@ -1350,8 +1362,12 @@ public class MapManager : MonoBehaviour
         // 맵에 작성한 리스트 넣기
         if (map != null)
         {
-        map.mapItemDatas = saveItemDatas;
-
+            map.mapItemDatas = saveItemDatas;
+            if(selectedChest != null)
+            {
+            map.chest = selectedChest;
+            map.isChestOpen = selectedChest.IsOpened;
+            }
         }
 
 
@@ -1370,11 +1386,11 @@ public class MapManager : MonoBehaviour
 
 
 
-/// <summary>
-/// 맵을 불러오기 위해 사용하는 함수
-/// </summary>
-/// <param name="mapData"></param>
-private void LoadMapState(MapData mapData)
+    /// <summary>
+    /// 맵을 불러오기 위해 사용하는 함수
+    /// </summary>
+    /// <param name="mapData"></param>
+    private void LoadMapState(MapData mapData)
     {
         // 아이템 불러오기
         if (mapData.mapItemDatas != null)
@@ -1383,6 +1399,20 @@ private void LoadMapState(MapData mapData)
             {
                 Factory.Instance.MakeItems(itemData.itemCode, 1, itemData.itemPositions);
             }
+        }
+        //TODO:: 체스트가 씬을 넘어갔다오면 사라짐
+        if (mapData.chest != null)
+        {
+            selectedChest = mapData.chest;
+            selectedChest.gameObject.SetActive(true);
+            if (mapData.isChestOpen)
+            {
+                selectedChest.transform.GetChild(2).gameObject.SetActive(false);
+                selectedChest.IsOpened = true;
+                selectedChest.enabled = false;
+
+            }
+
         }
 
 

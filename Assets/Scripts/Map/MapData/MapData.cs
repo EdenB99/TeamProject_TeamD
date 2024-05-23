@@ -1,3 +1,4 @@
+using Cainos.PixelArtPlatformer_VillageProps;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,9 +32,9 @@ public class MapData
     public GameObject rightPortalObject;
 
     public List<SaveItemData> mapItemDatas;
-
     public Dictionary<int, Vector3> itemPositions = new Dictionary<int, Vector3>();
-
+    public Chest chest;
+    public bool isChestOpen;
 
 
     private bool hasUpPortal;
