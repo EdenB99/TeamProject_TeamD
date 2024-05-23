@@ -145,11 +145,11 @@ public class Player : MonoBehaviour
         }
 
         //땅에 닿으면 대쉬가 초기화되서 쿨타임이 UI와 맞지않음
-        if (Input.GetMouseButtonDown(1) && canDash)
+        /*if (Input.GetMouseButtonDown(1) && canDash)
         {
             currentdashTime = 0.0f;
             StartCoroutine(Dash());
-        }
+        }*/
         //대쉬 쿨타임 관련 조건문
         if (currentdashTime < dashCoolTime)
         {
@@ -215,6 +215,7 @@ public class Player : MonoBehaviour
     {
         if (toggle)
         {
+            Debug.Log("움직임 제한");
             moveInput = new Vector2(0,0);
             UpdateAnimation();
             inputActions.Player.Move.canceled -= OnMove;
