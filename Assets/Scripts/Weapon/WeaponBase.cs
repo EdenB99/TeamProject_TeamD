@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
     protected Animator animator;
-    WeaponAction weaponInputActions;
+    protected WeaponAction weaponInputActions;
 
     SpriteRenderer spriteRenderer;
 
@@ -47,6 +48,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject weaponEffectPrefab;
+    GameObject weaponSkillPrefab;
 
     /// <summary>
     /// 이펙트 생성좌표
