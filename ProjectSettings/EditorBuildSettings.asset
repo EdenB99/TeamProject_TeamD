@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Map/Stage1/AGen/MapGen1.unity
     guid: 2d08387a2172c7740b9ad25ea43286cd
   - enabled: 1
+    path: Assets/Scenes/AsyncLoadScene/AsyncLoadScene.unity
+    guid: d7a3f9ec272792548abcd9673ee56ea4
+  - enabled: 1
     path: Assets/Scenes/Map/NonStage/Town.unity
     guid: 4695fc0c426d62d40afee04020a303f9
   - enabled: 1
