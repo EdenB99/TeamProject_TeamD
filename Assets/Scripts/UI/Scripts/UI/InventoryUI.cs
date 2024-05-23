@@ -42,8 +42,6 @@ public class InventoryUI : MonoBehaviour
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
 
-    WeaponManager weaponManager;
-
     private bool isStore;
     public bool IsStore {
         get => isStore;
@@ -99,7 +97,7 @@ public class InventoryUI : MonoBehaviour
         {
             ingameUI.IngameSlotUIs[i].ItemUse += UseConsumableItem;
         }
-        GameManager.Instance.WeaponManager.currentWeaponindexChange += SetOnhandWepaonIndex;
+        
     }
 
     // UI 온 오프 상태 조절
@@ -192,10 +190,7 @@ public class InventoryUI : MonoBehaviour
         {
             usableUI.Close();
         }
-        if (slotUIs[index].InvenSlot.ItemData != null)
-        {
-            usableUI.Open(slotUIs[index], IsStore);
-        }
+        usableUI.Open(slotUIs[index], IsStore);
 
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
@@ -287,21 +282,6 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-
-    public void SetOnhandWepaonIndex(int index)
-    {
-        
-        for (int i = 0;i < WeaponsSlots.Length;i++)
-        {
-            if (i == index)
-            {
-                WeaponsSlots[i].Onhand = true;
-            }
-            else WeaponsSlots[i].Onhand = false;
-        }
-    }
-
-
     /// <summary>
     /// 무기군을 장착하는 함수
     /// </summary>
@@ -324,23 +304,14 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;                          //비어있지 않으면 변경없음
             }
         }
-        if (isFull)     //모든 슬롯이 차있다면
+        if (isFull)     //모든 슬롯이 비어있다면
         {
             for (int i = 0; i < WeaponsSlots.Length; i++)      //슬롯의 갯수까지
             {
-                if (!WeaponsSlots[i].Onhand)                //현재 슬롯이 손에 들려있지 않으면
+                if (!WeaponsSlots[i].Onhand)                //현재 슬롯이 손에 들려있다면
                 {
-                    //그후 인벤에서도 해제
-                    for (int j = 0; j < slotUIs.Length; j++)
-                    {
-                        if (slotUIs[j].InvenSlot.ItemData == WeaponsSlots[i].SlotItemData && slotUIs[j].InvenSlot.IsEquipped)
-                        {
-                            slotUIs[j].InvenSlot.EquipItem(false);
-                        }
-                    }
-                    IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;                        //현재 손에 들린 슬롯의 장착함수를 선언
-                    handEquipable.UnEquip(WeaponsSlots);                //들지 않은 무기 웨폰슬롯에서 해제
-                    
+                    IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;                           //현재 손에 들린 슬롯의 장착함수를 선언
+                    handEquipable.UnEquip(WeaponsSlots);                //손에 들린 무기 해제
                     equipable.Equip(WeaponsSlots[i]);       //새로운 무기를 장착
                     break;
                 }
