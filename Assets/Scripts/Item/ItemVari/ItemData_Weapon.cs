@@ -20,9 +20,13 @@ public class ItemData_Weapon : ItemData, IWeapon
 
         WeaponManager weaponManager = FindObjectOfType<WeaponManager>();
         Debug.Log($"{slot.SlotItemData}");
+
+
         if (weaponManager != null)
         {
             weaponManager.GetWeaponData(this);
+
+            weaponManager.ActivateWeaponPrefab(this);
         }
     }
     public void UnEquip(EquipmentSlot_Base[] slots)
@@ -41,9 +45,10 @@ public class ItemData_Weapon : ItemData, IWeapon
         if (weaponManager != null)
         {
             weaponManager.DeleteWeaponData(this);
+
+            weaponManager.DestroyCurrentWeapon();
         }
     }
-
 
     public int GetWeaponDamage()
     {

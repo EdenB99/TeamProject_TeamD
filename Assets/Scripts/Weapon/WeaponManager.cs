@@ -8,9 +8,6 @@ using UnityEngine.InputSystem;
 
 public class WeaponManager : MonoBehaviour
 {
-
-
-
     //weaponManager는  list=> null값 2개로 세팅된 lsit
     //currentweaponindex
     //currentWeaponInstance
@@ -25,9 +22,12 @@ public class WeaponManager : MonoBehaviour
     //index값의 무기데이터가 null, 현재 clone만 파괴하고, 무기 clone생성 하지않음
 
 
-    [SerializeField] public List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
-
+    [SerializeField] public List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();  
+    
     private int currentWeaponIndex = 0;
+
+    GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
+
 
     public int CurrentWeaponIndex
     {
@@ -38,11 +38,14 @@ public class WeaponManager : MonoBehaviour
             currentWeaponindexChange?.Invoke(currentWeaponIndex);
         }
     }
+
     public Action<int> currentWeaponindexChange;
+
     PlayerAction inputActions;
 
-    GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
     private bool isWeaponEquipped = false;
+
+
 
     public float switchCooldown = 3.0f;
 
@@ -50,12 +53,11 @@ public class WeaponManager : MonoBehaviour
 
     bool canSwitch = true;
 
-
-
     public void Awake()
     {
         inputActions = new PlayerAction();
         currentWeaponindexChange += Switchweapon;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void OnEnable()
@@ -74,6 +76,7 @@ public class WeaponManager : MonoBehaviour
     {
         currentSwitchCoolTime = switchCooldown;
         canSwitch = true;
+        CheckEquipWeapon();
     }
 
     public void Update()
@@ -140,7 +143,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void DestroyCurrentWeapon()
+    public void DestroyCurrentWeapon()
     {
         if (currentWeaponInstance != null)
         {
