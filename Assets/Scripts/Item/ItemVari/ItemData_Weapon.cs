@@ -3,15 +3,15 @@ using Unity.VisualScripting;
 
 using UnityEngine;
 
-// ì•„ì´í…œ í•œ ì¢…ë¥˜ì˜ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ìŠ¤í¬ë¦½í„°ë¸” ì˜¤ë¸Œì íŠ¸
+// ¾ÆÀÌÅÛ ÇÑ Á¾·ùÀÇ Á¤º¸¸¦ ÀúÀåÇÏ´Â ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Scriptable Object/Item Weapon Data", order = 1)]
 public class ItemData_Weapon : ItemData, IWeapon
 {
     public uint maxStackCount = 1;
 
-    [Header("ë¬´ê¸° ê¸°ë³¸ ì •ë³´")]
+    [Header("¹«±â ±âº» Á¤º¸")]
     public WeaponInfo Weaponinfo;
-    [Header("ë¬´ê¸° ì´í™íŠ¸ ì •ë³´")]
+    [Header("¹«±â ÀÌÆåÆ® Á¤º¸")]
     public EffectInfo EffectInfo;
 
     public void Equip(EquipmentSlot_Base slot)
@@ -23,6 +23,7 @@ public class ItemData_Weapon : ItemData, IWeapon
         if (weaponManager != null)
         {
             weaponManager.GetWeaponData(this);
+            weaponManager.ActivateWeaponPrefab(this);
         }
     }
     public void UnEquip(EquipmentSlot_Base[] slots)
@@ -41,6 +42,7 @@ public class ItemData_Weapon : ItemData, IWeapon
         if (weaponManager != null)
         {
             weaponManager.DeleteWeaponData(this);
+            weaponManager.DestroyCurrentWeapon();
         }
     }
 
@@ -49,7 +51,7 @@ public class ItemData_Weapon : ItemData, IWeapon
     {
         return (int)Weaponinfo.weaponDamage;
     }
-    
+
     public float GetWeaponSpeed()
     {
         return (float)Weaponinfo.attackSpeed;
@@ -75,4 +77,3 @@ public class ItemData_Weapon : ItemData, IWeapon
         return Weaponinfo;
     }
 }
-
