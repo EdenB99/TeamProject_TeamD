@@ -8,9 +8,6 @@ using UnityEngine.InputSystem;
 
 public class WeaponManager : MonoBehaviour
 {
-
-
-
     //weaponManager는  list=> null값 2개로 세팅된 lsit
     //currentweaponindex
     //currentWeaponInstance
@@ -42,6 +39,9 @@ public class WeaponManager : MonoBehaviour
     PlayerAction inputActions;
 
     GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
+
+
+
     private bool isWeaponEquipped = false;
 
     public float switchCooldown = 3.0f;
@@ -56,6 +56,7 @@ public class WeaponManager : MonoBehaviour
     {
         inputActions = new PlayerAction();
         currentWeaponindexChange += Switchweapon;
+
     }
 
     public void OnEnable()
@@ -140,7 +141,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void DestroyCurrentWeapon()
+    public void DestroyCurrentWeapon()
     {
         if (currentWeaponInstance != null)
         {

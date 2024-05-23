@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -23,7 +25,7 @@ public class WeaponBase : MonoBehaviour
 {
     new Rigidbody2D rigidbody;
     protected Animator animator;
-    WeaponAction weaponInputActions;
+    protected WeaponAction weaponInputActions;
 
     SpriteRenderer spriteRenderer;
 
@@ -47,6 +49,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject weaponEffectPrefab;
+    GameObject weaponSkillPrefab;
 
     /// <summary>
     /// 이펙트 생성좌표
@@ -247,7 +250,7 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// 이펙트 활성화 함수
     /// </summary>
-    protected virtual void ActivateEffect(Vector2 effectPosition, ItemData_Weapon weaponData)
+    public virtual void ActivateEffect(Vector2 effectPosition, ItemData_Weapon weaponData)
     {
         float angle = MathF.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
@@ -292,5 +295,10 @@ public class WeaponBase : MonoBehaviour
         {
             Debug.Log("빈손");
         }
+    }
+
+    protected void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        weaponManager.CheckEquipWeapon(); // 씬이 로드되면 무기를 다시 생성
     }
 }

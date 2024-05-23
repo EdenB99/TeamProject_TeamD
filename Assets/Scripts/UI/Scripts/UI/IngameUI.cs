@@ -113,6 +113,15 @@ public class IngameUI : MonoBehaviour
     {
         UseQuickSlotItem(2);
     }
+    private void OnQuickSlot4(InputAction.CallbackContext context )
+    {
+        UseWeaponSkill();
+    }
+
+    private void UseWeaponSkill()
+    {
+        //웨폰 스킬 호출 
+    }
     //TODO:: 현재 맵생성시 awake에서 대쉬쪽에 오류가나서 작동안하는중
     private void MapToggle(InputAction.CallbackContext context)
     {
