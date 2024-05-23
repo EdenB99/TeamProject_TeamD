@@ -14,18 +14,17 @@ public class ItemData_Weapon : ItemData, IWeapon
     [Header("무기 이펙트 정보")]
     public EffectInfo EffectInfo;
 
-    public void Equip(EquipmentSlot_Base slot)
+    virtual public void Equip(EquipmentSlot_Base slot)
     {
         slot.SlotItemData = this;
 
         WeaponManager weaponManager = FindObjectOfType<WeaponManager>();
-        Debug.Log($"{slot.SlotItemData}");
         if (weaponManager != null)
         {
             weaponManager.GetWeaponData(this);
         }
     }
-    public void UnEquip(EquipmentSlot_Base[] slots)
+    virtual public void UnEquip(EquipmentSlot_Base[] slots)
     {
 
         for (int i = 0; i < slots.Length; i++)
