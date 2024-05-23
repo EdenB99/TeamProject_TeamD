@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SlashWeapon : WeaponBase
 {
+    public GameObject SkillPrefab;
+
     protected override void Awake()
     {
         base.Awake();
@@ -14,5 +18,28 @@ public class SlashWeapon : WeaponBase
     {
         base.Attack();     
        animator.SetTrigger("SlashAttack");
-    }                  
+    }
+
+    protected override void OnEnable()
+    {
+        if(IsPlayerAlive())
+        {
+            base.OnEnable();
+            weaponInputActions.Weapon.SKill.performed += SKill;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        if(IsPlayerAlive())
+        {
+            weaponInputActions.Weapon.SKill.performed -= SKill;
+            base.OnDisable();
+        }
+    }
+
+    public void SKill(InputAction.CallbackContext context)
+    {
+        
+    }
 }

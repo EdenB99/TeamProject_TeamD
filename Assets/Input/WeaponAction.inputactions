@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SKill",
+                    "type": "Button",
+                    "id": "0ebde4ee-48b6-4ae5-b9ee-b406335c510e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -24,6 +33,17 @@
                     "processors": "",
                     "groups": "KM",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e03ea64f-958a-40f0-8549-ab1432f34add",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KM",
+                    "action": "SKill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

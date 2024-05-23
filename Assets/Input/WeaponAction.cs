@@ -35,6 +35,15 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SKill"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ebde4ee-48b6-4ae5-b9ee-b406335c510e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -46,6 +55,17 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KM"",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e03ea64f-958a-40f0-8549-ab1432f34add"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""SKill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -74,6 +94,7 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
         // Weapon
         m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
         m_Weapon_Attack = m_Weapon.FindAction("Attack", throwIfNotFound: true);
+        m_Weapon_SKill = m_Weapon.FindAction("SKill", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -136,11 +157,13 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Weapon;
     private List<IWeaponActions> m_WeaponActionsCallbackInterfaces = new List<IWeaponActions>();
     private readonly InputAction m_Weapon_Attack;
+    private readonly InputAction m_Weapon_SKill;
     public struct WeaponActions
     {
         private @WeaponAction m_Wrapper;
         public WeaponActions(@WeaponAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Weapon_Attack;
+        public InputAction @SKill => m_Wrapper.m_Weapon_SKill;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -153,6 +176,9 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @SKill.started += instance.OnSKill;
+            @SKill.performed += instance.OnSKill;
+            @SKill.canceled += instance.OnSKill;
         }
 
         private void UnregisterCallbacks(IWeaponActions instance)
@@ -160,6 +186,9 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @SKill.started -= instance.OnSKill;
+            @SKill.performed -= instance.OnSKill;
+            @SKill.canceled -= instance.OnSKill;
         }
 
         public void RemoveCallbacks(IWeaponActions instance)
@@ -189,5 +218,6 @@ public partial class @WeaponAction: IInputActionCollection2, IDisposable
     public interface IWeaponActions
     {
         void OnAttack(InputAction.CallbackContext context);
+        void OnSKill(InputAction.CallbackContext context);
     }
 }
