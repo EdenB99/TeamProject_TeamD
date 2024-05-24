@@ -127,6 +127,7 @@ MonoBehaviour:
   weaponsData:
   - {fileID: 0}
   - {fileID: 0}
+  switchCooldown: 1
 --- !u!114 &3375321561296586607
 MonoBehaviour:
   m_ObjectHideFlags: 0
