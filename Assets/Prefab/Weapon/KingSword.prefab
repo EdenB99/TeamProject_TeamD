@@ -126,7 +126,9 @@ MonoBehaviour:
   rotationSpeed: 5
   weaponSpeed: 1
   attackCooldown: 0.5
-  attackAnimationSpeed: 1
+  currentCoolTime: 0
+  CanAttack: 1
+  SkillPrefab: {fileID: 8500150117120522115, guid: d32a07c755db2544f9557f0313f9a73e, type: 3}
 --- !u!1 &7641073271010593673
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +237,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -207895129, guid: 69f677a7a9bbc814b887485fbd7ad80a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b9199b84639a0b24eb443052c5197fde, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

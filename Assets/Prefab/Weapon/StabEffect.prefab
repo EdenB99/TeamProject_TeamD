@@ -196,5 +196,5 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   effectSpeed: 1
   effectSize: 1
-  weaponDamage: 10
+  weaponDamage: 15
   enemies: []

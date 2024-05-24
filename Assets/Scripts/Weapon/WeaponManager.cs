@@ -52,7 +52,7 @@ public class WeaponManager : MonoBehaviour
 
     private bool isWeaponEquipped = false;
 
-    public float switchCooldown = 3.0f;
+    public float switchCooldown = 1.0f;
 
     float currentSwitchCoolTime = 0.0f;
 
