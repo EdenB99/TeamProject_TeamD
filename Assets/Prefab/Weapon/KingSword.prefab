@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7627956535438865542}
   - component: {fileID: 863467230904462636}
   - component: {fileID: 1422565821642537254}
-  - component: {fileID: 3604839257472730133}
+  - component: {fileID: -5538494706786537863}
   m_Layer: 0
   m_Name: KingSword
   m_TagString: Untagged
@@ -107,7 +107,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 2}
   m_EdgeRadius: 0
---- !u!114 &3604839257472730133
+--- !u!114 &-5538494706786537863
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,17 +116,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2488305193287784195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c920412be62c7f46ab502d480addddf, type: 3}
+  m_Script: {fileID: 11500000, guid: af22732f48a18ae40b9bf3c5f92af4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: f3e8a22bffe5d3543b018ef8ef793e3c, type: 2}
   weaponEffectPrefab: {fileID: 2548626675060308717, guid: 9da26673c7da5eb42bfffa628e441ae0, type: 3}
-  weaponDamage: 20
+  weaponDamage: 10
   critical: 10
   rotationSpeed: 5
   weaponSpeed: 1
   attackCooldown: 0.5
-  attackAnimationSpeed: 1
+  currentCoolTime: 0
+  CanAttack: 1
 --- !u!1 &7641073271010593673
 GameObject:
   m_ObjectHideFlags: 0
