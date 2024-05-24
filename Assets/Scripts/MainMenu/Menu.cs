@@ -87,7 +87,6 @@ public class Menu : MonoBehaviour
     {
         while (fadeEffect)
         {
-            Debug.Log(fadeFloat);
             fadeFloat += Time.deltaTime * 0.5f;
             Fade.color = new Color(0, 0, 0, fadeFloat);
             if (fadeFloat > 1) fadeEffect = false;
