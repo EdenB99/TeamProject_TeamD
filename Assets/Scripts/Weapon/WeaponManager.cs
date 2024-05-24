@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -40,7 +41,14 @@ public class WeaponManager : MonoBehaviour
 
     GameObject currentWeaponInstance; // 현재 씬에 생성된 무기 인스턴스
 
-
+    public bool OnHand
+    {
+        get => OnHand;
+        set
+        {
+            isWeaponEquipped = value;
+        }
+    }
 
     private bool isWeaponEquipped = false;
 
@@ -51,12 +59,11 @@ public class WeaponManager : MonoBehaviour
     bool canSwitch = true;
 
 
-
     public void Awake()
     {
         inputActions = new PlayerAction();
         currentWeaponindexChange += Switchweapon;
-
+        DontDestroyOnLoad(gameObject);
     }
 
     public void OnEnable()
@@ -65,7 +72,7 @@ public class WeaponManager : MonoBehaviour
         inputActions.Player.SwitchWeapon.performed += KeyInput;
     }
 
-    public void OnDisable()
+    public void OnDisable()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
     {
         inputActions.Player.SwitchWeapon.performed -= KeyInput;
         inputActions.Player.Disable();
@@ -75,6 +82,7 @@ public class WeaponManager : MonoBehaviour
     {
         currentSwitchCoolTime = switchCooldown;
         canSwitch = true;
+        isWeaponEquipped = false;
     }
 
     public void Update()
@@ -106,13 +114,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void CheckEquipWeapon()
-    {
-        if(isWeaponEquipped && weaponsData[currentWeaponIndex] != null)
-        {
-            ActivateWeaponPrefab(weaponsData[currentWeaponIndex]);
-        }
-    }
+
 
     public void Switchweapon(int index)
     {
@@ -183,10 +185,11 @@ public class WeaponManager : MonoBehaviour
             {
                 weaponsData[i] = null;
                 break;
-            } else
+            }
+            else
             {
                 Debug.Log("같은 아이템 없음");
             }
         }
-    }
+    }    
 }

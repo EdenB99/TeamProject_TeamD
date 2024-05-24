@@ -107,6 +107,7 @@ public class WeaponBase : MonoBehaviour
         {
             DeactivateWeapon();
         }
+        DontDestroyOnLoad(gameObject);
     }
 
     protected virtual void Start()
@@ -295,10 +296,5 @@ public class WeaponBase : MonoBehaviour
         {
             Debug.Log("빈손");
         }
-    }
-
-    protected void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        weaponManager.CheckEquipWeapon(); // 씬이 로드되면 무기를 다시 생성
     }
 }
