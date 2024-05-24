@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 5375288419658997801}
   - component: {fileID: 1916650180595875888}
   - component: {fileID: 4137981954813982021}
-  m_Layer: 0
+  - component: {fileID: -2741828461102091716}
+  m_Layer: 11
   m_Name: Skill
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,3 +143,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.17
+--- !u!114 &-2741828461102091716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500150117120522115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c38a76ea03f50864da8705a48dc32c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

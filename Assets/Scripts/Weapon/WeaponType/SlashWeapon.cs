@@ -40,6 +40,10 @@ public class SlashWeapon : WeaponBase
 
     public void SKill(InputAction.CallbackContext context)
     {
+        GameObject skillInstance = Instantiate(SkillPrefab, player.transform.position, Quaternion.identity);
+
+        skillInstance.transform.SetParent(player.transform);
+        skillInstance.transform.localPosition = new Vector2(0, 0.5f);
         
     }
 }

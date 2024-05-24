@@ -245,4 +245,6 @@ MonoBehaviour:
   rotationSpeed: 5
   weaponSpeed: 1
   attackCooldown: 0.5
-  attackAnimationSpeed: 1
+  currentCoolTime: 0
+  CanAttack: 1
+  SkillPrefab: {fileID: 8500150117120522115, guid: d32a07c755db2544f9557f0313f9a73e, type: 3}
