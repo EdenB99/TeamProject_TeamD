@@ -16,7 +16,10 @@ public class ItemObject : RecycleObject
 
     private void Awake()
     {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        Transform child = transform.GetChild(0);
+        spriteRenderer = child.GetComponent<SpriteRenderer>();
+
+        
     }
 
     protected override void OnEnable()
