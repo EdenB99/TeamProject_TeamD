@@ -25,7 +25,7 @@ public class WeaponManager : MonoBehaviour
 
     [SerializeField] public List<ItemData_Weapon> weaponsData = new List<ItemData_Weapon>();
 
-    private int currentWeaponIndex = 0;
+    public int currentWeaponIndex = 0;
 
     public int CurrentWeaponIndex
     {
@@ -137,10 +137,6 @@ public class WeaponManager : MonoBehaviour
             currentWeaponInstance = weaponPrefab;
             isWeaponEquipped = true;
         }
-        else
-        {
-            Debug.Log("빈손");
-        }
     }
 
     public void DestroyCurrentWeapon()
@@ -185,10 +181,6 @@ public class WeaponManager : MonoBehaviour
             {
                 weaponsData[i] = null;
                 break;
-            }
-            else
-            {
-                Debug.Log("같은 아이템 없음");
             }
         }
     }    

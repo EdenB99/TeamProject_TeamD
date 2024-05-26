@@ -17,12 +17,15 @@ public class ItemData_Weapon : ItemData, IWeapon
     virtual public void Equip(EquipmentSlot_Base slot)
     {
         slot.SlotItemData = this;
-
+            
         WeaponManager weaponManager = FindObjectOfType<WeaponManager>();
         if (weaponManager != null)
         {
+            if (weaponManager.weaponsData[weaponManager.CurrentWeaponIndex] == null)
+            {
+                weaponManager.ActivateWeaponPrefab(this);
+            }
             weaponManager.GetWeaponData(this);
-            weaponManager.ActivateWeaponPrefab(this);
         }
     }
     virtual public void UnEquip(EquipmentSlot_Base[] slots)
