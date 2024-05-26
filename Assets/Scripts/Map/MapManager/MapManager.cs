@@ -32,6 +32,7 @@ public class MapManager : MonoBehaviour
     7.몬스터에 대미지가 두번씩 들어가는 오류
     8.검 이펙트에만 피격판정 있어서 붙어있으면 대미지가 안들어감
 
+
 */
     //오류 해결 - 5월 22일부터 작성시작
     //내가 해결한 것
@@ -74,14 +75,19 @@ public class MapManager : MonoBehaviour
     private int centerX;
     private int centerY;
     Vector2Int currentPosition;
+    //맵 생성 제어
+    private bool isGeneratingMap = false;
+
     //활성화된 상자 변수
     Chest selectedChest;
     bool isOpen = false;
 
+
     //특수 맵 관련
     private bool hasNextStageMap = false;
     MapData startMapData;
-
+    //정해진 스타트맵
+    MapData startMap;
 
     [Header("시작맵 프리팹")]
     [SerializeField] private GameObject[] startMapPrefabs;
@@ -122,7 +128,7 @@ public class MapManager : MonoBehaviour
     {
         MapData randomStartMap = startMapScenes[UnityEngine.Random.Range(0, startMapScenes.Length)];
 
-        MapData startMap = new MapData
+        startMap = new MapData
         {
             mapX = centerX,
             mapY = centerY,
@@ -138,7 +144,23 @@ public class MapManager : MonoBehaviour
         };
 
         worldMap[new Vector2Int(centerX, centerY)] = startMap;
-        startMapData = startMap;
+
+        startMapData = new MapData
+        {
+            mapX = centerX,
+            mapY = centerY,
+            sceneName = randomStartMap.sceneName,
+            HasUpPortal = randomStartMap.HasUpPortal,
+            HasDownPortal = randomStartMap.HasDownPortal,
+            HasLeftPortal = randomStartMap.HasLeftPortal,
+            HasRightPortal = randomStartMap.HasRightPortal,
+            upPortalObject = randomStartMap.upPortalObject,
+            downPortalObject = randomStartMap.downPortalObject,
+            leftPortalObject = randomStartMap.leftPortalObject,
+            rightPortalObject = randomStartMap.rightPortalObject
+        };
+
+
         MapCheck(new Vector2Int(centerX, centerY));
 
     }
@@ -273,6 +295,7 @@ public class MapManager : MonoBehaviour
 
     public IEnumerator GenerateWorldMapCoroutine()
     {
+        isGeneratingMap = true;
         worldMap.Clear();
         usedMapScenes.Clear();
         hasNextStageMap = false;
@@ -296,7 +319,7 @@ public class MapManager : MonoBehaviour
             int maxGenCount = 1000;
             int genCount = 0;
 
-            while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount)
+            while (mapQueue.Count > 0 && currentMapCount < mapSize && genCount < maxGenCount && isGeneratingMap == true)
             {
                 MapData currentMap = mapQueue.Dequeue();
                 GenerateAdjacentMaps(currentMap, mapQueue);
@@ -325,9 +348,9 @@ public class MapManager : MonoBehaviour
                     //맵 무한 재생성 오류날 대 currentMapCount가 14, mapSize가 14에 QueCount는 계속증가하고있지만 CheckAndActivatePortals를 하고 여기로 돌아옴,currentMapCount는 1이됨.
                     //일단 수정해놨음, 나오면 다시 해결할 것
                     Debug.LogWarning("맵의 개수가 부족하거나 맵큐가 비어있어 모든 맵을 삭제하고 다시 생성합니다.");
-                    yield return ResetGenerateWorldMap();
                     currentMapCount = 1;
                     genCount = 0;
+                    ResetAndRestartMapGeneration();
                 }
 
             }
@@ -367,9 +390,13 @@ public class MapManager : MonoBehaviour
             if (!hasNextStageMap)
             {
                 Debug.LogWarning("유효성 검사를 통과하는 맵을 찾지 못했습니다. 맵을 다시 생성합니다.");
-                yield return ResetGenerateWorldMap();
+                ResetAndRestartMapGeneration();
+                yield return null;
             }
+
         }
+
+        isGeneratingMap = false;
 
         foreach (var kvp in worldMap)
         {
@@ -383,6 +410,7 @@ public class MapManager : MonoBehaviour
     //리셋
     private IEnumerator ResetGenerateWorldMap()
     {
+        isGeneratingMap = false;
         // 모든 포탈 객체 활성화
         foreach (var kvp in worldMap)
         {
@@ -396,6 +424,20 @@ public class MapManager : MonoBehaviour
         usedMapScenes.Clear();
         currentMapCount = 0;
 
+        startMapData = new MapData
+        {
+            mapX = centerX,
+            mapY = centerY,
+            sceneName = startMap.sceneName,
+            HasUpPortal = startMap.HasUpPortal,
+            HasDownPortal = startMap.HasDownPortal,
+            HasLeftPortal = startMap.HasLeftPortal,
+            HasRightPortal = startMap.HasRightPortal,
+            upPortalObject = startMap.upPortalObject,
+            downPortalObject = startMap.downPortalObject,
+            leftPortalObject = startMap.leftPortalObject,
+            rightPortalObject = startMap.rightPortalObject
+        };
 
         worldMap[new Vector2Int(centerX, centerY)] = startMapData;
         usedMapScenes.Add(startMapData.sceneName);
@@ -414,6 +456,11 @@ public class MapManager : MonoBehaviour
         {
             yield return StartCoroutine(GenerateWorldMapCoroutine());
         }
+    }
+    private void ResetAndRestartMapGeneration()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ResetGenerateWorldMap());
     }
 
 
