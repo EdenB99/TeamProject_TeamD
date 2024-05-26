@@ -129,13 +129,9 @@ public class WeaponBase : MonoBehaviour
         {
             WeaponInfo weaponInfo = weaponData.GetWeaponInfo();
             weaponSpeed = weaponInfo.attackSpeed;
-            Debug.Log($"{weaponSpeed}");
+           
             weaponDamage = (int)weaponInfo.weaponDamage;
         }   
-        else
-        {
-            Debug.LogError("WeaponData is not assigned!");
-        }
 
         currentCoolTime = attackCooldown;
         CanAttack = true;
@@ -292,10 +288,6 @@ public class WeaponBase : MonoBehaviour
         if (GameManager.Instance.WeaponManager.weaponsData[weaponManager.CurrentWeaponIndex] != null)
         {
             GameManager.Instance.WeaponManager.ActivateWeaponPrefab(GameManager.Instance.WeaponManager.weaponsData[weaponManager.CurrentWeaponIndex]);
-        }
-        else
-        {
-            Debug.Log("빈손");
         }
     }
 }

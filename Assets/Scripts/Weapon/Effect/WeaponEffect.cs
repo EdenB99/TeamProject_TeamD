@@ -68,10 +68,7 @@ public class WeaponEffect : RecycleObject, IAttack
         {
             ApplyWeaponData(weaponData);
         }
-        else
-        {
-            Debug.LogError("WeaponData is not assigned!");
-        }
+
 
         player = GameManager.Instance.Player;
 
@@ -83,11 +80,9 @@ public class WeaponEffect : RecycleObject, IAttack
     public void ApplyWeaponData(ItemData_Weapon data)
     {
         weaponDamage = data.GetWeaponDamage();
-        Debug.Log($"{weaponDamage}");
         EffectInfo effectInfo = data.GetEffectInfo();
         effectSize = effectInfo.effectSize;
         float effectSpeed = effectInfo.effectSpeed;
-        Debug.Log($"{effectSpeed}");
     }
 
     protected override void OnEnable()
@@ -100,12 +95,12 @@ public class WeaponEffect : RecycleObject, IAttack
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);      // 현재 재생중인 애니메이션 정보 가져오기
 
         float currentClipLength = stateInfo.length;         // 애니메이션의 재생 길이를 가져오기
-        Debug.Log($"{currentClipLength}");
+
 
         animator.speed = effectSpeed;
 
         float animationLength = currentClipLength / effectSpeed;        // 이펙트 재생속도를 조절할 수 있는 변수 부여
-        Debug.Log($"{animationLength}");
+
         yield return new WaitForSeconds(animationLength);
 
         isDestroyed = true;

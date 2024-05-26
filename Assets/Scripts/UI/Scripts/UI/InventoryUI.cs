@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
-{
+{   //착용된 무기가 해제되도록, 빈 무기슬롯이라도 인덱스가 같다면 텍스트 출력
+
+
     /// <summary>
     /// 이 UI가 보여줄 인벤토리
     /// </summary>
@@ -41,6 +43,8 @@ public class InventoryUI : MonoBehaviour
 
     InventoryInput InventoryInput;
     CanvasGroup canvasGroup;
+
+    WeaponManager weaponManager;
 
     private bool isStore;
     public bool IsStore {
@@ -97,7 +101,7 @@ public class InventoryUI : MonoBehaviour
         {
             ingameUI.IngameSlotUIs[i].ItemUse += UseConsumableItem;
         }
-        
+        GameManager.Instance.WeaponManager.currentWeaponindexChange += SetOnhandWepaonIndex;
     }
 
     // UI 온 오프 상태 조절
@@ -190,7 +194,10 @@ public class InventoryUI : MonoBehaviour
         {
             usableUI.Close();
         }
-        usableUI.Open(slotUIs[index], IsStore);
+        if (slotUIs[index].InvenSlot.ItemData != null)
+        {
+            usableUI.Open(slotUIs[index], IsStore);
+        }
 
     }
     private void OnItemMoveEnd(uint index, bool isSlotEnd)
@@ -209,12 +216,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
     private void Eqiup_UseItem(InvenSlotUI slotUI)
     {
         ItemData itemdata = slotUI.InvenSlot.ItemData;
@@ -228,7 +229,7 @@ public class InventoryUI : MonoBehaviour
                         IEquipable equipable = itemdata as IEquipable;
                         if (equipable != null)
                         {
-                            equipable.UnEquip(WeaponsSlots);               //weaponslot에서 삭제
+                            equipable.UnEquip(WeaponsSlots);            
                         }
                         slotUI.InvenSlot.EquipItem(false); // 해당 장비를 인벤에서도 해제
                     } else
@@ -282,6 +283,21 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
+
+    public void SetOnhandWepaonIndex(int index)
+    {
+
+        for (int i = 0; i < WeaponsSlots.Length; i++)
+        {
+            if (i == index)
+            {
+                WeaponsSlots[i].Onhand = true;
+            }
+            else WeaponsSlots[i].Onhand = false;
+        }
+    }
+
+
     /// <summary>
     /// 무기군을 장착하는 함수
     /// </summary>
@@ -290,13 +306,13 @@ public class InventoryUI : MonoBehaviour
     {
         IEquipable equipable = itemData as IEquipable;
         //아이템 데이터 내에 장착 인터페이스 확인
-        bool isFull = false;
+        bool isFull = true;
         //웨폰 슬롯의 가득참을 확인하는 변수
-        for (int i = 0; i<WeaponsSlots.Length; i++) //슬롯의 갯수까지
+        for (int i = 0; i<WeaponsSlots.Length; i++)     //슬롯의 갯수까지
         {
-            if (WeaponsSlots[i].SlotItemData == null) //현재 슬롯이 비어있으면
+            if (WeaponsSlots[i].SlotItemData == null)    //현재 슬롯이 비어있으면
             {
-                equipable.Equip(WeaponsSlots[i]);   //아이템 내부 장착 함수를 실행
+                equipable.Equip(WeaponsSlots[i]);       //아이템 내부 장착 함수를 실행
                 isFull = false;                         //슬롯이 가득차지 않음
                 break;                                  //반복문 종료
             } else
@@ -304,14 +320,21 @@ public class InventoryUI : MonoBehaviour
                 isFull = true;                          //비어있지 않으면 변경없음
             }
         }
-        if (isFull)     //모든 슬롯이 비어있다면
+        if (isFull)     //모든 슬롯이 차있다면
         {
             for (int i = 0; i < WeaponsSlots.Length; i++)      //슬롯의 갯수까지
             {
                 if (!WeaponsSlots[i].Onhand)                //현재 슬롯이 손에 들려있다면
                 {
-                    IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;                           //현재 손에 들린 슬롯의 장착함수를 선언
-                    handEquipable.UnEquip(WeaponsSlots);                //손에 들린 무기 해제
+                    for (int j = 0; j < slotUIs.Length; j++)
+                    {
+                        if (slotUIs[j].InvenSlot.ItemData == WeaponsSlots[i].SlotItemData && slotUIs[j].InvenSlot.IsEquipped)
+                        {
+                            slotUIs[j].InvenSlot.EquipItem(false);
+                        }
+                    }
+                    IEquipable handEquipable = WeaponsSlots[i].SlotItemData as IEquipable;
+                    handEquipable.UnEquip(WeaponsSlots);
                     equipable.Equip(WeaponsSlots[i]);       //새로운 무기를 장착
                     break;
                 }
