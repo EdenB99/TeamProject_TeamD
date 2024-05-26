@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class SlashWeapon : WeaponBase
 {
     public GameObject SkillPrefab;
+    GameObject skillInstance;
 
     protected override void Awake()
     {
@@ -40,10 +41,16 @@ public class SlashWeapon : WeaponBase
 
     public void SKill(InputAction.CallbackContext context)
     {
-        GameObject skillInstance = Instantiate(SkillPrefab, player.transform.position, Quaternion.identity);
+        if (skillInstance == null) // 스킬 인스턴스가 존재하지 않는 경우에만 생성
+        {
+            skillInstance = Instantiate(SkillPrefab, player.transform.position, Quaternion.identity);
+            skillInstance.transform.SetParent(player.transform);
+            skillInstance.transform.localPosition = new Vector2(0, 0.5f);
+        }
+        else
+        {
+            Debug.Log("스킬이 이미 활성화되어 있습니다.");
+        }
 
-        skillInstance.transform.SetParent(player.transform);
-        skillInstance.transform.localPosition = new Vector2(0, 0.5f);
-        
     }
 }
