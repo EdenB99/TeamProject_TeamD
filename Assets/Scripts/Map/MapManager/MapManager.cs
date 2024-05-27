@@ -1383,6 +1383,7 @@ public class MapManager : MonoBehaviour
 
     //맵 저장,로드==============================================
 
+ 
 
     /// <summary>
     /// 맵을 저장하기 위해 사용하는 함수
@@ -1390,6 +1391,9 @@ public class MapManager : MonoBehaviour
     /// <param name="position"></param>
     private void SaveMapState(Vector2Int position)
     {
+
+
+
         // 아이템이 저장되는 맵
         MapData map = GetMapData(position.x, position.y);
 
@@ -1435,8 +1439,10 @@ public class MapManager : MonoBehaviour
             }
         }
 
+        SceneChanger sceneChanger = FindAnyObjectByType<SceneChanger>();
+        sceneChanger.SceneChanged();
     }
-
+    
 
 
     /// <summary>
