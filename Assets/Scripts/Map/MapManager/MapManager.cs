@@ -24,14 +24,9 @@ public class MapManager : MonoBehaviour
 
     발생한 오류---
     1.스타트시 인게임슬롯에서 워닝발생
-    2.백그라운드가 가끔 메인카메라 밖으로 나가짐 
-    3.절대반지 장착 해제해도 능력치가 남음(헬멧은 확인안해봄)
-    4.빈아이템 칸에 마우스 클릭하면 창이 열림
-    5.마찬가지로 다른아이템으로 교체해도 E가 사라지지않는 오류 존재
-    6.몬스터의 공격 스프라이트가 깨지는 오류 -- 임시해결
-    7.몬스터에 대미지가 두번씩 들어가는 오류
-    8.검 이펙트에만 피격판정 있어서 붙어있으면 대미지가 안들어감
-
+    2.절대반지 장착 해제해도 능력치가 남음(헬멧은 확인안해봄)
+    3.몬스터에 대미지가 두번씩 들어가는 오류
+    4.
 
 */
     //오류 해결 - 5월 22일부터 작성시작
@@ -54,6 +49,10 @@ public class MapManager : MonoBehaviour
     6.아이템을 장착해제해도 손에 들고있으면 사용가능함
     7.창이랑 검이랑 대미지가 같음
     8.왕의 검 프리팹 문제
+    9.백그라운드가 가끔 메인카메라 밖으로 나가짐 
+    10.빈아이템 칸에 마우스 클릭하면 창이 열림
+    11.마찬가지로 다른아이템으로 교체해도 E가 사라지지않는 오류 존재
+    12.몬스터의 공격 스프라이트가 깨지는 오류
 
     */
     [Header("변수")]
@@ -133,6 +132,7 @@ public class MapManager : MonoBehaviour
             mapX = centerX,
             mapY = centerY,
             sceneName = randomStartMap.sceneName,
+            isVisited = true,
             HasUpPortal = randomStartMap.HasUpPortal,
             HasDownPortal = randomStartMap.HasDownPortal,
             HasLeftPortal = randomStartMap.HasLeftPortal,
@@ -150,6 +150,7 @@ public class MapManager : MonoBehaviour
             mapX = centerX,
             mapY = centerY,
             sceneName = randomStartMap.sceneName,
+            isVisited = true,
             HasUpPortal = randomStartMap.HasUpPortal,
             HasDownPortal = randomStartMap.HasDownPortal,
             HasLeftPortal = randomStartMap.HasLeftPortal,
@@ -428,6 +429,7 @@ public class MapManager : MonoBehaviour
         {
             mapX = centerX,
             mapY = centerY,
+            isVisited = true,
             sceneName = startMap.sceneName,
             HasUpPortal = startMap.HasUpPortal,
             HasDownPortal = startMap.HasDownPortal,
@@ -578,7 +580,6 @@ public class MapManager : MonoBehaviour
             return new List<Direction>();
         }
 
-        //TODO:: 맵을 재생성할때 hasPortal이 전부 꺼져있어서 다시 만들지 못함
         List<Direction> availableDirections = new List<Direction>();
 
         if (mapData.HasUpPortal)
@@ -657,7 +658,6 @@ public class MapManager : MonoBehaviour
         }
 
         //다음맵으로 가는 맵의 포탈은 열어놓기
-        //TODO:: 작동안함
         if (nextStageMapScenes.Any(m => m.sceneName == mapData.sceneName))
         {
             return true;

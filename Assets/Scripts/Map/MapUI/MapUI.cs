@@ -248,7 +248,6 @@ public class MapUI : MonoBehaviour
         }
     }
 
-    //TODO:: 포탈이 맵과 다르게표시되는 버그
     //포탈 아이콘 만들기
     private void ShowPortalIcon(MapData mapData, Direction direction, Vector2 iconPosition)
     {
