@@ -155,7 +155,6 @@ public class BossStageScripts : MonoBehaviour
         yield return null;
         animator.SetBool("IsClose", false);
         mainCamera.UpdateBoundaryObject(portalBoundaryObject);
-        background.UpdateBoundaryObject(portalBoundaryObject);
         
     }
 
