@@ -6,22 +6,6 @@ public class Remover : MonoBehaviour
 {
      private static List<GameObject> dontDestoryObj = new List<GameObject>();
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
-
-    void Update()
-    {
-        /*
-        리무버 테스트용
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            ClearAllDontDestroyOnLoadObjects();
-        }
-        */
-    }
-
     /// <summary>
     /// 제거할 오브젝트 마킹 ( 배열에 넣기 )
     /// </summary>
@@ -41,6 +25,7 @@ public class Remover : MonoBehaviour
         {
             Destroy(obj);
         }
-        dontDestoryObj.Clear();
+        
+        
     }
 }

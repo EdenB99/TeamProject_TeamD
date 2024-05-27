@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/FirstLoadScene.unity
     guid: aec15a6f798357342b8ab04abab603ae
   - enabled: 1
+    path: Assets/Scenes/Map/Tutorial/Tutorial.unity
+    guid: 6af2c2d135552994ab6855f58d3afc09
+  - enabled: 1
     path: Assets/Scenes/Map/Stage1/AGen/MapGen1.unity
     guid: 2d08387a2172c7740b9ad25ea43286cd
   - enabled: 1

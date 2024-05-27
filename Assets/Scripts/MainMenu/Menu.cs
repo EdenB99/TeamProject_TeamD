@@ -24,6 +24,11 @@ public class Menu : MonoBehaviour
     private int menuIndex = 0;
     Vector3 selectPos = new Vector3(200, 0, 0);
 
+    /// <summary>
+    /// 선택을 했음을 알리는 변수
+    /// </summary>
+    private bool selected = false;
+
 
     void Start()
     {
@@ -34,32 +39,34 @@ public class Menu : MonoBehaviour
 
     void Update()
     {
-       
-           
-
         selecter.transform.position = menuText[menuIndex].transform.position - selectPos;
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if ( !selected )
         {
-            menuIndex--;
-            if (menuIndex < 0) menuIndex = menuText.Length - 1; // 0이면 마지막으로 이동
-            UpdateMenu();
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            menuIndex++;
-            if (menuIndex >= menuText.Length) menuIndex = 0;    // 최대면 0으로 이동
-            UpdateMenu();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-        {
-            if (!fadeEffect)
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                fadeEffect = true;
-                StartCoroutine(SelectMenuItem());
+                menuIndex--;
+                if (menuIndex < 0) menuIndex = menuText.Length - 1; // 0이면 마지막으로 이동
+                UpdateMenu();
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                menuIndex++;
+                if (menuIndex >= menuText.Length) menuIndex = 0;    // 최대면 0으로 이동
+                UpdateMenu();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {
+                if (!fadeEffect)
+                {
+                    fadeEffect = true;
+                    StartCoroutine(SelectMenuItem());
+                }
             }
         }
+
+
     }
 
     /// <summary>
@@ -85,13 +92,19 @@ public class Menu : MonoBehaviour
 
     IEnumerator SelectMenuItem()
     {
-        while (fadeEffect)
+        selected = true;
+
+        if ( menuIndex != 2 ) // 설정창은 제외
         {
-            fadeFloat += Time.deltaTime * 0.5f;
-            Fade.color = new Color(0, 0, 0, fadeFloat);
-            if (fadeFloat > 1) fadeEffect = false;
-            yield return new WaitForSeconds(0.0f);
+            while (fadeEffect)
+            {
+                fadeFloat += Time.deltaTime * 0.5f;
+                Fade.color = new Color(0, 0, 0, fadeFloat);
+                if (fadeFloat > 1) fadeEffect = false;
+                yield return new WaitForSeconds(0.0f);
+            }
         }
+
 
         yield return new WaitForSeconds(0.5f);
 
@@ -102,11 +115,11 @@ public class Menu : MonoBehaviour
                 break;
             case 1:
                 // 튜토리얼 맵으로 이동
-
+                SceneManager.LoadScene("Tutorial");
                 break;
             case 2:
                 // 설정 창 켜기
-
+                selected = false;
                 break;
             case 3:
                 // 끄기
@@ -114,4 +127,6 @@ public class Menu : MonoBehaviour
                 break;
         }
     }
+
+
 }
