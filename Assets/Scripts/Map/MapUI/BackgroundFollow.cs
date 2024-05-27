@@ -49,7 +49,7 @@ public class BackgroundFollow : MonoBehaviour
 
     void UpdateBackgroundPosition()
     {
-        Vector2 backgroundPosition = new Vector2(mainCamera.transform.position.x * 0.9f, mainCamera.transform.position.y * 0.95f);
+        Vector2 backgroundPosition = new Vector2(mainCamera.transform.position.x * 0.9f, mainCamera.transform.position.y * 0.85f);
         transform.position = Vector2.Lerp(transform.position, backgroundPosition, lerpSpeed * Time.deltaTime);
     }
 
