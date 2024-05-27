@@ -10,10 +10,23 @@ public class BladeSkill : MonoBehaviour, IAttack
 
     public uint AttackPower => (uint)(skillPower);
 
+    public float skillDuration = 3.0f;
+
     private void Awake()
     {
         player = GameManager.Instance.Player;
         stats = player.PlayerStats;
+    }
+
+    public void Start()
+    {
+        StartCoroutine(DeActivateSkill());
+    }
+
+    public IEnumerator DeActivateSkill()
+    {
+        yield return new WaitForSeconds(skillDuration);
+        Destroy(gameObject);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

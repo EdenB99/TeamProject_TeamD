@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 5045745156114296684}
   - component: {fileID: 2137658742544611539}
   - component: {fileID: 3411294436393576521}
+  - component: {fileID: -1682676775956686586}
   m_Layer: 0
   m_Name: Blade
   m_TagString: Untagged
@@ -307,7 +308,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7178932382336574287}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c920412be62c7f46ab502d480addddf, type: 3}
   m_Name: 
@@ -322,3 +323,27 @@ MonoBehaviour:
   currentCoolTime: 0
   CanAttack: 1
   SkillPrefab: {fileID: 8500150117120522115, guid: d32a07c755db2544f9557f0313f9a73e, type: 3}
+  skillCoolTime: 5
+  skillCurrentCoolTime: 0
+  canActivate: 1
+--- !u!114 &-1682676775956686586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178932382336574287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af22732f48a18ae40b9bf3c5f92af4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: 8807e0ca4dcf5c9419727dc7eff6b17a, type: 2}
+  weaponEffectPrefab: {fileID: 2548626675060308717, guid: 9da26673c7da5eb42bfffa628e441ae0, type: 3}
+  weaponDamage: 10
+  critical: 10
+  rotationSpeed: 5
+  weaponSpeed: 1
+  attackCooldown: 0.5
+  currentCoolTime: 0
+  CanAttack: 1

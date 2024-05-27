@@ -42,6 +42,7 @@ public class ItemData_Accessory : ItemData, IAccessory
         if (target != null)
         {
             target.PlayerStats.buffs.Remove(playerBuff);
+            target.PlayerStats.buffChanged();
         }
     }
 

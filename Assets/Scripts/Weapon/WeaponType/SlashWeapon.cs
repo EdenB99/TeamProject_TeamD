@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class SlashWeapon : WeaponBase
 {
     public GameObject SkillPrefab;
     GameObject skillInstance;
+
+    public float skillCoolTime = 5.0f;
+
+    public float skillCurrentCoolTime = 0.0f;
+
+    public bool canActivate = true;
 
     protected override void Awake()
     {
@@ -23,23 +30,47 @@ public class SlashWeapon : WeaponBase
 
     protected override void OnEnable()
     {
-        if(IsPlayerAlive())
+        if(IsPlayerAlive() && canActivate == true)
         {
             base.OnEnable();
-            weaponInputActions.Weapon.SKill.performed += SKill;
+            weaponInputActions.Weapon.SKill.performed += OnSKill;
         }
     }
+
+
 
     protected override void OnDisable()
     {
-        if(IsPlayerAlive())
+        if(IsPlayerAlive() && canActivate == true)
         {
-            weaponInputActions.Weapon.SKill.performed -= SKill;
+            weaponInputActions.Weapon.SKill.performed -= OnSKill;
             base.OnDisable();
         }
     }
+    private void OnSKill(InputAction.CallbackContext context)
+    {
+        if (canActivate)
+        {
+            SKill();
+            skillCurrentCoolTime = 0.0f;
+            canActivate = false;
+        }
+    }
 
-    public void SKill(InputAction.CallbackContext context)
+    protected override void Update()
+    {
+        base.Update();
+        if (skillCurrentCoolTime < skillCoolTime)
+        {
+            skillCurrentCoolTime += Time.deltaTime;
+        }
+        else
+        {
+            canActivate = true;
+        }
+    }
+
+    public void SKill()
     {
         if (skillInstance == null) // 스킬 인스턴스가 존재하지 않는 경우에만 생성
         {

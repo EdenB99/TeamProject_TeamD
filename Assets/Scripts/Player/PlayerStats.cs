@@ -301,8 +301,11 @@ public class PlayerStats : MonoBehaviour
         }
         else                                        // 지속시간이 없는 ( 악세사리 ) 버프라면,
         {
+            Debug.Log($"추가전 이동속도{Speed}");
             buffs.Add(buff); // 버프를 추가한다.
+            Debug.Log($"추가후 이동속도{Speed}");
             buffChanged();
+            Debug.Log($"변경후 이동속도{Speed}");
         }
 
     }
