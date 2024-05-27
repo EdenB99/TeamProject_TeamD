@@ -477,7 +477,7 @@ public class Player : MonoBehaviour
     bool canInteract = false;
     NPC_Base interactingNPC;
     public NextStagePortal interactingPortal;
-
+    public QuickPortal interactingQuickPortal;
     /// <summary>
     /// 상호작용 전용
     /// </summary>
@@ -490,6 +490,12 @@ public class Player : MonoBehaviour
             {
                 interactingPortal.LoadNextStage();
                 return; 
+            }
+
+            if(interactingQuickPortal != null && interactingQuickPortal.isInsideTrigger)
+            {
+                interactingQuickPortal.OnQuickTrevel();
+                return;
             }
 
             if (interactingNPC != null)

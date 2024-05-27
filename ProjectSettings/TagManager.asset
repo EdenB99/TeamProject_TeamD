@@ -18,6 +18,7 @@ TagManager:
   - BigMap
   - Wall
   - Chest
+  - QuickPortal
   layers:
   - Default
   - TransparentFX

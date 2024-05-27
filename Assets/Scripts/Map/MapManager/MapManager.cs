@@ -26,7 +26,24 @@ public class MapManager : MonoBehaviour
     1.스타트시 인게임슬롯에서 워닝발생
     2.절대반지 장착 해제해도 능력치가 남음(헬멧은 확인안해봄)
     3.몬스터에 대미지가 두번씩 들어가는 오류
-    4.
+    4.타이틀에서 세팅을 누르면 그뒤로 아무것도 못하는 오류
+    5. 튜토리얼의 백그라운드가 화면밖으로 나가는 오류
+    6. 튜토리얼의 rightPortal이 작동하지 않는 오류
+    7. 튜토리얼에서 f를 누르면 전에 대화한 npc와의 대화창이 작동함
+    8.튜토리얼에서 상점창의 확인창이 인벤토리보다 뒤에있어서 누르려면 인벤토리를 꺼야하는 오류
+    9. 상점에 아이템을 팔면 재산이 0원이 되는 오류
+    10. 인게임 상점창이 골드를 가리는 오류
+
+    
+    장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
+    MissingReferenceException: The object of type 'Transform' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.
+UnityEngine.Transform.get_position () (at <f7237cf7abef49bfbb552d7eb076e422>:0)
+WeaponBase.UpdateWeaponPosition () (at Assets/Scripts/Weapon/WeaponBase.cs:199)
+WeaponBase.Update () (at Assets/Scripts/Weapon/WeaponBase.cs:182)
+SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
+            transform.position = hinge.position;
+
 
 */
     //오류 해결 - 5월 22일부터 작성시작
@@ -1237,7 +1254,6 @@ public class MapManager : MonoBehaviour
     //보상 상자 활성화 함수
     private void ActivateRandomChest()
     {
-        //TODO:: 시간남으면 FindanyObject로 바꾸기,
         GameObject chestsParent = GameObject.Find("Chests");
         if (chestsParent != null)
         {
@@ -1249,16 +1265,25 @@ public class MapManager : MonoBehaviour
 
             if (chests.Length > 0)
             {
-                // 랜덤으로 하나의 상자 선택
-                int randomIndex = Random.Range(0, chests.Length);
-                selectedChest = chests[randomIndex].GetComponent<Chest>();
+                GameObject nearestChest = null;
+                float nearestDistance = float.MaxValue;
 
-                // 선택된 상자 활성화
-                selectedChest.gameObject.SetActive(true);
+                foreach (GameObject chest in chests)
+                {
+                    float distance = Vector2.Distance(player.transform.position, chest.transform.position);
+                    if (distance < nearestDistance)
+                    {
+                        nearestDistance = distance;
+                        nearestChest = chest;
+                    }
+                }
 
+                if (nearestChest != null)
+                {
+                    selectedChest = nearestChest.GetComponent<Chest>();
 
-                // 필요한 경우 애니메이션이나 이펙트 재생
-                // ...
+                    selectedChest.gameObject.SetActive(true);
+                }
             }
         }
     }
@@ -1420,11 +1445,6 @@ public class MapManager : MonoBehaviour
         if (map != null)
         {
             map.mapItemDatas = saveItemDatas;
-            if(selectedChest != null)
-            {
-            map.chest = selectedChest;
-            map.isChestOpen = selectedChest.IsOpened;
-            }
         }
 
 
@@ -1459,44 +1479,11 @@ public class MapManager : MonoBehaviour
                 Factory.Instance.MakeItems(itemData.itemCode, 1, itemData.itemPositions);
             }
         }
-        //TODO:: 체스트가 씬을 넘어갔다오면 사라짐
-        if (mapData.chest != null)
-        {
-            selectedChest = mapData.chest;
-            selectedChest.gameObject.SetActive(true);
-            if (mapData.isChestOpen)
-            {
-                selectedChest.transform.GetChild(2).gameObject.SetActive(false);
-                selectedChest.IsOpened = true;
-                selectedChest.enabled = false;
-
-            }
-
-        }
-
-
-
-        /*
-        player = GameManager.Instance.Player;
-        mainCamera = GameManager.Instance.MainCamera;
-        // 카메라 위치조정
-        mainCamera.transform.position = player.transform.position;
-        */
 
     }
 
 
 
-    //플레이어 사망시 맵초기화
-    private void ClearMapStates()
-    {
-        foreach (var mapData in worldMap.Values)
-        {
-
-            mapData.itemPositions.Clear();
-        }
-
-    }
 
     private void OnEnable()
     {

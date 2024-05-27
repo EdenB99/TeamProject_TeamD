@@ -28,7 +28,7 @@ public class MapUI : MonoBehaviour
     private bool isDragging = false;
     private Vector2 MousePosition;
     [SerializeField] private float dragSpeed = 2f;
-
+    private bool isQuickTrevelActive = false;
     private void Start()
     {
         mapManager = FindObjectOfType<MapManager>();
@@ -145,6 +145,7 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.alpha = 0f;
         canvasGroupUI.blocksRaycasts = false;
         canvasGroupUI.interactable = false;
+        isQuickTrevelActive = false;
 
         canvasGroupMini.alpha = 1f;
 
@@ -153,14 +154,64 @@ public class MapUI : MonoBehaviour
 
 
     //TODO:: 빠른이동.
-    public void FastTrevelEnble()
+    public void QuickTrevel()
     {
         UpdateMapUI();
         canvasGroupUI.alpha = 1f;
         canvasGroupMini.alpha = 0f;
         canvasGroupUI.blocksRaycasts = true;
-        //맵을누르면 빠른이동이 가능해지게하는 변수 bool?
+        isQuickTrevelActive = true;
+
+        // 맵 클릭 이벤트 등록
+        for (int y = 0; y < mapManager.WorldMapSize; y++)
+        {
+            for (int x = 0; x < mapManager.WorldMapSize; x++)
+            {
+                MapData mapData = mapManager.GetMapData(x, y);
+                if (mapData != null && mapData.isVisited)
+                {
+                    Button mapButton = mapTiles[x, y].GetComponent<Button>();
+                    if (mapButton == null)
+                    {
+                        mapButton = mapTiles[x, y].gameObject.AddComponent<Button>();
+                    }
+                    mapButton.onClick.AddListener(() => OnMapButtonClicked(mapData));
+                }
+            }
+        }
     }
+
+    private void OnMapButtonClicked(MapData mapData)
+    {
+        if (mapData.isVisited&& isQuickTrevelActive)
+        {
+            // 해당 맵의 좌표로 이동
+            mapManager.MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
+
+            // 퀵 트레블 UI 닫기
+            HideQuickTrevelUI();
+        }
+    }
+    public void HideQuickTrevelUI()
+    {
+        canvasGroupUI.alpha = 0f;
+        canvasGroupUI.blocksRaycasts = false;
+        isQuickTrevelActive = false;
+
+        // 맵 클릭 이벤트 해제
+        for (int y = 0; y < mapManager.WorldMapSize; y++)
+        {
+            for (int x = 0; x < mapManager.WorldMapSize; x++)
+            {
+                Button mapButton = mapTiles[x, y].GetComponent<Button>();
+                if (mapButton != null)
+                {
+                    mapButton.onClick.RemoveAllListeners();
+                }
+            }
+        }
+    }
+
 
     //맵 그리기 관련 함수=======================================================================
 
