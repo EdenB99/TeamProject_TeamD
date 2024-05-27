@@ -115,13 +115,9 @@ public class IngameUI : MonoBehaviour
     }
     private void OnQuickSlot4(InputAction.CallbackContext context )
     {
-        UseWeaponSkill();
+        UseQuickSlotItem(3);
     }
 
-    private void UseWeaponSkill()
-    {
-        //웨폰 스킬 호출 
-    }
     //TODO:: 현재 맵생성시 awake에서 대쉬쪽에 오류가나서 작동안하는중
     private void MapToggle(InputAction.CallbackContext context)
     {
@@ -181,7 +177,7 @@ public class IngameUI : MonoBehaviour
 	{
         ItemData itemData = SetItemCodeToData(code);
         bool isItem = false;
-        for (int i = 0; i<IngameSlotUIs.Length; i++)
+        for (int i = 0; i<IngameSlotUIs.Length-1; i++)
         {
             if (IngameSlotUIs[i].SlotItemData ==  itemData)
             { 
@@ -192,7 +188,7 @@ public class IngameUI : MonoBehaviour
         }
         if (!isItem)
         {
-            for (int i = 0; i<IngameSlotUIs.Length;i++)
+            for (int i = 0; i<IngameSlotUIs.Length-1;i++)
             {
                 if (IngameSlotUIs[i].SlotItemData == null)
                 {
