@@ -175,7 +175,7 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (IsPlayerAlive())
         {
