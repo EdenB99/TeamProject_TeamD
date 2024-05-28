@@ -80,7 +80,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigid;
     private Animator Player_ani;
     private CapsuleCollider2D cc;
-    private InventoryUI inven;
 
     private void Awake()
     {
@@ -93,8 +92,6 @@ public class Player : MonoBehaviour
         inputActions = new PlayerAction();
         tr = GetComponent<TrailRenderer>();
         interactingPortal = FindAnyObjectByType<NextStagePortal>();
-        inven = GetComponent<InventoryUI>();
-
 
         // 플레이어 사망시 작동 정지
         //PlayerStats.OnDie += inputActions.Player.Disable;
@@ -480,6 +477,7 @@ public class Player : MonoBehaviour
     bool canInteract = false;
     NPC_Base interactingNPC;
     public NextStagePortal interactingPortal;
+    public TownPortal townptal;
     public QuickPortal interactingQuickPortal;
     /// <summary>
     /// 상호작용 전용
@@ -494,6 +492,13 @@ public class Player : MonoBehaviour
                 interactingPortal.LoadNextStage();
                 return; 
             }
+
+            if(townptal != null && townptal.isInsideTrigger)
+            {
+                townptal.LodaingNext();
+                return;
+            }
+
 
             if(interactingQuickPortal != null && interactingQuickPortal.isInsideTrigger)
             {

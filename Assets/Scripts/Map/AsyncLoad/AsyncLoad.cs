@@ -1,20 +1,15 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
 public class AsyncLoad : MonoBehaviour
 {
-
-    /// <summary>
-    /// 다음에 로딩씬이 끝나고 나서 불려질 씬의 이름
-    /// </summary>
-    public string nextSceneName = "Town";
+    [SerializeField] private GameObject nextStageMap;
+    public bool isInsideTrigger;
+    Player player;
 
     /// <summary>
     /// 유니티에서 비동기 명령 처리를 위해 필요한 클래스
@@ -41,7 +36,6 @@ public class AsyncLoad : MonoBehaviour
     /// </summary>
     public float loadingBarSpeed = 1.0f;
 
-
     // UI
     Slider loadingSlider;
     TextMeshProUGUI loadingText;
@@ -49,18 +43,22 @@ public class AsyncLoad : MonoBehaviour
     PlayerAction inputActions;
     MapManager mapManager;
 
-
     private void Awake()
     {
-        inputActions = GetComponent<PlayerAction>();
+        inputActions = new PlayerAction();
         mapManager = GetComponent<MapManager>();
+        //Transform child = transform.GetChild(0);
+        //text = child.gameObject;
+        //text.SetActive(false);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        player = GameManager.Instance.Player;
     }
 
     void Start()
     {
         loadingSlider = FindAnyObjectByType<Slider>();
         loadingText = FindAnyObjectByType<TextMeshProUGUI>();
-        
+
         loadingTextCoroutine = LoadingTextProgress();
 
         StartCoroutine(loadingTextCoroutine);
@@ -76,11 +74,13 @@ public class AsyncLoad : MonoBehaviour
 
     private void OnDisable()
     {
-        inputActions.UI.AnyKey.performed -= Press;
-        inputActions.UI.Click.performed -= Press;
-        inputActions.UI.Disable();
+        if (inputActions != null)
+        {
+            inputActions.UI.AnyKey.performed -= Press;
+            inputActions.UI.Click.performed -= Press;
+            inputActions.UI.Disable();
+        }
     }
-
 
     private void Update()
     {
@@ -91,17 +91,13 @@ public class AsyncLoad : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// 마우스나 키가 눌러지면 실행되는 함수
     /// </summary>
     /// <param name="_"></param>
     private void Press(InputAction.CallbackContext _)
     {
-        //if (loadingDone)
-        //    async.allowSceneActivation = true;
-
-        async.allowSceneActivation = loadingDone;   // loadingDone이 true면 allowSceneActivation을 true로 만들기
+        async.allowSceneActivation = loadingDone; // loadingDone이 true면 allowSceneActivation을 true로 만들기
     }
 
     /// <summary>
@@ -111,7 +107,7 @@ public class AsyncLoad : MonoBehaviour
     IEnumerator LoadingTextProgress()
     {
         // 0.2초 간격으로 .이 찍힌다.
-        // .은 최대 5개까지만 찍인다.
+        // .은 최대 5개까지만 찍는다.
         // "Loading" ~ "Loading . . . . ."
 
         WaitForSeconds wait = new WaitForSeconds(0.2f);
@@ -144,8 +140,9 @@ public class AsyncLoad : MonoBehaviour
         loadRatio = 0.0f;
         loadingSlider.value = loadRatio;
 
-        async = SceneManager.LoadSceneAsync(nextSceneName); // 비동기 로딩 시작
-        async.allowSceneActivation = false;                 // 자동으로 씬전환되지 않도록 하기
+        // 비동기 로딩 시작
+        async = SceneManager.LoadSceneAsync(nextStageMap.name);
+        async.allowSceneActivation = false; // 자동으로 씬전환되지 않도록 하기
 
         while (loadRatio < 1.0f)
         {
@@ -161,5 +158,18 @@ public class AsyncLoad : MonoBehaviour
         loadingDone = true;                         // 로딩 완료되었다고 표시
     }
 
+    public void LoadNextStage()
+    {
+        StartCoroutine(AsyncLoadScene());
+    }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 새로운 씬에서 "PlayerLocation" 태그를 가진 오브젝트 찾아, 있으면 그곳으로 이동.
+        GameObject playerLocation = GameObject.FindWithTag("PlayerLocation");
+        if (playerLocation != null && player != null)
+        {
+            player.transform.position = playerLocation.transform.position;
+        }
+    }
 }
