@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigid;
     private Animator Player_ani;
     private CapsuleCollider2D cc;
+    private InventoryUI inven;
 
     private void Awake()
     {
@@ -92,6 +93,8 @@ public class Player : MonoBehaviour
         inputActions = new PlayerAction();
         tr = GetComponent<TrailRenderer>();
         interactingPortal = FindAnyObjectByType<NextStagePortal>();
+        inven = GetComponent<InventoryUI>();
+
 
         // 플레이어 사망시 작동 정지
         //PlayerStats.OnDie += inputActions.Player.Disable;
@@ -588,6 +591,7 @@ public class Player : MonoBehaviour
         playerStats.OnDie?.Invoke();
         moveInput = Vector2.zero;
         playerStats.IsAlive = false;
+        
         OnDisable();
     }
 
@@ -600,6 +604,7 @@ public class Player : MonoBehaviour
         playerStats.CurrentHp = playerStats.MaxHp;
         Player_ani.SetTrigger("Revive");
         OnEnable();
+        GameManager.Instance.InventoryUI.ClearAllItem();
     }
 
 }
