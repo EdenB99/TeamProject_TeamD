@@ -274,14 +274,18 @@ public class InventoryUI : MonoBehaviour
     }
     private void UseConsumableItem(ItemData itemData)
     {
-        for (int i = 0; i < slotUIs.Length; i++)
+        if (itemData.type == ItemType.Weapon)
         {
-            if (slotUIs[i].InvenSlot.ItemData == itemData)
+            for (int i = 0; i < slotUIs.Length; i++)
             {
-                slotUIs[i].InvenSlot.ClearSlotItem();
-                break;
+                if (slotUIs[i].InvenSlot.ItemData == itemData)
+                {
+                    slotUIs[i].InvenSlot.ClearSlotItem();
+                    break;
+                }
             }
         }
+
     }
 
     public void SetOnhandWepaonIndex(int index)
@@ -379,7 +383,7 @@ public class InventoryUI : MonoBehaviour
         if (IsStore)
         {
             Player player = GameManager.Instance.Player;
-            player.Gold = slotUI.InvenSlot.ItemData.price;
+            player.Gold += slotUI.InvenSlot.ItemData.price;
         }
         slotUI.InvenSlot.ClearSlotItem();
     }

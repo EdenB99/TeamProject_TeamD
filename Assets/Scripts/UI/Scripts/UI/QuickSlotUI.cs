@@ -58,6 +58,7 @@ public class QuickSlotUI : MonoBehaviour
             coolTime = itemData.cooltime;
             currentTime = coolTime;
             ReadytoUseItem = true;
+            Debug.Log(SlotItemData);
         }
     }
     public void AddItem(int Count = 1)
@@ -76,6 +77,7 @@ public class QuickSlotUI : MonoBehaviour
     //아이템 데이터에서 usable설정 및 사용
     public void UseItem()
     {
+        Debug.Log(SlotItemData);
         if (SlotItemData != null)
         {
             IUsable usable = SlotItemData as IUsable;   // IUsable을 상속 받았는지 확인
@@ -85,7 +87,7 @@ public class QuickSlotUI : MonoBehaviour
                 {
                     if (usable.Use())            // 아이템 사용 시도
                     {
-                        ItemUsed();
+                        ItemUsed(SlotItemData);
                     }
                 }
             }
@@ -97,7 +99,7 @@ public class QuickSlotUI : MonoBehaviour
                 {
                     if ( buff.BuffActive() > 0 ) // 버프 아이템은 0초 이상의 시간을 가진다. 장비 아이템이 사용되는 경우 버그
                     
-                    ItemUsed();
+                    ItemUsed(SlotItemData);
                 }
             }
 
@@ -108,7 +110,7 @@ public class QuickSlotUI : MonoBehaviour
                 {
                     if (active.ItemActive(Camera.main.ScreenToWorldPoint(Input.mousePosition) ) )
                     {
-                        ItemUsed();
+                        ItemUsed(SlotItemData);
                     }
                 }
             }
@@ -118,16 +120,18 @@ public class QuickSlotUI : MonoBehaviour
         }
     }
 
-    public void ItemUsed()
+    public void ItemUsed(ItemData itemdata)
     {
         ItemUse?.Invoke(SlotItemData);
-        ItemCount--; //갯수 줄임
-        if ( ItemCount != 0 )
+        if (itemdata.type != ItemType.Weapon)
         {
-            currentTime = 0.0f;
-            ReadytoUseItem = false;
+            ItemCount--; //갯수 줄임
+            if (ItemCount != 0)
+            {
+                currentTime = 0.0f;
+                ReadytoUseItem = false;
+            }
         }
-
     }
 
     public void SetItemImage(Sprite itemSprite)

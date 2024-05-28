@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c920412be62c7f46ab502d480addddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: f3e8a22bffe5d3543b018ef8ef793e3c, type: 2}
+  weaponData: {fileID: 11400000, guid: d374430c8e4b9b0429f70f8044b456c3, type: 2}
   weaponEffectPrefab: {fileID: 2548626675060308717, guid: 9da26673c7da5eb42bfffa628e441ae0, type: 3}
   weaponDamage: 20
   critical: 10
@@ -83,6 +83,9 @@ MonoBehaviour:
   currentCoolTime: 0
   CanAttack: 1
   SkillPrefab: {fileID: 8500150117120522115, guid: d32a07c755db2544f9557f0313f9a73e, type: 3}
+  skillCoolTime: 5
+  skillCurrentCoolTime: 0
+  canActivate: 1
 --- !u!1 &7641073271010593673
 GameObject:
   m_ObjectHideFlags: 0
