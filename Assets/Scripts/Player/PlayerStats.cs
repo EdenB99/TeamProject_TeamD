@@ -74,7 +74,7 @@ public class PlayerStats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            TakeDamage(50);
+            TakeDamage(100);
         }
 
        
