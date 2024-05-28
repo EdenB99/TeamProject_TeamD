@@ -22,10 +22,10 @@ public class MapData
     public bool hasEnemies = false;
     public bool isVisited = false;
     public bool hasItem;
-
+    public bool hasQuickPortal = false;
+    public bool isTrevel = false;
     public bool isNextStageRoom;
     public bool hasHeal;
-
     public GameObject upPortalObject;
     public GameObject downPortalObject;
     public GameObject leftPortalObject;

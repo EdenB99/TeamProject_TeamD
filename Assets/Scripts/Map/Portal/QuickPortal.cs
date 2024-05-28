@@ -22,6 +22,11 @@ public class QuickPortal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (mapUI == null)
+            {
+                mapUI = FindAnyObjectByType<MapUI>();
+            }
+
             text.SetActive(true); // 텍스트 메시 활성화
             isInsideTrigger = true; // 트리거 영역 내부로 설정
             player.interactingQuickPortal = this;
@@ -36,18 +41,13 @@ public class QuickPortal : MonoBehaviour
             text.SetActive(false); // 텍스트 메시 비활성화
             isInsideTrigger = false; // 트리거 영역 외부로 설정
             player.interactingQuickPortal = null;
-            mapUI.HideMap();
+            mapUI.isQuickTrevelActive = false;
         }
     }
 
     public void OnQuickTrevel()
     {
-        if(mapUI == null)
-        {
-            mapUI = FindAnyObjectByType<MapUI>();
-        }
         mapUI.QuickTrevel();
-
     }
 
 

@@ -22,7 +22,7 @@ public class IngameUI : MonoBehaviour
     /// </summary>
 	public float maxHitPoint;
 
-    bool mapToggle = false;
+    public bool mapToggle = false;
 
 	public QuickSlotUI[] IngameSlotUIs;
 	float[] IngameSlotCount;

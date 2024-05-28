@@ -28,14 +28,19 @@ public class MapUI : MonoBehaviour
     private bool isDragging = false;
     private Vector2 MousePosition;
     [SerializeField] private float dragSpeed = 2f;
-    private bool isQuickTrevelActive = false;
+    
+    public bool isQuickTrevelActive = false;
+
+    //외부
+    IngameUI ingameUI;
+    Player player;
     private void Start()
     {
         mapManager = FindObjectOfType<MapManager>();
         canvasGroupMini = FindAnyObjectByType<MiniMap>().GetComponent<CanvasGroup>();
         canvasGroupUI = GetComponent<CanvasGroup>();
         mapPosition = transform.GetChild(0).GetComponent<RectTransform>();
-
+        ingameUI = FindAnyObjectByType<IngameUI>();
         mapTiles = new Image[mapManager.WorldMapSize, mapManager.WorldMapSize];
         GenerateMapUI();
     }
@@ -137,6 +142,8 @@ public class MapUI : MonoBehaviour
         mapPosition.anchoredPosition = currentMapTilePosition;
         canvasGroupUI.blocksRaycasts = true;
         canvasGroupUI.interactable = true;
+        ingameUI.mapToggle = true;
+
     }
 
 
@@ -146,9 +153,9 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.blocksRaycasts = false;
         canvasGroupUI.interactable = false;
         isQuickTrevelActive = false;
+        ingameUI.mapToggle = false;
 
         canvasGroupMini.alpha = 1f;
-
         UpdateMapUI();
     }
 
@@ -159,9 +166,11 @@ public class MapUI : MonoBehaviour
         UpdateMapUI();
         canvasGroupUI.alpha = 1f;
         canvasGroupMini.alpha = 0f;
+        mapPosition.anchoredPosition = currentMapTilePosition;
         canvasGroupUI.blocksRaycasts = true;
+        canvasGroupUI.interactable = true;
         isQuickTrevelActive = true;
-
+        ingameUI.mapToggle = true;
         // 맵 클릭 이벤트 등록
         for (int y = 0; y < mapManager.WorldMapSize; y++)
         {
@@ -183,11 +192,11 @@ public class MapUI : MonoBehaviour
 
     private void OnMapButtonClicked(MapData mapData)
     {
-        if (mapData.isVisited&& isQuickTrevelActive)
+        if (mapData.isVisited&& isQuickTrevelActive && mapData.hasQuickPortal)
         {
             // 해당 맵의 좌표로 이동
             mapManager.MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
-
+            mapData.isTrevel = true;
             // 퀵 트레블 UI 닫기
             HideQuickTrevelUI();
         }
@@ -197,7 +206,7 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.alpha = 0f;
         canvasGroupUI.blocksRaycasts = false;
         isQuickTrevelActive = false;
-
+        ingameUI.mapToggle = false;
         // 맵 클릭 이벤트 해제
         for (int y = 0; y < mapManager.WorldMapSize; y++)
         {

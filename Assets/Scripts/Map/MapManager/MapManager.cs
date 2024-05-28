@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.InputSystem.iOS;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
@@ -13,29 +15,28 @@ using Random = UnityEngine.Random;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO:: 빠른이동구현
     //TODO:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
     //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
-
-
+    //TODO:: 기본 구현완료, 현재 빠른이동의 문제점:맵이 제대로 눌리지않음, 누르면 다시 켯을 때 마우스가 눌린상태라 마우스에 따라 맵이 이동됨
+    //맵에 hasPortal시 스프라이트 필요.
 
     //보상 상자가 맵나갔다오면 사라짐(chest로 받아둬서 null 발생)
     /*
 
     발생한 오류---
     1.스타트시 인게임슬롯에서 워닝발생
-    2.절대반지 장착 해제해도 능력치가 남음(헬멧은 확인안해봄)
-    3.몬스터에 대미지가 두번씩 들어가는 오류
-    4.타이틀에서 세팅을 누르면 그뒤로 아무것도 못하는 오류
-    5. 튜토리얼의 백그라운드가 화면밖으로 나가는 오류
-    6. 튜토리얼의 rightPortal이 작동하지 않는 오류
-    7. 튜토리얼에서 f를 누르면 전에 대화한 npc와의 대화창이 작동함
-    8.튜토리얼에서 상점창의 확인창이 인벤토리보다 뒤에있어서 누르려면 인벤토리를 꺼야하는 오류
-    9. 상점에 아이템을 팔면 재산이 0원이 되는 오류
-    10. 인게임 상점창이 골드를 가리는 오류
+    2.몬스터에 대미지가 두번씩 들어가는 오류
+    3.타이틀에서 세팅을 누르면 그뒤로 아무것도 못하는 오류
+    4. 튜토리얼의 백그라운드가 화면밖으로 나가는 오류
+    5. 튜토리얼에서 f를 누르면 전에 대화한 npc와의 대화창이 작동함
+    6.튜토리얼에서 상점창의 확인창이 인벤토리보다 뒤에있어서 누르려면 인벤토리를 꺼야하는 오류
+    7. 상점에 아이템을 팔면 재산이 0원이 되는 오류
+    8. 인게임 상점창이 골드를 가리는 오류
+    9. 로딩씬에서 게이지가 차거나 안차는 오류
 
     
-    장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
+    9.장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
+    오류 내용:
     MissingReferenceException: The object of type 'Transform' has been destroyed but you are still trying to access it.
 Your script should either check if it is null or you should not destroy the object.
 UnityEngine.Transform.get_position () (at <f7237cf7abef49bfbb552d7eb076e422>:0)
@@ -44,6 +45,8 @@ WeaponBase.Update () (at Assets/Scripts/Weapon/WeaponBase.cs:182)
 SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             transform.position = hinge.position;
 
+    10.25map의 chest가 초기화
+    
 
 */
     //오류 해결 - 5월 22일부터 작성시작
@@ -53,6 +56,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     2.Town에서 백그라운드가 밖에 나가있는 오류
     3.맵이 안만들어지는 오류
     4.Town,BossMap에서 백그라운드가 밖으로 튀어나가는 오류
+    5. 튜토리얼의 rightPortal이 작동하지 않는 오류
 
 
     */
@@ -70,6 +74,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     10.빈아이템 칸에 마우스 클릭하면 창이 열림
     11.마찬가지로 다른아이템으로 교체해도 E가 사라지지않는 오류 존재
     12.몬스터의 공격 스프라이트가 깨지는 오류
+    13.절대반지 장착 해제해도 능력치가 남음
 
     */
     [Header("변수")]
@@ -131,6 +136,9 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     // 카메라
     private MainCamera mainCamera;
 
+    //빠른이동 포탈
+    GameObject quickPortal;
+
     private void Awake()
     {
         centerX = worldMapSize / 2;
@@ -150,6 +158,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             mapY = centerY,
             sceneName = randomStartMap.sceneName,
             isVisited = true,
+            hasQuickPortal = true,
             HasUpPortal = randomStartMap.HasUpPortal,
             HasDownPortal = randomStartMap.HasDownPortal,
             HasLeftPortal = randomStartMap.HasLeftPortal,
@@ -166,8 +175,9 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
         {
             mapX = centerX,
             mapY = centerY,
-            sceneName = randomStartMap.sceneName,
             isVisited = true,
+            hasQuickPortal = true,
+            sceneName = randomStartMap.sceneName,
             HasUpPortal = randomStartMap.HasUpPortal,
             HasDownPortal = randomStartMap.HasDownPortal,
             HasLeftPortal = randomStartMap.HasLeftPortal,
@@ -373,17 +383,17 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
             }
         }
-        if (!hasNextStageMap)
+
+        // worldMap을 역순으로 순회
+        var reversedWorldMap = worldMap.Reverse();
+        int mapIndex = 1;
+
+        foreach (var kvp in reversedWorldMap)
         {
+            MapData mapData = kvp.Value;
 
-            // worldMap을 역순으로 순회
-            var reversedWorldMap = worldMap.Reverse();
-            int mapIndex = 1;
-
-            foreach (var kvp in reversedWorldMap)
+            if (!hasNextStageMap)
             {
-                MapData mapData = kvp.Value;
-
                 if (HasValidPortalConnections(mapData))
                 {
                     // 유효성 검사를 통과한 첫 번째 맵에 NextStageMap 배치
@@ -394,6 +404,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
                     mapData.mapX = position.x;
                     mapData.mapY = position.y;
                     mapData.isNextStageRoom = true;
+                    mapData.hasQuickPortal = true;
                     worldMap[position] = mapData;
 
                     hasNextStageMap = true;
@@ -401,19 +412,28 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
                     break;
                 }
 
-                mapIndex++; // 맵 인덱스 증가
             }
 
             // 유효성 검사를 통과하는 맵을 찾지 못한 경우
-            if (!hasNextStageMap)
+
+            if (mapIndex % 1 == 0)
             {
-                Debug.LogWarning("유효성 검사를 통과하는 맵을 찾지 못했습니다. 맵을 다시 생성합니다.");
-                ResetAndRestartMapGeneration();
-                yield return null;
+                mapData.hasQuickPortal = true;
+                Debug.Log($"뒤에서 {mapIndex}번째 맵,  {mapData.sceneName}씬에 포탈생성."); // 맵 인덱스 출력
             }
+
+            mapIndex++; // 맵 인덱스 증가
+
+
 
         }
 
+        if (!hasNextStageMap)
+        {
+            Debug.LogWarning("유효성 검사를 통과하는 맵을 찾지 못했습니다. 맵을 다시 생성합니다.");
+            ResetAndRestartMapGeneration();
+            yield return null;
+        }
         isGeneratingMap = false;
 
         foreach (var kvp in worldMap)
@@ -447,6 +467,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             mapX = centerX,
             mapY = centerY,
             isVisited = true,
+            hasQuickPortal = true,
             sceneName = startMap.sceneName,
             HasUpPortal = startMap.HasUpPortal,
             HasDownPortal = startMap.HasDownPortal,
@@ -1162,7 +1183,14 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
                     {
                         mapUI.UpdateMapUI();
                     }
-                    SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
+                    if (mapToLoad.isTrevel == false)
+                    {
+                        SetPlayerPosition(OppositeDirection(mapToLoad.enteredDirection));
+                    }
+                    else
+                    {
+                        TrevelPlayerPosition(mapToLoad);
+                    }
                     mainCamera = GameManager.Instance.MainCamera;
                     mainCamera.cameraReturn = true;
                 };
@@ -1196,6 +1224,15 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             SceneManager.LoadScene("ErrorScene", LoadSceneMode.Additive);
         }
     }
+
+    private void TrevelPlayerPosition(MapData mapdata)
+    {
+        Transform quickPortalTransform = quickPortal.transform;
+        player.transform.position = new Vector3(quickPortalTransform.position.x, quickPortalTransform.position.y
+                                                , player.transform.position.z);
+        mapdata.isTrevel = false;
+    }
+
     private void FindPortalsAndSpriteRenderers()
     {
         portals = FindObjectsOfType<Portal>();
@@ -1345,6 +1382,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             return;
         }
 
+
         GameObject portalObject = GameObject.Find($"{direction}Portal");
         if (portalObject != null)
         {
@@ -1408,7 +1446,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
     //맵 저장,로드==============================================
 
- 
+
 
     /// <summary>
     /// 맵을 저장하기 위해 사용하는 함수
@@ -1462,7 +1500,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
         SceneChanger sceneChanger = FindAnyObjectByType<SceneChanger>();
         sceneChanger.SceneChanged();
     }
-    
+
 
 
     /// <summary>
@@ -1479,6 +1517,16 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
                 Factory.Instance.MakeItems(itemData.itemCode, 1, itemData.itemPositions);
             }
         }
+
+        if (mapData.hasQuickPortal)
+        {
+            quickPortal = GameObject.FindGameObjectWithTag("QuickPortal");
+            if (quickPortal != null)
+            {
+                quickPortal.transform.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+
 
     }
 

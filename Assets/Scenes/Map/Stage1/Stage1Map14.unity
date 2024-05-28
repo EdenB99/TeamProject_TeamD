@@ -463,10 +463,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuickPortal
       objectReference: {fileID: 0}
-    - target: {fileID: 3382152940147958763, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6074957249824044251, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.51
@@ -510,32 +506,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3382152940147958763, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1512563389}
-    - targetCorrespondingSourceObject: {fileID: 2563929885378043326, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
---- !u!1 &1512563388 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3382152940147958763, guid: 9aa93d46825f9ec45986c085fa3bb58c, type: 3}
-  m_PrefabInstance: {fileID: 1512563387}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1512563389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1512563388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 182f9e8032059a341b99adb0bf8e24cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isInsideTrigger: 0
 --- !u!1001 &1827236245
 PrefabInstance:
   m_ObjectHideFlags: 0
