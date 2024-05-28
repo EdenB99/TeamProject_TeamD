@@ -15,10 +15,9 @@ using Random = UnityEngine.Random;
 
 public class MapManager : MonoBehaviour
 {
-    //TODO:: 맵 로딩만들기(맵만들기가 끝난 후 로딩되기) 
+
     //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
-    //TODO:: 기본 구현완료, 현재 빠른이동의 문제점:맵이 제대로 눌리지않음, 누르면 다시 켯을 때 마우스가 눌린상태라 마우스에 따라 맵이 이동됨
-    //맵에 hasPortal시 스프라이트 필요.
+    //TODO:: 현재 맵UI에 인터랙티브포탈을 통해 빠른이동이 되는 중, 여러개 중첩될 시 빠른이동이 안됨,  아이콘이 여러개 일 시 겹쳐지는 오류 존재
 
     //보상 상자가 맵나갔다오면 사라짐(chest로 받아둬서 null 발생)
     /*
@@ -33,7 +32,7 @@ public class MapManager : MonoBehaviour
     7. 상점에 아이템을 팔면 재산이 0원이 되는 오류
     8. 인게임 상점창이 골드를 가리는 오류
     9. 로딩씬에서 게이지가 차거나 안차는 오류
-
+   
     
     9.장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
     오류 내용:
@@ -409,14 +408,12 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
                     hasNextStageMap = true;
                     CheckAndActivatePortals();
-                    break;
                 }
 
             }
 
-            // 유효성 검사를 통과하는 맵을 찾지 못한 경우
-
-            if (mapIndex % 1 == 0)
+            //4번째 맵마다 빠른이동용 포탈 활성화
+            if (mapIndex % 4 == 0 || mapIndex == 1 || mapIndex == 6)
             {
                 mapData.hasQuickPortal = true;
                 Debug.Log($"뒤에서 {mapIndex}번째 맵,  {mapData.sceneName}씬에 포탈생성."); // 맵 인덱스 출력

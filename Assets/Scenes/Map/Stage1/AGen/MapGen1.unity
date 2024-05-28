@@ -422,54 +422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BigMap
       objectReference: {fileID: 0}
-    - target: {fileID: 3575224085025316023, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575224085025316023, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575224085025316023, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_BlocksRaycasts
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: mapTilePrefab
+      propertyPath: quickPortalSprite
       value: 
-      objectReference: {fileID: 898700179743173665, guid: 5bd9d85ff0da6dd46bea86d015e03363, type: 3}
-    - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: nextStageSprite
-      value: 
-      objectReference: {fileID: 21300260, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-    - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: portalSprites.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3630531395769425573, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: portalSprites.Array.data[0]
-      value: 
-      objectReference: {fileID: -1796461765, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-    - target: {fileID: 4369726827777181607, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Color.a
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369726827777181607, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Color.b
-      value: 0.6132076
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369726827777181607, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Color.g
-      value: 0.46052808
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369726827777181607, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Color.r
-      value: 0.1475169
-      objectReference: {fileID: 0}
-    - target: {fileID: 6158986117931786122, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 38f43e5c58f62284b848716a505439cd, type: 3}
+      objectReference: {fileID: -1758970209, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
     - target: {fileID: 6799877681933779901, guid: 2b806655b68b2b4429989c709763aec0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -17,18 +17,19 @@ public class MapUI : MonoBehaviour
     [SerializeField] private Sprite healSprite;
     [SerializeField] private Sprite nextStageSprite;
     [SerializeField] private Sprite portalSprites;
-
+    [SerializeField] private Sprite quickPortalSprite;
     private Image[,] mapTiles;
-    
+    private bool isEventRegistered = false;
+
     private RectTransform mapPosition;
-    
-    public RectTransform currentMapTileRect;
+
+    RectTransform currentMapTileRect;
     Vector3 currentMapTilePosition;
 
     private bool isDragging = false;
     private Vector2 MousePosition;
     [SerializeField] private float dragSpeed = 2f;
-    
+
     public bool isQuickTrevelActive = false;
 
     //외부
@@ -143,6 +144,7 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.blocksRaycasts = true;
         canvasGroupUI.interactable = true;
         ingameUI.mapToggle = true;
+        isDragging = false;
 
     }
 
@@ -154,7 +156,7 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.interactable = false;
         isQuickTrevelActive = false;
         ingameUI.mapToggle = false;
-
+        isDragging = false;
         canvasGroupMini.alpha = 1f;
         UpdateMapUI();
     }
@@ -171,7 +173,19 @@ public class MapUI : MonoBehaviour
         canvasGroupUI.interactable = true;
         isQuickTrevelActive = true;
         ingameUI.mapToggle = true;
-        // 맵 클릭 이벤트 등록
+        isDragging = false;
+
+        if (!isEventRegistered)
+        {
+            RegisterMapButtonEvents(); // 맵 버튼 이벤트 등록 함수 호출
+        }
+
+    }
+
+
+    private void RegisterMapButtonEvents()
+    {
+
         for (int y = 0; y < mapManager.WorldMapSize; y++)
         {
             for (int x = 0; x < mapManager.WorldMapSize; x++)
@@ -188,38 +202,22 @@ public class MapUI : MonoBehaviour
                 }
             }
         }
+        isEventRegistered = true;
+
     }
 
     private void OnMapButtonClicked(MapData mapData)
     {
-        if (mapData.isVisited&& isQuickTrevelActive && mapData.hasQuickPortal)
+        if (mapData.isVisited && isQuickTrevelActive && mapData.hasQuickPortal)
         {
             // 해당 맵의 좌표로 이동
             mapManager.MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
             mapData.isTrevel = true;
             // 퀵 트레블 UI 닫기
-            HideQuickTrevelUI();
+            HideMap();
         }
     }
-    public void HideQuickTrevelUI()
-    {
-        canvasGroupUI.alpha = 0f;
-        canvasGroupUI.blocksRaycasts = false;
-        isQuickTrevelActive = false;
-        ingameUI.mapToggle = false;
-        // 맵 클릭 이벤트 해제
-        for (int y = 0; y < mapManager.WorldMapSize; y++)
-        {
-            for (int x = 0; x < mapManager.WorldMapSize; x++)
-            {
-                Button mapButton = mapTiles[x, y].GetComponent<Button>();
-                if (mapButton != null)
-                {
-                    mapButton.onClick.RemoveAllListeners();
-                }
-            }
-        }
-    }
+
 
 
     //맵 그리기 관련 함수=======================================================================
@@ -250,7 +248,9 @@ public class MapUI : MonoBehaviour
                     }
 
                     // 맵에 상호작용 가능한 요소 표시
-                    ShowInteractiveIcon(mapData, mapData.isNextStageRoom, nextStageSprite, new Vector2(0f, 10f));
+                    //ShowInteractiveIcon(mapData, mapData.isNextStageRoom, nextStageSprite, new Vector2(0f, 10f));
+                    
+                    ShowInteractiveIcon(mapData, mapData.hasQuickPortal, quickPortalSprite, new Vector2(0f, -10f));
 
                     ShowPortalIcon(mapData, Direction.Up, new Vector2(0f, 275f));
                     ShowPortalIcon(mapData, Direction.Down, new Vector2(0f, -265f));
@@ -271,6 +271,7 @@ public class MapUI : MonoBehaviour
             }
         }
     }
+
     //아이콘 생성
     private void ShowInteractiveIcon(MapData mapData, bool hasInteractive, Sprite iconSprite, Vector2 iconPosition)
     {
@@ -391,12 +392,6 @@ public class MapUI : MonoBehaviour
             iconTransform.gameObject.SetActive(false);
         }
     }
-
-    /// <summary>
-    /// TODO:: 빠른이동 구현
-    /// </summary>
-
-
 
 
 }

@@ -28,7 +28,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1177554905194940056}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0.1475169, g: 0.46052808, b: 0.6132076, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -92,14 +92,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
-  mapTilePrefab: {fileID: 0}
+  mapTilePrefab: {fileID: 898700179743173665, guid: 5bd9d85ff0da6dd46bea86d015e03363, type: 3}
   currentMapSprite: {fileID: 21300000, guid: b39e50895df525245989c0883f909a31, type: 3}
   itemSprite: {fileID: -6929924221510541977, guid: 19e07f9d107e445408633f50457d456e, type: 3}
   healSprite: {fileID: 21300206, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-  shopSprite: {fileID: 21300180, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-  bossSprite: {fileID: 21300166, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  nextStageSprite: {fileID: 21300260, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   portalSprites: {fileID: -1796461765, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  quickPortalSprite: {fileID: 0}
   dragSpeed: 2
+  isQuickTrevelActive: 0
 --- !u!225 &3575224085025316023
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -108,9 +109,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1177554905194940056}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &5725199480299440549
 MonoBehaviour:
@@ -182,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 38f43e5c58f62284b848716a505439cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
