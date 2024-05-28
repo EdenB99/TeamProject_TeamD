@@ -45,7 +45,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Map/Stage1/RestAndBossRoom/BossMap1.unity
     guid: b202ff045c2a9734b82e11cc9a79542b
   - enabled: 1
-    path: Assets/Scenes/Map/End/EndScene.unity
+    path: Assets/Scenes/Main/EndScene.unity
     guid: af53d6fef35533340bee67bab478adb3
   - enabled: 1
     path: Assets/Scenes/Map/Stage1/Stage1Map1.unity

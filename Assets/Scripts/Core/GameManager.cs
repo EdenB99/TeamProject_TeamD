@@ -69,8 +69,9 @@ public class GameManager : Singleton<GameManager>
         weaponManager = FindAnyObjectByType<WeaponManager>();
     }
 
-    // 부활 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 
+    // 게임 클리어 여부 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 
 
+    public bool gameClear = false;
 
 
 
