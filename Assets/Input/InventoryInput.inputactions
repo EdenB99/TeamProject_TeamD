@@ -164,6 +164,15 @@
             "id": "19320963-5d11-438b-888c-5e61a0fd5793",
             "actions": [
                 {
+                    "name": "QuickSlot4",
+                    "type": "Button",
+                    "id": "b19d2b18-729f-4aa7-8631-1fa5253bf3d8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "QuickSlot3",
                     "type": "Button",
                     "id": "5c5e51aa-29e7-404f-aea0-4719a7cd83f5",
@@ -242,6 +251,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MapToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "412ad50b-c116-4ff0-872b-6376029636fb",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickSlot4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

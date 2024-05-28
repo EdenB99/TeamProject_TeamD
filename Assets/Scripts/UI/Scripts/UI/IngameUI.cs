@@ -76,6 +76,7 @@ public class IngameUI : MonoBehaviour
         inventoryInput.Ingame.QuickSlot1.performed += OnQuickSlot1;
         inventoryInput.Ingame.QuickSlot2.performed += OnQuickSlot2;
         inventoryInput.Ingame.QuickSlot3.performed += OnQuickSlot3;
+        inventoryInput.Ingame.QuickSlot4.performed += OnQuickSlot4;
         inventoryInput.Ingame.MapToggle.performed += MapToggle;
     }
 
@@ -83,6 +84,7 @@ public class IngameUI : MonoBehaviour
     private void OnDisable()
     {
         inventoryInput.Ingame.MapToggle.performed -= MapToggle;
+        inventoryInput.Ingame.QuickSlot4.performed -= OnQuickSlot4;
         inventoryInput.Ingame.QuickSlot3.performed -= OnQuickSlot3;
         inventoryInput.Ingame.QuickSlot2.performed -= OnQuickSlot2;
         inventoryInput.Ingame.QuickSlot1.performed -= OnQuickSlot1;

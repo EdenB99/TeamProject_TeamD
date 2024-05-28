@@ -186,6 +186,15 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
             ""id"": ""19320963-5d11-438b-888c-5e61a0fd5793"",
             ""actions"": [
                 {
+                    ""name"": ""QuickSlot4"",
+                    ""type"": ""Button"",
+                    ""id"": ""b19d2b18-729f-4aa7-8631-1fa5253bf3d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""QuickSlot3"",
                     ""type"": ""Button"",
                     ""id"": ""5c5e51aa-29e7-404f-aea0-4719a7cd83f5"",
@@ -266,6 +275,17 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
                     ""action"": ""MapToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""412ad50b-c116-4ff0-872b-6376029636fb"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +316,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         m_Test_Test4 = m_Test.FindAction("Test4", throwIfNotFound: true);
         // Ingame
         m_Ingame = asset.FindActionMap("Ingame", throwIfNotFound: true);
+        m_Ingame_QuickSlot4 = m_Ingame.FindAction("QuickSlot4", throwIfNotFound: true);
         m_Ingame_QuickSlot3 = m_Ingame.FindAction("QuickSlot3", throwIfNotFound: true);
         m_Ingame_QuickSlot2 = m_Ingame.FindAction("QuickSlot2", throwIfNotFound: true);
         m_Ingame_QuickSlot1 = m_Ingame.FindAction("QuickSlot1", throwIfNotFound: true);
@@ -485,6 +506,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     // Ingame
     private readonly InputActionMap m_Ingame;
     private List<IIngameActions> m_IngameActionsCallbackInterfaces = new List<IIngameActions>();
+    private readonly InputAction m_Ingame_QuickSlot4;
     private readonly InputAction m_Ingame_QuickSlot3;
     private readonly InputAction m_Ingame_QuickSlot2;
     private readonly InputAction m_Ingame_QuickSlot1;
@@ -493,6 +515,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     {
         private @InventoryInput m_Wrapper;
         public IngameActions(@InventoryInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QuickSlot4 => m_Wrapper.m_Ingame_QuickSlot4;
         public InputAction @QuickSlot3 => m_Wrapper.m_Ingame_QuickSlot3;
         public InputAction @QuickSlot2 => m_Wrapper.m_Ingame_QuickSlot2;
         public InputAction @QuickSlot1 => m_Wrapper.m_Ingame_QuickSlot1;
@@ -506,6 +529,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_IngameActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_IngameActionsCallbackInterfaces.Add(instance);
+            @QuickSlot4.started += instance.OnQuickSlot4;
+            @QuickSlot4.performed += instance.OnQuickSlot4;
+            @QuickSlot4.canceled += instance.OnQuickSlot4;
             @QuickSlot3.started += instance.OnQuickSlot3;
             @QuickSlot3.performed += instance.OnQuickSlot3;
             @QuickSlot3.canceled += instance.OnQuickSlot3;
@@ -522,6 +548,9 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IIngameActions instance)
         {
+            @QuickSlot4.started -= instance.OnQuickSlot4;
+            @QuickSlot4.performed -= instance.OnQuickSlot4;
+            @QuickSlot4.canceled -= instance.OnQuickSlot4;
             @QuickSlot3.started -= instance.OnQuickSlot3;
             @QuickSlot3.performed -= instance.OnQuickSlot3;
             @QuickSlot3.canceled -= instance.OnQuickSlot3;
@@ -574,6 +603,7 @@ public partial class @InventoryInput: IInputActionCollection2, IDisposable
     }
     public interface IIngameActions
     {
+        void OnQuickSlot4(InputAction.CallbackContext context);
         void OnQuickSlot3(InputAction.CallbackContext context);
         void OnQuickSlot2(InputAction.CallbackContext context);
         void OnQuickSlot1(InputAction.CallbackContext context);
