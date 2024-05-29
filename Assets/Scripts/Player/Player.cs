@@ -222,6 +222,7 @@ public class Player : MonoBehaviour
             inputActions.Player.Jump.performed -= OnJump;
             inputActions.Player.Dash.performed -= OnDash;
             inputActions.Player.DownJump.performed -= OnDownJump;
+            canDash = false;
         } else
         {
             inputActions.Player.Move.performed += OnMove;
@@ -229,6 +230,7 @@ public class Player : MonoBehaviour
             inputActions.Player.Jump.performed += OnJump;
             inputActions.Player.Dash.performed += OnDash;
             inputActions.Player.DownJump.performed += OnDownJump;
+            canDash = true;
         }
     }
 
@@ -518,6 +520,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void ESC(InputAction.CallbackContext context)
