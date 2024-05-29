@@ -15,13 +15,6 @@ public class TestUI : MonoBehaviour
         player.PlayerStats.TakeDamage(30);
 
         inventoryUI = GameManager.Instance.InventoryUI;
-        inventoryUI.getItem(ItemCode.Helmet);
-        inventoryUI.getItem(ItemCode.HealingPotion_A);
-        inventoryUI.getItem(ItemCode.HealingPotion_A);
-        inventoryUI.getItem(ItemCode.SwiftPotion);
-        inventoryUI.getItem(ItemCode.HealingPotion_A);
-        inventoryUI.getItem(ItemCode.Sword);
-        inventoryUI.getItem(ItemCode.Spear);
-        inventoryUI.getItem(ItemCode.KingSword);
+        
     }
 }

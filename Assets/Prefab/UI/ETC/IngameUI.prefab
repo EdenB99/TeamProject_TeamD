@@ -701,6 +701,7 @@ MonoBehaviour:
   healthText: {fileID: 5510382441472828713}
   hitPoint: 100
   maxHitPoint: 100
+  mapToggle: 0
   IngameSlotUIs: []
   bigMap: {fileID: 0}
   goldPanel: {fileID: 340928035785529548}
@@ -1055,7 +1056,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!1 &8113669711387172090
 GameObject:
