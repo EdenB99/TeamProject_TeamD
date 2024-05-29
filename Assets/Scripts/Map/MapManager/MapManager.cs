@@ -17,7 +17,11 @@ public class MapManager : MonoBehaviour
 {
 
     //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
-    //TODO:: 현재 맵UI에 인터랙티브포탈을 통해 빠른이동이 되는 중, 여러개 중첩될 시 빠른이동이 안됨,  아이콘이 여러개 일 시 겹쳐지는 오류 존재
+    //TODO:: 현재 맵UI에 인터랙티브포탈을 통해 빠른이동이 되는 중,아이콘이 여러개 일 시 겹쳐지는 오류 존재
+    //       클릭을 위한 무언가의 이미지가 필요함 (MapUI에)
+    //TODO:: 맵에 맵25에서 위포탈로 맵이만들어졌지만 해당맵에 밑포탈이 없어 연결끊김, 해당 맵에서 왼쪽으로 
+    //       맵이 두개 만들어졌지만 두개 다 밑의 맵에 위 포탈이 없어 이어지지 않아, 3개의 빈 맵이 만들어지게 됨.
+    //       하지만3개는 이어져있기 때문에 삭제되지도않고 그대로 맵생성 및 다음맵을 받아 다음스테이지로 넘어가지 못함
 
     //보상 상자가 맵나갔다오면 사라짐(chest로 받아둬서 null 발생)
     /*
@@ -27,11 +31,7 @@ public class MapManager : MonoBehaviour
     2.몬스터에 대미지가 두번씩 들어가는 오류
     3.타이틀에서 세팅을 누르면 그뒤로 아무것도 못하는 오류
     4. 튜토리얼의 백그라운드가 화면밖으로 나가는 오류
-    5. 튜토리얼에서 f를 누르면 전에 대화한 npc와의 대화창이 작동함
-    6.튜토리얼에서 상점창의 확인창이 인벤토리보다 뒤에있어서 누르려면 인벤토리를 꺼야하는 오류
-    7. 상점에 아이템을 팔면 재산이 0원이 되는 오류
-    8. 인게임 상점창이 골드를 가리는 오류
-    9. 로딩씬에서 게이지가 차거나 안차는 오류
+    5. 로딩씬에서 게이지가 차거나 안차는 오류
    
     
     9.장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
@@ -56,7 +56,8 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     3.맵이 안만들어지는 오류
     4.Town,BossMap에서 백그라운드가 밖으로 튀어나가는 오류
     5. 튜토리얼의 rightPortal이 작동하지 않는 오류
-
+    6. npc를 만난 후 f를 누르면 전에 대화한 npc와의 대화창이 작동함,상자도 마찬가지
+    7. 빠른맵 이동이 적이 있어도 사용가능한 것, 아이템 저장 및 총알 삭제
 
     */
 
@@ -74,6 +75,9 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     11.마찬가지로 다른아이템으로 교체해도 E가 사라지지않는 오류 존재
     12.몬스터의 공격 스프라이트가 깨지는 오류
     13.절대반지 장착 해제해도 능력치가 남음
+    14.튜토리얼에서 상점창의 확인창이 인벤토리보다 뒤에있어서 누르려면 인벤토리를 꺼야하는 오류
+    15. 상점에 아이템을 팔면 재산이 0원이 되는 오류
+    16. 인게임 상점창이 골드를 가리는 오류
 
     */
     [Header("변수")]
@@ -413,7 +417,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
             }
 
             //4번째 맵마다 빠른이동용 포탈 활성화
-            if (mapIndex % 4 == 0 || mapIndex == 1 || mapIndex == 6)
+            if (mapIndex % 1 == 0 || mapIndex == 1 || mapIndex == 6)
             {
                 mapData.hasQuickPortal = true;
                 Debug.Log($"뒤에서 {mapIndex}번째 맵,  {mapData.sceneName}씬에 포탈생성."); // 맵 인덱스 출력
@@ -1322,7 +1326,18 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
         }
     }
 
+    public void QuickTrevel(MapData mapData)
+    {
 
+        if (!currentMap.hasEnemies)
+        {
+            mapData.isTrevel = true;
+            SaveMapState(currentPosition);
+            MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
+            mapUI.HideMap();
+        }
+
+    }
 
     //에러맵의 포탈 지우기용 함수
     private GameObject GetPortalObject(Direction direction)

@@ -508,7 +508,7 @@ public class Player : MonoBehaviour
                 return;
             }
 
-            if (interactingNPC != null)
+            if (interactingNPC != null && interactingNPC.isInsideTrigger)
             {
                 if (!interactingNPC.IsInteracting)
                 {

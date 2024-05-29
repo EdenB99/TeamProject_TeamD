@@ -165,8 +165,12 @@ MonoBehaviour:
     value: 100
   - itemData: {fileID: 11400000, guid: 6081316966289714abdb117a16e8fc5c, type: 2}
     value: 20
-  - itemData: {fileID: 11400000, guid: f3e8a22bffe5d3543b018ef8ef793e3c, type: 2}
-    value: 70
+  - itemData: {fileID: 11400000, guid: b2a90ab59fc81894fa8d86486e523b4b, type: 2}
+    value: 33.3
+  - itemData: {fileID: 11400000, guid: d3485a7afc4912c44a34fa54001d00f1, type: 2}
+    value: 32.2
+  - itemData: {fileID: 11400000, guid: ffb875710aa04c449bac52bece0ed964, type: 2}
+    value: 21
 --- !u!61 &1163198866756884732
 BoxCollider2D:
   m_ObjectHideFlags: 0

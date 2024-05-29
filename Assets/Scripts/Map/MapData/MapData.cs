@@ -34,7 +34,7 @@ public class MapData
     public List<SaveItemData> mapItemDatas;
     public Dictionary<int, Vector3> itemPositions = new Dictionary<int, Vector3>();
     public Chest chest;
-    public bool isChestOpen;
+    public bool isChestOpen = false;
 
 
     private bool hasUpPortal;

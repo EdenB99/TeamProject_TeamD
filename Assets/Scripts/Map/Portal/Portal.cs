@@ -14,7 +14,7 @@ public class Portal : MonoBehaviour
     MapManager mapManager;
     GameObject mainCamera;
     SpriteRenderer spriteRenderer;
-    [SerializeField] private float useCooldown = 1f;
+    private float useCooldown = 0.3f;
     private float cooldownTime = 0f;
 
     readonly int LightRangeID = Shader.PropertyToID("_LightRange");

@@ -91,6 +91,7 @@ namespace Cainos.PixelArtPlatformer_VillageProps
             if (collision.CompareTag("Player") && !isOpened)
             {
                 Key.gameObject.SetActive(true);
+                isInsideTrigger = true;
             }
         }
         private void OnTriggerExit2D(Collider2D collision)
@@ -98,6 +99,7 @@ namespace Cainos.PixelArtPlatformer_VillageProps
             if (collision.CompareTag("Player") && !isOpened)
             {
                 Key.gameObject.SetActive(false);
+                isInsideTrigger = false;
             }
         }
     }

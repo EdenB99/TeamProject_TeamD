@@ -25,6 +25,7 @@ public class NPC_Base : MonoBehaviour
 
     public bool IsInteracting;
     Transform key;
+    public bool isInsideTrigger = false;
 
     protected virtual void Awake()
     {
@@ -78,6 +79,7 @@ public class NPC_Base : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             key.gameObject.SetActive(true);
+            isInsideTrigger = true;
         }
     }
 
@@ -86,6 +88,7 @@ public class NPC_Base : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             key.gameObject.SetActive(false);
+            isInsideTrigger = false;
         }
         if (IsInteracting)
         {
@@ -93,5 +96,6 @@ public class NPC_Base : MonoBehaviour
             currentDialogIndex = 0;
             IsInteracting = false;
         }
+        
     }
 }

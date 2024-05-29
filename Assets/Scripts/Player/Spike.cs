@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    public PlayerStats ps;
-    float Sp = 5.0f;
+    PlayerStats ps;
+    [SerializeField] float Sp = 5.0f;
 
     private void Awake()
     {

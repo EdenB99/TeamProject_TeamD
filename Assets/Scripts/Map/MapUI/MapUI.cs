@@ -19,7 +19,6 @@ public class MapUI : MonoBehaviour
     [SerializeField] private Sprite portalSprites;
     [SerializeField] private Sprite quickPortalSprite;
     private Image[,] mapTiles;
-    private bool isEventRegistered = false;
 
     private RectTransform mapPosition;
 
@@ -175,10 +174,7 @@ public class MapUI : MonoBehaviour
         ingameUI.mapToggle = true;
         isDragging = false;
 
-        if (!isEventRegistered)
-        {
             RegisterMapButtonEvents(); // 맵 버튼 이벤트 등록 함수 호출
-        }
 
     }
 
@@ -191,7 +187,7 @@ public class MapUI : MonoBehaviour
             for (int x = 0; x < mapManager.WorldMapSize; x++)
             {
                 MapData mapData = mapManager.GetMapData(x, y);
-                if (mapData != null && mapData.isVisited)
+                if (mapData != null && mapData.isVisited )
                 {
                     Button mapButton = mapTiles[x, y].GetComponent<Button>();
                     if (mapButton == null)
@@ -202,7 +198,6 @@ public class MapUI : MonoBehaviour
                 }
             }
         }
-        isEventRegistered = true;
 
     }
 
@@ -211,10 +206,7 @@ public class MapUI : MonoBehaviour
         if (mapData.isVisited && isQuickTrevelActive && mapData.hasQuickPortal)
         {
             // 해당 맵의 좌표로 이동
-            mapManager.MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
-            mapData.isTrevel = true;
-            // 퀵 트레블 UI 닫기
-            HideMap();
+            mapManager.QuickTrevel(mapData);
         }
     }
 
@@ -247,10 +239,7 @@ public class MapUI : MonoBehaviour
 
                     }
 
-                    // 맵에 상호작용 가능한 요소 표시
-                    //ShowInteractiveIcon(mapData, mapData.isNextStageRoom, nextStageSprite, new Vector2(0f, 10f));
                     
-                    ShowInteractiveIcon(mapData, mapData.hasQuickPortal, quickPortalSprite, new Vector2(0f, -10f));
 
                     ShowPortalIcon(mapData, Direction.Up, new Vector2(0f, 275f));
                     ShowPortalIcon(mapData, Direction.Down, new Vector2(0f, -265f));
@@ -258,6 +247,8 @@ public class MapUI : MonoBehaviour
                     ShowPortalIcon(mapData, Direction.Right, new Vector2(480f, 0f));
 
 
+                    ShowInteractiveIcon(mapData, mapData.isNextStageRoom, nextStageSprite, new Vector2(0f, 10f));
+                    ShowInteractiveIcon(mapData, mapData.hasQuickPortal, quickPortalSprite, new Vector2(0f, -10f));
                     // 아이템 아이콘 표시
                     ShowItemIcons(mapData);
 
