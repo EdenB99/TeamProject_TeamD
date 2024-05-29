@@ -56,9 +56,8 @@ public class AsyncLoad : MonoBehaviour
 
     void Start()
     {
-        loadingSlider = FindAnyObjectByType<Slider>();
-        loadingText = FindAnyObjectByType<TextMeshProUGUI>();
-
+        loadingSlider = FindObjectOfType<Slider>();
+        loadingText = FindObjectOfType<TextMeshProUGUI>();
         loadingTextCoroutine = LoadingTextProgress();
 
         StartCoroutine(loadingTextCoroutine);
@@ -85,7 +84,7 @@ public class AsyncLoad : MonoBehaviour
     private void Update()
     {
         // 슬라이더의 value는 loadRatio가 될 때까지 계속 증가
-        if (loadingSlider.value < loadRatio)
+        if (loadingSlider != null &&  loadingSlider.value < loadRatio)
         {
             loadingSlider.value += Time.deltaTime * loadingBarSpeed;
         }
@@ -97,7 +96,9 @@ public class AsyncLoad : MonoBehaviour
     /// <param name="_"></param>
     private void Press(InputAction.CallbackContext _)
     {
-        async.allowSceneActivation = loadingDone; // loadingDone이 true면 allowSceneActivation을 true로 만들기
+        if (loadingDone)
+            async.allowSceneActivation = true;
+            async.allowSceneActivation = loadingDone; // loadingDone이 true면 allowSceneActivation을 true로 만들기
     }
 
     /// <summary>
@@ -106,27 +107,22 @@ public class AsyncLoad : MonoBehaviour
     /// <returns></returns>
     IEnumerator LoadingTextProgress()
     {
-        // 0.2초 간격으로 .이 찍힌다.
-        // .은 최대 5개까지만 찍는다.
-        // "Loading" ~ "Loading . . . . ."
-
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
+        WaitForSeconds wait = new WaitForSeconds(2.0f);
         string[] texts =
         {
-            "Loading",
-            "Loading .",
-            "Loading . .",
-            "Loading . . .",
-            "Loading . . . .",
-            "Loading . . . . .",
+            "Tip : 무기를 스위칭하는 키는 Q입니다",
+            "Tip : 미니맵 키는 M입니다."
         };
 
-        int index = 0;
+        System.Random random = new System.Random();
+
         while (true)
         {
+
+            int index = random.Next(texts.Length);
             loadingText.text = texts[index];
-            index++;
-            index %= texts.Length;
+            //index++;
+            //index %= texts.Length;
             yield return wait;
         }
     }
@@ -144,7 +140,7 @@ public class AsyncLoad : MonoBehaviour
         async = SceneManager.LoadSceneAsync(nextStageMap.name);
         async.allowSceneActivation = false; // 자동으로 씬전환되지 않도록 하기
 
-        while (loadRatio < 1.0f)
+        while (loadRatio < 0.9f)
         {
             loadRatio = async.progress + 0.1f;  // 로딩 진행율에 따라 loadRatio 설정
             yield return null;
@@ -154,7 +150,7 @@ public class AsyncLoad : MonoBehaviour
         yield return new WaitForSeconds((1 - loadingSlider.value) / loadingBarSpeed);
 
         StopCoroutine(loadingTextCoroutine);        // 글자 변경 안되게 만들기
-        loadingText.text = "Loading\nComplete!";    // 완료되었다고 글자 출력
+        loadingText.text = "로딩 완료 아무키나 입력해주세요!";     // 완료되었다고 글자 출력
         loadingDone = true;                         // 로딩 완료되었다고 표시
     }
 
