@@ -701,6 +701,7 @@ MonoBehaviour:
   healthText: {fileID: 5510382441472828713}
   hitPoint: 100
   maxHitPoint: 100
+  mapToggle: 0
   IngameSlotUIs: []
   bigMap: {fileID: 0}
   goldPanel: {fileID: 340928035785529548}
@@ -1055,7 +1056,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!1 &8113669711387172090
 GameObject:
@@ -1571,7 +1572,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1854563042430275075, guid: be002327f0447b546978a9da0970cc23, type: 3}
       propertyPath: m_text
-      value: F
+      value: V
       objectReference: {fileID: 0}
     - target: {fileID: 6991443559166397311, guid: be002327f0447b546978a9da0970cc23, type: 3}
       propertyPath: m_Pivot.x

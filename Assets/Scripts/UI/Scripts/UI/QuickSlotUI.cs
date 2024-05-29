@@ -58,7 +58,6 @@ public class QuickSlotUI : MonoBehaviour
             coolTime = itemData.cooltime;
             currentTime = coolTime;
             ReadytoUseItem = true;
-            Debug.Log(SlotItemData);
         }
     }
     public void AddItem(int Count = 1)
@@ -77,7 +76,6 @@ public class QuickSlotUI : MonoBehaviour
     //아이템 데이터에서 usable설정 및 사용
     public void UseItem()
     {
-        Debug.Log(SlotItemData);
         if (SlotItemData != null)
         {
             IUsable usable = SlotItemData as IUsable;   // IUsable을 상속 받았는지 확인
@@ -114,9 +112,6 @@ public class QuickSlotUI : MonoBehaviour
                     }
                 }
             }
-        } else
-        {
-            Debug.Log("아이템 정보가 없습니다.");
         }
     }
 
@@ -131,6 +126,11 @@ public class QuickSlotUI : MonoBehaviour
                 currentTime = 0.0f;
                 ReadytoUseItem = false;
             }
+        }
+        else
+        {
+            currentTime = 0.0f;
+            ReadytoUseItem = false;
         }
     }
 

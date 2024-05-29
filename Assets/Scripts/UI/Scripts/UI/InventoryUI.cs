@@ -274,7 +274,7 @@ public class InventoryUI : MonoBehaviour
     }
     private void UseConsumableItem(ItemData itemData)
     {
-        if (itemData.type == ItemType.Weapon)
+        if (itemData.type == ItemType.Consumable)
         {
             for (int i = 0; i < slotUIs.Length; i++)
             {
