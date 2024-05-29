@@ -13186,6 +13186,22 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 2581743643199971288, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: allItemCode.Array.data[0]
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581743643199971288, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: allItemCode.Array.data[1]
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581743643199971288, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: allItemCode.Array.data[2]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581743643199971288, guid: f7a719f23edb85843856754d739fb096, type: 3}
+      propertyPath: allItemCode.Array.data[3]
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3318804854211647782, guid: f7a719f23edb85843856754d739fb096, type: 3}
       propertyPath: m_Tiles.Array.size
       value: 525
@@ -15572,7 +15588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7624914102362071473, guid: f7a719f23edb85843856754d739fb096, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.62
+      value: -5.83
       objectReference: {fileID: 0}
     - target: {fileID: 8776540121911514891, guid: f7a719f23edb85843856754d739fb096, type: 3}
       propertyPath: m_TagString

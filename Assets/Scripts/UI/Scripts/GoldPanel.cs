@@ -48,7 +48,12 @@ public class GoldPanel : MonoBehaviour
 
     IEnumerator FadeIn(uint targetGold)
     {
-        int startGold = int.Parse(GoldText.text);
+        int startGold;
+        if (!int.TryParse(GoldText.text, out startGold))
+        {
+            startGold = 0;
+            Debug.LogWarning("GoldText.text가 유효한 정수가 아닙니다. 기본값 0으로 설정합니다.");
+        }
         float elapsedTime = 0f;
 
         while (canvasGroup.alpha < 1.0f || elapsedTime < 1.0f / numberChangeSpeed)
