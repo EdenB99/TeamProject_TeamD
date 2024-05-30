@@ -277,9 +277,10 @@ MonoBehaviour:
   dialogBox: {fileID: 3364131072115972889}
   dialogText: {fileID: 7219530415805446894}
   IsInteracting: 0
+  isInsideTrigger: 0
   storeDialogues:
   - "\uC548\uB155\uD558\uC138\uC694, \uC0C1\uC810\uC785\uB2C8\uB2E4."
-  - "\uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?                  \n                                                       
+  - "\uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?                  \n                                                                                                     
     \uC0C1\uC810\uC744 \uC774\uC6A9\uD55C\uB2E4 F   \uB300\uD654\uB97C \uB098\uAC04\uB2E4
     ESC                                                                                               "
   StoreUI: {fileID: 6272111982615173398}
