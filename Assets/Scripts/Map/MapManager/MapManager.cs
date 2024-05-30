@@ -1333,6 +1333,7 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
         if (!currentMap.hasEnemies)
         {
             mapData.isTrevel = true;
+            currentPosition = new Vector2Int(currentMap.mapX, currentMap.mapY);
             SaveMapState(currentPosition);
             MapCheck(new Vector2Int(mapData.mapX, mapData.mapY));
             mapUI.HideMap();
