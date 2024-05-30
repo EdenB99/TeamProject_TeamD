@@ -227,6 +227,8 @@ MonoBehaviour:
   nextStageMap: {fileID: 165193974200966096, guid: 3e9485ad8208bad49b7caf452a6885bd, type: 3}
   isInsideTrigger: 0
   loadingBarSpeed: 1
+  loadingSlider: {fileID: 1287143828}
+  loadingText: {fileID: 490178096}
 --- !u!4 &440116171
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,7 +1376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79283c04a04d9f4483414c391fb2ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ps: {fileID: 0}
+  Sp: 5
 --- !u!1839735485 &3636325512607767042
 Tilemap:
   m_ObjectHideFlags: 0

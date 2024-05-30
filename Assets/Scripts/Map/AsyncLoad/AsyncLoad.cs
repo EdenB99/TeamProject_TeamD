@@ -37,8 +37,9 @@ public class AsyncLoad : MonoBehaviour
     public float loadingBarSpeed = 1.0f;
 
     // UI
-    Slider loadingSlider;
-    TextMeshProUGUI loadingText;
+
+    [SerializeField] private Slider loadingSlider;
+    [SerializeField] private TextMeshProUGUI loadingText;
 
     PlayerAction inputActions;
     MapManager mapManager;
@@ -52,13 +53,13 @@ public class AsyncLoad : MonoBehaviour
         //text.SetActive(false);
         SceneManager.sceneLoaded += OnSceneLoaded;
         player = GameManager.Instance.Player;
+
     }
 
     void Start()
     {
-        loadingSlider = FindObjectOfType<Slider>();
-        loadingText = FindObjectOfType<TextMeshProUGUI>();
         loadingTextCoroutine = LoadingTextProgress();
+        Debug.Log("NextStageMap: " + nextStageMap.name);
 
         StartCoroutine(loadingTextCoroutine);
         StartCoroutine(AsyncLoadScene());
