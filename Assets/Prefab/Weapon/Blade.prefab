@@ -107,8 +107,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 337598327
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7e9722cbc53c65b42802389f5eb8f159, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -322,10 +322,6 @@ MonoBehaviour:
   attackCooldown: 0.5
   currentCoolTime: 0
   CanAttack: 1
-  SkillPrefab: {fileID: 8500150117120522115, guid: d32a07c755db2544f9557f0313f9a73e, type: 3}
-  skillCoolTime: 5
-  skillCurrentCoolTime: 0
-  canActivate: 1
 --- !u!114 &-1682676775956686586
 MonoBehaviour:
   m_ObjectHideFlags: 0
