@@ -3,46 +3,31 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
-using Random = UnityEngine.Random;
 
 
 
 public class MapManager : MonoBehaviour
 {
-    //TODO:: 플레이어 사망시, 게임 클리어 시 결산 필요(플레이어체력,상태 초기화,인벤토리 초기화)
-
-    //TODO:: 아이콘이 여러개 일 시 겹쳐지는 오류 존재, 클릭을 위한 무언가의 이미지가 필요함 (MapUI에)
-    //TODO:: 맵에 맵25에서 위포탈로 맵이만들어졌지만 해당맵에 밑포탈이 없어 연결끊김, 해당 맵에서 왼쪽으로 
+    //TODO(끝내지못한것들)
+    //아이콘이 여러개 일 시 겹쳐지는 오류 존재, 클릭을 위한 무언가의 이미지가 필요함 (MapUI에,현재는 빠른이동 아이콘을 눌러야 이동)
+    //보상 상자가 맵나갔다오면 사라지는 오류(chest로 받아둬서 null 발생)
+    // 25map의 chest가 초기화 되는 오류
+    //       맵에 맵25에서 위포탈로 맵이만들어졌지만 해당맵에 밑포탈이 없어 연결끊김, 해당 맵에서 왼쪽으로 
     //       맵이 두개 만들어졌지만 두개 다 밑의 맵에 위 포탈이 없어 이어지지 않아, 3개의 빈 맵이 만들어지게 됨.
     //       하지만3개는 이어져있기 때문에 삭제되지도않고 그대로 맵생성 및 다음맵을 받아 다음스테이지로 넘어가지 못함
+    //       역순 순회코드에 맵이 스타트맵과 이어져있는 지 체크하면 될 것 같음.
 
-    //보상 상자가 맵나갔다오면 사라짐(chest로 받아둬서 null 발생)
-    // 25map의 chest가 초기화 되는 오류
     /*
 
-    발생한 오류---
+    찾은 오류---
     1.스타트시 인게임슬롯에서 워닝발생
     2.몬스터에 대미지가 두번씩 들어가는 오류
     3.타이틀에서 세팅을 누르면 그뒤로 아무것도 못하는 오류
-    4. 로딩씬에서 게이지가 안차는 오류
     5. 죽어도 들고있는 무기는 그대로인 오류
     6. 씬체인저에 무기가 잡히지 않는 오류
-    
-    9.장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 등장
-    오류 내용:
-    MissingReferenceException: The object of type 'Transform' has been destroyed but you are still trying to access it.
-Your script should either check if it is null or you should not destroy the object.
-UnityEngine.Transform.get_position () (at <f7237cf7abef49bfbb552d7eb076e422>:0)
-WeaponBase.UpdateWeaponPosition () (at Assets/Scripts/Weapon/WeaponBase.cs:199)
-WeaponBase.Update () (at Assets/Scripts/Weapon/WeaponBase.cs:182)
-SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
-            transform.position = hinge.position;
+
     
 
 */
@@ -51,10 +36,10 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     /*
     1.스타트시 플레이어가 땅에박히는 오류
     2.Town에서 백그라운드가 밖에 나가있는 오류
-    3.맵이 안만들어지는 오류
+    3.맵의 생성이 무한재귀하는 오류
     4.Town,BossMap에서 백그라운드가 밖으로 튀어나가는 오류
     5. 튜토리얼의 rightPortal이 작동하지 않는 오류
-    6. npc를 만난 후 f를 누르면 전에 대화한 npc와의 대화창이 작동함,상자도 마찬가지
+    6. npc를 만난 후 f를 누르면 전에 대화한 npc와의 대화스크립트가 작동하는 오류, 상점, 상자도 발생
     7. 빠른맵 이동이 적이 있어도 사용가능한 것, 아이템 저장 및 총알 삭제
     8. 빠른이동시 아이템에 문제가 생기는 오류
 
@@ -78,6 +63,8 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     15. 상점에 아이템을 팔면 재산이 0원이 되는 오류
     16. 인게임 상점창이 골드를 가리는 오류
     17. 튜토리얼의 백그라운드가 화면밖으로 나가는 오류
+    18. 로딩씬에서 게이지가 안차는 오류
+    19.장비를 장착하고 클리어 후 타이틀->타운 들어가니 오류 발생
 
     */
     [Header("변수")]
@@ -104,7 +91,6 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
     //활성화된 상자 변수
     Chest selectedChest;
-    bool isOpen = false;
 
 
     //특수 맵 관련
@@ -641,19 +627,14 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
         if (previousMap == null || currentMap == null)
             return false;
 
-        switch (direction)
+        return direction switch
         {
-            case Direction.Up:
-                return previousMap.HasUpPortal && currentMap.HasDownPortal;
-            case Direction.Down:
-                return previousMap.HasDownPortal && currentMap.HasUpPortal;
-            case Direction.Left:
-                return previousMap.HasLeftPortal && currentMap.HasRightPortal;
-            case Direction.Right:
-                return previousMap.HasRightPortal && currentMap.HasLeftPortal;
-            default:
-                return false;
-        }
+            Direction.Up => previousMap.HasUpPortal && currentMap.HasDownPortal,
+            Direction.Down => previousMap.HasDownPortal && currentMap.HasUpPortal,
+            Direction.Left => previousMap.HasLeftPortal && currentMap.HasRightPortal,
+            Direction.Right => previousMap.HasRightPortal && currentMap.HasLeftPortal,
+            _ => false,
+        };
     }
 
 
@@ -1009,19 +990,14 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
     {
         List<MapData> availableMaps = mapScenes.Where(mapData =>
         {
-            switch (direction)
+            return direction switch
             {
-                case Direction.Up:
-                    return mapData.HasDownPortal;
-                case Direction.Down:
-                    return mapData.HasUpPortal;
-                case Direction.Left:
-                    return mapData.HasRightPortal;
-                case Direction.Right:
-                    return mapData.HasLeftPortal;
-                default:
-                    return false;
-            }
+                Direction.Up => mapData.HasDownPortal,
+                Direction.Down => mapData.HasUpPortal,
+                Direction.Left => mapData.HasRightPortal,
+                Direction.Right => mapData.HasLeftPortal,
+                _ => false,
+            };
         }).ToList();
 
         if (availableMaps.Count > 0)
@@ -1050,19 +1026,14 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
         if (mapData != null)
         {
-            switch (direction)
+            return direction switch
             {
-                case Direction.Up:
-                    return mapData.HasDownPortal ? mapData : null;
-                case Direction.Down:
-                    return mapData.HasUpPortal ? mapData : null;
-                case Direction.Left:
-                    return mapData.HasRightPortal ? mapData : null;
-                case Direction.Right:
-                    return mapData.HasLeftPortal ? mapData : null;
-                default:
-                    return null;
-            }
+                Direction.Up => mapData.HasDownPortal ? mapData : null,
+                Direction.Down => mapData.HasUpPortal ? mapData : null,
+                Direction.Left => mapData.HasRightPortal ? mapData : null,
+                Direction.Right => mapData.HasLeftPortal ? mapData : null,
+                _ => null,
+            };
         }
 
         return null;
@@ -1070,19 +1041,14 @@ SlashWeapon.Update () (at Assets/Scripts/Weapon/WeaponType/SlashWeapon.cs:62)
 
     public Vector2Int GetAdjacentPosition(int x, int y, Direction direction)
     {
-        switch (direction)
+        return direction switch
         {
-            case Direction.Up:
-                return new Vector2Int(x, y + 1);
-            case Direction.Down:
-                return new Vector2Int(x, y - 1);
-            case Direction.Left:
-                return new Vector2Int(x - 1, y);
-            case Direction.Right:
-                return new Vector2Int(x + 1, y);
-            default:
-                return new Vector2Int(x, y);
-        }
+            Direction.Up => new Vector2Int(x, y + 1),
+            Direction.Down => new Vector2Int(x, y - 1),
+            Direction.Left => new Vector2Int(x - 1, y),
+            Direction.Right => new Vector2Int(x + 1, y),
+            _ => new Vector2Int(x, y),
+        };
     }
 
 

@@ -48,7 +48,7 @@ public class Portal : MonoBehaviour
                 direction = Direction.Down;
                 break;
             default:
-                Debug.LogError("포탈이름이 잘못되었습니다. PortalName =: " + portalName);
+                Debug.LogError("포탈이름이 잘못되었습니다. PortalName : " + portalName);
                 break;
         }
     }
