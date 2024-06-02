@@ -10,6 +10,8 @@ public class ItemData_Field_Gold : ItemData, IConsume
 
     public void Consume()
     {
+        GameManager.Instance.GoldCountAdd((int)Itemgold);
+
         Player player = GameManager.Instance.Player;
         if (player != null)
         {

@@ -16,10 +16,9 @@ MonoBehaviour:
   code: 0
   bulletType: 0
   moveSpeed: 5
-  bulletDamage: 30
+  bulletDamage: 50
   bulletSize: 0.3
   lifeTime: 10
   floatDir: 0
   isThrougt: 1
-  isParring: 0
   isPlayer: 1

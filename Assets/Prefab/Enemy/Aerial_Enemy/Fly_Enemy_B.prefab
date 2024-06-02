@@ -257,12 +257,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDetected: 0
-  mobDamage: 0
+  mobDamage: 8
   mobMoveSpeed: 11
   IsMove: 1
   sightRange: 6
   maxHP: 80
-  Attackpower: 10
+  Attackpower: 8
   dropItems:
   - code: 1
     dropRatio: 0.5

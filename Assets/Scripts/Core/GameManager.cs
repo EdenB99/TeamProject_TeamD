@@ -69,9 +69,52 @@ public class GameManager : Singleton<GameManager>
         weaponManager = FindAnyObjectByType<WeaponManager>();
     }
 
-    // 게임 클리어 여부 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 
+    // 게임 클리어창 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 
 
+    private int killCount;
+    public int KillCount => killCount;
+
+    public int goldCount = 0;
+
+    private int GoldCount => goldCount;
+    
+
+    private float playTime = 0.0f;
+
+    public float PlayTime => playTime;
+
+    private void Update()
+    {
+        if ( !gameClear)
+        {
+            playTime += Time.deltaTime;
+        }
+    }
+
+    public void KillCountAdd()
+    {
+        killCount++;
+    }
+
+    public void GoldCountAdd(int gold)
+    {
+        goldCount += gold;
+    }
+
+
+    /// <summary>
+    /// 클리어 여부
+    /// </summary>
     public bool gameClear = false;
+
+    public void GameReset()
+    {
+        playTime = 0;
+        goldCount = 0;
+        gameClear = false;
+        killCount = 0;
+    }
+        
 
 
 

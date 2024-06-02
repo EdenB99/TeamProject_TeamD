@@ -22,7 +22,7 @@ MonoBehaviour:
   maxStackCount: 1
   Weaponinfo:
     weaponDamage: 10
-    attackSpeed: 1
+    attackSpeed: 2
     modelPrefab: {fileID: 7178932382336574287, guid: cfd676a296548c54e848e75f8d3e7096, type: 3}
     weaponType: 0
   EffectInfo:

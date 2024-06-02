@@ -133,6 +133,7 @@ public class EnemyBase : MonoBehaviour, IEnemy , IAttack
     protected virtual void Start()
     {
         player = GameManager.Instance.Player;
+        DeathCount += GameManager.Instance.KillCountAdd;
     }
 
     protected virtual void FixedUpdate()
@@ -339,7 +340,7 @@ public class EnemyBase : MonoBehaviour, IEnemy , IAttack
     /// <summary>
     /// 죽었을때 실행 될 메서드
     /// </summary>
-    public void Die()
+   public void Die()
     {
         Debug.Log("죽었다.");
         IsLive = false;
@@ -350,8 +351,8 @@ public class EnemyBase : MonoBehaviour, IEnemy , IAttack
         ItemDrop();
         rb.freezeRotation = false;
         col.isTrigger = false;
-
-
-
+        DeathCount?.Invoke();
     }
+
+    Action DeathCount;
 }

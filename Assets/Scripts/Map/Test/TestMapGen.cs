@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 public class TestMapGen : MonoBehaviour
 {
 
@@ -22,7 +23,13 @@ public class TestMapGen : MonoBehaviour
     {
         action.Test.Enable();
         action.Test.Test1.performed += OnTest1;
+        action.Test.Test2.performed += OnTest2;
 
+    }
+
+    private void OnTest2(InputAction.CallbackContext context)
+    {
+        SceneManager.LoadScene("EndScene");
     }
 
     private void OnTest1(InputAction.CallbackContext context)
@@ -42,4 +49,5 @@ public class TestMapGen : MonoBehaviour
 
         }
     }
+    
 }
