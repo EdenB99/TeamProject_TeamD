@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -23,7 +22,7 @@ public struct WeaponInfo
 
 public class WeaponBase : MonoBehaviour
 {
-    new Rigidbody2D rigidbody;
+    Rigidbody2D rigidbody;
     protected Animator animator;
     protected WeaponAction weaponInputActions;
 

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {   //착용된 무기가 해제되도록, 빈 무기슬롯이라도 인덱스가 같다면 텍스트 출력
