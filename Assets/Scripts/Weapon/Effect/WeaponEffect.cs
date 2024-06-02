@@ -53,9 +53,9 @@ public class WeaponEffect : RecycleObject, IAttack
 
     protected bool isDestroyed = false;
 
-    public List<EnemyBase_> enemies = new List<EnemyBase_>(1);
+    public List<EnemyBase> enemies = new List<EnemyBase>(1);
 
-    protected EnemyBase_ enemy;
+    protected EnemyBase enemy;
 
     protected virtual void Awake()
     {

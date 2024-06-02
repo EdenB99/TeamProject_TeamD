@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class SkeletonEnemy : EnemyBase_
+public class SkeletonEnemy : EnemyBase
 { 
     /// <summary>
     /// 레이의 길이

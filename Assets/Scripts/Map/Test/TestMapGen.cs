@@ -8,7 +8,7 @@ public class TestMapGen : MonoBehaviour
 {
 
     TestInputAction action;
-    EnemyBase_[] enemies;
+    EnemyBase[] enemies;
     GameObject enemyParent;
     [Header("7번 누를 시 적 전부 처치")]
     public GameObject seven;
@@ -33,7 +33,7 @@ public class TestMapGen : MonoBehaviour
         }
         if (enemyParent != null)
         {
-            enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+            enemies = enemyParent.GetComponentsInChildren<EnemyBase>();
 
             for (int i = 0; i < enemies.Length; i++)
             {

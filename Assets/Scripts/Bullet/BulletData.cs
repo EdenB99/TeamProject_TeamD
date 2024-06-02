@@ -15,6 +15,5 @@ public class BulletData : ScriptableObject
     public float lifeTime = 10.0f;      // Bullet 생존 시간
     public float floatDir = 0;          // Bullet Dir 을 위한 변수
     public bool isThrougt;              // Bullet 의 관통 여부
-    public bool isParring;              // Bullet 의 패링 여부
     public bool isPlayer;               // Bullet 의 적/아군 여부
 }

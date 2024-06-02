@@ -156,7 +156,6 @@ public class BulletObject : RecycleObject , IAttack
                 bulletType = data.bulletType;      // 이동방식
                 moveSpeed = data.moveSpeed;      // 이동 스피드
                 bulletDamage = data.bulletDamage;  // 데미지
-                isParring = data.isParring;
                 isThrought = data.isThrougt;
                 LifeTime = data.lifeTime;
                 floatDir = data.floatDir;

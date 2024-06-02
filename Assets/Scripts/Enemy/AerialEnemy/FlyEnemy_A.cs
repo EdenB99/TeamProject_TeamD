@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyEnemy_A : EnemyBase_
+public class FlyEnemy_A : EnemyBase
 {
     // 플레이어가 시야각 안에 없을때 사용할 변수들
     private float idle_speed = 2.0f; // 속도

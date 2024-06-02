@@ -25,7 +25,7 @@ public class InventoryUI : MonoBehaviour
     /// <summary>
     /// 상세 정보창
     /// </summary>
-    public DetaillUI detail;
+    public DetailUI detail;
     /// <summary>
     /// 버튼 UI
     /// </summary>

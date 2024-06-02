@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour
 {
-    EnemyBase_ parent;
+    EnemyBase parent;
     int attackPower;
     Player player;
 
     private void Awake()
     {
-        parent = FindAnyObjectByType<EnemyBase_>();
+        parent = FindAnyObjectByType<EnemyBase>();
         player = GameManager.Instance.Player;
         attackPower = parent.mobDamage;
     }

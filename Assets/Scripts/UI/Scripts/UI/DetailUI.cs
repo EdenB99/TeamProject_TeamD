@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class DetaillUI : MonoBehaviour
+public class DetailUI : MonoBehaviour
 {
     Image icon;
     TextMeshProUGUI itemName;

@@ -115,7 +115,7 @@ public class MapManager : MonoBehaviour
     private MapUI mapUI;
     //적관련
     private GameObject enemyParent;
-    EnemyBase_[] enemies;
+    EnemyBase[] enemies;
     protected bool isEnemyDead = false;
 
     //포탈 관련
@@ -1220,7 +1220,7 @@ public class MapManager : MonoBehaviour
         }
         if (enemyParent != null)
         {
-            enemies = enemyParent.GetComponentsInChildren<EnemyBase_>();
+            enemies = enemyParent.GetComponentsInChildren<EnemyBase>();
 
             if (mapData.isVisited && !currentMap.hasEnemies)
             {
